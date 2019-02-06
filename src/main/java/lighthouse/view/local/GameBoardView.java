@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import lighthouse.model.GameBoard;
 
 /**
- * Renders a board.
+ * Provides a UI for the board.
  */
 public class GameBoardView {
 	private final JComponent component;

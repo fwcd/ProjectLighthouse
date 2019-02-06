@@ -2,6 +2,9 @@ package lighthouse.view.local;
 
 import lighthouse.model.GameBoard;
 
+/**
+ * Translates board actions into model commands.
+ */
 public class GameBoardController {
 	public GameBoardController(GameBoard model) {
 		// TODO

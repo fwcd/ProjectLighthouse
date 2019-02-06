@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 
 import lighthouse.model.AppModel;
 
+/**
+ * The application's base view.
+ */
 public class AppView {
 	private final JComponent component;
 	
