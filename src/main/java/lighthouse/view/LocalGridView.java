@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -19,7 +17,6 @@ import lighthouse.model.GameBoard;
 public class LocalGridView implements GridView {
 	private final JComponent component;
 	private final GameBoard model;
-	private final List<GridViewResponder> delegates = new ArrayList<>();
 	private int cellWidth = 10;
 	
 	public LocalGridView(GameBoard model) {
@@ -53,21 +50,31 @@ public class LocalGridView implements GridView {
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				responder.mouseDown(e);
+				responder.mouseDown(toGridX(e.getX()), toGridY(e.getY()));
 			}
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				responder.mouseDrag(e);
+				responder.mouseDrag(toGridX(e.getX()), toGridY(e.getY()));
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				responder.mouseUp(e);
+				responder.mouseUp(toGridX(e.getX()), toGridY(e.getY()));
 			}
 		};
 		component.addMouseListener(mouseAdapter);
 		component.addMouseMotionListener(mouseAdapter);
+	}
+	
+	/** Converts a pixel x coordinate to a grid column. */
+	private int toGridX(int pixelX) {
+		return pixelX / cellWidth; // TODO: Deal with offsets
+	}
+	
+	/** Converts a pixel y coordinate to a grid row. */
+	private int toGridY(int pixelY) {
+		return pixelY / cellWidth; // TODO: Deal with offsets
 	}
 	
 	public JComponent getComponent() {

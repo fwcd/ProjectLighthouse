@@ -1,14 +1,12 @@
 package lighthouse.view;
 
-import java.awt.event.MouseEvent;
-
 /**
  * An interface for responding to user events.
  */
 public interface GridViewResponder {
-	void mouseDown(MouseEvent e);
+	void mouseDown(int gridX, int gridY);
 	
-	void mouseDrag(MouseEvent e);
+	void mouseDrag(int gridX, int gridY);
 	
-	void mouseUp(MouseEvent e);
+	void mouseUp(int gridX, int gridY);
 }

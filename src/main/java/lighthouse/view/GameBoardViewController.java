@@ -1,6 +1,5 @@
 package lighthouse.view;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +20,17 @@ public class GameBoardViewController implements GridViewResponder {
 	}
 	
 	@Override
-	public void mouseDown(MouseEvent e) {
+	public void mouseDown(int gridX, int gridY) {
 		// TODO
 	}
 	
 	@Override
-	public void mouseDrag(MouseEvent e) {
+	public void mouseDrag(int gridX, int gridY) {
 		// TODO
 	}
 	
 	@Override
-	public void mouseUp(MouseEvent e) {
+	public void mouseUp(int gridX, int gridY) {
 		// TODO
 	}
 }
