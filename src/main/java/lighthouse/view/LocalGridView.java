@@ -9,17 +9,17 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import lighthouse.model.GameBoard;
+import lighthouse.model.Grid;
 
 /**
  * Provides a UI for the board.
  */
 public class LocalGridView implements GridView {
 	private final JComponent component;
-	private final GameBoard model;
+	private final Grid model;
 	private int cellWidth = 10;
 	
-	public LocalGridView(GameBoard model) {
+	public LocalGridView(Grid model) {
 		this.model = model;
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;

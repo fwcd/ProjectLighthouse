@@ -18,15 +18,15 @@ public class AppViewController {
 		view = new JPanel();
 		view.setLayout(new BorderLayout());
 		
-		GameBoardViewController board = new GameBoardViewController(model.getBoard());
+		GridViewController board = new GridViewController(model.getGrid());
 		
 		// Register local view (with doubles as a Swing component)
-		LocalGridView localView = new LocalGridView(model.getBoard());
+		LocalGridView localView = new LocalGridView(model.getGrid());
 		board.addView(localView);
-		view.add(new LocalGridView(model.getBoard()).getComponent(), BorderLayout.CENTER);
+		view.add(new LocalGridView(model.getGrid()).getComponent(), BorderLayout.CENTER);
 		
 		// Register remote Lighthouse view
-		board.addView(new LighthouseGridView());
+		board.addView(new LighthouseGridView(model.getGrid()));
 	}
 	
 	public JComponent getComponent() {

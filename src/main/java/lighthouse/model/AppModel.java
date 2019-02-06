@@ -4,9 +4,10 @@ package lighthouse.model;
  * The application's model.
  */
 public class AppModel {
-	private final GameBoard board = new GameBoard(4, 6);
+	/** The actual lighthouse grid dimensions. */
+	private final Grid grid = new Grid(28, 14);
 	
-	public GameBoard getBoard() {
-		return board;
+	public Grid getGrid() {
+		return grid;
 	}
 }

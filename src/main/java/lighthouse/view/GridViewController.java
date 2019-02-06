@@ -3,15 +3,15 @@ package lighthouse.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import lighthouse.model.GameBoard;
+import lighthouse.model.Grid;
 
 /**
- * Manages the GameBoard views and delegates actions.
+ * Manages the GridViews and delegates actions.
  */
-public class GameBoardViewController implements GridViewResponder {
+public class GridViewController implements GridViewResponder {
 	private final List<GridView> views = new ArrayList<>();
 	
-	public GameBoardViewController(GameBoard model) {
+	public GridViewController(Grid model) {
 		// TODO
 	}
 	

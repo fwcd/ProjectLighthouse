@@ -9,6 +9,8 @@ public class Grid {
 	/** The 4x6 game board. */
 	private final GameBoard board = new GameBoard(4, 6);
 	
+	// TODO: Listeners
+	
 	public Grid(int width, int height) {
 		this.width = width;
 		this.height = height;
