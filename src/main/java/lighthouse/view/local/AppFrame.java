@@ -1,21 +1,22 @@
-package lighthouse.view;
+package lighthouse.view.local;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+
+import lighthouse.model.AppModel;
 
 /**
  * The application window.
  */
 public class AppFrame {
 	private final JFrame frame;
-	private final AppController viewController = new AppController();
 	
-	public AppFrame() {
+	public AppFrame(AppModel model) {
 		frame = new JFrame("Lighthouse");
 		frame.setSize(640, 480);
 		frame.setLayout(new BorderLayout());
-		frame.add(viewController.getView().getComponent());
+		frame.add(new AppView(model).getComponent());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

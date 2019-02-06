@@ -1,22 +1,20 @@
-package lighthouse.view;
+package lighthouse.view.local;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/**
- * The application interface. Passively renders.
- */
+import lighthouse.model.AppModel;
+
 public class AppView {
 	private final JComponent component;
-	private final GameBoardView board;
 	
-	public AppView(GameBoardView board) {
-		this.board = board;
+	public AppView(AppModel model) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
-		component.add(board.getComponent(), BorderLayout.CENTER);
+		
+		component.add(new GameBoardView(model.getBoard()).getComponent(), BorderLayout.CENTER);
 	}
 	
 	public JComponent getComponent() {

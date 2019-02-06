@@ -1,13 +1,15 @@
 package lighthouse;
 
-import lighthouse.view.AppFrame;
+import lighthouse.model.AppModel;
+import lighthouse.view.local.AppFrame;
 
 /**
  * The application's entry point.
  */
 public class LighthouseMain {
 	public static void main(String[] args) {
-		AppFrame frame = new AppFrame();
+		AppModel model = new AppModel();
+		AppFrame frame = new AppFrame(model);
 		frame.show();
 	}
 }
