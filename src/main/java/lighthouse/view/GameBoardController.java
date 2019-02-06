@@ -2,11 +2,11 @@ package lighthouse.view;
 
 import lighthouse.model.GameBoard;
 
-public class GameBoardViewController {
+public class GameBoardController {
 	private final GameBoard model;
 	private final GameBoardView view;
 	
-	public GameBoardViewController(GameBoard model) {
+	public GameBoardController(GameBoard model) {
 		this.model = model;
 		view = new GameBoardView(model);
 	}

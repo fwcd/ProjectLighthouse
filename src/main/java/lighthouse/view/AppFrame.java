@@ -9,7 +9,7 @@ import javax.swing.JFrame;
  */
 public class AppFrame {
 	private final JFrame frame;
-	private final AppViewController viewController = new AppViewController();
+	private final AppController viewController = new AppController();
 	
 	public AppFrame() {
 		frame = new JFrame("Lighthouse");

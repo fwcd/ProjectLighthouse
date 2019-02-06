@@ -3,11 +3,11 @@ package lighthouse.view;
 import lighthouse.model.AppModel;
 
 /**
- * The application view logic.
+ * The application UI logic.
  */
-public class AppViewController {
+public class AppController {
 	private final AppModel model = new AppModel();
-	private final GameBoardViewController board = new GameBoardViewController(model.getBoard());
+	private final GameBoardController board = new GameBoardController(model.getBoard());
 	private final AppView view = new AppView(board.getView());
 	
 	public AppView getView() {
