@@ -6,9 +6,9 @@ public enum Direction {
 	DOWN(2, 0, 1),
 	LEFT(3, -1, 0);
 	
-	private int index;
-	private int dx;
-	private int dy;
+	private final int index;
+	private final int dx;
+	private final int dy;
 	
 	private Direction(int index, int dx, int dy) {
 		this.index = index;
@@ -20,18 +20,22 @@ public enum Direction {
 		return index;
 	}
 	
-	public int getDX() {
+	public int getDx() {
 		return dx;
 	}
-	public int getDY() {
+	public int getDy() {
 		return dy;
 	}
 	
-	public void rotateLeft(){
-		this.index = (this.index - 1) % 4; 
+	public Direction getOpposite() {
+		return rotateLeft().rotateLeft();
 	}
 	
-	public void rotateRight(){
-		this.index = (this.index + 1) % 4;
+	public Direction rotateLeft() {
+		return values()[Math.floorMod(index - 1, 4)];
+	}
+	
+	public Direction rotateRight() {
+		return values()[Math.floorMod(index + 1, 4)];
 	}
 }

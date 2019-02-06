@@ -26,16 +26,16 @@ public class Brick {
 		int xOff = 0;
 		int yOff = 0;
 		for (Direction dir : structList) {
-			xOff += dir.getDX();
-			yOff += dir.getDY();
+			xOff += dir.getDx();
+			yOff += dir.getDy();
 			int txOff = xOff;
 			int tyOff = yOff;
 			for (Direction inDir : Direction.values()) {
 				if (!this.edges.stream()
-						.anyMatch(edge -> edge.xOff == txOff && edge.yOff == tyOff && edge.dir == inDir)) {
-					this.edges.add(new Edge(xOff + dir.getDX(), yOff + dir.getDY(), inDir));
+						.anyMatch(edge -> edge.xOff == txOff - inDir.getDx() && edge.yOff == tyOff - inDir.getDy() && edge.dir == inDir)) {
+					this.edges.add(new Edge(xOff, yOff, inDir.getOpposite()));
 				} else {
-					this.edges.removeIf(edge -> edge.xOff == txOff && edge.yOff == tyOff && edge.dir == inDir);
+					this.edges.removeIf(edge -> edge.xOff == txOff - inDir.getDx() && edge.yOff == tyOff - inDir.getDy() && edge.dir == inDir);
 				}
 			}
 			
