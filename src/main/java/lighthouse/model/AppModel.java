@@ -4,9 +4,9 @@ package lighthouse.model;
  * The application's model.
  */
 public class AppModel {
-	private final Board board = new Board();
+	private final GameBoard board = new GameBoard(4, 6);
 	
-	public Board getBoard() {
+	public GameBoard getBoard() {
 		return board;
 	}
 }

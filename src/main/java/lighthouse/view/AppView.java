@@ -10,9 +10,9 @@ import javax.swing.JPanel;
  */
 public class AppView {
 	private final JComponent component;
-	private final BoardView board;
+	private final GameBoardView board;
 	
-	public AppView(BoardView board) {
+	public AppView(GameBoardView board) {
 		this.board = board;
 		component = new JPanel();
 		component.setLayout(new BorderLayout());

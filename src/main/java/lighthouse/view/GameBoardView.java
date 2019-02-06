@@ -7,16 +7,16 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import lighthouse.model.Board;
+import lighthouse.model.GameBoard;
 
 /**
  * Renders a board.
  */
-public class BoardView {
+public class GameBoardView {
 	private final JComponent component;
-	private final Board model;
+	private final GameBoard model;
 	
-	public BoardView(Board model) {
+	public GameBoardView(GameBoard model) {
 		this.model = model;
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
