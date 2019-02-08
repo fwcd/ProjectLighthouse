@@ -1,5 +1,7 @@
 package lighthouse.model;
 
+import java.awt.Color;
+
 /**
  * The (entire) abstract lighthouse grid in all its glory.
  */
@@ -22,5 +24,11 @@ public class Grid {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public Color getCell(int x, int y) {
+		// TODO: Check whether coordinate lies in the board's bounds
+		// and return the appropriate board cells if so
+		return Color.BLACK;
 	}
 }
