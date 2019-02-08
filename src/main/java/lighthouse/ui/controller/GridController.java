@@ -8,17 +8,17 @@ public class GridController implements GridResponder {
 	}
 	
 	@Override
-	public void mouseDown(int gridX, int gridY) {
+	public void press(int gridX, int gridY) {
 		// TODO
 	}
 	
 	@Override
-	public void mouseDrag(int gridX, int gridY) {
+	public void dragTo(int gridX, int gridY) {
 		// TODO
 	}
 	
 	@Override
-	public void mouseUp(int gridX, int gridY) {
+	public void release(int gridX, int gridY) {
 		// TODO
 	}
 }
