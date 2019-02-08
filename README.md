@@ -2,9 +2,9 @@
 A game running on the University of Kiel's highriser.
 
 ## Lighthouse API
-To use the Lighthouse API, create a new file inside `src/main/resources` with the following contents:
+To use the Lighthouse API, create a new file named `authentication.txt` inside `src/main/resources` with the following contents:
 
-```
+```properties
 username=YOUR_USERNAME
 token=YOUR_TOKEN
 ```
