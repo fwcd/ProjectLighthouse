@@ -19,7 +19,8 @@ import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
 /**
- * Manages the grid UI.
+ * Manages the grid UI both locally and on the Lighthouse.
+ * It assembles the necessary inputs and views.
  */
 public class GridViewController {
 	private final JComponent component;
