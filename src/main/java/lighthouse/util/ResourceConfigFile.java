@@ -3,10 +3,12 @@ package lighthouse.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A read-only configuration file located
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
  * are bundled directly into the JAR.
  */
 public class ResourceConfigFile implements ConfigFile {
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceConfigFile.class);
 	private final Map<String, String> dict;
 	
 	public ResourceConfigFile(String resourcePath) {
@@ -30,7 +33,7 @@ public class ResourceConfigFile implements ConfigFile {
 					splitted -> splitted[1]
 				));
 		} catch (IOException e) {
-			System.out.println("Warning: Did not find the config file " + resourcePath); // TODO: Find a better logging solution
+			LOG.warn("Warning: Did not find the config file {}", resourcePath);
 			return Collections.emptyMap();
 		}
 	}

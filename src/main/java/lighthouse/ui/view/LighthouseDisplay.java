@@ -20,6 +20,8 @@ import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.msgpack.core.MessageBufferPacker;
 import org.msgpack.core.MessagePack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class wraps the network communication with the lighthouse in a simple
@@ -27,6 +29,7 @@ import org.msgpack.core.MessagePack;
  * needs to manually connect. Afterwards data can be sent to the lighthouse.
  */
 public class LighthouseDisplay {
+	private static final Logger LOG = LoggerFactory.getLogger(LighthouseDisplay.class);
 	private String username;
 	private String token;
 	private LighthouseDisplayHandler handler;
@@ -116,7 +119,7 @@ public class LighthouseDisplay {
 		client.start();
 		client.connect(handler, targetUri, upgrade);
 		if (debugOutput > 0) {
-			System.out.printf("LighthouseDisplay, Connecting to: %s\n", targetUri);
+			LOG.info("LighthouseDisplay, Connecting to: {}", targetUri);
 		}
 	}
 
@@ -278,9 +281,7 @@ public class LighthouseDisplay {
 		@OnWebSocketClose
 		public void onClose(int statusCode, String reason) {
 			connected = false;
-			if (debug > 0) {
-				System.out.printf("LighthouseDisplay, Connection closed [%d]: %s%n", statusCode, reason);
-			}
+			LOG.info("LighthouseDisplay, Connection closed [{}]: {}", statusCode, reason);
 		}
 
 		/**
@@ -291,26 +292,22 @@ public class LighthouseDisplay {
 			// save session for usage in communication
 			this.session = session;
 			connected = true;
-			if (debug > 0) {
-				System.out.printf("LighthouseDisplay, Got connection: %s%n", session);
-			}
+			LOG.info("LighthouseDisplay, Got connection: {}", session);
 		}
 
 		@OnWebSocketMessage
 		public void onMessage(String msg) {
-			if (debug > 1) {
-				System.out.printf("LighthouseDisplay, got text Message: %s\n", msg);
-			}
+			LOG.debug("LighthouseDisplay, got text Message: {}", msg);
 		}
 
 		@OnWebSocketMessage
 		public void methodName(byte buf[], int offset, int length) {
-			if (debug > 1) {
-				System.out.printf("LighthouseDisplay, got binary Message: ");
+			if (LOG.isDebugEnabled()) {
+				StringBuilder str = new StringBuilder("LighthouseDisplay, got binary Message: ");
 				for (int i = 0; i < length; i++) {
-					System.out.printf("%02X", buf[offset + i] & 0xFF);
+					str.append(String.format("%02X", buf[offset + i] & 0xFF));
 				}
-				System.out.printf("%n");
+				LOG.debug(str.toString());
 			}
 		}
 
@@ -319,10 +316,8 @@ public class LighthouseDisplay {
 		 */
 		@OnWebSocketError
 		public void onError(Session session, Throwable error) {
-			System.err.println("Lighthouse web-socket error:");
-			System.err.println(error);
-			error.printStackTrace(System.err);
-			System.err.println(session);
+			LOG.error("Session: ", session);
+			LOG.error("Lighthouse web-socket error: ", error);
 		}
 	}
 }

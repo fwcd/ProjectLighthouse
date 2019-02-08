@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Grid;
 import lighthouse.ui.controller.GridController;
 import lighthouse.ui.controller.GridResponder;
@@ -23,6 +26,7 @@ import lighthouse.util.ResourceConfigFile;
  * It assembles the necessary inputs and views.
  */
 public class GridViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(GridViewController.class);
 	private final JComponent component;
 	private final List<GridView> views = new ArrayList<>();
 	private final GridResponder responder;
@@ -41,7 +45,7 @@ public class GridViewController {
 			LighthouseGridView remoteView = new LighthouseGridView(auth.get("username"), auth.get("token"));
 			views.add(remoteView);
 		} else {
-			System.out.println("Warning: Authentication did not contain 'username' and/or 'token'"); // TODO: Logging
+			LOG.warn("Warning: Authentication did not contain 'username' and/or 'token'");
 		}
 		
 		// Adds mouse input
