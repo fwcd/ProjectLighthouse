@@ -21,4 +21,6 @@ dependencies {
     implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121'
     implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121'
     implementation 'org.msgpack:msgpack-core:0.8.14'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
