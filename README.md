@@ -12,6 +12,9 @@ token=YOUR_TOKEN
 ## UI Architecture
 The application implements a variant of the well-known MVC pattern. The responsibilities are as follows:
 
+### Inputs
+* accepts raw input events and sends them to a responder
+
 ### Responders
 * handle user input
 
