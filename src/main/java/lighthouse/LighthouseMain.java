@@ -1,7 +1,7 @@
 package lighthouse;
 
 import lighthouse.model.AppModel;
-import lighthouse.view.AppFrame;
+import lighthouse.ui.AppFrame;
 
 /**
  * The application's entry point.
