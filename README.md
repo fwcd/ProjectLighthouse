@@ -10,17 +10,20 @@ The application implements a variant of the well-known MVC pattern. The responsi
 > Responders usually process a "higher-level" representation of user input (which is closer to the actual domain) rather than raw mouse events.
 
 ### View Controllers
-Loosely speaking, view controllers "manage" a single or multiple views. They...
+Loosely speaking, view controllers coordinate communication between UI components. They...
 
 * assemble the subview hierarchy (by adding childs etc.)
-* implement a responder for associated views
 * communicate with external views (such as the lighthouse)
+* mediate controller information
 
-> Note that views may be polymorphic (i.e. they implement an interface such as `GridView`).
+> Note that views and/or controllers may be polymorphic (i.e. they implement an interface such as `GridView`).
 
 ### Views
 * present the model
 * notify responders about events
+
+### Controllers
+* implement a responder for associated views (they accept user input)
 
 ### Models
 * contain data and domain logic
