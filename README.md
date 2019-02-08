@@ -1,6 +1,14 @@
 # ProjectLighthouse
 A game running on the University of Kiel's highriser.
 
+## Lighthouse API
+To use the Lighthouse API, create a new file inside `src/main/resources` with the following contents:
+
+```
+username=YOUR_USERNAME
+token=YOUR_TOKEN
+```
+
 ## UI Architecture
 The application implements a variant of the well-known MVC pattern. The responsibilities are as follows:
 
