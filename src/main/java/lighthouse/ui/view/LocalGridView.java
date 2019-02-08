@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
- * Provides a local (Swing-based) UI for the board.
+ * A local (Swing-based) UI for the board.
  */
 public class LocalGridView implements GridView {
 	private final JComponent component;

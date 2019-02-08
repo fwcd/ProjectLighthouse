@@ -2,6 +2,10 @@ package lighthouse.ui.controller;
 
 import lighthouse.model.Grid;
 
+/**
+ * The primary responder implementation that
+ * turns user inputs into changes to the model.
+ */
 public class GridController implements GridResponder {
 	public GridController(Grid model) {
 		// TODO

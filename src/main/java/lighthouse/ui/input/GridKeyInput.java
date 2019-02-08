@@ -7,6 +7,9 @@ import java.util.List;
 
 import lighthouse.ui.controller.GridResponder;
 
+/**
+ * A keyboard grid input implementation.
+ */
 public class GridKeyInput extends KeyAdapter implements GridInput {
 	private final List<GridResponder> responders = new ArrayList<>();
 	

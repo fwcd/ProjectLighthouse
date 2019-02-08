@@ -3,6 +3,7 @@ package lighthouse.model;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The game board model which usually represents
@@ -19,15 +20,23 @@ public class GameBoard {
 		this.height = height;
 	}
 	
+	/** Fetches the board's column count. */
 	public int getWidth() {
 		return width;
 	}
 	
+	/** Fetches the board's row count. */
 	public int getHeight() {
 		return height;
 	}
 	
+	/** Fetches all bricks on this board. */
 	public Collection<Brick> getBricks() {
 		return bricksById.values();
+	}
+	
+	/** Fetches the brick at a specified position. */
+	public Optional<Brick> getBrickAt(int x, int y) {
+		throw new RuntimeException("TODO"); // TODO: Implement this method
 	}
 }
