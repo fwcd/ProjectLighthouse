@@ -49,7 +49,7 @@ public class GridViewController {
 		}
 		
 		// Adds mouse input
-		GridMouseInput mouseInput = new GridMouseInput();
+		GridMouseInput mouseInput = new GridMouseInput(localView.getCellWidth(), localView.getCellHeight());
 		mouseInput.addResponder(responder);
 		localView.addMouseListener(mouseInput);
 		localView.addMouseMotionListener(mouseInput);
