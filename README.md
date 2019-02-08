@@ -24,14 +24,13 @@ The application implements a variant of the well-known MVC pattern. The responsi
 Loosely speaking, view controllers coordinate communication between UI components. They...
 
 * assemble the subview hierarchy (by adding childs etc.)
-* communicate with external views (such as the lighthouse)
-* mediate controller information
+* setup inputs, views and controllers
+* observe the model and invoke the view
 
 > Note that views and/or controllers may be polymorphic (i.e. they implement an interface such as `GridView`).
 
 ### Views
 * present the model
-* notify responders about events
 
 ### Controllers
 * implement a responder for associated views (they accept user input)
