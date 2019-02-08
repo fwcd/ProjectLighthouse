@@ -1,9 +1,9 @@
-package lighthouse.ui;
+package lighthouse.ui.controller;
 
 /**
  * An interface for responding to user events.
  */
-public interface GridViewResponder {
+public interface GridResponder {
 	void mouseDown(int gridX, int gridY);
 	
 	void mouseDrag(int gridX, int gridY);

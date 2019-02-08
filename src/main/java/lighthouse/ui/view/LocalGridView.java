@@ -1,10 +1,11 @@
-package lighthouse.ui;
+package lighthouse.ui.view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -45,36 +46,16 @@ public class LocalGridView implements GridView {
 		g2d.drawString("This is a board!", 30, 30);
 	}
 	
-	@Override
-	public void addResponder(GridViewResponder responder) {
-		MouseAdapter mouseAdapter = new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				responder.mouseDown(toGridX(e.getX()), toGridY(e.getY()));
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				responder.mouseDrag(toGridX(e.getX()), toGridY(e.getY()));
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				responder.mouseUp(toGridX(e.getX()), toGridY(e.getY()));
-			}
-		};
-		component.addMouseListener(mouseAdapter);
-		component.addMouseMotionListener(mouseAdapter);
+	public void addMouseListener(MouseListener listener) {
+		component.addMouseListener(listener);
 	}
 	
-	/** Converts a pixel x coordinate to a grid column. */
-	private int toGridX(int pixelX) {
-		return pixelX / cellWidth; // TODO: Deal with offsets
+	public void addMouseMotionListener(MouseMotionListener listener) {
+		component.addMouseMotionListener(listener);
 	}
 	
-	/** Converts a pixel y coordinate to a grid row. */
-	private int toGridY(int pixelY) {
-		return pixelY / cellWidth; // TODO: Deal with offsets
+	public void addKeyListener(KeyListener listener) {
+		component.addKeyListener(listener);
 	}
 	
 	public JComponent getComponent() {

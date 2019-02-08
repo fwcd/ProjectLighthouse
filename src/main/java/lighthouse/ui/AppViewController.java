@@ -6,30 +6,22 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.model.AppModel;
-import lighthouse.ui.remote.LighthouseGridView;
 
 /**
- * The application's base view.
+ * The application's base view controller.
  */
 public class AppViewController {
-	private final JComponent view;
+	private final JComponent component;
 	
 	public AppViewController(AppModel model) {
-		view = new JPanel();
-		view.setLayout(new BorderLayout());
+		component = new JPanel();
+		component.setLayout(new BorderLayout());
 		
 		GridViewController board = new GridViewController(model.getGrid());
-		
-		// Register local view (with doubles as a Swing component)
-		LocalGridView localView = new LocalGridView(model.getGrid());
-		board.addView(localView);
-		view.add(new LocalGridView(model.getGrid()).getComponent(), BorderLayout.CENTER);
-		
-		// Register remote Lighthouse view
-		board.addView(new LighthouseGridView(model.getGrid()));
+		component.add(board.getComponent(), BorderLayout.CENTER);
 	}
 	
 	public JComponent getComponent() {
-		return view;
+		return component;
 	}
 }
