@@ -30,7 +30,7 @@ public class GridViewController {
 		responder = new GridController(model);
 		
 		// Creates a local view and hooks up the Swing component
-		LocalGridView localView = new LocalGridView(model);
+		LocalGridView localView = new LocalGridView();
 		component = localView.getComponent();
 		views.add(localView);
 		

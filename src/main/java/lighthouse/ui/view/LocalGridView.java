@@ -1,5 +1,6 @@
 package lighthouse.ui.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,18 +11,14 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import lighthouse.model.Grid;
-
 /**
  * Provides a UI for the board.
  */
 public class LocalGridView implements GridView {
 	private final JComponent component;
-	private final Grid model;
 	private int cellWidth = 10;
 	
-	public LocalGridView(Grid model) {
-		this.model = model;
+	public LocalGridView() {
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			
@@ -39,6 +36,12 @@ public class LocalGridView implements GridView {
 	
 	public void setCellWidth(int cellWidth) {
 		this.cellWidth = cellWidth;
+	}
+	
+	@Override
+	public void draw(Color[][] grid) {
+		// TODO
+		component.repaint();
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
