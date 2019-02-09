@@ -28,30 +28,21 @@ import org.slf4j.LoggerFactory;
  * interface. The network connection is configured upon object creation but
  * needs to manually connect. Afterwards data can be sent to the lighthouse.
  */
-public class LighthouseDisplay {
+public class LighthouseDisplay implements AutoCloseable {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseDisplay.class);
 	private String username;
 	private String token;
 	private LighthouseDisplayHandler handler;
 	private WebSocketClient client;
-	private int debugOutput;
-
-	/**
-	 * Creates a new LighthouseDisplay with given user-name and access token
-	 */
-	public LighthouseDisplay(String username, String token) {
-		this(username, token, 0);
-	}
 
 	/**
 	 * Creates a new LighthouseDisplay with given user-name and access token and
 	 * sets weather connect and disconnect messages should be printed in stdOut
 	 */
-	public LighthouseDisplay(String username, String token, int debugOutput) {
-		handler = new LighthouseDisplayHandler(this, debugOutput);
+	public LighthouseDisplay(String username, String token) {
+		handler = new LighthouseDisplayHandler(this);
 		this.username = username;
 		this.token = token;
-		this.debugOutput = debugOutput;
 	}
 
 	/**
@@ -118,9 +109,7 @@ public class LighthouseDisplay {
 
 		client.start();
 		client.connect(handler, targetUri, upgrade);
-		if (debugOutput > 0) {
-			LOG.info("LighthouseDisplay, Connecting to: {}", targetUri);
-		}
+		LOG.info("Connecting to: {}", targetUri);
 	}
 
 	/**
@@ -167,7 +156,8 @@ public class LighthouseDisplay {
 	public boolean isConnected() {
 		return handler.isConnected();
 	}
-
+	
+	@Override
 	public void close() {
 		handler.close();
 		try {
@@ -182,15 +172,12 @@ public class LighthouseDisplay {
 	 */
 	@WebSocket(maxTextMessageSize = 64 * 1024, maxBinaryMessageSize = 64 * 1024)
 	public class LighthouseDisplayHandler {
-
 		private LighthouseDisplay parent;
 		private Session session;
 		private boolean connected = false;
-		private int debug;
 
-		private LighthouseDisplayHandler(LighthouseDisplay parent, int debug) {
+		private LighthouseDisplayHandler(LighthouseDisplay parent) {
 			this.parent = parent;
-			this.debug = debug;
 		}
 
 		/**
@@ -281,7 +268,7 @@ public class LighthouseDisplay {
 		@OnWebSocketClose
 		public void onClose(int statusCode, String reason) {
 			connected = false;
-			LOG.info("LighthouseDisplay, Connection closed [{}]: {}", statusCode, reason);
+			LOG.info("Connection closed [{}]: {}", statusCode, reason);
 		}
 
 		/**
@@ -292,18 +279,18 @@ public class LighthouseDisplay {
 			// save session for usage in communication
 			this.session = session;
 			connected = true;
-			LOG.info("LighthouseDisplay, Got connection: {}", session);
+			LOG.info("Got connection: {}", session);
 		}
 
 		@OnWebSocketMessage
 		public void onMessage(String msg) {
-			LOG.debug("LighthouseDisplay, got text Message: {}", msg);
+			LOG.debug("Got text Message: {}", msg);
 		}
 
 		@OnWebSocketMessage
 		public void methodName(byte buf[], int offset, int length) {
 			if (LOG.isDebugEnabled()) {
-				StringBuilder str = new StringBuilder("LighthouseDisplay, got binary Message: ");
+				StringBuilder str = new StringBuilder("Got binary Message: ");
 				for (int i = 0; i < length; i++) {
 					str.append(String.format("%02X", buf[offset + i] & 0xFF));
 				}
