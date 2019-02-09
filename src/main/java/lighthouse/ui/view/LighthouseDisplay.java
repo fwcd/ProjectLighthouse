@@ -161,9 +161,11 @@ public class LighthouseDisplay implements AutoCloseable {
 	public void close() {
 		handler.close();
 		try {
-			client.stop();
+			if (client != null) {
+				client.stop();
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("An exception occurred while closing the LighthouseDisplay: ", e);
 		}
 	}
 
