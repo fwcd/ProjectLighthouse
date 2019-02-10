@@ -19,8 +19,8 @@ import lighthouse.model.Grid;
 public class LocalGridView implements GridView {
 	private final JComponent component;
 	private Grid model = null;
-	private int cellWidth = 10;
-	private int cellHeight = 10;
+	private int cellWidth = 15;
+	private int cellHeight = 30;
 	
 	public LocalGridView() {
 		component = new JPanel() {
