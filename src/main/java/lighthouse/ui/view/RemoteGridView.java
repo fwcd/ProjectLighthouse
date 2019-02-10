@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.Grid;
 
 /**
- * The remote Lighthouse view that uses the API to draw a color grid on the
- * actual highriser.
+ * The remote Lighthouse view that uses the API to draw a
+ * color grid on the actual highriser.
  */
 public class RemoteGridView implements GridView {
 	private static final Logger LOG = LoggerFactory.getLogger(RemoteGridView.class);
