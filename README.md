@@ -6,8 +6,10 @@ To use the Lighthouse API, create a new file named `authentication.txt` inside `
 
 ```properties
 username=YOUR_USERNAME
-token=YOUR_TOKEN
+token=YOUR_API_TOKEN
 ```
+
+> Login at https://lighthouse.uni-kiel.de/login to generate a new API token and to see the transmitted Lighthouse grid.
 
 ## UI Architecture
 The application implements a variant of the well-known MVC pattern. The responsibilities are as follows:
