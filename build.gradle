@@ -1,8 +1,11 @@
+import org.gradle.plugins.ide.eclipse.model.AccessRule
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
     // Apply the application plugin to add support for building an application
     id 'application'
+    id 'eclipse'
 }
 
 // Define the main class for the application
@@ -23,4 +26,16 @@ dependencies {
     implementation 'org.msgpack:msgpack-core:0.8.14'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
+                jre.accessRules.add(new AccessRule('0', 'javafx/**'))
+                jre.accessRules.add(new AccessRule('0', 'com/sun/javafx/**'))
+            }
+        }
+    }
 }
