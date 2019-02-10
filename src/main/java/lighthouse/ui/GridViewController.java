@@ -30,9 +30,11 @@ public class GridViewController {
 	private final JComponent component;
 	private final List<GridView> views = new ArrayList<>();
 	private final GridResponder responder;
+	private final GameLoop loop;
 
 	public GridViewController(Grid model) {
 		responder = new GridController(model);
+		loop = new GameLoop(views, model);
 
 		// Creates a local view and hooks up the Swing component
 		LocalGridView localView = new LocalGridView();
@@ -43,6 +45,7 @@ public class GridViewController {
 		ConfigFile auth = new ResourceConfigFile("/authentication.txt");
 		if (auth.has("username") && auth.has("token")) {
 			RemoteGridView remoteView = new RemoteGridView(auth.get("username"), auth.get("token"));
+			remoteView.connect(); // TODO: Connect dynamically from the UI instead
 			views.add(remoteView);
 		} else {
 			LOG.warn("Warning: Authentication did not contain 'username' and/or 'token'");
@@ -62,6 +65,9 @@ public class GridViewController {
 		// Adds controller input
 		GridInput xboxInput = new GridXboxControllerInput();
 		xboxInput.addResponder(responder);
+		
+		// Start the game loop
+		loop.start();
 	}
 	
 	public void addView(GridView view) {

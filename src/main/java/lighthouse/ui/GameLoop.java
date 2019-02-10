@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Grid;
 import lighthouse.ui.view.GridView;
 
@@ -11,6 +14,7 @@ import lighthouse.ui.view.GridView;
  * The Game rendering loop.
  */
 public class GameLoop {
+	private static final Logger LOG = LoggerFactory.getLogger(GameLoop.class);
 	private final List<GridView> views;
 	private final Grid model;
 	
@@ -47,6 +51,7 @@ public class GameLoop {
 					fps = frames;
 					frames = 0;
 					lastSecond = now;
+					LOG.debug("{} fps", fps);
 				}
 			}
 		}, delayMs, delayMs);
