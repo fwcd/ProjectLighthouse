@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import lighthouse.model.Grid;
 
@@ -33,10 +34,12 @@ public class LocalGridView implements GridView {
 		};
 	}
 	
+	/** Fetches the pixel width of each individual cell. */
 	public int getCellWidth() {
 		return cellWidth;
 	}
 	
+	/** Fetches the pixel height of each individual cell. */
 	public int getCellHeight() {
 		return cellHeight;
 	}
@@ -44,9 +47,11 @@ public class LocalGridView implements GridView {
 	@Override
 	public void draw(Grid model) {
 		this.model = model;
-		component.repaint();
+		// Redraw the component
+		SwingUtilities.invokeLater(component::repaint);
 	}
 	
+	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
@@ -55,6 +60,7 @@ public class LocalGridView implements GridView {
 			int rows = model.getHeight();
 			int cols = model.getWidth();
 			
+			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
 					g2d.setColor(model.getCell(x, y));
