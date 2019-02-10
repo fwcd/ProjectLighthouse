@@ -22,23 +22,23 @@ import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
 /**
- * Manages the grid UI both locally and on the Lighthouse.
- * It assembles the necessary inputs and views.
+ * Manages the grid UI both locally and on the Lighthouse. It assembles the
+ * necessary inputs and views.
  */
 public class GridViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(GridViewController.class);
 	private final JComponent component;
 	private final List<GridView> views = new ArrayList<>();
 	private final GridResponder responder;
-	
+
 	public GridViewController(Grid model) {
 		responder = new GridController(model);
-		
+
 		// Creates a local view and hooks up the Swing component
 		LocalGridView localView = new LocalGridView();
 		component = localView.getComponent();
 		views.add(localView);
-		
+
 		// Creates a remote Lighthouse view if the required login information is present
 		ConfigFile auth = new ResourceConfigFile("/authentication.txt");
 		if (auth.has("username") && auth.has("token")) {

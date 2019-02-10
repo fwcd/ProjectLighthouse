@@ -242,6 +242,7 @@ public class LighthouseDisplay implements AutoCloseable {
 				RemoteEndpoint endpoint = session.getRemote();
 				endpoint.sendBytes(ByteBuffer.wrap(packer.toByteArray()));
 				endpoint.flush();
+				LOG.debug("Sent {} bytes", length);
 			}
 		}
 
@@ -281,7 +282,11 @@ public class LighthouseDisplay implements AutoCloseable {
 			// save session for usage in communication
 			this.session = session;
 			connected = true;
-			LOG.info("Got connection: {}", session);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Got connection: {}", session);
+			} else {
+				LOG.info("Connected");
+			}
 		}
 
 		@OnWebSocketMessage

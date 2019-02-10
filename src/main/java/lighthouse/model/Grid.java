@@ -1,6 +1,8 @@
 package lighthouse.model;
 
 import java.awt.Color;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The (entire) abstract lighthouse grid in all its glory.
@@ -29,6 +31,8 @@ public class Grid {
 	public Color getCell(int x, int y) {
 		// TODO: Check whether coordinate lies in the board's bounds
 		// and return the appropriate board cells if so
-		return Color.BLACK;
+		// return Color.BLACK;
+		Random r = ThreadLocalRandom.current();
+		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
 	}
 }

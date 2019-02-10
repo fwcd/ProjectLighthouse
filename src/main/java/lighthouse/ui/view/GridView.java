@@ -1,11 +1,11 @@
 package lighthouse.ui.view;
 
-import java.awt.Color;
+import lighthouse.model.Grid;
 
 /**
  * The presentation component of the user
  * interface. Responsible for drawing a colored grid.
  */
 public interface GridView {
-	void draw(Color[][] grid);
+	void draw(Grid model);
 }

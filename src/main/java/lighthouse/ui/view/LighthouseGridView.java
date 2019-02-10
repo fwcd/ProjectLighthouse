@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Grid;
+
 /**
  * The remote Lighthouse view that uses the API to draw a color grid on the
  * actual highriser.
@@ -31,29 +33,34 @@ public class LighthouseGridView implements GridView {
 			LOG.error("An exception occurred while connecting to the Lighthouse: ", e);
 		}
 	}
+	
+	public boolean isConnected() {
+		return api.isConnected();
+	}
 
 	@Override
-	public void draw(Color[][] grid) {
+	public void draw(Grid model) {
 		try {
-			api.send(encode(grid));
+			api.send(encode(model));
 		} catch (IOException e) {
 			LOG.error("An IOException occurred while sending the grid to the Lighthouse: ", e);
 		}
 	}
 	
 	/** Encodes the colored grid in a byte array. */
-	private byte[] encode(Color[][] grid) {
-		if (grid.length != LIGHTHOUSE_HEIGHT) {
-			throw new IllegalArgumentException("Colored grid has " + grid.length + " rows, but should have " + LIGHTHOUSE_HEIGHT);
-		} else if (grid[0].length != LIGHTHOUSE_WIDTH) {
-			throw new IllegalArgumentException("Colored grid has " + grid[0].length + " columns, but should have " + LIGHTHOUSE_WIDTH);
+	private byte[] encode(Grid grid) {
+		if (grid.getHeight() != LIGHTHOUSE_HEIGHT) {
+			throw new IllegalArgumentException("Colored grid has " + grid.getHeight() + " rows, but should have " + LIGHTHOUSE_HEIGHT);
+		} else if (grid.getWidth() != LIGHTHOUSE_WIDTH) {
+			throw new IllegalArgumentException("Colored grid has " + grid.getWidth() + " columns, but should have " + LIGHTHOUSE_WIDTH);
 		}
 		
 		byte[] data = new byte[LIGHTHOUSE_BYTES];
 		int i = 0;
 		
-		for (Color[] row : grid) {
-			for (Color cell : row) {
+		for (int y = 0; y < LIGHTHOUSE_HEIGHT; y++) {
+			for (int x = 0; x < LIGHTHOUSE_WIDTH; x++) {
+				Color cell = grid.getCell(x, y);
 				data[i] = (byte) cell.getRed();
 				data[i + 1] = (byte) cell.getGreen();
 				data[i + 2] = (byte) cell.getBlue();

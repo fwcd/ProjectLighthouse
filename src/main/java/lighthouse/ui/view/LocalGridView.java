@@ -1,6 +1,5 @@
 package lighthouse.ui.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,6 +9,8 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import lighthouse.model.Grid;
 
 /**
  * A local (Swing-based) UI for the board.
@@ -40,7 +41,7 @@ public class LocalGridView implements GridView {
 	}
 	
 	@Override
-	public void draw(Color[][] grid) {
+	public void draw(Grid model) {
 		// TODO
 		component.repaint();
 	}
