@@ -16,7 +16,7 @@ import lighthouse.ui.input.GridKeyInput;
 import lighthouse.ui.input.GridMouseInput;
 import lighthouse.ui.input.GridXboxControllerInput;
 import lighthouse.ui.view.GridView;
-import lighthouse.ui.view.LighthouseGridView;
+import lighthouse.ui.view.RemoteGridView;
 import lighthouse.ui.view.LocalGridView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
@@ -42,7 +42,7 @@ public class GridViewController {
 		// Creates a remote Lighthouse view if the required login information is present
 		ConfigFile auth = new ResourceConfigFile("/authentication.txt");
 		if (auth.has("username") && auth.has("token")) {
-			LighthouseGridView remoteView = new LighthouseGridView(auth.get("username"), auth.get("token"));
+			RemoteGridView remoteView = new RemoteGridView(auth.get("username"), auth.get("token"));
 			views.add(remoteView);
 		} else {
 			LOG.warn("Warning: Authentication did not contain 'username' and/or 'token'");
