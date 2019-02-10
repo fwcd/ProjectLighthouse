@@ -32,7 +32,6 @@ public class Grid {
 		// TODO: Check whether coordinate lies in the board's bounds
 		// and return the appropriate board cells if so
 		// return Color.BLACK;
-		Random r = ThreadLocalRandom.current();
-		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+		return new Color((x * 255) / width, (y * 255) / height, (x * y * 255) / (width * height));
 	}
 }
