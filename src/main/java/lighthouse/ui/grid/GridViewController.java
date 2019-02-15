@@ -1,4 +1,4 @@
-package lighthouse.ui;
+package lighthouse.ui.grid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Grid;
-import lighthouse.ui.controller.GridController;
-import lighthouse.ui.controller.GridResponder;
-import lighthouse.ui.input.GridInput;
-import lighthouse.ui.input.GridKeyInput;
-import lighthouse.ui.input.GridMouseInput;
-import lighthouse.ui.input.GridXboxControllerInput;
-import lighthouse.ui.view.GridView;
-import lighthouse.ui.view.RemoteGridView;
-import lighthouse.ui.view.LocalGridView;
+import lighthouse.ui.GameLoop;
+import lighthouse.ui.grid.controller.GridController;
+import lighthouse.ui.grid.controller.GridResponder;
+import lighthouse.ui.grid.input.GridInput;
+import lighthouse.ui.grid.input.GridKeyInput;
+import lighthouse.ui.grid.input.GridMouseInput;
+import lighthouse.ui.grid.input.GridXboxControllerInput;
+import lighthouse.ui.grid.view.GridView;
+import lighthouse.ui.grid.view.LocalGridView;
+import lighthouse.ui.grid.view.RemoteGridView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 

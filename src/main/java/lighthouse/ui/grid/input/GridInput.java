@@ -1,6 +1,6 @@
-package lighthouse.ui.input;
+package lighthouse.ui.grid.input;
 
-import lighthouse.ui.controller.GridResponder;
+import lighthouse.ui.grid.controller.GridResponder;
 
 /**
  * A general input-facility that can

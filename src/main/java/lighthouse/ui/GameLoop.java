@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Grid;
-import lighthouse.ui.view.GridView;
+import lighthouse.ui.grid.view.GridView;
 
 /**
  * The Game rendering loop.

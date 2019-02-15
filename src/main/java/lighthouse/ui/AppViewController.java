@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.model.AppModel;
+import lighthouse.ui.grid.GridViewController;
 
 /**
  * The application's base view controller.

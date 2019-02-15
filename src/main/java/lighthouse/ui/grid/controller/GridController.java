@@ -1,4 +1,4 @@
-package lighthouse.ui.controller;
+package lighthouse.ui.grid.controller;
 
 import lighthouse.model.Grid;
 

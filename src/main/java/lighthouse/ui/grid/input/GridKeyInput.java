@@ -1,11 +1,11 @@
-package lighthouse.ui.input;
+package lighthouse.ui.grid.input;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import lighthouse.ui.controller.GridResponder;
+import lighthouse.ui.grid.controller.GridResponder;
 
 /**
  * A keyboard grid input implementation.

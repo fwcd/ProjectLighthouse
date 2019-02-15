@@ -1,4 +1,4 @@
-package lighthouse.ui.view;
+package lighthouse.ui.grid.view;
 
 import java.awt.Color;
 import java.io.IOException;

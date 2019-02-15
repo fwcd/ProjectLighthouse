@@ -1,11 +1,11 @@
-package lighthouse.ui.input;
+package lighthouse.ui.grid.input;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import lighthouse.ui.controller.GridResponder;
+import lighthouse.ui.grid.controller.GridResponder;
 
 /**
  * A mouse-based grid input.
