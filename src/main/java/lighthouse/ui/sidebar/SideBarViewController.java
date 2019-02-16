@@ -1,9 +1,10 @@
 package lighthouse.ui.sidebar;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.JXTaskPaneContainer;
+import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.ui.grid.GridViewController;
 
@@ -11,16 +12,20 @@ import lighthouse.ui.grid.GridViewController;
  * Manages the sidebar view.
  */
 public class SideBarViewController {
-	private final JXTaskPaneContainer component;
+	private final JPanel component;
 	
 	public SideBarViewController(GridViewController grid) {
-		component = new JXTaskPaneContainer();
+		component = new JPanel();
+		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		JXTaskPane connectorPane = new JXTaskPane();
-		connectorPane.setTitle("Lighthouse Connector");
+		WebAccordion accordion = new WebAccordion();
+		accordion.setMultiplySelectionAllowed(true);
+		
 		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(grid);
-		connectorPane.add(connector.getComponent());
-		component.add(connectorPane);
+		accordion.addPane("Lighthouse Connector", connector.getComponent());
+		
+		accordion.setMaximumSize(accordion.getPreferredSize());
+		component.add(accordion);
 	}
 
 	public JComponent getComponent() {
