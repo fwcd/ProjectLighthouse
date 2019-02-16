@@ -23,4 +23,5 @@ dependencies {
     implementation 'org.msgpack:msgpack-core:0.8.14'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'org.swinglabs:swingx:1.6.1'
 }
