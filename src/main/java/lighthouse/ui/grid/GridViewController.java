@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lighthouse.model.Grid;
 import lighthouse.ui.GameLoop;
 import lighthouse.ui.grid.controller.GridController;
@@ -18,16 +15,12 @@ import lighthouse.ui.grid.input.GridMouseInput;
 import lighthouse.ui.grid.input.GridXboxControllerInput;
 import lighthouse.ui.grid.view.GridView;
 import lighthouse.ui.grid.view.LocalGridView;
-import lighthouse.ui.grid.view.RemoteGridView;
-import lighthouse.util.ConfigFile;
-import lighthouse.util.ResourceConfigFile;
 
 /**
  * Manages the grid UI both locally and on the Lighthouse. It assembles the
  * necessary inputs and views.
  */
 public class GridViewController {
-	private static final Logger LOG = LoggerFactory.getLogger(GridViewController.class);
 	private final JComponent component;
 	private final List<GridView> views = new ArrayList<>();
 	private final GridResponder responder;
@@ -40,17 +33,7 @@ public class GridViewController {
 		// Creates a local view and hooks up the Swing component
 		LocalGridView localView = new LocalGridView();
 		component = localView.getComponent();
-		views.add(localView);
-
-		// Creates a remote Lighthouse view if the required login information is present
-		ConfigFile auth = new ResourceConfigFile("/authentication.txt");
-		if (auth.has("username") && auth.has("token")) {
-			RemoteGridView remoteView = new RemoteGridView(auth.get("username"), auth.get("token"));
-			remoteView.connect(); // TODO: Connect dynamically from the UI instead
-			views.add(remoteView);
-		} else {
-			LOG.warn("Warning: Authentication did not contain 'username' and/or 'token'");
-		}
+		addView(localView);
 		
 		// Adds mouse input
 		GridMouseInput mouseInput = new GridMouseInput(localView.getCellWidth(), localView.getCellHeight());
