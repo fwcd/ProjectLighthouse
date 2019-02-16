@@ -23,5 +23,6 @@ dependencies {
     implementation 'org.msgpack:msgpack-core:0.8.14'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
     implementation 'de.sciss:weblaf:2.1.4'
 }

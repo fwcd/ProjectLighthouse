@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.ui.AppFrame;
+import uk.org.lidalia.sysoutslf4j.context.LogLevel;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 /**
  * The application's entry point. Instantiates
@@ -21,6 +23,9 @@ public class LighthouseMain {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseMain.class);
 	
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException {
+		// Redirect System.out and .err to the logging framework
+		SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.WARN);
+		
 		long startTime = System.currentTimeMillis();
 		AppModel model = new AppModel();
 		
