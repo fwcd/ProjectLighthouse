@@ -1,7 +1,11 @@
 package lighthouse.model;
 
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 
 /**
@@ -14,7 +18,7 @@ public class Brick {
 	private final List<Direction> structure;
 	private final List<Edge> edges = new ArrayList<>();
 	
-	private final Direction rotation;
+	private final Color color;
 	private IntVec pos;
 	
 	{
@@ -25,8 +29,12 @@ public class Brick {
 	}
 	
 	public Brick(IntVec pos, List<Direction> structure) {
+		this(pos, structure, ColorUtils.randomColor());
+	}
+	
+	public Brick(IntVec pos, List<Direction> structure, Color color) {
 		this.pos = pos;
-		this.rotation = Direction.UP;
+		this.color = color;
 		this.structure = structure;
 		IntVec off = IntVec.ZERO;
 		
@@ -59,7 +67,7 @@ public class Brick {
 	
 	@Override
 	public int hashCode() {
-		return structure.hashCode() * edges.hashCode() * rotation.hashCode() * pos.add(1, 1).hashCode() * 7;
+		return structure.hashCode() * edges.hashCode() * pos.add(1, 1).hashCode() * 7;
 	}
 
 	@Override
@@ -79,6 +87,8 @@ public class Brick {
 	public List<Edge> getEdges() { return Collections.unmodifiableList(edges); }
 	
 	public List<Direction> getStructure() { return Collections.unmodifiableList(structure); }
+	
+	public Color getColor() { return color; }
 	
 	/** Deeply copies this brick. */
 	public Brick copy() {
