@@ -26,7 +26,11 @@ public class BoardController implements BoardResponder {
 		dragEvent = true;
 		ArrayList<Edge> edgeList = brick.edges;
 		for (Direction dir : Direction.values()){
-			edgeList.stream().filter(edge -> edge.dir.getIndex() == dir.getIndex()).forEach(edge -> edge.xOff += 1);
+			edgeList.stream().filter(edge -> edge.dir.getIndex() == dir.getIndex()).forEach(edge -> {
+				int xFace = brick.xPos + edge.xOff + dir.getDx();
+				int yFace = brick.yPos + edge.yOff + dir.getDy();
+
+			});
 		}
 	}
 	

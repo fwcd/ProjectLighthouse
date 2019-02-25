@@ -13,12 +13,12 @@ import lighthouse.util.LhConstants;
  * The remote Lighthouse view that uses the API to draw a
  * color grid on the actual highriser.
  */
-public class RemoteBoardView implements BoardView {
-	private static final Logger LOG = LoggerFactory.getLogger(RemoteBoardView.class);
+public class RemoteLighthouseGridView implements BoardView {
+	private static final Logger LOG = LoggerFactory.getLogger(RemoteLighthouseGridView.class);
 	private static final int LIGHTHOUSE_BYTES = LhConstants.LIGHTHOUSE_ROWS * LhConstants.LIGHTHOUSE_COLS * 3; // RGB colors
 	private final LighthouseDisplay api;
 
-	public RemoteBoardView(String username, String token) {
+	public RemoteLighthouseGridView(String username, String token) {
 		api = new LighthouseDisplay(username, token);
 		// Close the API connection on shutdown
 		Runtime.getRuntime().addShutdownHook(new Thread(api::close));

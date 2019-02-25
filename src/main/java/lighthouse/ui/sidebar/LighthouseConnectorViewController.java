@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.view.RemoteBoardView;
+import lighthouse.ui.board.view.RemoteLighthouseGridView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
@@ -55,7 +55,7 @@ public class LighthouseConnectorViewController {
 		if (connected) {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
-			RemoteBoardView remoteView = new RemoteBoardView(username, token);
+			RemoteLighthouseGridView remoteView = new RemoteLighthouseGridView(username, token);
 			remoteView.connect();
 			grid.addView(remoteView);
 			connected = true;
