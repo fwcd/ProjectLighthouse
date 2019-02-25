@@ -47,13 +47,12 @@ public class BoardViewController {
 		// Adds mouse input
 		BoardMouseInput mouseInput = new BoardMouseInput(localView.getCellWidth(), localView.getCellHeight());
 		mouseInput.addResponder(responder);
-		localView.addMouseListener(mouseInput);
-		localView.addMouseMotionListener(mouseInput);
+		localView.addMouseInput(mouseInput);
 		
 		// Adds keyboard input
 		BoardKeyInput keyInput = new BoardKeyInput();
 		keyInput.addResponder(responder);
-		localView.addKeyListener(keyInput);
+		localView.addKeyInput(keyInput);
 		
 		// Adds controller input
 		BoardInput xboxInput = new BoardXboxControllerInput();

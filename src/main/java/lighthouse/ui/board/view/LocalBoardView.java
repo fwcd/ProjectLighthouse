@@ -3,15 +3,14 @@ package lighthouse.ui.board.view;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import lighthouse.model.Board;
+import lighthouse.ui.board.input.BoardKeyInput;
+import lighthouse.ui.board.input.BoardMouseInput;
 
 /**
  * A local high-resolution (Swing-based) view of the GameBoard.
@@ -73,15 +72,12 @@ public class LocalBoardView implements BoardView {
 		}
 	}
 	
-	public void addMouseListener(MouseListener listener) {
+	public void addMouseInput(BoardMouseInput listener) {
 		component.addMouseListener(listener);
-	}
-	
-	public void addMouseMotionListener(MouseMotionListener listener) {
 		component.addMouseMotionListener(listener);
 	}
 	
-	public void addKeyListener(KeyListener listener) {
+	public void addKeyInput(BoardKeyInput listener) {
 		component.addKeyListener(listener);
 	}
 	
