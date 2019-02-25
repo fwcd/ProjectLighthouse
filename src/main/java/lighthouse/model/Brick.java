@@ -6,7 +6,7 @@ public class Brick {
 
 	public ArrayList<Direction> structure;
 
-	ArrayList<Edge> edges = new ArrayList<Edge>();
+	public ArrayList<Edge> edges = new ArrayList<Edge>();
 	{
 		edges.add(new Edge(0, 0, Direction.UP));
 		edges.add(new Edge(0, 0, Direction.RIGHT));

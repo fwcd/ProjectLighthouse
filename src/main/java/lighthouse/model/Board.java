@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The game board model which usually represents
@@ -38,8 +40,10 @@ public class Board {
 	
 	/** Fetches the cell's color at the specified position. */
 	public Color getCell(int x, int y) {
-		// TODO: Implement this
-		return Color.BLACK;
+		// TODO: Implement this correctly,
+		// currently a random color is returned for debugging
+		Random r = ThreadLocalRandom.current();
+		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
 	}
 
 	public Brick locateBlock(int gridX, int gridY){
