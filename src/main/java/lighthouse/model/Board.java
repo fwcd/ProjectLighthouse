@@ -69,9 +69,9 @@ public class Board {
 		return board.bricks.equals(bricks);
 	}
 
-	public Board copy(){
+	public Board copy() {
 		Board copy = new Board(columns, rows);
-		for (Brick brick : bricks){
+		for (Brick brick : bricks) {
 			copy.bricks.add(new Brick(brick.getXPos(), brick.getYPos(), brick.getStructure()));
 		}
 		return copy;

@@ -9,7 +9,7 @@ public class Edge {
 	private final Direction dir;
 	private boolean highlighted = false;
 	
-	public Edge(int x, int y, Direction dir){
+	public Edge(int x, int y, Direction dir) {
 		this.xOff = x;
 		this.yOff = y;
 		this.dir = dir;
