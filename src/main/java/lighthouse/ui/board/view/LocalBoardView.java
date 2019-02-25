@@ -1,5 +1,6 @@
 package lighthouse.ui.board.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,9 +24,10 @@ import lighthouse.util.IntVec;
  * A local high-resolution (Swing-based) view of the GameBoard.
  */
 public class LocalBoardView implements BoardView {
+	private final Color background = Color.WHITE;
 	private final JComponent component;
-	private Board model = null;
 	private final CoordinateMapper coordinateMapper;
+	private Board model = null;
 	
 	public LocalBoardView(CoordinateMapper coordinateMapper) {
 		this.coordinateMapper = coordinateMapper;
@@ -56,6 +58,9 @@ public class LocalBoardView implements BoardView {
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		g2d.setColor(background);
+		g2d.fillRect(0, 0, (int) canvasSize.getWidth(), (int) canvasSize.getHeight());
+		
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
@@ -76,7 +81,7 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block) {
-		IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+		IntVec cellSize = getCellSize();
 		IntVec currentPos = block.getPos();
 		int cellWidth = cellSize.getX();
 		int cellHeight = cellSize.getY();
@@ -88,6 +93,10 @@ public class LocalBoardView implements BoardView {
 			currentPos = currentPos.add(dir);
 			g2d.fillRect(currentPos.getX() * cellWidth, currentPos.getY() * cellHeight, cellWidth, cellHeight);
 		}
+	}
+	
+	private IntVec getCellSize() {
+		return coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
 	}
 	
 	public void addMouseInput(BoardMouseInput listener) {
