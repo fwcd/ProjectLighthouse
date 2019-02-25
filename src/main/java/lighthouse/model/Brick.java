@@ -41,6 +41,19 @@ public class Brick {
 		}
 	}
 	
+	/** Traverses the brick to check for containment. */
+	public boolean contains(IntVec checkedPos) {
+		IntVec current = pos;
+		if (current.equals(checkedPos)) return true;
+		
+		for (Direction dir : structure) {
+			current = current.add(dir);
+			if (current.equals(checkedPos)) return true;
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public int hashCode() {
 		return structure.hashCode() * edges.hashCode() * rotation.hashCode() * pos.add(1, 1).hashCode() * 7;

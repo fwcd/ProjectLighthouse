@@ -56,14 +56,10 @@ public class Board {
 	}
 
 	public Brick locateBrick(IntVec gridPos) {
-		for (Brick brick: bricks) {
-			IntVec start = brick.getPos();
-			for (Direction dir : brick.getStructure()) {
-				start = start.add(dir);
-				if (start.equals(gridPos)) return brick;
-			}
-		}
-		return null;
+		return bricks.stream()
+			.filter(brick -> brick.contains(gridPos))
+			.findFirst()
+			.orElse(null);
 	}
 	
 	@Override
