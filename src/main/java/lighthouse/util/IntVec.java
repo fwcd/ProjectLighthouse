@@ -10,6 +10,7 @@ import lighthouse.model.Direction;
  */
 public class IntVec {
 	public static IntVec ZERO = new IntVec(0, 0);
+	public static IntVec ONE_ONE = new IntVec(1, 1);
 	
 	private final int x;
 	private final int y;

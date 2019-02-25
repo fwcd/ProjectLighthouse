@@ -6,15 +6,23 @@ import lighthouse.util.IntVec;
  * Represents a proportionally scaling transformation.
  */
 public class ScaleTransform implements CoordinateMapper {
-	private final double xFactor;
-	private final double yFactor;
-	private final double inverseXFactor;
-	private final double inverseYFactor;
+	private double xFactor;
+	private double yFactor;
+	private double inverseXFactor;
+	private double inverseYFactor;
 	
 	public ScaleTransform(double xFactor, double yFactor) {
+		setXFactor(xFactor);
+		setYFactor(yFactor);
+	}
+	
+	public void setXFactor(double xFactor) {
 		this.xFactor = xFactor;
-		this.yFactor = yFactor;
 		inverseXFactor = 1.0 / xFactor;
+	}
+	
+	public void setYFactor(double yFactor) {
+		this.yFactor = yFactor;
 		inverseYFactor = 1.0 / yFactor;
 	}
 	

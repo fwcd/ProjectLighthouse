@@ -40,12 +40,13 @@ public class BoardViewController {
 		loop = new GameLoop(lhGridViews, boardViews, model);
 
 		// Creates a local view and hooks up the Swing component
-		LocalBoardView localView = new LocalBoardView();
+		CoordinateMapper coordinateMapper = new ScaleTransform(75, 75);
+		LocalBoardView localView = new LocalBoardView(coordinateMapper);
 		component = localView.getComponent();
 		addBoardView(localView);
 		
 		// Adds mouse input
-		BoardMouseInput mouseInput = new BoardMouseInput(localView.getCellWidth(), localView.getCellHeight());
+		BoardMouseInput mouseInput = new BoardMouseInput(coordinateMapper);
 		mouseInput.addResponder(responder);
 		localView.addMouseInput(mouseInput);
 		

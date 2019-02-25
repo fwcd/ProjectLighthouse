@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
 
@@ -13,12 +14,10 @@ import lighthouse.util.IntVec;
  */
 public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	private final List<BoardResponder> responders = new ArrayList<>();
-	private final int cellWidth;
-	private final int cellHeight;
+	private final CoordinateMapper mapper;
 	
-	public BoardMouseInput(int cellWidth, int cellHeight) {
-		this.cellWidth = cellWidth;
-		this.cellHeight = cellHeight;
+	public BoardMouseInput(CoordinateMapper mapper) {
+		this.mapper = mapper;
 	}
 	
 	@Override
@@ -28,32 +27,23 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int gridX = toBoardX(e.getX());
-		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.press(new IntVec(gridX, gridY)));
+		IntVec pos = gridPosOf(e);
+		responders.forEach(r -> r.press(pos));
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		int gridX = toBoardX(e.getX());
-		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.dragTo(new IntVec(gridX, gridY)));
+		IntVec pos = gridPosOf(e);
+		responders.forEach(r -> r.dragTo(pos));
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int gridX = toBoardX(e.getX());
-		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.release(new IntVec(gridX, gridY)));
+		IntVec pos = gridPosOf(e);
+		responders.forEach(r -> r.release(pos));
 	}
 	
-	/** Converts a pixel x-coordinate to a grid coordinate. */
-	private int toBoardX(int pixelX) {
-		return pixelX / cellWidth;
-	}
-	
-	/** Converts a pixel y-coordinate to a grid coordinate. */
-	private int toBoardY(int pixelY) {
-		return pixelY / cellHeight;
+	private IntVec gridPosOf(MouseEvent e) {
+		return mapper.toGridPos(new IntVec(e.getX(), e.getY()));
 	}
 }

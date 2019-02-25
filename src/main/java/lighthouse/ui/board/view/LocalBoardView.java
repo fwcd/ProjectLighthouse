@@ -9,8 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import lighthouse.model.Board;
+import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
+import lighthouse.util.IntVec;
 
 /**
  * A local high-resolution (Swing-based) view of the GameBoard.
@@ -18,10 +20,10 @@ import lighthouse.ui.board.input.BoardMouseInput;
 public class LocalBoardView implements BoardView {
 	private final JComponent component;
 	private Board model = null;
-	private int cellWidth = 80;
-	private int cellHeight = 80;
+	private final CoordinateMapper coordinateMapper;
 	
-	public LocalBoardView() {
+	public LocalBoardView(CoordinateMapper coordinateMapper) {
+		this.coordinateMapper = coordinateMapper;
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			
@@ -31,16 +33,6 @@ public class LocalBoardView implements BoardView {
 				render((Graphics2D) g, getSize());
 			}
 		};
-	}
-	
-	/** Fetches the pixel width of each individual cell. */
-	public int getCellWidth() {
-		return cellWidth;
-	}
-	
-	/** Fetches the pixel height of each individual cell. */
-	public int getCellHeight() {
-		return cellHeight;
 	}
 	
 	@Override
@@ -56,17 +48,15 @@ public class LocalBoardView implements BoardView {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
+			IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
 			int cols = model.getColumns();
 			int rows = model.getRows();
-			
-			cellWidth = Math.min(cellWidth, canvasSize.width / cols);
-			cellHeight = Math.min(cellHeight, canvasSize.height / rows);
 			
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
 					g2d.setColor(model.colorAt(x, y));
-					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+					g2d.fillRect(x * cellSize.getX(), y * cellSize.getY(), cellSize.getX(), cellSize.getY());
 				}
 			}
 		}
