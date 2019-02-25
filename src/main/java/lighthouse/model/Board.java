@@ -1,11 +1,9 @@
 package lighthouse.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.List;
 
 /**
  * The game board model representing
@@ -14,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Board {
 	private final int columns;
 	private final int rows;
-	private final Set<Brick> bricks = new HashSet<>();
+	private final List<Brick> bricks = new ArrayList<>();
 	
 	public Board(int columns, int rows) {
 		this.columns = columns;
@@ -46,7 +44,7 @@ public class Board {
 		if (brick == null) {
 			return Color.BLACK;
 		} else {
-			int hash = brick.hashCode();
+			int hash = Math.abs(brick.hashCode());
 			return new Color(hash % 256, (hash % 120) * 2, (hash % 50) * 5);
 		}
 	}
