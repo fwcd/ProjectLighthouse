@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
@@ -13,10 +15,8 @@ import lighthouse.util.IntVec;
  * A mouse-based grid input.
  */
 public class BoardMouseInput extends MouseAdapter implements BoardInput {
-	private static final int RIGHT_BUTTON = MouseEvent.BUTTON3;
 	private final List<BoardResponder> responders = new ArrayList<>();
 	private final CoordinateMapper mapper;
-	private int activeButton = -1;
 	
 	public BoardMouseInput(CoordinateMapper mapper) {
 		this.mapper = mapper;
@@ -30,8 +30,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		IntVec pos = gridPosOf(e);
-		activeButton = e.getButton();
-		if (activeButton == RIGHT_BUTTON) {
+		if (SwingUtilities.isRightMouseButton(e)) {
 			responders.forEach(r -> r.rightPress(pos));
 		} else {
 			responders.forEach(r -> r.press(pos));
@@ -40,7 +39,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (activeButton != RIGHT_BUTTON) {
+		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pos = gridPosOf(e);
 			responders.forEach(r -> r.dragTo(pos));
 		}
@@ -48,11 +47,10 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (activeButton != RIGHT_BUTTON) {
+		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pos = gridPosOf(e);
 			responders.forEach(r -> r.release(pos));
 		}
-		activeButton = -1;
 	}
 	
 	private IntVec gridPosOf(MouseEvent e) {

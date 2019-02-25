@@ -26,6 +26,11 @@ public class BoardEditController implements BoardResponder {
 	}
 	
 	@Override
+	public void rightPress(IntVec gridPos) {
+		board.removeBrickAt(gridPos);
+	}
+	
+	@Override
 	public void dragTo(IntVec gridPos) {
 		IntVec delta = gridPos.sub(last);
 		

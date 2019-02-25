@@ -21,17 +21,14 @@ public class DelegateResponder implements BoardResponder {
 	}
 	
 	@Override
-	public void press(IntVec gridPos) {
-		delegate.press(gridPos);
-	}
+	public void press(IntVec gridPos) { delegate.press(gridPos); }
 	
 	@Override
-	public void dragTo(IntVec gridPos) {
-		delegate.dragTo(gridPos);
-	}
+	public void rightPress(IntVec gridPos) { delegate.rightPress(gridPos); }
 	
 	@Override
-	public void release(IntVec gridPos) {
-		delegate.release(gridPos);
-	}
+	public void dragTo(IntVec gridPos) { delegate.dragTo(gridPos); }
+	
+	@Override
+	public void release(IntVec gridPos) { delegate.release(gridPos); }
 }

@@ -34,6 +34,9 @@ public class Board {
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) { bricks.add(brick); }
 	
+	/** Removes a brick at a certain position. */
+	public void removeBrickAt(IntVec gridPos) { bricks.removeIf(brick -> brick.contains(gridPos)); }
+	
 	/** Fetches the cell's color at the specified position. */
 	public Color colorAt(IntVec gridPos) {
 		Brick brick = locateBrick(gridPos);
