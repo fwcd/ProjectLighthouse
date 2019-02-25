@@ -14,7 +14,7 @@ import lighthouse.util.IntVec;
  * "arrow-based" representation ensures that
  * all brick fragments are connected.
  */
-public class Brick {
+public class Brick implements GameBlock {
 	private final List<Direction> structure;
 	private final List<Edge> edges = new ArrayList<>();
 	
@@ -82,10 +82,12 @@ public class Brick {
 	
 	public void moveInto(Direction dir) { pos = pos.add(dir); }
 	
+	@Override
 	public IntVec getPos() { return pos; }
 	
 	public List<Edge> getEdges() { return Collections.unmodifiableList(edges); }
 	
+	@Override
 	public List<Direction> getStructure() { return Collections.unmodifiableList(structure); }
 	
 	public Color getColor() { return color; }
