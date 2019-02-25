@@ -7,9 +7,9 @@ import lighthouse.util.LhConstants;
  */
 public class AppModel {
 	/** Use the lighthouse's grid dimensions. */
-	private final Grid grid = new Grid(LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
+	private final Board grid = new Board(LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
 	
-	public Grid getGrid() {
+	public Board getBoard() {
 		return grid;
 	}
 }

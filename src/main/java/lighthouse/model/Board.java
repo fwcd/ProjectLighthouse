@@ -1,5 +1,6 @@
 package lighthouse.model;
 
+import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,13 +10,13 @@ import java.util.Optional;
  * The game board model which usually represents
  * a subsection of the entire grid.
  */
-public class GameBoard {
+public class Board {
 	private final int columns;
 	private final int rows;
 	/** Associates ids with bricks. */
 	private final Map<Integer, Brick> bricksById = new HashMap<>();
 	
-	public GameBoard(int columns, int rows) {
+	public Board(int columns, int rows) {
 		this.columns = columns;
 		this.rows = rows;
 	}
@@ -35,8 +36,9 @@ public class GameBoard {
 		return bricksById.values();
 	}
 	
-	/** Fetches the brick at a specified position. */
-	public Optional<Brick> getBrickAt(int x, int y) {
-		throw new RuntimeException("TODO"); // TODO: Implement this method
+	/** Fetches the cell's color at the specified position. */
+	public Color getCell(int x, int y) {
+		// TODO: Implement this
+		return Color.BLACK;
 	}
 }

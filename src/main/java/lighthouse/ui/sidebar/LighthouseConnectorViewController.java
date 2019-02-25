@@ -11,8 +11,8 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.ui.grid.GridViewController;
-import lighthouse.ui.grid.view.RemoteGridView;
+import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.view.RemoteBoardView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
@@ -23,10 +23,10 @@ import lighthouse.util.ResourceConfigFile;
 public class LighthouseConnectorViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
-	private final GridViewController grid; // The aliased grid
+	private final BoardViewController grid; // The aliased grid
 	private boolean connected = false;
 	
-	public LighthouseConnectorViewController(GridViewController grid) {
+	public LighthouseConnectorViewController(BoardViewController grid) {
 		this.grid = grid;
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
@@ -55,7 +55,7 @@ public class LighthouseConnectorViewController {
 		if (connected) {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
-			RemoteGridView remoteView = new RemoteGridView(username, token);
+			RemoteBoardView remoteView = new RemoteBoardView(username, token);
 			remoteView.connect();
 			grid.addView(remoteView);
 			connected = true;

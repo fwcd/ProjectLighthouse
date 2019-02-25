@@ -1,13 +1,13 @@
-package lighthouse.ui.grid.controller;
+package lighthouse.ui.board.controller;
 
-import lighthouse.model.Grid;
+import lighthouse.model.Board;
 
 /**
  * The primary responder implementation that
  * turns user inputs into changes to the model.
  */
-public class GridController implements GridResponder {
-	public GridController(Grid model) {
+public class BoardController implements BoardResponder {
+	public BoardController(Board model) {
 		// TODO
 	}
 	

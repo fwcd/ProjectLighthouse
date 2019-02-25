@@ -32,7 +32,7 @@ public class ResourceConfigFile implements ConfigFile {
 					splitted -> splitted[0],
 					splitted -> splitted[1]
 				));
-		} catch (IOException e) {
+		} catch (IOException | NullPointerException e) {
 			LOG.warn("Warning: Did not find the config file {}", resourcePath);
 			return Collections.emptyMap();
 		}

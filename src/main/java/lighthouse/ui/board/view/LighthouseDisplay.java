@@ -1,4 +1,4 @@
-package lighthouse.ui.grid.view;
+package lighthouse.ui.board.view;
 
 import java.io.IOException;
 import java.net.URI;

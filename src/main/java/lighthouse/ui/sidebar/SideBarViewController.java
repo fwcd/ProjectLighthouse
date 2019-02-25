@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.model.AppModel;
-import lighthouse.ui.grid.GridViewController;
+import lighthouse.ui.board.BoardViewController;
 
 /**
  * Manages the sidebar view which in turn deals
@@ -24,7 +24,7 @@ public class SideBarViewController {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		GridViewController grid = new GridViewController(model.getGrid());
+		BoardViewController grid = new BoardViewController(model.getBoard());
 		
 		WebAccordion accordion = new WebAccordion();
 		accordion.setMultiplySelectionAllowed(true);

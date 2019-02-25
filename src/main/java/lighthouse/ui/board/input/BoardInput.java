@@ -1,6 +1,6 @@
-package lighthouse.ui.grid.input;
+package lighthouse.ui.board.input;
 
-import lighthouse.ui.grid.controller.GridResponder;
+import lighthouse.ui.board.controller.BoardResponder;
 
 /**
  * A general input-facility that can
@@ -11,6 +11,6 @@ import lighthouse.ui.grid.controller.GridResponder;
  * events into the higher-level representation
  * that is required by a responder.</p>
  */
-public interface GridInput {
-	void addResponder(GridResponder responder);
+public interface BoardInput {
+	void addResponder(BoardResponder responder);
 }

@@ -7,16 +7,16 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Grid;
-import lighthouse.ui.grid.view.GridView;
+import lighthouse.model.Board;
+import lighthouse.ui.board.view.BoardView;
 
 /**
  * The Game rendering loop.
  */
 public class GameLoop {
 	private static final Logger LOG = LoggerFactory.getLogger(GameLoop.class);
-	private final List<GridView> views;
-	private final Grid model;
+	private final List<BoardView> views;
+	private final Board model;
 	
 	private int maxFPS = 60; // The upper fps limit
 	private int fps = 0; // The actual fps
@@ -24,7 +24,7 @@ public class GameLoop {
 	private boolean running = false;
 	
 	/** Creates a new game loop which renders to the given views. */
-	public GameLoop(List<GridView> views, Grid model) {
+	public GameLoop(List<BoardView> views, Board model) {
 		this.views = views;
 		this.model = model;
 	}
@@ -60,7 +60,7 @@ public class GameLoop {
 	
 	/** Draws a single frame. */
 	private void gameFrame() {
-		for (GridView view : views) {
+		for (BoardView view : views) {
 			view.draw(model);
 		}
 	}

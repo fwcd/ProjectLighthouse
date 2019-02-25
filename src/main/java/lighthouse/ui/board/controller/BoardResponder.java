@@ -1,4 +1,4 @@
-package lighthouse.ui.grid.controller;
+package lighthouse.ui.board.controller;
 
 /**
  * An interface for responding to user events.
@@ -9,7 +9,7 @@ package lighthouse.ui.grid.controller;
  * exact mouse coordinates while an Xbox controller
  * would only receive offsets).</p>
  */
-public interface GridResponder {
+public interface BoardResponder {
 	void press(int gridX, int gridY);
 	
 	void dragTo(int gridX, int gridY);

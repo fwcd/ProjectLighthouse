@@ -1,4 +1,4 @@
-package lighthouse.ui.grid.view;
+package lighthouse.ui.board.view;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -6,19 +6,19 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Grid;
+import lighthouse.model.Board;
 import lighthouse.util.LhConstants;
 
 /**
  * The remote Lighthouse view that uses the API to draw a
  * color grid on the actual highriser.
  */
-public class RemoteGridView implements GridView {
-	private static final Logger LOG = LoggerFactory.getLogger(RemoteGridView.class);
+public class RemoteBoardView implements BoardView {
+	private static final Logger LOG = LoggerFactory.getLogger(RemoteBoardView.class);
 	private static final int LIGHTHOUSE_BYTES = LhConstants.LIGHTHOUSE_ROWS * LhConstants.LIGHTHOUSE_COLS * 3; // RGB colors
 	private final LighthouseDisplay api;
 
-	public RemoteGridView(String username, String token) {
+	public RemoteBoardView(String username, String token) {
 		api = new LighthouseDisplay(username, token);
 		// Close the API connection on shutdown
 		Runtime.getRuntime().addShutdownHook(new Thread(api::close));
@@ -38,7 +38,7 @@ public class RemoteGridView implements GridView {
 	}
 
 	@Override
-	public void draw(Grid model) {
+	public void draw(Board model) {
 		try {
 			api.send(encode(model));
 		} catch (IOException e) {
@@ -47,7 +47,7 @@ public class RemoteGridView implements GridView {
 	}
 	
 	/** Encodes the colored grid in a byte array. */
-	private byte[] encode(Grid grid) {
+	private byte[] encode(Board grid) {
 		if (grid.getRows() != LhConstants.LIGHTHOUSE_ROWS) {
 			throw new IllegalArgumentException("Colored grid has " + grid.getRows() + " rows, but should have " + LhConstants.LIGHTHOUSE_ROWS);
 		} else if (grid.getColumns() != LhConstants.LIGHTHOUSE_COLS) {

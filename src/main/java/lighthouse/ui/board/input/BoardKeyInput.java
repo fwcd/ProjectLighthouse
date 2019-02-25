@@ -1,20 +1,20 @@
-package lighthouse.ui.grid.input;
+package lighthouse.ui.board.input;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import lighthouse.ui.grid.controller.GridResponder;
+import lighthouse.ui.board.controller.BoardResponder;
 
 /**
  * A keyboard grid input implementation.
  */
-public class GridKeyInput extends KeyAdapter implements GridInput {
-	private final List<GridResponder> responders = new ArrayList<>();
+public class BoardKeyInput extends KeyAdapter implements BoardInput {
+	private final List<BoardResponder> responders = new ArrayList<>();
 	
 	@Override
-	public void addResponder(GridResponder responder) {
+	public void addResponder(BoardResponder responder) {
 		responders.add(responder);
 	}
 	
