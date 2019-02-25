@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.ui.AppFrame;
+import lighthouse.util.SLF4JExceptionHandler;
 import uk.org.lidalia.sysoutslf4j.context.LogLevel;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
@@ -23,15 +24,18 @@ public class LighthouseMain {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseMain.class);
 	
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException {
+		long startTime = System.currentTimeMillis();
+		
 		// Redirect System.out and .err to the logging framework
 		SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.WARN);
+		// Register handler for uncaught exceptions on the AWT event thread
+		SwingUtilities.invokeLater(() -> {
+			Thread.currentThread().setUncaughtExceptionHandler(new SLF4JExceptionHandler());
+		});
 		
-		long startTime = System.currentTimeMillis();
 		AppModel model = new AppModel();
-		
 		SwingUtilities.invokeAndWait(() -> {
 			WebLookAndFeel.install();
-			
 			AppFrame frame = new AppFrame(model);
 			frame.show();
 		});
