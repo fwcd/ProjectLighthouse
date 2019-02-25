@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Grid;
+import lighthouse.util.LhConstants;
 
 /**
  * The remote Lighthouse view that uses the API to draw a
@@ -14,9 +15,7 @@ import lighthouse.model.Grid;
  */
 public class RemoteGridView implements GridView {
 	private static final Logger LOG = LoggerFactory.getLogger(RemoteGridView.class);
-	private static final int LIGHTHOUSE_WIDTH = 28;
-	private static final int LIGHTHOUSE_HEIGHT = 14;
-	private static final int LIGHTHOUSE_BYTES = LIGHTHOUSE_WIDTH *LIGHTHOUSE_HEIGHT * 3; // RGB colors
+	private static final int LIGHTHOUSE_BYTES = LhConstants.LIGHTHOUSE_ROWS * LhConstants.LIGHTHOUSE_COLS * 3; // RGB colors
 	private final LighthouseDisplay api;
 
 	public RemoteGridView(String username, String token) {
@@ -49,17 +48,17 @@ public class RemoteGridView implements GridView {
 	
 	/** Encodes the colored grid in a byte array. */
 	private byte[] encode(Grid grid) {
-		if (grid.getHeight() != LIGHTHOUSE_HEIGHT) {
-			throw new IllegalArgumentException("Colored grid has " + grid.getHeight() + " rows, but should have " + LIGHTHOUSE_HEIGHT);
-		} else if (grid.getWidth() != LIGHTHOUSE_WIDTH) {
-			throw new IllegalArgumentException("Colored grid has " + grid.getWidth() + " columns, but should have " + LIGHTHOUSE_WIDTH);
+		if (grid.getRows() != LhConstants.LIGHTHOUSE_ROWS) {
+			throw new IllegalArgumentException("Colored grid has " + grid.getRows() + " rows, but should have " + LhConstants.LIGHTHOUSE_ROWS);
+		} else if (grid.getColumns() != LhConstants.LIGHTHOUSE_COLS) {
+			throw new IllegalArgumentException("Colored grid has " + grid.getColumns() + " columns, but should have " + LhConstants.LIGHTHOUSE_COLS);
 		}
 		
 		byte[] data = new byte[LIGHTHOUSE_BYTES];
 		int i = 0;
 		
-		for (int y = 0; y < LIGHTHOUSE_HEIGHT; y++) {
-			for (int x = 0; x < LIGHTHOUSE_WIDTH; x++) {
+		for (int y = 0; y < LhConstants.LIGHTHOUSE_ROWS; y++) {
+			for (int x = 0; x < LhConstants.LIGHTHOUSE_COLS; x++) {
 				Color cell = grid.getCell(x, y);
 				data[i] = (byte) cell.getRed();
 				data[i + 1] = (byte) cell.getGreen();

@@ -53,13 +53,16 @@ public class LocalGridView implements GridView {
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		int cols = model.getColumns();
+		int rows = model.getRows();
+		
+		cellWidth = Math.min(cellWidth, canvasSize.width / cols);
+		cellHeight = Math.min(cellHeight, canvasSize.height / rows);
+		
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Grid model drawn", 30, 30);
 		} else {
-			int rows = model.getHeight();
-			int cols = model.getWidth();
-			
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {

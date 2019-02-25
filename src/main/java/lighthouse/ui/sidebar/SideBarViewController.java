@@ -1,6 +1,7 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -32,7 +33,9 @@ public class SideBarViewController {
 		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(grid);
 		accordion.addPane("Lighthouse Connector", connector.getComponent());
 		
-		accordion.addPane("Lighthouse Preview", grid.getLocalComponent());
+		JComponent previewComponent = grid.getLocalComponent();
+		previewComponent.setPreferredSize(new Dimension(120, 240));
+		accordion.addPane("Lighthouse Preview", previewComponent);
 		
 		// accordion.setMaximumSize(accordion.getPreferredSize());
 		component.add(accordion);

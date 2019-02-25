@@ -10,24 +10,24 @@ import java.util.Optional;
  * a subsection of the entire grid.
  */
 public class GameBoard {
-	private final int width;
-	private final int height;
+	private final int columns;
+	private final int rows;
 	/** Associates ids with bricks. */
 	private final Map<Integer, Brick> bricksById = new HashMap<>();
 	
-	public GameBoard(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public GameBoard(int columns, int rows) {
+		this.columns = columns;
+		this.rows = rows;
 	}
 	
 	/** Fetches the board's column count. */
-	public int getWidth() {
-		return width;
+	public int getColumns() {
+		return columns;
 	}
 	
 	/** Fetches the board's row count. */
-	public int getHeight() {
-		return height;
+	public int getRows() {
+		return rows;
 	}
 	
 	/** Fetches all bricks on this board. */
