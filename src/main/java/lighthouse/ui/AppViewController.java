@@ -1,6 +1,7 @@
 package lighthouse.ui;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -19,8 +20,11 @@ public class AppViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
+		JPanel boardWrapper = new JPanel();
+		boardWrapper.setLayout(new GridBagLayout());
 		BoardViewController board = new BoardViewController(model.getBoard());
-		component.add(board.getLocalComponent());
+		boardWrapper.add(board.getLocalComponent());
+		component.add(boardWrapper, BorderLayout.CENTER);
 		
 		SideBarViewController sideBar = new SideBarViewController(model, board);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);

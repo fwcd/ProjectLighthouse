@@ -42,6 +42,13 @@ public class LocalBoardView implements BoardView {
 		SwingUtilities.invokeLater(component::repaint);
 	}
 	
+	public void relayout(int columns, int rows) {
+		IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+		int width = cellSize.getX() * columns;
+		int height = cellSize.getY() * rows;
+		component.setPreferredSize(new Dimension(width, height));
+	}
+	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (model == null) {
