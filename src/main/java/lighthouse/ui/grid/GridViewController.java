@@ -58,7 +58,7 @@ public class GridViewController {
 		views.add(view);
 	}
 	
-	public JComponent getComponent() {
+	public JComponent getLocalComponent() {
 		return component;
 	}
 }
