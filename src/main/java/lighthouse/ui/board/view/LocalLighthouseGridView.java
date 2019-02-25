@@ -14,15 +14,15 @@ import javax.swing.SwingUtilities;
 import lighthouse.model.Board;
 
 /**
- * A local high-resolution (Swing-based) view of the GameBoard.
+ * A local (Swing-based) view of the Lighthouse grid.
  */
-public class LocalBoardView implements BoardView {
+public class LocalLighthouseGridView implements BoardView {
 	private final JComponent component;
 	private Board model = null;
 	private int cellWidth = 13;
 	private int cellHeight = 30;
 	
-	public LocalBoardView() {
+	public LocalLighthouseGridView() {
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			

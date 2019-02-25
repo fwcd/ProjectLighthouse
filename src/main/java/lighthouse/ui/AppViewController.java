@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.model.AppModel;
+import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.sidebar.SideBarViewController;
 
 /**
@@ -17,6 +18,9 @@ public class AppViewController {
 	public AppViewController(AppModel model) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
+		
+		BoardViewController board = new BoardViewController(model.getBoard());
+		component.add(board.getLocalComponent());
 		
 		SideBarViewController sideBar = new SideBarViewController(model);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);

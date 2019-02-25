@@ -2,6 +2,7 @@ package lighthouse.model;
 
 import lighthouse.util.LhConstants;
 
+
 /**
  * The application's model.
  */

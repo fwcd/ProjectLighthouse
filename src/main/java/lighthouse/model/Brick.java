@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Brick {
 
-	ArrayList<Direction> structure;
+	public ArrayList<Direction> structure;
+
 	ArrayList<Edge> edges = new ArrayList<Edge>();
 	{
 		edges.add(new Edge(0, 0, Direction.UP));
@@ -14,8 +15,8 @@ public class Brick {
 	}
 
 	Direction rotation;
-	int xPos;
-	int yPos;
+	public int xPos;
+	public int yPos;
 
 	public Brick(int x, int y, ArrayList<Direction> structList) {
 

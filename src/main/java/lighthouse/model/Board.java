@@ -41,4 +41,17 @@ public class Board {
 		// TODO: Implement this
 		return Color.BLACK;
 	}
+
+	public Brick locateBlock(int gridX, int gridY){
+		for (Brick brick: bricksById.values()){
+			int startX = brick.xPos;
+			int startY = brick.yPos;
+			for (Direction dir : brick.structure){
+				startX += dir.getDx();
+				startY += dir.getDy();
+				if (startX == gridX && startY == gridY) return brick;
+			}
+		}
+		return null;
+	}
 }

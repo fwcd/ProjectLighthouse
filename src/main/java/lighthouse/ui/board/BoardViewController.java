@@ -17,8 +17,9 @@ import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LocalBoardView;
 
 /**
- * Manages the grid UI both locally and on the Lighthouse. It assembles the
- * necessary inputs and views.
+ * Manages the different board views. It assembles the
+ * necessary inputs and views, while still allowing the
+ * user of this class to hook custom views.
  */
 public class BoardViewController {
 	private final JComponent localComponent;
