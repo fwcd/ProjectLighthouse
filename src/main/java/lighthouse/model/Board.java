@@ -1,9 +1,9 @@
 package lighthouse.model;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.List;
+import java.util.Deque;
 
 import lighthouse.util.IntVec;
 
@@ -14,7 +14,7 @@ import lighthouse.util.IntVec;
 public class Board {
 	private final int columns;
 	private final int rows;
-	private final List<Brick> bricks = new ArrayList<>();
+	private final Deque<Brick> bricks = new ArrayDeque<>();
 	
 	public Board(int columns, int rows) {
 		this.columns = columns;
@@ -37,7 +37,7 @@ public class Board {
 	}
 	
 	public void add(Brick brick) {
-		bricks.add(brick);
+		bricks.push(brick);
 	}
 	
 	/** Fetches the cell's color at the specified position. */
@@ -76,7 +76,7 @@ public class Board {
 	public Board copy() {
 		Board copy = new Board(columns, rows);
 		for (Brick brick : bricks) {
-			copy.bricks.add(new Brick(brick.getPos(), brick.getStructure()));
+			copy.bricks.push(new Brick(brick.getPos(), brick.getStructure()));
 		}
 		return copy;
 	}	
