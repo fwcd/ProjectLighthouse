@@ -31,6 +31,9 @@ public class SideBarViewController {
 		accordion.setMultiplySelectionAllowed(true);
 		accordion.setFillSpace(false);
 		
+		GameControlsViewController controls = new GameControlsViewController();
+		accordion.addPane("Game Controls", controls.getComponent());
+		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
 		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(grid);

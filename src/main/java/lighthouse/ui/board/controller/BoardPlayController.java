@@ -1,8 +1,8 @@
 package lighthouse.ui.board.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lighthouse.model.*;
 
@@ -13,14 +13,7 @@ public class BoardPlayController implements BoardResponder {
 
 	Board board;
 	boolean dragEvent;
-	HashMap<Direction, Integer> limits = new HashMap<Direction, Integer>();
-
-	void resetLimits(){
-		limits.put(Direction.UP, 99);
-		limits.put(Direction.DOWN, 99);
-		limits.put(Direction.RIGHT, 99);
-		limits.put(Direction.LEFT, 99);
-	}
+	Map<Direction, Integer> limits = new HashMap<Direction, Integer>();
 
 	int startX;
 	int startY;
@@ -28,6 +21,13 @@ public class BoardPlayController implements BoardResponder {
 
 	public BoardPlayController(Board model) {
 		board = model;
+	}
+
+	void resetLimits(){
+		limits.put(Direction.UP, 99);
+		limits.put(Direction.DOWN, 99);
+		limits.put(Direction.RIGHT, 99);
+		limits.put(Direction.LEFT, 99);
 	}
 	
 	@Override

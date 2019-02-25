@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 
 import lighthouse.model.Board;
 import lighthouse.ui.GameLoop;
-import lighthouse.ui.board.controller.BoardController;
+import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
@@ -32,7 +32,7 @@ public class BoardViewController {
 	private final GameLoop loop;
 
 	public BoardViewController(Board model) {
-		responder = new BoardController(model);
+		responder = new BoardPlayController(model);
 		loop = new GameLoop(lhGridViews, boardViews, model);
 
 		// Creates a local view and hooks up the Swing component
