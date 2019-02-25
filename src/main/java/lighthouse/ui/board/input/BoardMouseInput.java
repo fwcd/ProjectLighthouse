@@ -13,8 +13,10 @@ import lighthouse.util.IntVec;
  * A mouse-based grid input.
  */
 public class BoardMouseInput extends MouseAdapter implements BoardInput {
+	private static final int RIGHT_BUTTON = MouseEvent.BUTTON3;
 	private final List<BoardResponder> responders = new ArrayList<>();
 	private final CoordinateMapper mapper;
+	private int activeButton = -1;
 	
 	public BoardMouseInput(CoordinateMapper mapper) {
 		this.mapper = mapper;
@@ -28,19 +30,29 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		IntVec pos = gridPosOf(e);
-		responders.forEach(r -> r.press(pos));
+		activeButton = e.getButton();
+		if (activeButton == RIGHT_BUTTON) {
+			responders.forEach(r -> r.rightPress(pos));
+		} else {
+			responders.forEach(r -> r.press(pos));
+		}
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		IntVec pos = gridPosOf(e);
-		responders.forEach(r -> r.dragTo(pos));
+		if (activeButton != RIGHT_BUTTON) {
+			IntVec pos = gridPosOf(e);
+			responders.forEach(r -> r.dragTo(pos));
+		}
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		IntVec pos = gridPosOf(e);
-		responders.forEach(r -> r.release(pos));
+		if (activeButton != RIGHT_BUTTON) {
+			IntVec pos = gridPosOf(e);
+			responders.forEach(r -> r.release(pos));
+		}
+		activeButton = -1;
 	}
 	
 	private IntVec gridPosOf(MouseEvent e) {

@@ -14,6 +14,8 @@ import lighthouse.util.IntVec;
 public interface BoardResponder {
 	default void press(IntVec gridPos) {}
 	
+	default void rightPress(IntVec gridPos) {}
+	
 	default void dragTo(IntVec gridPos) {}
 	
 	default void release(IntVec gridPos) {}
