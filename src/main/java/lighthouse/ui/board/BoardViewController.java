@@ -7,8 +7,9 @@ import javax.swing.JComponent;
 
 import lighthouse.model.Board;
 import lighthouse.ui.GameLoop;
+import lighthouse.ui.board.controller.BoardEditController;
 import lighthouse.ui.board.controller.BoardPlayController;
-import lighthouse.ui.board.controller.BoardResponder;
+import lighthouse.ui.board.controller.DelegateResponder;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -24,15 +25,18 @@ import lighthouse.ui.board.view.LocalBoardView;
  */
 public class BoardViewController {
 	private final JComponent component;
+	private final Board model;
 	
 	private final List<LighthouseGridView> lhGridViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	
-	private final BoardResponder responder;
+	private final DelegateResponder responder;
 	private final GameLoop loop;
 
 	public BoardViewController(Board model) {
-		responder = new BoardPlayController(model);
+		this.model = model;
+		
+		responder = new DelegateResponder(new BoardPlayController(model));
 		loop = new GameLoop(lhGridViews, boardViews, model);
 
 		// Creates a local view and hooks up the Swing component
@@ -57,6 +61,14 @@ public class BoardViewController {
 		
 		// Start the game loop
 		loop.start();
+	}
+	
+	public void newGame() {
+		// TODO
+	}
+	
+	public void edit() {
+		responder.setDelegate(new BoardEditController(model));
 	}
 	
 	public void addLighthouseGridView(LighthouseGridView view) {

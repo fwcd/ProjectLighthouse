@@ -25,23 +25,23 @@ public class SideBarViewController {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		BoardViewController grid = new BoardViewController(model.getBoard());
+		BoardViewController board = new BoardViewController(model.getBoard());
 		
 		WebAccordion accordion = new WebAccordion();
 		accordion.setMultiplySelectionAllowed(true);
 		accordion.setFillSpace(false);
 		
-		GameControlsViewController controls = new GameControlsViewController();
+		GameControlsViewController controls = new GameControlsViewController(board);
 		accordion.addPane("Game Controls", controls.getComponent());
 		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
-		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(grid);
+		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(board);
 		accordion.addPane("Lighthouse Connector", connector.getComponent());
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseGridView preview = new LocalLighthouseGridView();
-		grid.addLighthouseGridView(preview);
+		board.addLighthouseGridView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(120, 240));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
