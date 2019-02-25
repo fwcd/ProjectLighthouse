@@ -38,7 +38,10 @@ public class BoardEditState {
 	
 	public String getStatus() { return status; }
 	
-	public void setStatus(String status) { this.status = status; }
+	public void setStatus(String status) {
+		this.status = status;
+		statusListeners.fire(status);
+	}
 	
 	public ListenerList<String> getStatusListeners() { return statusListeners; }
 }

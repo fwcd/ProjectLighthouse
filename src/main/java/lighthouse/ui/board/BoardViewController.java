@@ -62,13 +62,16 @@ public class BoardViewController {
 		
 		// Start the game loop
 		loop.start();
+		newGame();
 	}
 	
 	public void newGame() {
-		// TODO
+		model.getEditState().setStatus("Playing");
+		responder.setDelegate(new BoardPlayController(model));
 	}
 	
 	public void edit() {
+		model.getEditState().setStatus("Editing");
 		responder.setDelegate(new BoardEditController(model));
 	}
 	
@@ -78,6 +81,10 @@ public class BoardViewController {
 	
 	public void addBoardView(BoardView view) {
 		boardViews.add(view);
+	}
+	
+	public Board getModel() {
+		return model;
 	}
 	
 	public JComponent getLocalComponent() {
