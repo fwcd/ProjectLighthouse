@@ -15,7 +15,7 @@ public class Board {
 	private final int columns;
 	private final int rows;
 	private final Deque<Brick> bricks = new ArrayDeque<>();
-	private transient BoardEditState editState = new BoardEditState();
+	private transient BoardEditState editState;
 	
 	public Board(int columns, int rows) {
 		this.columns = columns;
@@ -30,9 +30,6 @@ public class Board {
 	
 	/** Fetches all bricks on this board. */
 	public Collection<Brick> getBricks() { return bricks; }
-	
-	/** Fetches the current editing state of the board. */
-	public BoardEditState getEditState() { return editState; }
 	
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) { bricks.push(brick); }
@@ -73,5 +70,14 @@ public class Board {
 			copied.bricks.push(brick.copy());
 		}
 		return copied;
-	}	
+	}
+	
+	/** Fetches the current editing state of the board. */
+	public BoardEditState getEditState() {
+		if (editState == null) {
+			// Lazy initialization/reinitalization after deserialization
+			editState = new BoardEditState();
+		}
+		return editState;
+	}
 }

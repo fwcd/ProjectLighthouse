@@ -9,12 +9,26 @@ import lighthouse.util.IntVec;
  */
 public class BoardEditState {
 	private BrickBuilder brickInProgress;
+	private IntVec startPos;
 	
-	public void newBrick(IntVec start) {
+	public void beginEdit(IntVec start) {
 		brickInProgress = new BrickBuilder(start);
 	}
 	
-	public BrickBuilder getBrickInProgress() {
-		return brickInProgress;
+	public void appendToEdit(Direction direction) {
+		brickInProgress.append(direction);
 	}
+	
+	public Brick finishEdit(IntVec end) {
+		Brick brick = brickInProgress.build();
+		
+		startPos = null;
+		brickInProgress = null;
+		
+		return brick;
+	}
+	
+	public IntVec getStartPos() { return startPos; }
+	
+	public BrickBuilder getBrickInProgress() { return brickInProgress; }
 }
