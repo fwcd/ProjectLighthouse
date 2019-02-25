@@ -12,9 +12,9 @@ import lighthouse.util.IntVec;
  * would only receive offsets).</p>
  */
 public interface BoardResponder {
-	void press(IntVec gridPos);
+	default void press(IntVec gridPos) {}
 	
-	void dragTo(IntVec gridPos);
+	default void dragTo(IntVec gridPos) {}
 	
-	void release(IntVec gridPos);
+	default void release(IntVec gridPos) {}
 }
