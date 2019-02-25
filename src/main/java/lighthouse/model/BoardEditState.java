@@ -15,8 +15,9 @@ public class BoardEditState {
 	
 	private final ListenerList<String> statusListeners = new ListenerList<>();
 	
-	public void beginEdit(IntVec start) {
-		brickInProgress = new BrickBuilder(start);
+	public void beginEdit(IntVec startPos) {
+		brickInProgress = new BrickBuilder(startPos);
+		this.startPos = startPos;
 	}
 	
 	public void appendToEdit(Direction direction) {

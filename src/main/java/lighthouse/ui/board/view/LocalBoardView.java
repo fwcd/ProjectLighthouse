@@ -1,5 +1,6 @@
 package lighthouse.ui.board.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,6 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import lighthouse.model.Board;
+import lighthouse.model.BoardEditState;
+import lighthouse.model.BrickBuilder;
+import lighthouse.model.Direction;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -56,6 +60,8 @@ public class LocalBoardView implements BoardView {
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
 			IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+			int cellWidth = cellSize.getX();
+			int cellHeight = cellSize.getY();
 			int cols = model.getColumns();
 			int rows = model.getRows();
 			
@@ -63,7 +69,22 @@ public class LocalBoardView implements BoardView {
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
 					g2d.setColor(model.colorAt(x, y));
-					g2d.fillRect(x * cellSize.getX(), y * cellSize.getY(), cellSize.getX(), cellSize.getY());
+					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+				}
+			}
+			
+			// Draw the editing state
+			BoardEditState editState = model.getEditState();
+			IntVec bipPos = editState.getStartPos();
+			BrickBuilder brickInProgress = editState.getBrickInProgress();
+			
+			if (brickInProgress != null) {
+				g2d.setColor(brickInProgress.getColor());
+				g2d.fillRect(bipPos.getX() * cellWidth, bipPos.getY() * cellHeight, cellWidth, cellHeight);
+				
+				for (Direction dir : brickInProgress) {
+					bipPos = bipPos.add(dir);
+					g2d.fillRect(bipPos.getX() * cellWidth, bipPos.getY() * cellHeight, cellWidth, cellHeight);
 				}
 			}
 		}
