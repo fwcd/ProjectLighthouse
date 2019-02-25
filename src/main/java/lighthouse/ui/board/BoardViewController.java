@@ -40,7 +40,7 @@ public class BoardViewController {
 		loop = new GameLoop(lhGridViews, boardViews, model);
 
 		// Creates a local view and hooks up the Swing component
-		CoordinateMapper coordinateMapper = new ScaleTransform(75, 75);
+		CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
 		LocalBoardView localView = new LocalBoardView(coordinateMapper);
 		component = localView.getComponent();
 		addBoardView(localView);
