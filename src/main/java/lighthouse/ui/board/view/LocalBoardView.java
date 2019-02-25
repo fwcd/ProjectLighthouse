@@ -19,8 +19,8 @@ import lighthouse.model.Board;
 public class LocalBoardView implements BoardView {
 	private final JComponent component;
 	private Board model = null;
-	private int cellWidth = 13;
-	private int cellHeight = 30;
+	private int cellWidth = 80;
+	private int cellHeight = 80;
 	
 	public LocalBoardView() {
 		component = new JPanel() {

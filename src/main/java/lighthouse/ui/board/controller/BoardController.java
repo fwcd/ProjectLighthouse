@@ -58,7 +58,16 @@ public class BoardController implements BoardResponder {
 	public void dragTo(int gridX, int gridY) {
 		if (!dragEvent) return;
 		if (gridX != startX || gridY != startY){
-			brick.xPos != gridX - 
+			int atX = gridX - startX;
+			int atY = gridY - startY;
+			Direction atDir = Direction.getDirByOff(atX, atY);
+			if (limits.get(atDir) > 0){
+				limits.put(atDir,limits.get(atDir) -1);
+				brick.xPos += atX;
+				brick.yPos += atY;	
+				startX = gridX;				
+				startY = gridY;
+			}
 		}
 	}
 	
