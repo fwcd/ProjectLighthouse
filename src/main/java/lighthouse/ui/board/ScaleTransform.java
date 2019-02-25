@@ -2,6 +2,9 @@ package lighthouse.ui.board;
 
 import lighthouse.util.IntVec;
 
+/**
+ * Represents a proportionally scaling transformation.
+ */
 public class ScaleTransform implements CoordinateMapper {
 	private final double xFactor;
 	private final double yFactor;
