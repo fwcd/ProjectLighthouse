@@ -1,6 +1,7 @@
 package lighthouse.model;
 
 import lighthouse.util.IntVec;
+import lighthouse.util.ListenerList;
 
 /**
  * The current editing state of the board. Any selections,
@@ -8,8 +9,11 @@ import lighthouse.util.IntVec;
  * to be serialized.
  */
 public class BoardEditState {
+	private String status;
 	private BrickBuilder brickInProgress;
 	private IntVec startPos;
+	
+	private final ListenerList<String> statusListeners = new ListenerList<>();
 	
 	public void beginEdit(IntVec start) {
 		brickInProgress = new BrickBuilder(start);
@@ -31,4 +35,10 @@ public class BoardEditState {
 	public IntVec getStartPos() { return startPos; }
 	
 	public BrickBuilder getBrickInProgress() { return brickInProgress; }
+	
+	public String getStatus() { return status; }
+	
+	public void setStatus(String status) { this.status = status; }
+	
+	public ListenerList<String> getStatusListeners() { return statusListeners; }
 }
