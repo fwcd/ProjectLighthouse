@@ -2,9 +2,9 @@ package lighthouse.model;
 
 public class Edge{
 	
-	int xOff;
-	int yOff;
-	Direction dir;
+	public int xOff;
+	public int yOff;
+	public Direction dir;
 	boolean highlighted = false;
 	
 	public Edge(int x, int y, Direction dir){

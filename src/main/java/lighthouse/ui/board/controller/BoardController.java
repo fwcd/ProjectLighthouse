@@ -1,6 +1,7 @@
 package lighthouse.ui.board.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import lighthouse.model.*;
 
 /**
@@ -11,10 +12,8 @@ public class BoardController implements BoardResponder {
 
 	Board board;
 	boolean dragEvent;
-	int up;
-	int down;
-	int right;
-	int left;
+	HashMap<Direction, Integer> limits = new HashMap<Direction, Integer>();
+
 
 	public BoardController(Board model) {
 		board = model;
@@ -26,6 +25,9 @@ public class BoardController implements BoardResponder {
 		if (brick == null) return;
 		dragEvent = true;
 		ArrayList<Edge> edgeList = brick.edges;
+		for (Direction dir : Direction.values()){
+			edgeList.stream().filter(edge -> edge.dir.getIndex() == dir.getIndex()).forEach(edge -> edge.xOff += 1);
+		}
 	}
 	
 	@Override

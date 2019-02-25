@@ -53,16 +53,16 @@ public class LocalLighthouseGridView implements BoardView {
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		int cols = model.getColumns();
-		int rows = model.getRows();
-		
-		cellWidth = Math.min(cellWidth, canvasSize.width / cols);
-		cellHeight = Math.min(cellHeight, canvasSize.height / rows);
-		
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
+			int cols = model.getColumns();
+			int rows = model.getRows();
+			
+			cellWidth = Math.min(cellWidth, canvasSize.width / cols);
+			cellHeight = Math.min(cellHeight, canvasSize.height / rows);
+			
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {

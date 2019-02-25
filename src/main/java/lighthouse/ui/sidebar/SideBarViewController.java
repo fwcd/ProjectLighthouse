@@ -11,6 +11,7 @@ import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.model.AppModel;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.view.LocalLighthouseGridView;
 
 /**
  * Manages the sidebar view which in turn deals
@@ -30,14 +31,17 @@ public class SideBarViewController {
 		accordion.setMultiplySelectionAllowed(true);
 		accordion.setFillSpace(false);
 		
+		// Add the connector panel which allows the user
+		// to connect to the Lighthouse.
 		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(grid);
 		accordion.addPane("Lighthouse Connector", connector.getComponent());
 		
-		JComponent previewComponent = grid.getLocalComponent();
-		previewComponent.setPreferredSize(new Dimension(120, 240));
-		accordion.addPane("Lighthouse Preview", previewComponent);
+		// Add a small preview that accurately reflects the Lighthouse's grid.
+		LocalLighthouseGridView preview = new LocalLighthouseGridView();
+		grid.addView(preview);
+		preview.getComponent().setPreferredSize(new Dimension(120, 240));
+		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
-		// accordion.setMaximumSize(accordion.getPreferredSize());
 		component.add(accordion);
 	}
 
