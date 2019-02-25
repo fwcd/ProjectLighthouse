@@ -21,13 +21,13 @@ public class Brick {
 		edges.add(new Edge(IntVec.ZERO, Direction.LEFT));
 	}
 	
-	public Brick(IntVec pos, List<Direction> structList) {
+	public Brick(IntVec pos, List<Direction> structure) {
 		this.pos = pos;
 		this.rotation = Direction.UP;
-		this.structure = structList;
+		this.structure = structure;
 		IntVec off = IntVec.ZERO;
 		
-		for (Direction dir : structList) {
+		for (Direction dir : structure) {
 			off = off.add(dir);
 			IntVec tmpOff = off;
 			
@@ -73,7 +73,7 @@ public class Brick {
 	
 	public IntVec getPos() { return pos; }
 	
-	public List<Edge> getEdges() { return edges; }
+	public List<Edge> getEdges() { return Collections.unmodifiableList(edges); }
 	
-	public List<Direction> getStructure() { return structure; }
+	public List<Direction> getStructure() { return Collections.unmodifiableList(structure); }
 }
