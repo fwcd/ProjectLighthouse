@@ -1,5 +1,6 @@
 package lighthouse.ui.board.view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,6 +26,10 @@ import lighthouse.util.IntVec;
  */
 public class LocalBoardView implements BoardView {
 	private final Color background = Color.WHITE;
+	private final Color gridLineColor = Color.LIGHT_GRAY;
+	private final int gridDashLength = 3;
+	private final int gridLineThickness = 1;
+	
 	private final JComponent component;
 	private final CoordinateMapper coordinateMapper;
 	private Board model = null;
@@ -53,18 +58,36 @@ public class LocalBoardView implements BoardView {
 		IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
 		int width = cellSize.getX() * columns;
 		int height = cellSize.getY() * rows;
-		component.setPreferredSize(new Dimension(width, height));
+		// Add one to render the right and bottom grid borders
+		component.setPreferredSize(new Dimension(width + 1, height + 1));
 	}
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		int canvasWidth = (int) canvasSize.getWidth();
+		int canvasHeight = (int) canvasSize.getHeight();
 		g2d.setColor(background);
-		g2d.fillRect(0, 0, (int) canvasSize.getWidth(), (int) canvasSize.getHeight());
-		
+		g2d.fillRect(0, 0, canvasWidth, canvasHeight);
+
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
+			IntVec cellSize = getCellSize();
+			
+			// Draw the background grid
+			float[] dash = {gridDashLength};
+			g2d.setColor(gridLineColor);
+			g2d.setStroke(new BasicStroke(gridLineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, dash, 0));
+			
+			for (int y = 0; y < canvasHeight; y += cellSize.getY()) {
+				g2d.drawLine(0, y, canvasWidth, y);
+			}
+			
+			for (int x = 0; x < canvasWidth; x += cellSize.getX()) {
+				g2d.drawLine(x, 0, x, canvasHeight);
+			}
+			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
 				renderBlock(g2d, brick);
