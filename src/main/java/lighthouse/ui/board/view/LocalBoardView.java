@@ -66,7 +66,7 @@ public class LocalBoardView implements BoardView {
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
-					g2d.setColor(model.getCell(x, y));
+					g2d.setColor(model.colorAt(x, y));
 					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 				}
 			}

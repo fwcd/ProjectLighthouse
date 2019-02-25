@@ -22,7 +22,7 @@ public class AppViewController {
 		BoardViewController board = new BoardViewController(model.getBoard());
 		component.add(board.getLocalComponent());
 		
-		SideBarViewController sideBar = new SideBarViewController(model);
+		SideBarViewController sideBar = new SideBarViewController(model, board);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 	}
 	

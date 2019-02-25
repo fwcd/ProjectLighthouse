@@ -41,14 +41,17 @@ public class Board {
 	}
 	
 	/** Fetches the cell's color at the specified position. */
-	public Color getCell(int x, int y) {
-		// TODO: Implement this correctly,
-		// currently a random color is returned for debugging
-		Random r = ThreadLocalRandom.current();
-		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+	public Color colorAt(int x, int y) {
+		Brick brick = locateBrick(x, y);
+		if (brick == null) {
+			return Color.BLACK;
+		} else {
+			int hash = brick.hashCode();
+			return new Color(hash % 256, (hash % 120) * 2, (hash % 50) * 5);
+		}
 	}
 
-	public Brick locateBlock(int gridX, int gridY){
+	public Brick locateBrick(int gridX, int gridY){
 		for (Brick brick: bricks) {
 			int startX = brick.xPos;
 			int startY = brick.yPos;

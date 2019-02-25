@@ -30,8 +30,8 @@ public class LighthouseGrid {
 		return rows;
 	}
 	
-	public Color getCell(int x, int y) {
+	public Color colorAt(int x, int y) {
 		// TODO: Scaling/translating the input
-		return board.getCell(x, y);
+		return board.colorAt(x, y);
 	}
 }

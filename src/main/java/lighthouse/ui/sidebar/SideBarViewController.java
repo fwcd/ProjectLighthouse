@@ -1,6 +1,5 @@
 package lighthouse.ui.sidebar;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
@@ -21,11 +20,9 @@ import lighthouse.ui.board.view.LocalLighthouseGridView;
 public class SideBarViewController {
 	private final JPanel component;
 	
-	public SideBarViewController(AppModel model) {
+	public SideBarViewController(AppModel model, BoardViewController board) {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
-		
-		BoardViewController board = new BoardViewController(model.getBoard());
 		
 		WebAccordion accordion = new WebAccordion();
 		accordion.setMultiplySelectionAllowed(true);

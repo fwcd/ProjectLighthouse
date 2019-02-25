@@ -43,6 +43,11 @@ public class Brick {
 		}
 
 	}
+	
+	@Override
+	public int hashCode() {
+		return structure.hashCode() * edges.hashCode() * rotation.hashCode() * (xPos+1) * (yPos+1) * 7;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

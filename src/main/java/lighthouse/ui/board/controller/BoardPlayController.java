@@ -32,7 +32,7 @@ public class BoardPlayController implements BoardResponder {
 	
 	@Override
 	public void press(int gridX, int gridY) {
-		brick = board.locateBlock(gridX, gridY);
+		brick = board.locateBrick(gridX, gridY);
 		if (brick == null) return;
 		dragEvent = true;
 		startX = gridX;
@@ -44,7 +44,7 @@ public class BoardPlayController implements BoardResponder {
 				int xFace = brick.xPos + edge.xOff + dir.getDx();
 				int yFace = brick.yPos + edge.yOff + dir.getDy();
 				int limit = 0;
-				while (board.locateBlock(xFace, yFace) == null && xFace < board.getColumns() && xFace >= 0 
+				while (board.locateBrick(xFace, yFace) == null && xFace < board.getColumns() && xFace >= 0 
 				&& yFace < board.getRows() && yFace >= 0){
 					limit += 1;
 					xFace += dir.getDx();
