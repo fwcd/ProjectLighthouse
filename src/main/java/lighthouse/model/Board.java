@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * The game board model which usually represents
- * a subsection of the entire grid.
+ * The game board model representing
+ * the entire state of the "Schimmler"-game.
  */
 public class Board {
 	private final int columns;
