@@ -2,46 +2,45 @@ package lighthouse.model;
 
 import java.util.*;
 
+/**
+ * A block consisting of a list of directions.
+ */
 public class Brick {
-
-	public List<Direction> structure;
-
-	public List<Edge> edges = new ArrayList<Edge>();
+	private final List<Direction> structure;
+	private final List<Edge> edges = new ArrayList<>();
+	
+	private final Direction rotation;
+	private int xPos;
+	private int yPos;
+	
 	{
 		edges.add(new Edge(0, 0, Direction.UP));
 		edges.add(new Edge(0, 0, Direction.RIGHT));
 		edges.add(new Edge(0, 0, Direction.DOWN));
 		edges.add(new Edge(0, 0, Direction.LEFT));
 	}
-
-	Direction rotation;
-	public int xPos;
-	public int yPos;
-
+	
 	public Brick(int x, int y, List<Direction> structList) {
-
 		this.xPos = x;
 		this.yPos = y;
 		this.rotation = Direction.UP;
 		this.structure = structList;
 		int xOff = 0;
 		int yOff = 0;
+		
 		for (Direction dir : structList) {
 			xOff += dir.getDx();
 			yOff += dir.getDy();
 			int txOff = xOff;
 			int tyOff = yOff;
 			for (Direction inDir : Direction.values()) {
-				if (!this.edges.stream()
-						.anyMatch(edge -> edge.xOff == txOff - inDir.getDx() && edge.yOff == tyOff - inDir.getDy() && edge.dir == inDir)) {
+				if (!this.edges.stream().anyMatch(edge -> edge.matches(txOff, tyOff, dir))) {
 					this.edges.add(new Edge(xOff, yOff, inDir.getOpposite()));
 				} else {
-					this.edges.removeIf(edge -> edge.xOff == txOff - inDir.getDx() && edge.yOff == tyOff - inDir.getDy() && edge.dir == inDir);
+					this.edges.removeIf(edge -> edge.matches(txOff, tyOff, dir));
 				}
 			}
-			
 		}
-
 	}
 	
 	@Override
@@ -55,10 +54,19 @@ public class Brick {
 		Brick brick = (Brick) obj;
 		if (brick.xPos != xPos) return false;
 		if (brick.yPos != yPos) return false;
-		if (brick.structure.size() != structure.size()) return false;
-		for (int i = 0; i < structure.size(); i++){
-			if (brick.structure.get(i) != structure.get(i)) return false;
-		}
-		return true;
+		return structure.equals(brick.structure);
 	}
+	
+	public void moveBy(int dx, int dy) {
+		xPos += dx;
+		yPos += dy;
+	}
+	
+	public int getXPos() { return xPos; }
+	
+	public int getYPos() { return yPos; }
+	
+	public List<Edge> getEdges() { return edges; }
+	
+	public List<Direction> getStructure() { return structure; }
 }

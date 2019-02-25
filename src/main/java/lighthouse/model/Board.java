@@ -49,11 +49,11 @@ public class Board {
 		}
 	}
 
-	public Brick locateBrick(int gridX, int gridY){
+	public Brick locateBrick(int gridX, int gridY) {
 		for (Brick brick: bricks) {
-			int startX = brick.xPos;
-			int startY = brick.yPos;
-			for (Direction dir : brick.structure){
+			int startX = brick.getXPos();
+			int startY = brick.getYPos();
+			for (Direction dir : brick.getStructure()) {
 				startX += dir.getDx();
 				startY += dir.getDy();
 				if (startX == gridX && startY == gridY) return brick;
@@ -72,7 +72,7 @@ public class Board {
 	public Board copy(){
 		Board copy = new Board(columns, rows);
 		for (Brick brick : bricks){
-			copy.bricks.add(new Brick(brick.xPos, brick.yPos, brick.structure));
+			copy.bricks.add(new Brick(brick.getXPos(), brick.getYPos(), brick.getStructure()));
 		}
 		return copy;
 	}	
