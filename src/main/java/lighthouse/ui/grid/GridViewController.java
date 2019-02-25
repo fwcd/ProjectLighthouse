@@ -21,7 +21,7 @@ import lighthouse.ui.grid.view.LocalGridView;
  * necessary inputs and views.
  */
 public class GridViewController {
-	private final JComponent component;
+	private final JComponent localComponent;
 	private final List<GridView> views = new ArrayList<>();
 	private final GridResponder responder;
 	private final GameLoop loop;
@@ -32,7 +32,7 @@ public class GridViewController {
 
 		// Creates a local view and hooks up the Swing component
 		LocalGridView localView = new LocalGridView();
-		component = localView.getComponent();
+		localComponent = localView.getComponent();
 		addView(localView);
 		
 		// Adds mouse input
@@ -59,6 +59,6 @@ public class GridViewController {
 	}
 	
 	public JComponent getLocalComponent() {
-		return component;
+		return localComponent;
 	}
 }
