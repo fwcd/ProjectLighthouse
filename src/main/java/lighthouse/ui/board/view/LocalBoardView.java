@@ -90,7 +90,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
-				renderBlock(g2d, brick, 0.8);
+				renderBlock(g2d, brick, 0.5);
 			}
 			
 			// Draw the editing state
@@ -98,26 +98,31 @@ public class LocalBoardView implements BoardView {
 			BrickBuilder brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
-				renderBlock(g2d, brickInProgress, 0.6);
+				renderBlock(g2d, brickInProgress, 0.5);
 			}
 		}
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
-		IntVec cellSize = getCellSize();
 		IntVec currentPos = block.getPos();
 		
 		g2d.setColor(block.getColor());
-		renderCell(g2d, currentPos, cellSize);
+		renderCell(g2d, currentPos, blockScale);
 		
 		for (Direction dir : block.getStructure()) {
 			currentPos = currentPos.add(dir);
-			renderCell(g2d, currentPos, cellSize);
+			renderCell(g2d, currentPos, blockScale);
 		}
 	}
 	
-	private void renderCell(Graphics2D g2d, IntVec cellPos, IntVec cellSize) {
-		g2d.fillRect(cellPos.getX() * cellSize.getX(), cellPos.getY() * cellSize.getY(), cellSize.getX(), cellSize.getY());
+	private void renderCell(Graphics2D g2d, IntVec cellPos, double scale) {
+		IntVec topLeft = coordinateMapper.toPixelCoordinate(cellPos);
+		IntVec bottomRight = coordinateMapper.toPixelCoordinate(cellPos.add(IntVec.ONE_ONE));
+		IntVec cellSize = bottomRight.sub(topLeft);
+		IntVec scaledCellSize = cellSize.scale(scale);
+		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5);
+		topLeft = topLeft.add(cornerOffset);
+		g2d.fillRect(topLeft.getX(), topLeft.getY(), scaledCellSize.getX(), scaledCellSize.getY());
 	}
 	
 	private IntVec getCellSize() {
