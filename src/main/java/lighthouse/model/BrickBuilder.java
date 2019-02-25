@@ -22,6 +22,7 @@ public class BrickBuilder implements Iterable<Direction>, GameBlock {
 	
 	public void append(Direction direction) { brickGraph.add(direction); }
 	
+	@Override
 	public Color getColor() { return color; }
 	
 	public Brick build() { return new Brick(startPos, brickGraph, color); }

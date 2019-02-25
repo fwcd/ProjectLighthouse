@@ -90,6 +90,7 @@ public class Brick implements GameBlock {
 	@Override
 	public List<Direction> getStructure() { return Collections.unmodifiableList(structure); }
 	
+	@Override
 	public Color getColor() { return color; }
 	
 	/** Deeply copies this brick. */

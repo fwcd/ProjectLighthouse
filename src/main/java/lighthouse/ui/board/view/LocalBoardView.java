@@ -10,8 +10,10 @@ import javax.swing.SwingUtilities;
 
 import lighthouse.model.Board;
 import lighthouse.model.BoardEditState;
+import lighthouse.model.Brick;
 import lighthouse.model.BrickBuilder;
 import lighthouse.model.Direction;
+import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -58,34 +60,33 @@ public class LocalBoardView implements BoardView {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
-			IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
-			int cellWidth = cellSize.getX();
-			int cellHeight = cellSize.getY();
-			int cols = model.getColumns();
-			int rows = model.getRows();
-			
-			// Draw the cell grid
-			for (int y = 0; y < rows; y++) {
-				for (int x = 0; x < cols; x++) {
-					g2d.setColor(model.colorAt(x, y));
-					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-				}
+			// Draw the board's bricks
+			for (Brick brick : model.getBricks()) {
+				renderBlock(g2d, brick);
 			}
 			
 			// Draw the editing state
 			BoardEditState editState = model.getEditState();
-			IntVec bipPos = editState.getStartPos();
 			BrickBuilder brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
-				g2d.setColor(brickInProgress.getColor());
-				g2d.fillRect(bipPos.getX() * cellWidth, bipPos.getY() * cellHeight, cellWidth, cellHeight);
-				
-				for (Direction dir : brickInProgress) {
-					bipPos = bipPos.add(dir);
-					g2d.fillRect(bipPos.getX() * cellWidth, bipPos.getY() * cellHeight, cellWidth, cellHeight);
-				}
+				renderBlock(g2d, brickInProgress);
 			}
+		}
+	}
+	
+	private void renderBlock(Graphics2D g2d, GameBlock block) {
+		IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+		IntVec currentPos = block.getPos();
+		int cellWidth = cellSize.getX();
+		int cellHeight = cellSize.getY();
+		
+		g2d.setColor(block.getColor());
+		g2d.fillRect(currentPos.getX() * cellWidth, currentPos.getY() * cellHeight, cellWidth, cellHeight);
+		
+		for (Direction dir : block.getStructure()) {
+			currentPos = currentPos.add(dir);
+			g2d.fillRect(currentPos.getX() * cellWidth, currentPos.getY() * cellHeight, cellWidth, cellHeight);
 		}
 	}
 	
