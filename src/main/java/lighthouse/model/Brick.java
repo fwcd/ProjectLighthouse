@@ -43,4 +43,17 @@ public class Brick {
 		}
 
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Brick)) return false; 
+		Brick brick = (Brick) obj;
+		if (brick.xPos != xPos) return false;
+		if (brick.yPos != yPos) return false;
+		if (brick.structure.size() != structure.size()) return false;
+		for (int i = 0; i < structure.size(); i++){
+			if (brick.structure.get(i) != structure.get(i)) return false;
+		}
+		return true;
+	}
 }

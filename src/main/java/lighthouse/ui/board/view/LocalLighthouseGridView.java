@@ -11,14 +11,12 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import lighthouse.model.Board;
-
 /**
  * A local (Swing-based) view of the Lighthouse grid.
  */
-public class LocalLighthouseGridView implements BoardView {
+public class LocalLighthouseGridView implements LighthouseGridView {
 	private final JComponent component;
-	private Board model = null;
+	private LighthouseGrid model = null;
 	private int cellWidth = 13;
 	private int cellHeight = 30;
 	
@@ -45,7 +43,7 @@ public class LocalLighthouseGridView implements BoardView {
 	}
 	
 	@Override
-	public void draw(Board model) {
+	public void draw(LighthouseGrid model) {
 		this.model = model;
 		// Redraw the component
 		SwingUtilities.invokeLater(component::repaint);

@@ -2,10 +2,9 @@ package lighthouse.model;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -16,7 +15,7 @@ public class Board {
 	private final int columns;
 	private final int rows;
 	/** Associates ids with bricks. */
-	private final Map<Integer, Brick> bricksById = new HashMap<>();
+	private final Set<Brick> bricks = new HashSet<>();
 	
 	public Board(int columns, int rows) {
 		this.columns = columns;
@@ -35,7 +34,7 @@ public class Board {
 	
 	/** Fetches all bricks on this board. */
 	public Collection<Brick> getBricks() {
-		return bricksById.values();
+		return bricks;
 	}
 	
 	/** Fetches the cell's color at the specified position. */
@@ -47,7 +46,7 @@ public class Board {
 	}
 
 	public Brick locateBlock(int gridX, int gridY){
-		for (Brick brick: bricksById.values()){
+		for (Brick brick: bricks) {
 			int startX = brick.xPos;
 			int startY = brick.yPos;
 			for (Direction dir : brick.structure){
@@ -58,4 +57,19 @@ public class Board {
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Board)) return false; 
+		Board board = (Board) obj;
+		return board.bricks.equals(bricks);
+	}
+
+	public Board copy(){
+		Board copy = new Board(columns, rows);
+		for (Brick brick : bricks){
+			copy.bricks.add(new Brick(brick.xPos, brick.yPos, brick.structure));
+		}
+		return copy;
+	}	
 }

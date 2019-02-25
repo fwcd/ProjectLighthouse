@@ -57,7 +57,7 @@ public class LighthouseConnectorViewController {
 		} else {
 			RemoteLighthouseGridView remoteView = new RemoteLighthouseGridView(username, token);
 			remoteView.connect();
-			grid.addView(remoteView);
+			grid.addLighthouseGridView(remoteView);
 			connected = true;
 		}
 	}

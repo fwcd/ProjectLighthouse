@@ -14,6 +14,7 @@ import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.view.BoardView;
+import lighthouse.ui.board.view.LighthouseGridView;
 import lighthouse.ui.board.view.LocalBoardView;
 
 /**
@@ -22,19 +23,22 @@ import lighthouse.ui.board.view.LocalBoardView;
  * user of this class to hook custom views.
  */
 public class BoardViewController {
-	private final JComponent localComponent;
-	private final List<BoardView> views = new ArrayList<>();
+	private final JComponent component;
+	
+	private final List<LighthouseGridView> lhGridViews = new ArrayList<>();
+	private final List<BoardView> boardViews = new ArrayList<>();
+	
 	private final BoardResponder responder;
 	private final GameLoop loop;
 
 	public BoardViewController(Board model) {
 		responder = new BoardController(model);
-		loop = new GameLoop(views, model);
+		loop = new GameLoop(lhGridViews, boardViews, model);
 
 		// Creates a local view and hooks up the Swing component
 		LocalBoardView localView = new LocalBoardView();
-		localComponent = localView.getComponent();
-		addView(localView);
+		component = localView.getComponent();
+		addBoardView(localView);
 		
 		// Adds mouse input
 		BoardMouseInput mouseInput = new BoardMouseInput(localView.getCellWidth(), localView.getCellHeight());
@@ -55,11 +59,15 @@ public class BoardViewController {
 		loop.start();
 	}
 	
-	public void addView(BoardView view) {
-		views.add(view);
+	public void addLighthouseGridView(LighthouseGridView view) {
+		lhGridViews.add(view);
+	}
+	
+	public void addBoardView(BoardView view) {
+		boardViews.add(view);
 	}
 	
 	public JComponent getLocalComponent() {
-		return localComponent;
+		return component;
 	}
 }

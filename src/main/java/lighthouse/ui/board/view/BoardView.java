@@ -3,8 +3,7 @@ package lighthouse.ui.board.view;
 import lighthouse.model.Board;
 
 /**
- * The presentation component of the user
- * interface. Responsible for drawing a colored grid.
+ * The presentation component of the game board.
  */
 public interface BoardView {
 	void draw(Board model);

@@ -38,7 +38,7 @@ public class SideBarViewController {
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseGridView preview = new LocalLighthouseGridView();
-		grid.addView(preview);
+		grid.addLighthouseGridView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(120, 240));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
