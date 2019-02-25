@@ -38,6 +38,12 @@ public class IntVec {
 	
 	public IntVec scale(double factor) { return new IntVec((int) (x * factor), (int) (y * factor)); }
 	
+	public IntVec scale(double xFactor, double yFactor) { return new IntVec((int) (x * xFactor), (int) (y * yFactor)); }
+	
+	public IntVec scale(int factor) { return new IntVec(x * factor, y * factor); }
+	
+	public IntVec scale(int xFactor, int yFactor) { return new IntVec(x * xFactor, y * yFactor); }
+	
 	public IntVec invert() { return new IntVec(-x, -y); }
 	
 	public int dot(IntVec other) { return (x * other.x) + (y * other.y); }

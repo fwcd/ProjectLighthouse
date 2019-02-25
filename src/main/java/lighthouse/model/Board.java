@@ -40,8 +40,7 @@ public class Board {
 		if (brick == null) {
 			return Color.BLACK;
 		} else {
-			int hash = Math.abs(brick.hashCode());
-			return new Color(hash % 256, (hash % 120) * 2, (hash % 50) * 5);
+			return brick.getColor();
 		}
 	}
 	
