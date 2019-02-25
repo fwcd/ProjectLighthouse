@@ -8,7 +8,7 @@ import lighthouse.util.IntVec;
  * space.
  */
 public interface CoordinateMapper {
-	IntVec toPixelCoordinate(IntVec gridPos);
+	IntVec toPixelPos(IntVec gridPos);
 	
 	IntVec toGridPos(IntVec pixelCoordinate);
 }

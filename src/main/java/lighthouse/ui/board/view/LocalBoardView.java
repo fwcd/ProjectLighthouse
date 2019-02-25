@@ -55,7 +55,7 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	public void relayout(int columns, int rows) {
-		IntVec cellSize = coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+		IntVec cellSize = coordinateMapper.toPixelPos(IntVec.ONE_ONE);
 		int width = cellSize.getX() * columns;
 		int height = cellSize.getY() * rows;
 		// Add one to render the right and bottom grid borders
@@ -90,7 +90,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
-				renderBlock(g2d, brick, 0.5);
+				renderBlock(g2d, brick, 0.8);
 			}
 			
 			// Draw the editing state
@@ -104,29 +104,50 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
+		IntVec cellSize = getCellSize();
 		IntVec currentPos = block.getPos();
 		
 		g2d.setColor(block.getColor());
-		renderCell(g2d, currentPos, blockScale);
+		renderCell(g2d, currentPos, cellSize, blockScale);
 		
 		for (Direction dir : block.getStructure()) {
 			currentPos = currentPos.add(dir);
-			renderCell(g2d, currentPos, blockScale);
+			renderConnectionFrom(g2d, currentPos, dir, cellSize, blockScale);
 		}
 	}
 	
-	private void renderCell(Graphics2D g2d, IntVec cellPos, double scale) {
-		IntVec topLeft = coordinateMapper.toPixelCoordinate(cellPos);
-		IntVec bottomRight = coordinateMapper.toPixelCoordinate(cellPos.add(IntVec.ONE_ONE));
-		IntVec cellSize = bottomRight.sub(topLeft);
+	private void renderConnectionFrom(Graphics2D g2d, IntVec cellPos, Direction direction, IntVec cellSize, double scale) {
+		IntVec fromPos = cellPos.sub(direction);
+		IntVec topLeft = coordinateMapper.toPixelPos(fromPos.min(cellPos));
+		IntVec bottomRight = coordinateMapper.toPixelPos(fromPos.max(cellPos)).add(cellSize);
 		IntVec scaledCellSize = cellSize.scale(scale);
 		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5);
-		topLeft = topLeft.add(cornerOffset);
-		g2d.fillRect(topLeft.getX(), topLeft.getY(), scaledCellSize.getX(), scaledCellSize.getY());
+		IntVec innerTopLeft = topLeft.add(cornerOffset);
+		IntVec innerBottomRight = bottomRight.sub(cornerOffset);
+		IntVec scaledConnSize = innerBottomRight.sub(innerTopLeft);
+		// markPoint(g2d, innerTopLeft, Color.GREEN);
+		// markPoint(g2d, innerBottomRight, Color.RED);
+		g2d.fillRect(innerTopLeft.getX(), innerTopLeft.getY(), scaledConnSize.getX(), scaledConnSize.getY());
+	}
+	
+	private void markPoint(Graphics2D g2d, IntVec pos, Color color) {
+		Color tmpColor = g2d.getColor();
+		g2d.setColor(color);
+		g2d.fillOval(pos.getX() - 4, pos.getY() - 4, 8, 8);
+		g2d.setColor(tmpColor);
+	}
+	
+	private void renderCell(Graphics2D g2d, IntVec cellPos, IntVec cellSize, double scale) {
+		IntVec topLeft = coordinateMapper.toPixelPos(cellPos);
+		IntVec scaledCellSize = cellSize.scale(scale);
+		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5);
+		IntVec innerTopLeft = topLeft.add(cornerOffset);
+		
+		g2d.fillRect(innerTopLeft.getX(), innerTopLeft.getY(), scaledCellSize.getX(), scaledCellSize.getY());
 	}
 	
 	private IntVec getCellSize() {
-		return coordinateMapper.toPixelCoordinate(IntVec.ONE_ONE);
+		return coordinateMapper.toPixelPos(IntVec.ONE_ONE);
 	}
 	
 	public void addMouseInput(BoardMouseInput listener) {

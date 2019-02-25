@@ -49,11 +49,23 @@ public class IntVec {
 	
 	public IntVec invert() { return new IntVec(-x, -y); }
 	
+	public IntVec abs() { return new IntVec(Math.abs(x), Math.abs(y)); }
+	
+	public IntVec signum() { return new IntVec(MathUtils.signum(x), MathUtils.signum(y)); }
+	
+	public IntVec min(IntVec other) { return new IntVec(Math.min(x, other.x), Math.min(y, other.y)); }
+	
+	public IntVec max(IntVec other) { return new IntVec(Math.max(x, other.x), Math.max(y, other.y)); }
+	
 	public int dot(IntVec other) { return (x * other.x) + (y * other.y); }
 	
 	public int cross(IntVec other) { return (x * other.y) - (y * other.x); }
 	
 	public double length() { return Math.sqrt((x * x) + (y * y)); }
+	
+	public boolean isPositive() { return x >= 0 && y >= 0; }
+	
+	public boolean isNegative() { return x <= 0 && y <= 0; }
 	
 	public boolean xIn(int startInclusive, int endExclusive) { return x >= startInclusive && x < endExclusive; }
 	

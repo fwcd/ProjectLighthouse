@@ -32,7 +32,7 @@ public class ScaleTransform implements CoordinateMapper {
 	}
 	
 	@Override
-	public IntVec toPixelCoordinate(IntVec gridPos) {
+	public IntVec toPixelPos(IntVec gridPos) {
 		return gridPos.scale(xFactor, yFactor);
 	}
 }

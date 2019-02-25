@@ -22,6 +22,8 @@ public enum Direction {
 	
 	public int getDy() { return dy; }
 	
+	public boolean isRightOrDown() { return this == RIGHT || this == DOWN; }
+	
 	public Direction getOpposite() { return rotateLeft().rotateLeft(); }
 	
 	public Direction rotateLeft() { return values()[Math.floorMod(index - 1, 4)]; }
