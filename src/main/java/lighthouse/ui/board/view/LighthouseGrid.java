@@ -3,6 +3,7 @@ package lighthouse.ui.board.view;
 import java.awt.Color;
 
 import lighthouse.model.Board;
+import lighthouse.util.IntVec;
 
 /**
  * A class that wraps the board preparing it for
@@ -30,8 +31,12 @@ public class LighthouseGrid {
 		return rows;
 	}
 	
-	public Color colorAt(int x, int y) {
+	public Color colorAt(IntVec gridPos) {
 		// TODO: Scaling/translating the input
-		return board.colorAt(x, y);
+		return board.colorAt(gridPos);
+	}
+	
+	public Color colorAt(int x, int y) {
+		return colorAt(new IntVec(x, y));
 	}
 }

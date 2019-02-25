@@ -1,24 +1,23 @@
 package lighthouse.model;
 
+import lighthouse.util.IntVec;
+
 /**
  * A brick edge.
  */
 public class Edge {
-	private final int xOff;
-	private final int yOff;
+	private final IntVec off;
 	private final Direction dir;
 	private boolean highlighted = false;
 	
-	public Edge(int x, int y, Direction dir) {
-		this.xOff = x;
-		this.yOff = y;
+	public Edge(IntVec off, Direction dir) {
+		this.off = off;
 		this.dir = dir;
 	}
 	
-	public boolean matches(int xOff, int yOff, Direction dir) {
-		return (this.xOff == xOff)
-			&& (this.yOff == yOff)
-			&& (this.dir.equals(dir));
+	public boolean matches(IntVec off, Direction dir) {
+		return this.off.equals(off)
+			&& this.dir.equals(dir);
 	}
 	
 	@Override
@@ -27,20 +26,17 @@ public class Edge {
 		if (obj.getClass() != getClass()) return false;
 		if (obj == this) return true;
 		Edge other = (Edge) obj;
-		return (xOff == other.xOff)
-			&& (yOff == other.yOff)
+		return off.equals(other.off)
 			&& (dir == other.dir)
 			&& (highlighted == other.highlighted);
 	}
 	
 	@Override
 	public int hashCode() {
-		return xOff * yOff * dir.hashCode() * (highlighted ? 1 : -1);
+		return off.hashCode() * dir.hashCode() * (highlighted ? 1 : -1);
 	}
 	
-	public int getXOff() { return xOff; }
-	
-	public int getYOff() { return yOff; }
+	public IntVec getOff() { return off; }
 	
 	public Direction getDir() { return dir; }
 	

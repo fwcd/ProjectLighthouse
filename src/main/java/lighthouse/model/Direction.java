@@ -16,33 +16,15 @@ public enum Direction {
 		this.dy = dy;
 	}
 	
-	public int getIndex() {
-		return index;
-	}
+	public int getIndex() { return index; }
 	
-	public int getDx() {
-		return dx;
-	}
-	public int getDy() {
-		return dy;
-	}
+	public int getDx() { return dx; }
 	
-	public Direction getOpposite() {
-		return rotateLeft().rotateLeft();
-	}
+	public int getDy() { return dy; }
 	
-	public Direction rotateLeft() {
-		return values()[Math.floorMod(index - 1, 4)];
-	}
+	public Direction getOpposite() { return rotateLeft().rotateLeft(); }
 	
-	public Direction rotateRight() {
-		return values()[Math.floorMod(index + 1, 4)];
-	}
-
-	public static Direction getDirByOff(int x, int y) {
-		for (Direction dir : Direction.values()) {
-			if (dir.getDx() == x && dir.getDy() == y) return dir;
-		}
-		throw new IllegalArgumentException("Illegal offset: " + x + ", " + y);
-	}
+	public Direction rotateLeft() { return values()[Math.floorMod(index - 1, 4)]; }
+	
+	public Direction rotateRight() { return values()[Math.floorMod(index + 1, 4)]; }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lighthouse.ui.board.controller.BoardResponder;
+import lighthouse.util.IntVec;
 
 /**
  * A mouse-based grid input.
@@ -29,21 +30,21 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	public void mousePressed(MouseEvent e) {
 		int gridX = toBoardX(e.getX());
 		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.press(gridX, gridY));
+		responders.forEach(r -> r.press(new IntVec(gridX, gridY)));
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		int gridX = toBoardX(e.getX());
 		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.dragTo(gridX, gridY));
+		responders.forEach(r -> r.dragTo(new IntVec(gridX, gridY)));
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int gridX = toBoardX(e.getX());
 		int gridY = toBoardY(e.getY());
-		responders.forEach(r -> r.release(gridX, gridY));
+		responders.forEach(r -> r.release(new IntVec(gridX, gridY)));
 	}
 	
 	/** Converts a pixel x-coordinate to a grid coordinate. */

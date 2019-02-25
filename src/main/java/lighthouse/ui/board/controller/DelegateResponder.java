@@ -1,8 +1,9 @@
 package lighthouse.ui.board.controller;
 
+import lighthouse.util.IntVec;
+
 /**
- * A responder that delegates to another responder.
- * Can easily be swapped out.
+ * A responder that delegates to another responder. Can easily be swapped out.
  */
 public class DelegateResponder implements BoardResponder {
 	private BoardResponder delegate;
@@ -20,17 +21,17 @@ public class DelegateResponder implements BoardResponder {
 	}
 	
 	@Override
-	public void press(int gridX, int gridY) {
-		delegate.press(gridX, gridY);
+	public void press(IntVec gridPos) {
+		delegate.press(gridPos);
 	}
 	
 	@Override
-	public void dragTo(int gridX, int gridY) {
-		delegate.dragTo(gridX, gridY);
+	public void dragTo(IntVec gridPos) {
+		delegate.dragTo(gridPos);
 	}
 	
 	@Override
-	public void release(int gridX, int gridY) {
-		delegate.release(gridX, gridY);
+	public void release(IntVec gridPos) {
+		delegate.release(gridPos);
 	}
 }

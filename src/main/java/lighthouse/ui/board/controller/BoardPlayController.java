@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lighthouse.model.*;
+import lighthouse.model.Board;
+import lighthouse.model.Brick;
+import lighthouse.model.Direction;
+import lighthouse.model.Edge;
+import lighthouse.util.IntVec;
 
 /**
  * The primary responder implementation for playing.
@@ -14,8 +18,7 @@ public class BoardPlayController implements BoardResponder {
 	private boolean dragEvent;
 	private final Map<Direction, Integer> limits = new HashMap<>();
 
-	private int startX;
-	private int startY;
+	private IntVec start;
 	private Brick brick;
 
 	public BoardPlayController(Board model) {
@@ -30,23 +33,20 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	@Override
-	public void press(int gridX, int gridY) {
-		brick = board.locateBrick(gridX, gridY);
+	public void press(IntVec gridPos) {
+		brick = board.locateBrick(gridPos);
 		if (brick == null) return;
 		dragEvent = true;
-		startX = gridX;
-		startY = gridY;
+		start = gridPos;
 		List<Edge> edgeList = brick.getEdges();
 		for (Direction dir : Direction.values()) {
 			edgeList.stream().filter(edge -> edge.getDir().getIndex() == dir.getIndex()).forEach(edge -> {
 				edge.setHighlighted(true);
-				int xFace = brick.getXPos() + edge.getXOff() + dir.getDx();
-				int yFace = brick.getYPos() + edge.getYOff() + dir.getDy();
+				IntVec face = brick.getPos().add(edge.getOff()).add(dir);
 				int limit = 0;
-				while (board.locateBrick(xFace, yFace) == null && xFace < board.getColumns() && xFace >= 0 && yFace < board.getRows() && yFace >= 0) {
+				while (board.locateBrick(face) == null && face.xIn(0, board.getColumns()) && face.yIn(0, board.getRows())) {
 					limit += 1;
-					xFace += dir.getDx();
-					yFace += dir.getDy();
+					face = face.add(dir);
 				}
 				if (limits.get(dir) > limit) limits.put(dir, limit);
 			});
@@ -55,23 +55,22 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	@Override
-	public void dragTo(int gridX, int gridY) {
+	public void dragTo(IntVec gridPos) {
 		if (!dragEvent) return;
-		if (gridX != startX || gridY != startY) {
-			int atX = gridX - startX;
-			int atY = gridY - startY;
-			Direction atDir = Direction.getDirByOff(atX, atY);
+		if (!gridPos.equals(start)) {
+			IntVec at = gridPos.sub(start);
+			Direction atDir = at.nearestDirection();
+			
 			if (limits.get(atDir) > 0) {
 				limits.put(atDir,limits.get(atDir) -1);
-				brick.moveBy(atX, atY);
-				startX = gridX;				
-				startY = gridY;
+				brick.moveInto(atDir);
+				start = gridPos;
 			}
 		}
 	}
 	
 	@Override
-	public void release(int gridX, int gridY) {
+	public void release(IntVec gridPos) {
 		if (dragEvent != true) return;
 		resetLimits();
 		for (Edge edge : brick.getEdges()) {
@@ -79,6 +78,4 @@ public class BoardPlayController implements BoardResponder {
 		}
 		dragEvent = false;
 	}
-
-	
 }

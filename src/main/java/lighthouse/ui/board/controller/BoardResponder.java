@@ -1,5 +1,7 @@
 package lighthouse.ui.board.controller;
 
+import lighthouse.util.IntVec;
+
 /**
  * An interface for responding to user events.
  * 
@@ -10,9 +12,9 @@ package lighthouse.ui.board.controller;
  * would only receive offsets).</p>
  */
 public interface BoardResponder {
-	void press(int gridX, int gridY);
+	void press(IntVec gridPos);
 	
-	void dragTo(int gridX, int gridY);
+	void dragTo(IntVec gridPos);
 	
-	void release(int gridX, int gridY);
+	void release(IntVec gridPos);
 }

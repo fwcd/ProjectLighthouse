@@ -2,6 +2,8 @@ package lighthouse.model;
 
 import java.util.*;
 
+import lighthouse.util.IntVec;
+
 /**
  * A block consisting of a list of directions.
  */
@@ -10,34 +12,30 @@ public class Brick {
 	private final List<Edge> edges = new ArrayList<>();
 	
 	private final Direction rotation;
-	private int xPos;
-	private int yPos;
+	private IntVec pos;
 	
 	{
-		edges.add(new Edge(0, 0, Direction.UP));
-		edges.add(new Edge(0, 0, Direction.RIGHT));
-		edges.add(new Edge(0, 0, Direction.DOWN));
-		edges.add(new Edge(0, 0, Direction.LEFT));
+		edges.add(new Edge(IntVec.ZERO, Direction.UP));
+		edges.add(new Edge(IntVec.ZERO, Direction.RIGHT));
+		edges.add(new Edge(IntVec.ZERO, Direction.DOWN));
+		edges.add(new Edge(IntVec.ZERO, Direction.LEFT));
 	}
 	
-	public Brick(int x, int y, List<Direction> structList) {
-		this.xPos = x;
-		this.yPos = y;
+	public Brick(IntVec pos, List<Direction> structList) {
+		this.pos = pos;
 		this.rotation = Direction.UP;
 		this.structure = structList;
-		int xOff = 0;
-		int yOff = 0;
+		IntVec off = IntVec.ZERO;
 		
 		for (Direction dir : structList) {
-			xOff += dir.getDx();
-			yOff += dir.getDy();
-			int txOff = xOff;
-			int tyOff = yOff;
+			off = off.add(dir);
+			IntVec tmpOff = off;
+			
 			for (Direction inDir : Direction.values()) {
-				if (!this.edges.stream().anyMatch(edge -> edge.matches(txOff, tyOff, dir))) {
-					this.edges.add(new Edge(xOff, yOff, inDir.getOpposite()));
+				if (!this.edges.stream().anyMatch(edge -> edge.matches(tmpOff, dir))) {
+					this.edges.add(new Edge(off, inDir.getOpposite()));
 				} else {
-					this.edges.removeIf(edge -> edge.matches(txOff, tyOff, dir));
+					this.edges.removeIf(edge -> edge.matches(tmpOff, dir));
 				}
 			}
 		}
@@ -45,26 +43,22 @@ public class Brick {
 	
 	@Override
 	public int hashCode() {
-		return structure.hashCode() * edges.hashCode() * rotation.hashCode() * (xPos+1) * (yPos+1) * 7;
+		return structure.hashCode() * edges.hashCode() * rotation.hashCode() * pos.add(1, 1).hashCode() * 7;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Brick)) return false; 
 		Brick brick = (Brick) obj;
-		if (brick.xPos != xPos) return false;
-		if (brick.yPos != yPos) return false;
+		if (!pos.equals(brick.pos)) return false;
 		return structure.equals(brick.structure);
 	}
 	
-	public void moveBy(int dx, int dy) {
-		xPos += dx;
-		yPos += dy;
-	}
+	public void moveBy(IntVec delta) { pos = pos.add(delta); }
 	
-	public int getXPos() { return xPos; }
+	public void moveInto(Direction dir) { pos = pos.add(dir); }
 	
-	public int getYPos() { return yPos; }
+	public IntVec getPos() { return pos; }
 	
 	public List<Edge> getEdges() { return edges; }
 	

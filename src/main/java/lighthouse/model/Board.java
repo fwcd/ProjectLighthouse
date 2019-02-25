@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lighthouse.util.IntVec;
+
 /**
  * The game board model representing
  * the entire state of the "Schimmler"-game.
@@ -39,8 +41,8 @@ public class Board {
 	}
 	
 	/** Fetches the cell's color at the specified position. */
-	public Color colorAt(int x, int y) {
-		Brick brick = locateBrick(x, y);
+	public Color colorAt(IntVec gridPos) {
+		Brick brick = locateBrick(gridPos);
 		if (brick == null) {
 			return Color.BLACK;
 		} else {
@@ -48,15 +50,17 @@ public class Board {
 			return new Color(hash % 256, (hash % 120) * 2, (hash % 50) * 5);
 		}
 	}
+	
+	public Color colorAt(int x, int y) {
+		return colorAt(new IntVec(x, y));
+	}
 
-	public Brick locateBrick(int gridX, int gridY) {
+	public Brick locateBrick(IntVec gridPos) {
 		for (Brick brick: bricks) {
-			int startX = brick.getXPos();
-			int startY = brick.getYPos();
+			IntVec start = brick.getPos();
 			for (Direction dir : brick.getStructure()) {
-				startX += dir.getDx();
-				startY += dir.getDy();
-				if (startX == gridX && startY == gridY) return brick;
+				start = start.add(dir);
+				if (start.equals(gridPos)) return brick;
 			}
 		}
 		return null;
@@ -72,7 +76,7 @@ public class Board {
 	public Board copy() {
 		Board copy = new Board(columns, rows);
 		for (Brick brick : bricks) {
-			copy.bricks.add(new Brick(brick.getXPos(), brick.getYPos(), brick.getStructure()));
+			copy.bricks.add(new Brick(brick.getPos(), brick.getStructure()));
 		}
 		return copy;
 	}	
