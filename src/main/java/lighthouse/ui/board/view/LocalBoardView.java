@@ -90,7 +90,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
-				renderBlock(g2d, brick);
+				renderBlock(g2d, brick, 0.8);
 			}
 			
 			// Draw the editing state
@@ -98,24 +98,26 @@ public class LocalBoardView implements BoardView {
 			BrickBuilder brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
-				renderBlock(g2d, brickInProgress);
+				renderBlock(g2d, brickInProgress, 0.6);
 			}
 		}
 	}
 	
-	private void renderBlock(Graphics2D g2d, GameBlock block) {
+	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
 		IntVec cellSize = getCellSize();
 		IntVec currentPos = block.getPos();
-		int cellWidth = cellSize.getX();
-		int cellHeight = cellSize.getY();
 		
 		g2d.setColor(block.getColor());
-		g2d.fillRect(currentPos.getX() * cellWidth, currentPos.getY() * cellHeight, cellWidth, cellHeight);
+		renderCell(g2d, currentPos, cellSize);
 		
 		for (Direction dir : block.getStructure()) {
 			currentPos = currentPos.add(dir);
-			g2d.fillRect(currentPos.getX() * cellWidth, currentPos.getY() * cellHeight, cellWidth, cellHeight);
+			renderCell(g2d, currentPos, cellSize);
 		}
+	}
+	
+	private void renderCell(Graphics2D g2d, IntVec cellPos, IntVec cellSize) {
+		g2d.fillRect(cellPos.getX() * cellSize.getX(), cellPos.getY() * cellSize.getY(), cellSize.getX(), cellSize.getY());
 	}
 	
 	private IntVec getCellSize() {
