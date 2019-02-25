@@ -15,6 +15,7 @@ public class Board {
 	private final int columns;
 	private final int rows;
 	private final Deque<Brick> bricks = new ArrayDeque<>();
+	private transient BoardEditState editState = new BoardEditState();
 	
 	public Board(int columns, int rows) {
 		this.columns = columns;
@@ -22,23 +23,19 @@ public class Board {
 	}
 	
 	/** Fetches the board's column count. */
-	public int getColumns() {
-		return columns;
-	}
+	public int getColumns() { return columns; }
 	
 	/** Fetches the board's row count. */
-	public int getRows() {
-		return rows;
-	}
+	public int getRows() { return rows; }
 	
 	/** Fetches all bricks on this board. */
-	public Collection<Brick> getBricks() {
-		return bricks;
-	}
+	public Collection<Brick> getBricks() { return bricks; }
 	
-	public void add(Brick brick) {
-		bricks.push(brick);
-	}
+	/** Fetches the current editing state of the board. */
+	public BoardEditState getEditState() { return editState; }
+	
+	/** Pushes a brick onto the board. */
+	public void add(Brick brick) { bricks.push(brick); }
 	
 	/** Fetches the cell's color at the specified position. */
 	public Color colorAt(IntVec gridPos) {
@@ -68,12 +65,13 @@ public class Board {
 		Board board = (Board) obj;
 		return board.bricks.equals(bricks);
 	}
-
+	
+	/** Deeply copies this board. */
 	public Board copy() {
-		Board copy = new Board(columns, rows);
+		Board copied = new Board(columns, rows);
 		for (Brick brick : bricks) {
-			copy.bricks.push(new Brick(brick.getPos(), brick.getStructure()));
+			copied.bricks.push(brick.copy());
 		}
-		return copy;
+		return copied;
 	}	
 }

@@ -41,4 +41,11 @@ public class Edge {
 	public Direction getDir() { return dir; }
 	
 	public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
+	
+	/** Deeply copies this edge. */
+	public Edge copy() {
+		Edge copied = new Edge(off, dir);
+		copied.highlighted = highlighted;
+		return copied;
+	}
 }

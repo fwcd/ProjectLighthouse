@@ -5,7 +5,10 @@ import java.util.*;
 import lighthouse.util.IntVec;
 
 /**
- * A block consisting of a list of directions.
+ * A positioned game brick consisting
+ * a list of directions and edges. This internal,
+ * "arrow-based" representation ensures that
+ * all brick fragments are connected.
  */
 public class Brick {
 	private final List<Direction> structure;
@@ -76,4 +79,9 @@ public class Brick {
 	public List<Edge> getEdges() { return Collections.unmodifiableList(edges); }
 	
 	public List<Direction> getStructure() { return Collections.unmodifiableList(structure); }
+	
+	/** Deeply copies this brick. */
+	public Brick copy() {
+		return new Brick(pos, new ArrayList<>(structure));
+	}
 }
