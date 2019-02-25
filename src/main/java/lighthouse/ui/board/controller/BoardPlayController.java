@@ -2,13 +2,14 @@ package lighthouse.ui.board.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import lighthouse.model.*;
 
 /**
- * The primary responder implementation that
- * turns user inputs into changes to the model.
+ * The primary responder implementation for playing.
  */
-public class BoardController implements BoardResponder {
+public class BoardPlayController implements BoardResponder {
 
 	Board board;
 	boolean dragEvent;
@@ -25,7 +26,7 @@ public class BoardController implements BoardResponder {
 	int startY;
 	Brick brick;
 
-	public BoardController(Board model) {
+	public BoardPlayController(Board model) {
 		board = model;
 	}
 	
@@ -36,9 +37,10 @@ public class BoardController implements BoardResponder {
 		dragEvent = true;
 		startX = gridX;
 		startY = gridY;
-		ArrayList<Edge> edgeList = brick.edges;
+		List<Edge> edgeList = brick.edges;
 		for (Direction dir : Direction.values()){
 			edgeList.stream().filter(edge -> edge.dir.getIndex() == dir.getIndex()).forEach(edge -> {
+				edge.highlighted = true;
 				int xFace = brick.xPos + edge.xOff + dir.getDx();
 				int yFace = brick.yPos + edge.yOff + dir.getDy();
 				int limit = 0;
@@ -75,6 +77,9 @@ public class BoardController implements BoardResponder {
 	public void release(int gridX, int gridY) {
 		if (dragEvent != true) return;
 		resetLimits();
+		for (Edge edge : brick.edges){
+			edge.highlighted = false;
+		}
 		dragEvent = false;
 	}
 

@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Brick {
 
-	public ArrayList<Direction> structure;
+	public List<Direction> structure;
 
-	public ArrayList<Edge> edges = new ArrayList<Edge>();
+	public List<Edge> edges = new ArrayList<Edge>();
 	{
 		edges.add(new Edge(0, 0, Direction.UP));
 		edges.add(new Edge(0, 0, Direction.RIGHT));
@@ -18,7 +18,7 @@ public class Brick {
 	public int xPos;
 	public int yPos;
 
-	public Brick(int x, int y, ArrayList<Direction> structList) {
+	public Brick(int x, int y, List<Direction> structList) {
 
 		this.xPos = x;
 		this.yPos = y;

@@ -14,7 +14,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Board {
 	private final int columns;
 	private final int rows;
-	/** Associates ids with bricks. */
 	private final Set<Brick> bricks = new HashSet<>();
 	
 	public Board(int columns, int rows) {
@@ -35,6 +34,10 @@ public class Board {
 	/** Fetches all bricks on this board. */
 	public Collection<Brick> getBricks() {
 		return bricks;
+	}
+	
+	public void add(Brick brick) {
+		bricks.add(brick);
 	}
 	
 	/** Fetches the cell's color at the specified position. */
