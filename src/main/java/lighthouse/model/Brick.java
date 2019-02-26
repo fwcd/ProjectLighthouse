@@ -3,7 +3,9 @@ package lighthouse.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
@@ -52,17 +54,9 @@ public class Brick implements GameBlock {
 		}
 	}
 	
-	/** Traverses the brick to check for containment. */
-	public boolean contains(IntVec checkedPos) {
-		IntVec current = pos;
-		if (current.equals(checkedPos)) return true;
-		
-		for (Direction dir : structure) {
-			current = current.add(dir);
-			if (current.equals(checkedPos)) return true;
-		}
-		
-		return false;
+	/** Tests whether two bricks intersect. */
+	public boolean intersects(GameBlock other) {
+		return !Collections.disjoint(getOccupiedPositions(), other.getOccupiedPositions());
 	}
 	
 	@Override
