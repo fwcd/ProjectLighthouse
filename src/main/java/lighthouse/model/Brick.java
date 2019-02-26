@@ -92,6 +92,6 @@ public class Brick implements GameBlock, Serializable {
 	
 	/** Deeply copies this brick. */
 	public Brick copy() {
-		return new Brick(pos, new ArrayList<>(structure));
+		return new Brick(pos, new ArrayList<>(structure), color);
 	}
 }
