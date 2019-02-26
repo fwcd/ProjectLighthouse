@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Supplier;
 
 import com.google.gson.Gson;
 
@@ -21,7 +22,8 @@ public class Game {
 	private static final Gson GSON = new Gson();
     private Board board;
     private Level level;
-	
+    private transient Board backup;
+    
     private final ListenerList<Level> levelListeners = new ListenerList<>();
     private final ListenerList<Board> boardListeners = new ListenerList<>();
 
@@ -61,15 +63,24 @@ public class Game {
 		}
     }
     
-    public void startLevel() {
-        LOG.info("Starting level...");
-        board = level.getStart().copy();
-        boardListeners.fire(board);
-    }
-    
     public Level getLevel() { return level; }
     
     public Board getBoard() { return board; }
+    
+    public void setBoard(Board board) {
+        this.board = board;
+        boardListeners.fire(board);
+    }
+    
+    public void revertToBackupBoardOr(Supplier<Board> otherwise) {
+        if (backup == null) {
+            setBoard(otherwise.get());
+        } else {
+            setBoard(backup.copy());
+        }
+    }
+    
+    public void backupBoard() { backup = board.copy(); }
     
     public boolean isWon() { return won; }
     

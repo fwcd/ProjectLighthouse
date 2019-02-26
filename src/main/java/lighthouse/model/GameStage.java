@@ -9,6 +9,8 @@ public interface GameStage extends Comparable<GameStage> {
 	
 	String getName();
 	
+	void navigateToIn(Game game);
+	
 	@Override
 	default int compareTo(GameStage o) { return Integer.compare(getIndex(), o.getIndex()); }
 }
