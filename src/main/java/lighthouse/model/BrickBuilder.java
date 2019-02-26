@@ -12,27 +12,37 @@ import lighthouse.util.IntVec;
  * A mutable brick.
  */
 public class BrickBuilder implements Iterable<Direction>, GameBlock {
-	private final List<Direction> brickGraph = new ArrayList<>();
-	private final Color color = ColorUtils.randomColor();
-	private final IntVec startPos;
+	private final List<Direction> structure;
+	private final Color color;
+	private IntVec startPos;
 	
-	public BrickBuilder(IntVec startPos) {
-		this.startPos = startPos;
+	public BrickBuilder(Brick brick) {
+		structure = new ArrayList<>(brick.getStructure());
+		startPos = brick.getPos();
+		color = brick.getColor();
 	}
 	
-	public void append(Direction direction) { brickGraph.add(direction); }
+	public BrickBuilder(IntVec startPos) {
+		structure = new ArrayList<>();
+		this.startPos = startPos;
+		color = ColorUtils.randomColor();
+	}
+	
+	public void append(Direction direction) { structure.add(direction); }
+	
+	public void moveBy(IntVec delta) { startPos = startPos.add(delta); }
 	
 	@Override
 	public Color getColor() { return color; }
 	
-	public Brick build() { return new Brick(startPos, brickGraph, color); }
+	public Brick build() { return new Brick(startPos, structure, color); }
 	
 	@Override
 	public IntVec getPos() { return startPos; }
 	
 	@Override
-	public List<Direction> getStructure() { return brickGraph; }
+	public List<Direction> getStructure() { return structure; }
 	
 	@Override
-	public Iterator<Direction> iterator() { return brickGraph.iterator(); }
+	public Iterator<Direction> iterator() { return structure.iterator(); }
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import lighthouse.util.IntVec;
@@ -42,8 +43,18 @@ public class Board implements Serializable {
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) { bricks.add(brick); }
 	
-	/** Removes a brick at a certain position. */
-	public void removeBrickAt(IntVec gridPos) { bricks.removeIf(brick -> brick.contains(gridPos)); }
+	/** Removes and returns a brick at a certain position. */
+	public Brick removeBrickAt(IntVec gridPos) {
+		Iterator<Brick> iterator = bricks.iterator();
+		while (iterator.hasNext()) {
+			Brick brick = iterator.next();
+			if (brick.contains(gridPos)) {
+				iterator.remove();
+				return brick;
+			}
+		}
+		return null;
+	}
 	
 	/** Clears the board's contents. */
 	public void clear() {

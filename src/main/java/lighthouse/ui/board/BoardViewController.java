@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import lighthouse.model.Board;
 import lighthouse.model.Status;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.board.controller.BoardArrangeController;
 import lighthouse.ui.board.controller.BoardEditController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.DelegateResponder;
@@ -84,7 +85,7 @@ public class BoardViewController implements ViewController, Renderer {
 	
 	public void newGame() {
 		model.getEditState().setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		responder.setDelegate(new BoardPlayController(model));
+		responder.setDelegate(new BoardPlayController(model)); // DEBUG
 	}
 	
 	public void edit() {

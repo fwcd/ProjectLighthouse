@@ -11,13 +11,15 @@ import lighthouse.util.ListenerList;
 public class BoardEditState {
 	private Status status;
 	private BrickBuilder brickInProgress;
-	private IntVec startPos;
 	
 	private final ListenerList<Status> statusListeners = new ListenerList<>();
 	
+	public void beginEdit(Brick edited) {
+		brickInProgress = new BrickBuilder(edited);
+	}
+	
 	public void beginEdit(IntVec startPos) {
 		brickInProgress = new BrickBuilder(startPos);
-		this.startPos = startPos;
 	}
 	
 	public void appendToEdit(Direction direction) {
@@ -30,15 +32,12 @@ public class BoardEditState {
 		return brick;
 	}
 	
-	public IntVec getStartPos() { return startPos; }
-	
 	public BrickBuilder getBrickInProgress() { return brickInProgress; }
 	
 	public Status getStatus() { return status; }
 	
 	public void reset() {
 		brickInProgress = null;
-		startPos = null;
 	}
 	
 	public void setStatus(Status status) {
