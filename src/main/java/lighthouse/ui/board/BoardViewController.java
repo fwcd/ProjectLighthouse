@@ -6,10 +6,7 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import lighthouse.model.Board;
-import lighthouse.model.Status;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.controller.BoardArrangeController;
-import lighthouse.ui.board.controller.BoardDrawController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
@@ -22,7 +19,6 @@ import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseGridView;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.loop.Renderer;
-import lighthouse.util.ColorUtils;
 
 /**
  * Manages the different board views. It assembles the

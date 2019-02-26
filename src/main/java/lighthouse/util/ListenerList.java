@@ -2,23 +2,22 @@ package lighthouse.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * A list of listeners that accept values.
  */
 public class ListenerList<T> {
-	private final List<Consumer<T>> listeners = new ArrayList<>();
+	private final List<Listener<T>> listeners = new ArrayList<>();
 	
-	public void add(Consumer<T> listener) {
+	public void add(Listener<T> listener) {
 		listeners.add(listener);
 	}
 	
-	public void remove(Consumer<T> listener) {
+	public void remove(Listener<T> listener) {
 		listeners.remove(listener);
 	}
 	
 	public void fire(T value) {
-		listeners.forEach(l -> l.accept(value));
+		listeners.forEach(l -> l.on(value));
 	}
 }
