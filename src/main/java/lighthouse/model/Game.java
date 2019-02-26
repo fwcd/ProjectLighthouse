@@ -22,8 +22,10 @@ public class Game {
 	private static final Gson GSON = new Gson();
     private Board board;
     private Level level;
-    private transient Board backup;
-    
+    private Board backup;
+	private GameStage selectedStage = GameStages.CURRENT;
+	
+	private final ListenerList<GameStage> stageListeners = new ListenerList<>();
     private final ListenerList<Level> levelListeners = new ListenerList<>();
     private final ListenerList<Board> boardListeners = new ListenerList<>();
 
@@ -79,6 +81,13 @@ public class Game {
             setBoard(backup.copy());
         }
     }
+	
+	public GameStage getSelectedStage() { return selectedStage; }
+	
+	public void selectStage(GameStage stage) {
+		selectedStage = stage;
+		stageListeners.fire(stage);
+	}
     
     public void backupBoard() { backup = board.copy(); }
     
@@ -87,4 +96,6 @@ public class Game {
     public ListenerList<Level> getLevelListeners() { return levelListeners; }
     
     public ListenerList<Board> getBoardListeners() { return boardListeners; }
+	
+	public ListenerList<GameStage> getStageListeners() { return stageListeners; }
 }
