@@ -58,7 +58,7 @@ public class GameControlsViewController {
 				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			),
-			new GameStageNavigatorViewController().getComponent()
+			new GameStageNavigatorViewController(model.getGame()).getComponent()
 		), BorderLayout.CENTER);
 	}
 	
