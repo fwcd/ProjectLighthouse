@@ -15,12 +15,12 @@ import lighthouse.model.GameStages;
  * Manages the level navigation that allows the
  * user to step through different stages of a level.
  */
-public class GameStageNavigatorViewController {
+public class LevelNavigatorViewController {
 	private final WebStepProgress component;
 	private final Game game;
 	private GameStage selectedStage;
 	
-	public GameStageNavigatorViewController(Game game) {
+	public LevelNavigatorViewController(Game game) {
 		this.game = game;
 		component = new WebStepProgress();
 		component.addSteps(GameStages.STAGES.stream().sorted().map(GameStage::getName).toArray(String[]::new));
