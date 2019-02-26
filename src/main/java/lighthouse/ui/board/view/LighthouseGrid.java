@@ -32,7 +32,6 @@ public class LighthouseGrid {
 	}
 	
 	public Color colorAt(IntVec lhGridPos) {
-		// TODO: Scaling/translating the input
 		return board.colorAt(lhGridPos.sub(4, 1).scale(0.2, 0.5).floor());
 	}
 	
