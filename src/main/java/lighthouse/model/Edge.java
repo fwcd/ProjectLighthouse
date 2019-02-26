@@ -1,14 +1,20 @@
 package lighthouse.model;
 
+import java.io.Serializable;
+
 import lighthouse.util.IntVec;
 
 /**
  * A brick edge.
  */
-public class Edge {
-	private final IntVec off;
-	private final Direction dir;
-	private boolean highlighted = false;
+public class Edge implements Serializable {
+	private static final long serialVersionUID = -2228402029013441765L;
+	private IntVec off;
+	private Direction dir;
+	private transient boolean highlighted = false;
+	
+	/** Deserialization constructor. */
+	protected Edge() {}
 	
 	public Edge(IntVec off, Direction dir) {
 		this.off = off;

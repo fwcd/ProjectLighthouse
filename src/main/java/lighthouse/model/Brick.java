@@ -1,11 +1,10 @@
 package lighthouse.model;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
@@ -16,11 +15,12 @@ import lighthouse.util.IntVec;
  * "arrow-based" representation ensures that
  * all brick fragments are connected.
  */
-public class Brick implements GameBlock {
-	private final List<Direction> structure;
-	private final List<Edge> edges = new ArrayList<>();
+public class Brick implements GameBlock, Serializable {
+	private static final long serialVersionUID = -4396959159634915799L;
+	private List<Direction> structure;
+	private List<Edge> edges = new ArrayList<>();
 	
-	private final Color color;
+	private Color color;
 	private IntVec pos;
 	
 	{
@@ -29,6 +29,9 @@ public class Brick implements GameBlock {
 		edges.add(new Edge(IntVec.ZERO, Direction.DOWN));
 		edges.add(new Edge(IntVec.ZERO, Direction.LEFT));
 	}
+	
+	/** Deserialization constructor. */
+	protected Brick() {}
 	
 	public Brick(IntVec pos, List<Direction> structure) {
 		this(pos, structure, ColorUtils.randomColor());

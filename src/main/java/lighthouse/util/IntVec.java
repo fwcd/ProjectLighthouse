@@ -12,8 +12,11 @@ public class IntVec {
 	public static IntVec ZERO = new IntVec(0, 0);
 	public static IntVec ONE_ONE = new IntVec(1, 1);
 	
-	private final int x;
-	private final int y;
+	private int x;
+	private int y;
+	
+	/** Deserialization constructor. */
+	protected IntVec() {}
 	
 	/** Creates a new two-dimensional int-vector. */
 	public IntVec(int x, int y) {

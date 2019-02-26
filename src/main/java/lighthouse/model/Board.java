@@ -1,6 +1,7 @@
 package lighthouse.model;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,12 +12,17 @@ import lighthouse.util.IntVec;
  * The game board model representing
  * the entire state of the "Schimmler"-game.
  */
-public class Board {
-	private final int columns;
-	private final int rows;
-	private final List<Brick> bricks = new ArrayList<>();
+public class Board implements Serializable {
+	private static final long serialVersionUID = 6367414981719952292L;
+	private int columns;
+	private int rows;
+	private List<Brick> bricks = new ArrayList<>();
 	private transient BoardEditState editState;
 	
+	/** Deserialization constructor. */
+	protected Board() {}
+	
+	/** Constructs a new board of the given size. */
 	public Board(int columns, int rows) {
 		this.columns = columns;
 		this.rows = rows;
