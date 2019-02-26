@@ -15,7 +15,9 @@ public class GameStages {
 	
 	private GameStages() {}
 	
-	private static class Start implements GameStage {
+	public static class Start implements GameStage {
+		Start() {}
+		
 		@Override
 		public int getIndex() { return 0; }
 		
@@ -29,12 +31,16 @@ public class GameStages {
 			}
 			game.setBoard(game.getLevel().getStart());
 		}
+	
+		public <T> T accept(GameStageVisitor<T> visitor) { return visitor.visitStart(this); }
 		
 		@Override
 		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getStart()); }
 	}
 	
-	private static class Current implements GameStage {
+	public static class Current implements GameStage {
+		Current() {}
+		
 		@Override
 		public int getIndex() { return 1; }
 		
@@ -50,12 +56,16 @@ public class GameStages {
 		
 		@Override
 		public boolean isCurrent() { return true; }
+	
+		public <T> T accept(GameStageVisitor<T> visitor) { return visitor.visitCurrent(this); }
 		
 		@Override
 		public Optional<Board> getBoardFrom(Game game) { return Optional.empty(); }
 	}
 	
-	private static class Goal implements GameStage {
+	public static class Goal implements GameStage {
+		Goal() {}
+		
 		@Override
 		public int getIndex() { return 2; }
 		
@@ -69,6 +79,8 @@ public class GameStages {
 			}
 			game.setBoard(game.getLevel().getGoal());
 		}
+	
+		public <T> T accept(GameStageVisitor<T> visitor) { return visitor.visitGoal(this); }
 		
 		@Override
 		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getGoal()); }

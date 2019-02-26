@@ -15,6 +15,8 @@ public interface GameStage extends Comparable<GameStage> {
 	
 	Optional<Board> getBoardFrom(Game game);
 	
+	<T> T accept(GameStageVisitor<T> visitor);
+	
 	default boolean isCurrent() { return false; }
 	
 	@Override

@@ -85,7 +85,7 @@ public class BoardViewController implements ViewController, Renderer {
 	
 	public void newGame() {
 		model.getEditState().setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		responder.setDelegate(new BoardPlayController(model)); // DEBUG
+		responder.setDelegate(new BoardPlayController(model));
 	}
 	
 	public void edit() {
