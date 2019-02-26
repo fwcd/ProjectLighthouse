@@ -64,6 +64,10 @@ public class IntVec implements Serializable {
 	
 	public IntVec max(IntVec other) { return new IntVec(Math.max(x, other.x), Math.max(y, other.y)); }
 	
+	public IntVec withX(int newX) { return new IntVec(newX, y); }
+	
+	public IntVec withY(int newY) { return new IntVec(x, newY); }
+	
 	public int dot(IntVec other) { return (x * other.x) + (y * other.y); }
 	
 	public int cross(IntVec other) { return (x * other.y) - (y * other.x); }

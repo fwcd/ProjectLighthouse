@@ -66,6 +66,10 @@ public class DoubleVec implements Serializable {
 	
 	public DoubleVec max(DoubleVec other) { return new DoubleVec(Math.max(x, other.x), Math.max(y, other.y)); }
 	
+	public DoubleVec withX(double newX) { return new DoubleVec(newX, y); }
+	
+	public DoubleVec withY(double newY) { return new DoubleVec(x, newY); }
+	
 	public DoubleVec normalize() { return scale(1.0 / length()); }
 	
 	public double dot(DoubleVec other) { return (x * other.x) + (y * other.y); }
