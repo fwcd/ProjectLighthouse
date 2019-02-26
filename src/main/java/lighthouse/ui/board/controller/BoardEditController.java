@@ -11,7 +11,7 @@ import lighthouse.util.IntVec;
  */
 public class BoardEditController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardEditController.class);
-	private final Board board;
+	private Board board;
 	private IntVec last;
 	
 	public BoardEditController(Board model) {
@@ -52,5 +52,10 @@ public class BoardEditController implements BoardResponder {
 	public void reset() {
 		LOG.debug("Resetting");
 		board.clear();
+	}
+	
+	@Override
+	public void updateBoard(Board board) {
+		this.board = board;
 	}
 }

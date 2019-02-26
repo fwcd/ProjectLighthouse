@@ -68,6 +68,7 @@ public class BoardViewController {
 	public void updateModel(Board model) {
 		this.model = model;
 		loop.updateBoard(model);
+		responder.updateBoard(model);
 	}
 	
 	public void newGame() {

@@ -1,5 +1,6 @@
 package lighthouse.ui.board.controller;
 
+import lighthouse.model.Board;
 import lighthouse.util.IntVec;
 
 /**
@@ -34,4 +35,7 @@ public class DelegateResponder implements BoardResponder {
 	
 	@Override
 	public void reset() { delegate.reset(); }
+	
+	@Override
+	public void updateBoard(Board board) { delegate.updateBoard(board); }
 }

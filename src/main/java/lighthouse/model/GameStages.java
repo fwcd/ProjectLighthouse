@@ -7,9 +7,14 @@ import java.util.List;
  * Holds the various stages of a game match.
  */
 public class GameStages {
-	public static final List<GameStage> STAGES = Arrays.asList(new Start(), new Current(), new Goal());
+	public static final GameStage START = new Start();
+	public static final GameStage CURRENT = new Current();
+	public static final GameStage GOAL = new Goal();
+	public static final List<GameStage> STAGES = Arrays.asList(START, CURRENT, GOAL);
 	
-	public static class Start implements GameStage {
+	private GameStages() {}
+	
+	private static class Start implements GameStage {
 		@Override
 		public int getIndex() { return 0; }
 		
@@ -17,13 +22,15 @@ public class GameStages {
 		public String getName() { return "Start"; }
 		
 		@Override
-		public void navigateToIn(Game game) {
-			game.backupBoard();
+		public void transitionFrom(GameStage lastStage, Game game) {
+			if (lastStage.isCurrent()) {
+				game.backupBoard();
+			}
 			game.setBoard(game.getLevel().getStart());
 		}
 	}
 	
-	public static class Current implements GameStage {
+	private static class Current implements GameStage {
 		@Override
 		public int getIndex() { return 1; }
 		
@@ -31,12 +38,15 @@ public class GameStages {
 		public String getName() { return "Current"; }
 		
 		@Override
-		public void navigateToIn(Game game) {
+		public void transitionFrom(GameStage lastStage, Game game) {
 			game.revertToBackupBoardOr(Board::new);
 		}
+		
+		@Override
+		public boolean isCurrent() { return true; }
 	}
 	
-	public static class Goal implements GameStage {
+	private static class Goal implements GameStage {
 		@Override
 		public int getIndex() { return 2; }
 		
@@ -44,8 +54,10 @@ public class GameStages {
 		public String getName() { return "Goal"; }
 		
 		@Override
-		public void navigateToIn(Game game) {
-			game.backupBoard();
+		public void transitionFrom(GameStage lastStage, Game game) {
+			if (lastStage.isCurrent()) {
+				game.backupBoard();
+			}
 			game.setBoard(game.getLevel().getGoal());
 		}
 	}

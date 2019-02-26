@@ -1,5 +1,6 @@
 package lighthouse.ui.board.controller;
 
+import lighthouse.model.Board;
 import lighthouse.util.IntVec;
 
 /**
@@ -12,6 +13,8 @@ import lighthouse.util.IntVec;
  * would only receive offsets).</p>
  */
 public interface BoardResponder {
+	void updateBoard(Board board);
+	
 	default void press(IntVec gridPos) {}
 	
 	default void rightPress(IntVec gridPos) {}

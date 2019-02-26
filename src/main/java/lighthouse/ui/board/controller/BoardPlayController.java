@@ -14,9 +14,9 @@ import lighthouse.util.IntVec;
  * The primary responder implementation for playing.
  */
 public class BoardPlayController implements BoardResponder {
-	private final Board board;
-	private boolean dragEvent;
 	private final Map<Direction, Integer> limits = new HashMap<>();
+	private Board board;
+	private boolean dragEvent;
 
 	private IntVec start;
 	private Brick brick;
@@ -77,5 +77,10 @@ public class BoardPlayController implements BoardResponder {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
+	}
+	
+	@Override
+	public void updateBoard(Board board) {
+		this.board = board;
 	}
 }
