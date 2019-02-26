@@ -1,7 +1,6 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
-import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,7 +42,7 @@ public class GameControlsViewController {
 		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		component.add(statusLabel, BorderLayout.NORTH);
 		editState.getStatusListeners().add(statusLabel::setText);
-		model.getBoardListeners().add(newBoard -> {
+		model.getGame().getBoardListeners().add(newBoard -> {
 			newBoard.getEditState().getStatusListeners().add(statusLabel::setText);
 		});
 		
@@ -70,7 +69,7 @@ public class GameControlsViewController {
 		pathChooser.showSaveDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.saveBoardTo(path);
+				model.getGame().saveLevelTo(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -81,7 +80,7 @@ public class GameControlsViewController {
 		pathChooser.showOpenDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.loadBoardFrom(path);
+				model.getGame().loadLevelFrom(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}

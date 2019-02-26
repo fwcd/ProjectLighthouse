@@ -19,8 +19,10 @@ public class Board implements Serializable {
 	private List<Brick> bricks = new ArrayList<>();
 	private transient BoardEditState editState;
 	
-	/** Deserialization constructor. */
-	protected Board() {}
+	/** Creates a new board with the default size of 4x6. */
+	public Board() {
+		this(4, 6);
+	}
 	
 	/** Constructs a new board of the given size. */
 	public Board(int columns, int rows) {

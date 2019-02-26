@@ -11,8 +11,11 @@ public class Level implements Serializable {
 	private Board start;
 	private Board goal;
 	
-	/** Deserialization constructor. */
-	protected Level() {}
+	/** Creates a new level with empty start/goal boards. */
+	public Level() {
+		start = new Board();
+		goal = new Board();
+	}
 	
 	public Level(Board start, Board goal) {
 		this.start = start;
