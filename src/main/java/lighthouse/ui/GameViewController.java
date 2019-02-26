@@ -4,6 +4,7 @@ import javax.swing.JComponent;
 
 import lighthouse.model.Game;
 import lighthouse.model.GameStage;
+import lighthouse.model.Level;
 import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
@@ -33,6 +34,8 @@ public class GameViewController implements ViewController {
 		model.getState().getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 		});
+		Level initialLevel = model.getState().getLevel();
+		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
 		
 		// Initially enter game mode
 		play();
