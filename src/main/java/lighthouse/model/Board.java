@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +43,11 @@ public class Board implements Serializable {
 	
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) { bricks.add(brick); }
+	
+	/** Replaces a brick. */
+	public void replace(Brick oldBrick, Brick newBrick) {
+		Collections.replaceAll(bricks, oldBrick, newBrick);
+	}
 	
 	/** Removes and returns a brick at a certain position. */
 	public Brick removeBrickAt(IntVec gridPos) {
@@ -97,9 +103,7 @@ public class Board implements Serializable {
 	/** Deeply copies this board. */
 	public Board copy() {
 		Board copied = new Board(columns, rows);
-		for (Brick brick : bricks) {
-			copied.bricks.add(brick.copy());
-		}
+		copied.bricks.addAll(bricks);
 		return copied;
 	}
 	

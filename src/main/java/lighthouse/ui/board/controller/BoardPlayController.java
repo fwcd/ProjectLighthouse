@@ -63,7 +63,9 @@ public class BoardPlayController implements BoardResponder {
 			
 			if (limits.get(atDir) > 0) {
 				limits.put(atDir,limits.get(atDir) -1);
-				brick.moveInto(atDir);
+				Brick newBrick = brick.movedInto(atDir);
+				board.replace(brick, newBrick);
+				brick = newBrick;
 				start = gridPos;
 			}
 		}

@@ -14,6 +14,8 @@ import lighthouse.util.IntVec;
  * a list of directions and edges. This internal,
  * "arrow-based" representation ensures that
  * all brick fragments are connected.
+ * 
+ * <p>Note that bricks are immutable.</p>
  */
 public class Brick implements GameBlock, Serializable {
 	private static final long serialVersionUID = -4396959159634915799L;
@@ -75,9 +77,9 @@ public class Brick implements GameBlock, Serializable {
 		return structure.equals(brick.structure);
 	}
 	
-	public void moveBy(IntVec delta) { pos = pos.add(delta); }
+	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure); }
 	
-	public void moveInto(Direction dir) { pos = pos.add(dir); }
+	public Brick movedInto(Direction dir) { return new Brick(pos.add(dir), structure); }
 	
 	@Override
 	public IntVec getPos() { return pos; }
@@ -89,9 +91,4 @@ public class Brick implements GameBlock, Serializable {
 	
 	@Override
 	public Color getColor() { return color; }
-	
-	/** Deeply copies this brick. */
-	public Brick copy() {
-		return new Brick(pos, new ArrayList<>(structure), color);
-	}
 }
