@@ -1,6 +1,7 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
+import java.nio.file.Path;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -62,8 +63,16 @@ public class GameControlsViewController {
 	}
 	
 	private void save() {
-		// TODO: Remember saved file
-		saveAs();
+		Path destination = model.getSaveState().getSaveDestination();
+		if (destination == null) {
+			saveAs();
+		} else {
+			try {
+				model.getGame().saveLevelTo(destination);
+			} catch (Exception e) {
+				showWarning(e);
+			}
+		}
 	}
 	
 	private void saveAs() {
