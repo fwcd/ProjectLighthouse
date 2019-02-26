@@ -22,4 +22,6 @@ public class Level implements Serializable {
 	public Board getStart() { return start; }
 	
 	public Board getGoal() { return goal; }
+	
+	public boolean isCompleted(Board tested) { return tested.equals(goal); }
 }
