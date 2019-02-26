@@ -52,7 +52,7 @@ public class GameControlsViewController implements ViewController {
 		// Setup control panel
 		component.add(vboxOf(
 			panelOf(
-				buttonOf("New Game", game::newGame),
+				buttonOf("Play", game::play),
 				buttonOf("Reset", game::reset),
 				buttonOf("Edit", game::edit)
 			),
