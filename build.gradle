@@ -24,6 +24,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation('de.sciss:weblaf:2.1.4') {
         exclude group: 'org.slf4j'
     }
