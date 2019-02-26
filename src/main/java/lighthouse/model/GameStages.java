@@ -71,6 +71,6 @@ public class GameStages {
 		}
 		
 		@Override
-		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getStart()); }
+		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getGoal()); }
 	}
 }
