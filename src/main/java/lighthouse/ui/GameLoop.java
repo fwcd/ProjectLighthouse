@@ -22,8 +22,8 @@ public class GameLoop {
 	private final List<LighthouseGridView> lhGridViews;
 	private final List<BoardView> boardViews;
 	
-	private final Board board;
-	private final LighthouseGrid grid;
+	private Board board;
+	private LighthouseGrid grid;
 	
 	private int maxFPS = 60; // The upper fps limit
 	private int fps = 0; // The actual fps
@@ -34,8 +34,7 @@ public class GameLoop {
 	public GameLoop(List<LighthouseGridView> lhGridViews, List<BoardView> boardViews, Board board) {
 		this.lhGridViews = lhGridViews;
 		this.boardViews = boardViews;
-		this.board = board;
-		grid = new LighthouseGrid(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
+		updateBoard(board);
 	}
 	
 	/** Starts the game loop asynchronously on another thread. */
@@ -65,6 +64,11 @@ public class GameLoop {
 			}
 		}, delayMs, delayMs);
 		running = true;
+	}
+	
+	public void updateBoard(Board board) {
+		this.board = board;
+		grid = new LighthouseGrid(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
 	}
 	
 	/** Draws a single frame. */

@@ -1,16 +1,21 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import lighthouse.model.AppModel;
 import lighthouse.model.BoardEditState;
-import lighthouse.model.FileSaveState;
 import lighthouse.ui.board.BoardViewController;
 
 /**
@@ -19,16 +24,15 @@ import lighthouse.ui.board.BoardViewController;
  * a path chooser to the user.
  */
 public class GameControlsViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(GameControlsViewController.class);
 	private final JComponent component;
 	private final JLabel statusLabel;
 	
-	private final BoardViewController board;
 	private final PathChooser pathChooser;
-	private final FileSaveState saveState;
+	private final AppModel model;
 
-	public GameControlsViewController(BoardViewController board, FileSaveState saveState) {
-		this.saveState = saveState;
-		this.board = board;
+	public GameControlsViewController(BoardViewController board, AppModel model) {
+		this.model = model;
 		
 		component = new JPanel();
 		pathChooser = new PathChooser(component);
@@ -39,6 +43,9 @@ public class GameControlsViewController {
 		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		component.add(statusLabel, BorderLayout.NORTH);
 		editState.getStatusListeners().add(statusLabel::setText);
+		model.getBoardListeners().add(newBoard -> {
+			newBoard.getEditState().getStatusListeners().add(statusLabel::setText);
+		});
 		
 		component.add(vboxOf(
 			panelOf(
@@ -61,16 +68,29 @@ public class GameControlsViewController {
 	
 	private void saveAs() {
 		pathChooser.showSaveDialog().ifPresent(path -> {
-			saveState.setSaveDestination(path);
-			board.save(path);
+			model.getSaveState().setSaveDestination(path);
+			try {
+				model.saveBoardTo(path);
+			} catch (Exception e) {
+				showWarning(e);
+			}
 		});
 	}
 	
 	private void open() {
 		pathChooser.showOpenDialog().ifPresent(path -> {
-			saveState.setSaveDestination(path);
-			board.open(path);
+			model.getSaveState().setSaveDestination(path);
+			try {
+				model.loadBoardFrom(path);
+			} catch (Exception e) {
+				showWarning(e);
+			}
 		});
+	}
+	
+	private void showWarning(Exception e) {
+		LOG.warn("Error while saving/loading files", e);
+		JOptionPane.showMessageDialog(component, e.getMessage(), e.getClass().getSimpleName() + " while saving/loading a file", JOptionPane.WARNING_MESSAGE);
 	}
 	
 	private JPanel vboxOf(JComponent... components) {

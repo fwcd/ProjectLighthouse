@@ -1,6 +1,5 @@
 package lighthouse.ui.board;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import lighthouse.ui.board.view.LocalBoardView;
  */
 public class BoardViewController {
 	private final JComponent component;
-	private final Board model;
+	private Board model;
 	
 	private final List<LighthouseGridView> lhGridViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
@@ -66,6 +65,11 @@ public class BoardViewController {
 		newGame();
 	}
 	
+	public void updateModel(Board model) {
+		this.model = model;
+		loop.updateBoard(model);
+	}
+	
 	public void newGame() {
 		model.getEditState().setStatus("Playing");
 		responder.setDelegate(new BoardPlayController(model));
@@ -78,14 +82,6 @@ public class BoardViewController {
 	
 	public void reset() {
 		responder.reset();
-	}
-	
-	public void save(Path path) {
-		// TODO
-	}
-	
-	public void open(Path path) {
-		// TODO
 	}
 	
 	public void addLighthouseGridView(LighthouseGridView view) {

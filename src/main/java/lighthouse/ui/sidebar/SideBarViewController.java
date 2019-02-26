@@ -29,7 +29,7 @@ public class SideBarViewController {
 		accordion.setFillSpace(false);
 		
 		// Adds a panel containing game and file controls
-		GameControlsViewController controls = new GameControlsViewController(board, model.getSaveState());
+		GameControlsViewController controls = new GameControlsViewController(board, model);
 		accordion.addPane("Game Controls", controls.getComponent());
 		
 		// Add the connector panel which allows the user

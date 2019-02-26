@@ -22,8 +22,10 @@ public class AppViewController {
 		
 		JPanel boardWrapper = new JPanel();
 		boardWrapper.setLayout(new GridBagLayout());
+		
 		BoardViewController board = new BoardViewController(model.getBoard());
 		boardWrapper.add(board.getLocalComponent());
+		model.getBoardListeners().add(board::updateModel);
 		component.add(boardWrapper, BorderLayout.CENTER);
 		
 		SideBarViewController sideBar = new SideBarViewController(model, board);
