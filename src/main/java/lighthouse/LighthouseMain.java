@@ -22,6 +22,7 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
  */
 public class LighthouseMain {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseMain.class);
+	private static final String TITLE = "Lighthouse";
 	private static final int WINDOW_WIDTH = 680;
 	private static final int WINDOW_HEIGHT = 550;
 	
@@ -38,7 +39,7 @@ public class LighthouseMain {
 		AppModel model = new AppModel();
 		SwingUtilities.invokeAndWait(() -> {
 			WebLookAndFeel.install();
-			AppFrame frame = new AppFrame(model, WINDOW_WIDTH, WINDOW_HEIGHT);
+			AppFrame frame = new AppFrame(model, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 			frame.show();
 		});
 		
