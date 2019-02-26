@@ -13,6 +13,7 @@ public class BoardEditController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardEditController.class);
 	private Board board;
 	private IntVec last;
+	private boolean dragging = false;
 	
 	public BoardEditController(Board model) {
 		board = model;
@@ -24,6 +25,7 @@ public class BoardEditController implements BoardResponder {
 			board.getEditState().beginEdit(gridPos);
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
+			dragging = true;
 		}
 	}
 	
@@ -34,22 +36,27 @@ public class BoardEditController implements BoardResponder {
 	
 	@Override
 	public void dragTo(IntVec gridPos) {
-		IntVec delta = gridPos.sub(last);
-		
-		if (!gridPos.equals(last)) {
-			if (!board.hasBrickAt(gridPos)) {
-				board.getEditState().appendToEdit(delta.nearestDirection());
-				LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+		if (dragging) {
+			IntVec delta = gridPos.sub(last);
+			
+			if (!gridPos.equals(last)) {
+				if (!board.hasBrickAt(gridPos)) {
+					board.getEditState().appendToEdit(delta.nearestDirection());
+					LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+				}
+				last = gridPos;
 			}
-			last = gridPos;
 		}
 	}
 	
 	@Override
 	public void release(IntVec gridPos) {
-		LOG.debug("Released at {}", gridPos);
-		board.add(board.getEditState().finishEdit(gridPos));
-		last = null;
+		if (dragging) {
+			LOG.debug("Released at {}", gridPos);
+			board.add(board.getEditState().finishEdit(gridPos));
+			last = null;
+			dragging = false;
+		}
 	}
 	
 	@Override
