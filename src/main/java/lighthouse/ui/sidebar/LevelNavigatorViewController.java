@@ -1,5 +1,6 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,12 +11,13 @@ import com.alee.extended.progress.WebStepProgress;
 import lighthouse.model.Game;
 import lighthouse.model.GameStage;
 import lighthouse.model.GameStages;
+import lighthouse.ui.ViewController;
 
 /**
  * Manages the level navigation that allows the
  * user to step through different stages of a level.
  */
-public class LevelNavigatorViewController {
+public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	private final Game game;
 	private GameStage selectedStage;
@@ -23,7 +25,10 @@ public class LevelNavigatorViewController {
 	public LevelNavigatorViewController(Game game) {
 		this.game = game;
 		component = new WebStepProgress();
-		component.addSteps(GameStages.STAGES.stream().sorted().map(GameStage::getName).toArray(String[]::new));
+		component.addSteps(GameStages.STAGES.stream().sorted()
+			.map(stage -> new GameStageIconViewController(stage, game))
+			.map(ViewController::getComponent)
+			.toArray(Component[]::new));
 		
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
@@ -57,5 +62,6 @@ public class LevelNavigatorViewController {
 		component.setSelectedStepIndex(newStage.getIndex());
 	}
 	
+	@Override
 	public JComponent getComponent() { return component; }
 }

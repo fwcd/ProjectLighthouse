@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.view.RemoteLighthouseGridView;
 import lighthouse.util.ConfigFile;
@@ -20,7 +21,7 @@ import lighthouse.util.ResourceConfigFile;
  * Manages a view containing the Lighthouse
  * connection controls.
  */
-public class LighthouseConnectorViewController {
+public class LighthouseConnectorViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
 	private final BoardViewController grid; // The aliased grid
@@ -70,6 +71,7 @@ public class LighthouseConnectorViewController {
 		return box;
 	}
 	
+	@Override
 	public JComponent getComponent() {
 		return component;
 	}

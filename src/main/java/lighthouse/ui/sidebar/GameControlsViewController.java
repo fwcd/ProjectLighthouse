@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.model.BoardEditState;
+import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
 
 /**
@@ -21,7 +22,7 @@ import lighthouse.ui.board.BoardViewController;
  * controls and is responsible for presenting
  * a path chooser to the user.
  */
-public class GameControlsViewController {
+public class GameControlsViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(GameControlsViewController.class);
 	private final JComponent component;
 	private final StatusBar statusBar;
@@ -126,6 +127,7 @@ public class GameControlsViewController {
 		return button;
 	}
 	
+	@Override
 	public JComponent getComponent() {
 		return component;
 	}

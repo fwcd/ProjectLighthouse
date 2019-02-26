@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import lighthouse.model.Board;
 import lighthouse.model.Status;
 import lighthouse.ui.GameLoop;
+import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardEditController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.DelegateResponder;
@@ -25,7 +26,7 @@ import lighthouse.util.ColorUtils;
  * necessary inputs and views, while still allowing the
  * user of this class to hook custom views.
  */
-public class BoardViewController {
+public class BoardViewController implements ViewController {
 	private final JComponent component;
 	private Board model;
 	
@@ -99,7 +100,8 @@ public class BoardViewController {
 		return model;
 	}
 	
-	public JComponent getLocalComponent() {
+	@Override
+	public JComponent getComponent() {
 		return component;
 	}
 }

@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.model.AppModel;
+import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.view.LocalLighthouseGridView;
 
@@ -17,7 +18,7 @@ import lighthouse.ui.board.view.LocalLighthouseGridView;
  * with the local and remote presentation of
  * the Lighthouse grid.
  */
-public class SideBarViewController {
+public class SideBarViewController implements ViewController {
 	private final JPanel component;
 	
 	public SideBarViewController(AppModel model, BoardViewController board) {
@@ -46,6 +47,7 @@ public class SideBarViewController {
 		component.add(accordion);
 	}
 
+	@Override
 	public JComponent getComponent() {
 		return component;
 	}

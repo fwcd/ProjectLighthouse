@@ -13,7 +13,7 @@ import lighthouse.ui.sidebar.SideBarViewController;
 /**
  * The application's base view controller.
  */
-public class AppViewController {
+public class AppViewController implements ViewController {
 	private final JComponent component;
 	
 	public AppViewController(AppModel model) {
@@ -24,7 +24,7 @@ public class AppViewController {
 		boardWrapper.setLayout(new GridBagLayout());
 		
 		BoardViewController board = new BoardViewController(model.getGame().getBoard());
-		boardWrapper.add(board.getLocalComponent());
+		boardWrapper.add(board.getComponent());
 		model.getGame().getBoardListeners().add(board::updateModel);
 		component.add(boardWrapper, BorderLayout.CENTER);
 		
@@ -32,6 +32,7 @@ public class AppViewController {
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 	}
 	
+	@Override
 	public JComponent getComponent() {
 		return component;
 	}
