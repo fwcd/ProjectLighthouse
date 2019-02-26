@@ -30,6 +30,10 @@ public class GameViewController implements ViewController {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getBoard())));
 		};
 		
+		model.getState().getLevelListeners().add(level -> {
+			level.getGoal().bindToUpdates(level.getStart());
+		});
+		
 		// Initially enter game mode
 		play();
 	}

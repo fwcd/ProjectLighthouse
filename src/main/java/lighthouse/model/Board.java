@@ -99,7 +99,7 @@ public class Board implements Serializable {
 	}
 	
 	/** Synchronizes this board's bricks with another board. */
-	public void syncTo(Board other) {
+	public void bindToUpdates(Board other) {
 		other.getChangeListeners().add(v -> {
 			bricks.clear();
 			bricks.addAll(other.bricks);
