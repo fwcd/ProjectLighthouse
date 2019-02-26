@@ -20,9 +20,11 @@ public class BoardEditController implements BoardResponder {
 	
 	@Override
 	public void press(IntVec gridPos) {
-		board.getEditState().beginEdit(gridPos);
-		LOG.debug("Pressed at {}", gridPos);
-		last = gridPos;
+		if (!board.hasBrickAt(gridPos)) {
+			board.getEditState().beginEdit(gridPos);
+			LOG.debug("Pressed at {}", gridPos);
+			last = gridPos;
+		}
 	}
 	
 	@Override
