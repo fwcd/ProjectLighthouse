@@ -1,5 +1,6 @@
 package lighthouse.util;
 
+import java.io.Serializable;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 
@@ -8,7 +9,8 @@ import lighthouse.model.Direction;
 /**
  * A two-dimensional, immutable int-vector.
  */
-public class IntVec {
+public class IntVec implements Serializable {
+	private static final long serialVersionUID = 5924492052517734738L;
 	public static IntVec ZERO = new IntVec(0, 0);
 	public static IntVec ONE_ONE = new IntVec(1, 1);
 	

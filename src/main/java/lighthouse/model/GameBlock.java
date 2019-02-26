@@ -31,6 +31,27 @@ public interface GameBlock {
 		return positions;
 	}
 	
+	/** Converts the brick into a boolean array. */
+	default boolean[][] toBoolArray() {
+		Set<IntVec> positions = getOccupiedPositions();
+		IntVec min = positions.stream().reduce(IntVec::min).orElse(IntVec.ZERO);
+		IntVec max = positions.stream().reduce(IntVec::max).orElse(IntVec.ZERO);
+		IntVec diff = max.sub(min);
+		boolean[][] arr = new boolean[diff.getY()][diff.getX()];
+		
+		for (int y = 0; y < diff.getY(); y++) {
+			for (int x = 0; x < diff.getX(); x++) {
+				arr[y][x] = false;
+			}
+		}
+		
+		for (IntVec pos : positions) {
+			arr[pos.getY()][pos.getX()] = true;
+		}
+		
+		return arr;
+	}
+	
 	/** Traverses the brick to check for containment. */
 	default boolean contains(IntVec checkedPos) {
 		IntVec current = getPos();

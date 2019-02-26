@@ -1,5 +1,6 @@
 package lighthouse.util;
 
+import java.io.Serializable;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
@@ -8,7 +9,8 @@ import lighthouse.model.Direction;
 /**
  * A two-dimensional, immutable double-vector.
  */
-public class DoubleVec {
+public class DoubleVec implements Serializable {
+	private static final long serialVersionUID = -7870207530459306953L;
 	public static DoubleVec ZERO = new DoubleVec(0, 0);
 	public static DoubleVec ONE_ONE = new DoubleVec(1, 1);
 	
