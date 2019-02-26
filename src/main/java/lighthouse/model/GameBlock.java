@@ -31,22 +31,23 @@ public interface GameBlock {
 		return positions;
 	}
 	
-	/** Converts the brick into a boolean array. */
-	default boolean[][] toBoolArray() {
+	/** Converts the brick into a 2D-array of positions. */
+	default IntVec[][] to2DArray() {
 		Set<IntVec> positions = getOccupiedPositions();
 		IntVec min = positions.stream().reduce(IntVec::min).orElse(IntVec.ZERO);
 		IntVec max = positions.stream().reduce(IntVec::max).orElse(IntVec.ZERO);
 		IntVec diff = max.sub(min);
-		boolean[][] arr = new boolean[diff.getY()][diff.getX()];
+		IntVec[][] arr = new IntVec[diff.getY() + 1][diff.getX() + 1];
 		
 		for (int y = 0; y < diff.getY(); y++) {
 			for (int x = 0; x < diff.getX(); x++) {
-				arr[y][x] = false;
+				arr[y][x] = null;
 			}
 		}
 		
 		for (IntVec pos : positions) {
-			arr[pos.getY()][pos.getX()] = true;
+			IntVec relPos = pos.sub(min);
+			arr[relPos.getY()][relPos.getX()] = pos;
 		}
 		
 		return arr;

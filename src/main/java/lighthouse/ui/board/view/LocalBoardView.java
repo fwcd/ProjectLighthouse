@@ -105,31 +105,21 @@ public class LocalBoardView implements BoardView {
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
 		IntVec cellSize = getCellSize();
-		IntVec currentPos = block.getPos();
+		IntVec blockPos = block.getPos();
+		IntVec[][] fragments = block.to2DArray();
 		
 		g2d.setColor(block.getColor());
-		renderCell(g2d, currentPos, cellSize, blockScale);
 		
-		for (Direction dir : block.getStructure()) {
-			currentPos = currentPos.add(dir);
-			renderConnectionFrom(g2d, currentPos, dir, cellSize, blockScale);
+		for (int y = 0; y < fragments.length; y++) {
+			for (int x = 0; x < fragments[y].length; x++) {
+				if (fragments[y][x] != null) {
+					renderCell(g2d, blockPos, fragments, new IntVec(x, y), cellSize, blockScale);
+				}
+			}
 		}
 	}
 	
-	private void renderConnectionFrom(Graphics2D g2d, IntVec cellPos, Direction direction, IntVec cellSize, double scale) {
-		IntVec fromPos = cellPos.sub(direction);
-		IntVec topLeft = coordinateMapper.toPixelPos(fromPos.min(cellPos));
-		IntVec bottomRight = coordinateMapper.toPixelPos(fromPos.max(cellPos)).add(cellSize);
-		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
-		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
-		IntVec innerTopLeft = topLeft.add(cornerOffset);
-		IntVec innerBottomRight = bottomRight.sub(cornerOffset);
-		IntVec scaledConnSize = innerBottomRight.sub(innerTopLeft);
-		// markPoint(g2d, innerTopLeft, Color.GREEN);
-		// markPoint(g2d, innerBottomRight, Color.RED);
-		g2d.fillRect(innerTopLeft.getX(), innerTopLeft.getY(), scaledConnSize.getX(), scaledConnSize.getY());
-	}
-	
+	@SuppressWarnings("unused") // For debugging
 	private void markPoint(Graphics2D g2d, IntVec pos, Color color) {
 		Color tmpColor = g2d.getColor();
 		g2d.setColor(color);
@@ -137,7 +127,8 @@ public class LocalBoardView implements BoardView {
 		g2d.setColor(tmpColor);
 	}
 	
-	private void renderCell(Graphics2D g2d, IntVec cellPos, IntVec cellSize, double scale) {
+	private void renderCell(Graphics2D g2d, IntVec blockPos, IntVec[][] fragments, IntVec cellRelPos, IntVec cellSize, double scale) {
+		IntVec cellPos = fragments[cellRelPos.getY()][cellRelPos.getX()];
 		IntVec topLeft = coordinateMapper.toPixelPos(cellPos);
 		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
 		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
