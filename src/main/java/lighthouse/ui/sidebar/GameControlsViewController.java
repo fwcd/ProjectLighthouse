@@ -45,7 +45,7 @@ public class GameControlsViewController implements ViewController {
 		component.add(statusBar.getComponent(), BorderLayout.NORTH);
 		
 		gameModel.getStatusListeners().add(statusBar::display);
-		gameModel.getBoardListeners().add(newBoard -> {
+		gameModel.getState().getBoardListeners().add(newBoard -> {
 			gameModel.getStatusListeners().add(statusBar::display);
 		});
 		
@@ -71,7 +71,7 @@ public class GameControlsViewController implements ViewController {
 			saveAs();
 		} else {
 			try {
-				model.getGame().saveLevelTo(destination);
+				model.getGame().getState().saveLevelTo(destination);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -82,7 +82,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showSaveDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGame().saveLevelTo(path);
+				model.getGame().getState().saveLevelTo(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -93,7 +93,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showOpenDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGame().loadLevelFrom(path);
+				model.getGame().getState().loadLevelFrom(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}

@@ -3,17 +3,19 @@ package lighthouse.model;
 import java.util.Optional;
 
 /**
- * Represents a "state" of the game in a level,
- * like "at the beginning" or "at the end".
+ * Represents a stage in the game such
+ * as the "beginning" or the "end". This is
+ * useful, since the game naturally requires
+ * some differentiation between start and end states.
  */
 public interface GameStage extends Comparable<GameStage> {
 	int getIndex();
 	
 	String getName();
 	
-	void transitionFrom(GameStage lastStage, Game game);
+	void transitionFrom(GameStage lastStage, GameState game);
 	
-	Optional<Board> getBoardFrom(Game game);
+	Optional<Board> getBoardFrom(GameState game);
 	
 	<T> T accept(GameStageVisitor<T> visitor);
 	

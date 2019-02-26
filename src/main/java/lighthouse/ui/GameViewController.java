@@ -20,8 +20,8 @@ public class GameViewController implements ViewController {
 	public GameViewController(Game model) {
 		this.model = model;
 		
-		board = new BoardViewController(model.getBoard());
-		model.getBoardListeners().add(board::updateModel);
+		board = new BoardViewController(model.getState().getBoard());
+		model.getState().getBoardListeners().add(board::updateModel);
 		
 		// Initially enter game mode
 		newGame();
@@ -29,12 +29,12 @@ public class GameViewController implements ViewController {
 	
 	public void newGame() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getBoard()));
+		board.setResponder(new BoardPlayController(model.getState().getBoard()));
 	}
 	
 	public void edit() {
 		model.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		board.setResponder(new BoardDrawController(model.getBoard()));
+		board.setResponder(new BoardDrawController(model.getState().getBoard()));
 	}
 	
 	public void reset() {

@@ -21,7 +21,7 @@ public class GameStageIconViewController implements ViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		stage.getBoardFrom(game)
+		stage.getBoardFrom(game.getState())
 			.ifPresent(initialBoard -> {
 				LocalBoardView boardView = new LocalBoardView(new ScaleTransform(4, 4));
 				
@@ -30,7 +30,7 @@ public class GameStageIconViewController implements ViewController {
 				boardView.setDrawGrid(false);
 				boardView.relayout(initialBoard.getColumns(), initialBoard.getRows());
 				
-				loop.addRenderer(() -> stage.getBoardFrom(game).ifPresent(boardView::draw));
+				loop.addRenderer(() -> stage.getBoardFrom(game.getState()).ifPresent(boardView::draw));
 				component.add(new CenterPanel(boardView.getComponent()), BorderLayout.CENTER);
 			});
 		component.add(new JLabel(stage.getName()), BorderLayout.SOUTH);

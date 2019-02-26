@@ -9,7 +9,6 @@ import javax.swing.JComponent;
 import com.alee.extended.progress.WebStepProgress;
 
 import lighthouse.model.Game;
-import lighthouse.model.GameStage;
 import lighthouse.model.GameStages;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
@@ -21,7 +20,6 @@ import lighthouse.ui.loop.GameLoop;
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	private final Game game;
-	private GameStage selectedStage;
 	
 	public LevelNavigatorViewController(Game game, GameLoop loop) {
 		this.game = game;
@@ -40,27 +38,19 @@ public class LevelNavigatorViewController implements ViewController {
 			
 			private void onChange() {
 				int newIndex = component.getSelectedStepIndex();
-				if (newIndex != selectedStage.getIndex()) {
-					select(GameStages.STAGES.get(newIndex));
+				if (newIndex != game.getCurrentStage().getIndex()) {
+					game.switchToStage(GameStages.STAGES.get(newIndex));
 				}
 			}
 		};
 		component.addMouseListener(mouseAdapter);
 		component.addMouseMotionListener(mouseAdapter);
 		
-		select(GameStages.CURRENT);
-		game.getLevelListeners().add(level -> {
-			// Update stage if the level has changed
-			selectedStage.transitionFrom(selectedStage, game);
+		game.switchToStage(GameStages.CURRENT);
+		game.getStageListeners().add(stage -> {
+			component.setSelectedStepIndex(stage.getIndex());
 		});
-	}
-	
-	private void select(GameStage newStage) {
-		if (selectedStage != null && newStage.getIndex() != selectedStage.getIndex()) {
-			newStage.transitionFrom(selectedStage, game);
-		}
-		selectedStage = newStage;
-		component.setSelectedStepIndex(newStage.getIndex());
+		component.setSelectedStepIndex(game.getCurrentStage().getIndex());
 	}
 	
 	@Override
