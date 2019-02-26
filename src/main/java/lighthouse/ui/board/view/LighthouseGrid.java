@@ -31,9 +31,9 @@ public class LighthouseGrid {
 		return rows;
 	}
 	
-	public Color colorAt(IntVec gridPos) {
+	public Color colorAt(IntVec lhGridPos) {
 		// TODO: Scaling/translating the input
-		return board.colorAt(gridPos);
+		return board.colorAt(lhGridPos.scale(0.2, 0.5));
 	}
 	
 	public Color colorAt(int x, int y) {
