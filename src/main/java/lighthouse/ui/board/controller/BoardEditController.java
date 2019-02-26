@@ -35,8 +35,10 @@ public class BoardEditController implements BoardResponder {
 		IntVec delta = gridPos.sub(last);
 		
 		if (!gridPos.equals(last)) {
-			board.getEditState().appendToEdit(delta.nearestDirection());
-			LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+			if (!board.hasBrickAt(gridPos)) {
+				board.getEditState().appendToEdit(delta.nearestDirection());
+				LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+			}
 			last = gridPos;
 		}
 	}

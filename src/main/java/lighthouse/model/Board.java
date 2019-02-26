@@ -64,7 +64,11 @@ public class Board implements Serializable {
 	public Color colorAt(int x, int y) {
 		return colorAt(new IntVec(x, y));
 	}
-
+	
+	public boolean hasBrickAt(IntVec gridPos) {
+		return bricks.stream().anyMatch(brick -> brick.contains(gridPos));
+	}
+	
 	public Brick locateBrick(IntVec gridPos) {
 		return bricks.stream()
 			.filter(brick -> brick.contains(gridPos))
