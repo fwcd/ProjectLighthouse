@@ -19,10 +19,8 @@ import lighthouse.ui.loop.GameLoop;
  */
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
-	private final Game game;
 	
 	public LevelNavigatorViewController(Game game, GameLoop loop) {
-		this.game = game;
 		component = new WebStepProgress();
 		component.addSteps(GameStages.STAGES.stream().sorted()
 			.map(stage -> new GameStageIconViewController(stage, game, loop))
