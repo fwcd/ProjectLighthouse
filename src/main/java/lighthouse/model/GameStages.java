@@ -39,7 +39,9 @@ public class GameStages {
 		
 		@Override
 		public void transitionFrom(GameStage lastStage, Game game) {
-			game.revertToBackupBoardOr(Board::new);
+			if (!lastStage.isCurrent()) {
+				game.revertToBackupBoardOr(Board::new);
+			}
 		}
 		
 		@Override

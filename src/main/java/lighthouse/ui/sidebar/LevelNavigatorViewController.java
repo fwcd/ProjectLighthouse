@@ -43,6 +43,10 @@ public class LevelNavigatorViewController {
 		component.addMouseMotionListener(mouseAdapter);
 		
 		select(GameStages.CURRENT);
+		game.getLevelListeners().add(level -> {
+			// Update stage if the level has changed
+			selectedStage.transitionFrom(selectedStage, game);
+		});
 	}
 	
 	private void select(GameStage newStage) {
