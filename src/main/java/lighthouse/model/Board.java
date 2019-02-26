@@ -21,8 +21,8 @@ public class Board implements Serializable {
 	private int rows;
 	private List<Brick> bricks = new ArrayList<>();
 	
-	private transient BoardEditState editState;
-	private transient ListenerList<Void> changeListeners;
+	private transient BoardEditState lazyEditState;
+	private transient ListenerList<Void> lazyChangeListeners;
 	
 	/** Creates a new board with the default size of 4x6. */
 	public Board() {
@@ -47,13 +47,13 @@ public class Board implements Serializable {
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) {
 		bricks.add(brick);
-		changeListeners.fire(null);
+		getChangeListeners().fire(null);
 	}
 	
 	/** Replaces a brick. */
 	public void replace(Brick oldBrick, Brick newBrick) {
 		Collections.replaceAll(bricks, oldBrick, newBrick);
-		changeListeners.fire(null);
+		getChangeListeners().fire(null);
 	}
 	
 	/** Removes and returns a brick at a certain position. */
@@ -63,7 +63,7 @@ public class Board implements Serializable {
 			Brick brick = iterator.next();
 			if (brick.contains(gridPos)) {
 				iterator.remove();
-				changeListeners.fire(null);
+				getChangeListeners().fire(null);
 				return brick;
 			}
 		}
@@ -73,8 +73,8 @@ public class Board implements Serializable {
 	/** Clears the board's contents. */
 	public void clear() {
 		bricks.clear();
-		editState.reset();
-		changeListeners.fire(null);
+		getEditState().reset();
+		getChangeListeners().fire(null);
 	}
 	
 	/** Fetches the cell's color at the specified position. */
@@ -126,19 +126,19 @@ public class Board implements Serializable {
 	
 	/** Fetches the current editing state of the board. */
 	public BoardEditState getEditState() {
-		if (editState == null) {
+		if (lazyEditState == null) {
 			// Lazy initialization/reinitalization after deserialization
-			editState = new BoardEditState();
+			lazyEditState = new BoardEditState();
 		}
-		return editState;
+		return lazyEditState;
 	}
 	
 	/** Fetches the lazily loaded change listeners.  */
 	public ListenerList<Void> getChangeListeners() {
-		if (changeListeners == null) {
+		if (lazyChangeListeners == null) {
 			// Lazy initialization/reinitalization after deserialization
-			changeListeners = new ListenerList<>();
+			lazyChangeListeners = new ListenerList<>();
 		}
-		return changeListeners;
+		return lazyChangeListeners;
 	}
 }
