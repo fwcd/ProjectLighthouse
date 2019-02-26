@@ -1,5 +1,6 @@
 package lighthouse.ui.board;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +78,14 @@ public class BoardViewController {
 	
 	public void reset() {
 		responder.reset();
+	}
+	
+	public void save(Path path) {
+		// TODO
+	}
+	
+	public void open(Path path) {
+		// TODO
 	}
 	
 	public void addLighthouseGridView(LighthouseGridView view) {
