@@ -29,6 +29,9 @@ public class LocalBoardView implements BoardView {
 	private final Color gridLineColor = Color.LIGHT_GRAY;
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
+	private boolean drawGrid = true;
+	private double activeBrickScale = 0.6;
+	private double placedBrickScale = 0.8;
 	
 	private final JComponent component;
 	private final CoordinateMapper coordinateMapper;
@@ -76,21 +79,23 @@ public class LocalBoardView implements BoardView {
 			IntVec cellSize = getCellSize();
 			
 			// Draw the background grid
-			float[] dash = {gridDashLength};
-			g2d.setColor(gridLineColor);
-			g2d.setStroke(new BasicStroke(gridLineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, dash, 0));
-			
-			for (int y = 0; y < canvasHeight; y += cellSize.getY()) {
-				g2d.drawLine(0, y, canvasWidth, y);
-			}
-			
-			for (int x = 0; x < canvasWidth; x += cellSize.getX()) {
-				g2d.drawLine(x, 0, x, canvasHeight);
+			if (drawGrid) {
+				float[] dash = {gridDashLength};
+				g2d.setColor(gridLineColor);
+				g2d.setStroke(new BasicStroke(gridLineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, dash, 0));
+				
+				for (int y = 0; y < canvasHeight; y += cellSize.getY()) {
+					g2d.drawLine(0, y, canvasWidth, y);
+				}
+				
+				for (int x = 0; x < canvasWidth; x += cellSize.getX()) {
+					g2d.drawLine(x, 0, x, canvasHeight);
+				}
 			}
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
-				renderBlock(g2d, brick, 0.8);
+				renderBlock(g2d, brick, placedBrickScale);
 			}
 			
 			// Draw the editing state
@@ -98,7 +103,7 @@ public class LocalBoardView implements BoardView {
 			BrickBuilder brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
-				renderBlock(g2d, brickInProgress, 0.6);
+				renderBlock(g2d, brickInProgress, activeBrickScale);
 			}
 		}
 	}
@@ -162,9 +167,19 @@ public class LocalBoardView implements BoardView {
 		if (neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), topLeft.getY() + cornerOffset.getY(), cornerOffset.getX(), scaledCellSize.getY());
 	}
 	
-	private IntVec getCellSize() {
-		return coordinateMapper.toPixelPos(IntVec.ONE_ONE);
-	}
+	public void setDrawGrid(boolean drawGrid) { this.drawGrid = drawGrid; }
+	
+	public boolean doesDrawGrid() { return drawGrid; }
+	
+	public void setActiveBrickScale(double activeBrickScale) { this.activeBrickScale = activeBrickScale; }
+	
+	public double getActiveBrickScale() { return activeBrickScale; }
+	
+	public void setPlacedBrickScale(double placedBrickScale) { this.placedBrickScale = placedBrickScale; }
+	
+	public double getPlacedBrickScale() { return placedBrickScale; }
+	
+	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
 	
 	public void addMouseInput(BoardMouseInput listener) {
 		component.addMouseListener(listener);

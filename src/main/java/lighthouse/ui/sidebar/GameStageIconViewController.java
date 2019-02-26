@@ -23,7 +23,12 @@ public class GameStageIconViewController implements ViewController {
 		stage.getBoardFrom(game)
 			.ifPresent(initialBoard -> {
 				LocalBoardView boardView = new LocalBoardView(new ScaleTransform(4, 4));
+				
+				boardView.setActiveBrickScale(1.0);
+				boardView.setPlacedBrickScale(1.0);
+				boardView.setDrawGrid(false);
 				boardView.relayout(initialBoard.getColumns(), initialBoard.getRows());
+				
 				loop.addRenderer(() -> stage.getBoardFrom(game).ifPresent(boardView::draw));
 				component.add(boardView.getComponent(), BorderLayout.CENTER);
 			});
