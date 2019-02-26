@@ -14,11 +14,11 @@ import lighthouse.model.Board;
 import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.BrickBuilder;
-import lighthouse.model.Direction;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
+import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 
 /**
@@ -98,7 +98,7 @@ public class LocalBoardView implements BoardView {
 			BrickBuilder brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
-				renderBlock(g2d, brickInProgress, 0.5);
+				renderBlock(g2d, brickInProgress, 0.6);
 			}
 		}
 	}
@@ -128,13 +128,38 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderCell(Graphics2D g2d, IntVec blockPos, IntVec[][] fragments, IntVec cellRelPos, IntVec cellSize, double scale) {
-		IntVec cellPos = fragments[cellRelPos.getY()][cellRelPos.getX()];
+		int relY = cellRelPos.getY();
+		int relX = cellRelPos.getX();
+		
+		IntVec cellPos = fragments[relY][relX];
 		IntVec topLeft = coordinateMapper.toPixelPos(cellPos);
+		IntVec bottomRight = topLeft.add(cellSize);
 		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
 		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
 		IntVec innerTopLeft = topLeft.add(cornerOffset);
 		
 		g2d.fillRect(innerTopLeft.getX(), innerTopLeft.getY(), scaledCellSize.getX(), scaledCellSize.getY());
+		
+		boolean neighborTopLeft = ArrayUtils.getOr(null, fragments, relY - 1, relX - 1) != null;
+		boolean neighborAbove = ArrayUtils.getOr(null, fragments, relY - 1, relX) != null;
+		boolean neighborTopRight = ArrayUtils.getOr(null, fragments, relY - 1, relX + 1) != null;
+		boolean neighborLeft = ArrayUtils.getOr(null, fragments, relY, relX - 1) != null;
+		boolean neighborRight = ArrayUtils.getOr(null, fragments, relY, relX + 1) != null;
+		boolean neighborBottomLeft = ArrayUtils.getOr(null, fragments, relY + 1, relX - 1) != null;
+		boolean neighborBelow = ArrayUtils.getOr(null, fragments, relY + 1, relX) != null;
+		boolean neighborBottomRight = ArrayUtils.getOr(null, fragments, relY + 1, relX + 1) != null;
+		
+		// Draw corners
+		if (neighborTopLeft && neighborAbove && neighborLeft)      g2d.fillRect(topLeft.getX(), topLeft.getY(), cornerOffset.getX(), cornerOffset.getY());
+		if (neighborTopRight && neighborAbove && neighborRight)    g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), topLeft.getY(), cornerOffset.getX(), cornerOffset.getY());
+		if (neighborBottomLeft && neighborBelow && neighborLeft)   g2d.fillRect(topLeft.getX(), bottomRight.getY() - cornerOffset.getY(), cornerOffset.getX(), cornerOffset.getY());
+		if (neighborBottomRight && neighborBelow && neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), bottomRight.getY() - cornerOffset.getY(), cornerOffset.getX(), cornerOffset.getY());
+		
+		// Draw sides
+		if (neighborAbove) g2d.fillRect(topLeft.getX() + cornerOffset.getX(), topLeft.getY(), scaledCellSize.getX(), cornerOffset.getY());
+		if (neighborBelow) g2d.fillRect(topLeft.getX() + cornerOffset.getX(), bottomRight.getY() - cornerOffset.getY(), scaledCellSize.getX(), cornerOffset.getY());
+		if (neighborLeft)  g2d.fillRect(topLeft.getX(), topLeft.getY() + cornerOffset.getY(), cornerOffset.getX(), scaledCellSize.getY());
+		if (neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), topLeft.getY() + cornerOffset.getY(), cornerOffset.getX(), scaledCellSize.getY());
 	}
 	
 	private IntVec getCellSize() {
