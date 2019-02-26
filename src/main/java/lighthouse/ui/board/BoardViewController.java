@@ -75,6 +75,10 @@ public class BoardViewController {
 		responder.setDelegate(new BoardEditController(model));
 	}
 	
+	public void reset() {
+		responder.reset();
+	}
+	
 	public void addLighthouseGridView(LighthouseGridView view) {
 		lhGridViews.add(view);
 	}

@@ -26,10 +26,7 @@ public class BoardEditState {
 	
 	public Brick finishEdit(IntVec end) {
 		Brick brick = brickInProgress.build();
-		
-		startPos = null;
-		brickInProgress = null;
-		
+		reset();
 		return brick;
 	}
 	
@@ -38,6 +35,11 @@ public class BoardEditState {
 	public BrickBuilder getBrickInProgress() { return brickInProgress; }
 	
 	public String getStatus() { return status; }
+	
+	public void reset() {
+		brickInProgress = null;
+		startPos = null;
+	}
 	
 	public void setStatus(String status) {
 		this.status = status;

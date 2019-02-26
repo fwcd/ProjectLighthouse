@@ -27,6 +27,7 @@ public class GameControlsViewController {
 		
 		JPanel buttons = new JPanel();
 		buttons.add(buttonOf("New Game", board::newGame));
+		buttons.add(buttonOf("Reset", board::reset));
 		buttons.add(buttonOf("Edit", board::edit));
 		component.add(buttons, BorderLayout.CENTER);
 	}

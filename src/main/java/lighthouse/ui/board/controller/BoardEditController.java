@@ -21,7 +21,7 @@ public class BoardEditController implements BoardResponder {
 	@Override
 	public void press(IntVec gridPos) {
 		board.getEditState().beginEdit(gridPos);
-		LOG.info("Pressed at {}", gridPos);
+		LOG.debug("Pressed at {}", gridPos);
 		last = gridPos;
 	}
 	
@@ -36,15 +36,21 @@ public class BoardEditController implements BoardResponder {
 		
 		if (!gridPos.equals(last)) {
 			board.getEditState().appendToEdit(delta.nearestDirection());
-			LOG.info("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+			LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
 			last = gridPos;
 		}
 	}
 	
 	@Override
 	public void release(IntVec gridPos) {
-		LOG.info("Released at {}", gridPos);
+		LOG.debug("Released at {}", gridPos);
 		board.add(board.getEditState().finishEdit(gridPos));
 		last = null;
+	}
+	
+	@Override
+	public void reset() {
+		LOG.debug("Resetting");
+		board.clear();
 	}
 }

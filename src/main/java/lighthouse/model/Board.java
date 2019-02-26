@@ -37,6 +37,12 @@ public class Board {
 	/** Removes a brick at a certain position. */
 	public void removeBrickAt(IntVec gridPos) { bricks.removeIf(brick -> brick.contains(gridPos)); }
 	
+	/** Clears the board's contents. */
+	public void clear() {
+		bricks.clear();
+		editState.reset();
+	}
+	
 	/** Fetches the cell's color at the specified position. */
 	public Color colorAt(IntVec gridPos) {
 		Brick brick = locateBrick(gridPos);

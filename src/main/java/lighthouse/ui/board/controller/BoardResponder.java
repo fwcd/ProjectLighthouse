@@ -19,4 +19,6 @@ public interface BoardResponder {
 	default void dragTo(IntVec gridPos) {}
 	
 	default void release(IntVec gridPos) {}
+	
+	default void reset() {}
 }
