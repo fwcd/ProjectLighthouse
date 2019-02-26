@@ -9,11 +9,11 @@ import lighthouse.util.ListenerList;
  * to be serialized.
  */
 public class BoardEditState {
-	private String status;
+	private Status status;
 	private BrickBuilder brickInProgress;
 	private IntVec startPos;
 	
-	private final ListenerList<String> statusListeners = new ListenerList<>();
+	private final ListenerList<Status> statusListeners = new ListenerList<>();
 	
 	public void beginEdit(IntVec startPos) {
 		brickInProgress = new BrickBuilder(startPos);
@@ -34,17 +34,17 @@ public class BoardEditState {
 	
 	public BrickBuilder getBrickInProgress() { return brickInProgress; }
 	
-	public String getStatus() { return status; }
+	public Status getStatus() { return status; }
 	
 	public void reset() {
 		brickInProgress = null;
 		startPos = null;
 	}
 	
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 		statusListeners.fire(status);
 	}
 	
-	public ListenerList<String> getStatusListeners() { return statusListeners; }
+	public ListenerList<Status> getStatusListeners() { return statusListeners; }
 }

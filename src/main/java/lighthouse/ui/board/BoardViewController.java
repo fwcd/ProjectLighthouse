@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import lighthouse.model.Board;
+import lighthouse.model.Status;
 import lighthouse.ui.GameLoop;
 import lighthouse.ui.board.controller.BoardEditController;
 import lighthouse.ui.board.controller.BoardPlayController;
@@ -17,6 +18,7 @@ import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseGridView;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.util.ColorUtils;
 
 /**
  * Manages the different board views. It assembles the
@@ -72,12 +74,12 @@ public class BoardViewController {
 	}
 	
 	public void newGame() {
-		model.getEditState().setStatus("Playing");
+		model.getEditState().setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
 		responder.setDelegate(new BoardPlayController(model));
 	}
 	
 	public void edit() {
-		model.getEditState().setStatus("Editing");
+		model.getEditState().setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
 		responder.setDelegate(new BoardEditController(model));
 	}
 	

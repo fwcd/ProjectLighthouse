@@ -26,7 +26,7 @@ import lighthouse.ui.board.BoardViewController;
 public class GameControlsViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(GameControlsViewController.class);
 	private final JComponent component;
-	private final JLabel statusLabel;
+	private final StatusBar statusBar;
 	
 	private final PathChooser pathChooser;
 	private final AppModel model;
@@ -37,16 +37,19 @@ public class GameControlsViewController {
 		component = new JPanel();
 		pathChooser = new PathChooser(component, ".json");
 		component.setLayout(new BorderLayout());
-
+		
+		// Setup status bar
 		BoardEditState editState = board.getModel().getEditState();
-		statusLabel = new JLabel(editState.getStatus());
-		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		component.add(statusLabel, BorderLayout.NORTH);
-		editState.getStatusListeners().add(statusLabel::setText);
+		statusBar = new StatusBar();
+		statusBar.display(editState.getStatus());
+		component.add(statusBar.getComponent(), BorderLayout.NORTH);
+		
+		editState.getStatusListeners().add(statusBar::display);
 		model.getGame().getBoardListeners().add(newBoard -> {
-			newBoard.getEditState().getStatusListeners().add(statusLabel::setText);
+			newBoard.getEditState().getStatusListeners().add(statusBar::display);
 		});
 		
+		// Setup control panel
 		component.add(vboxOf(
 			panelOf(
 				buttonOf("New Game", board::newGame),

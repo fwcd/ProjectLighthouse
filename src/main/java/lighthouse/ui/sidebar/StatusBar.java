@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import lighthouse.model.Status;
+
 /**
  * A simple Swing component to display a status.
  */
@@ -25,13 +27,13 @@ public class StatusBar {
 		reset();
 	}
 	
-	public synchronized void print(String message) {
-		print(message, Color.WHITE);
-	}
+	public synchronized void print(Status status) { print(status.getMessage(), status.getColor()); }
 	
-	public synchronized void print(String message, Color color) {
-		print(message, color, 3000);
-	}
+	public synchronized void print(Status status, long durationInMs) { print(status.getMessage(), status.getColor(), durationInMs); }
+	
+	public synchronized void print(String message) { print(message, Color.WHITE); }
+	
+	public synchronized void print(String message, Color color) { print(message, color, 3000); }
 	
 	public synchronized void print(String message, Color color, long durationInMs) {
 		if (thread != null) {
@@ -52,6 +54,10 @@ public class StatusBar {
 		
 		thread.setName("StatusBar Timer");
 		thread.start();
+	}
+	
+	public synchronized void display(Status status) {
+		display(status.getMessage(), status.getColor());
 	}
 	
 	public synchronized void display(String message) {
