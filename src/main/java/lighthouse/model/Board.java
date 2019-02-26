@@ -22,7 +22,7 @@ public class Board implements Serializable {
 	private List<Brick> bricks = new ArrayList<>();
 	
 	private transient BoardEditState editState;
-	private transient ListenerList<Brick> brickListeners;
+	private transient ListenerList<Void> changeListeners;
 	
 	/** Creates a new board with the default size of 4x6. */
 	public Board() {
@@ -50,6 +50,7 @@ public class Board implements Serializable {
 	/** Replaces a brick. */
 	public void replace(Brick oldBrick, Brick newBrick) {
 		Collections.replaceAll(bricks, oldBrick, newBrick);
+		changeListeners.fire(null);
 	}
 	
 	/** Removes and returns a brick at a certain position. */
@@ -59,6 +60,7 @@ public class Board implements Serializable {
 			Brick brick = iterator.next();
 			if (brick.contains(gridPos)) {
 				iterator.remove();
+				changeListeners.fire(null);
 				return brick;
 			}
 		}
@@ -96,6 +98,14 @@ public class Board implements Serializable {
 			.orElse(null);
 	}
 	
+	/** Synchronizes this board's bricks with another board. */
+	public void syncTo(Board other) {
+		other.getChangeListeners().add(v -> {
+			bricks.clear();
+			bricks.addAll(other.bricks);
+		});
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Board)) return false; 
@@ -119,12 +129,12 @@ public class Board implements Serializable {
 		return editState;
 	}
 	
-	/** Fetches the lazily loaded brick listeners.  */
-	public ListenerList<Brick> getBrickListeners() {
-		if (brickListeners == null) {
+	/** Fetches the lazily loaded change listeners.  */
+	public ListenerList<Void> getChangeListeners() {
+		if (changeListeners == null) {
 			// Lazy initialization/reinitalization after deserialization
-			brickListeners = new ListenerList<>();
+			changeListeners = new ListenerList<>();
 		}
-		return brickListeners;
+		return changeListeners;
 	}
 }
