@@ -12,9 +12,9 @@ import lighthouse.model.AppModel;
 public class AppFrame {
 	private final JFrame frame;
 	
-	public AppFrame(AppModel model) {
+	public AppFrame(AppModel model, int width, int height) {
 		frame = new JFrame("Lighthouse");
-		frame.setSize(640, 480);
+		frame.setSize(width, height);
 		frame.setLayout(new BorderLayout());
 		frame.add(new AppViewController(model).getComponent());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

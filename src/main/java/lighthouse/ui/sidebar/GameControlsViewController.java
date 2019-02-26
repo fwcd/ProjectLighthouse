@@ -10,14 +10,28 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import lighthouse.model.BoardEditState;
+import lighthouse.model.FileSaveState;
 import lighthouse.ui.board.BoardViewController;
 
+/**
+ * Manages a view containing game and file
+ * controls and is responsible for presenting
+ * a path chooser to the user.
+ */
 public class GameControlsViewController {
 	private final JComponent component;
 	private final JLabel statusLabel;
+	
+	private final BoardViewController board;
+	private final PathChooser pathChooser;
+	private final FileSaveState saveState;
 
-	public GameControlsViewController(BoardViewController board) {
+	public GameControlsViewController(BoardViewController board, FileSaveState saveState) {
+		this.saveState = saveState;
+		this.board = board;
+		
 		component = new JPanel();
+		pathChooser = new PathChooser(component);
 		component.setLayout(new BorderLayout());
 
 		BoardEditState editState = board.getModel().getEditState();
@@ -34,22 +48,29 @@ public class GameControlsViewController {
 			),
 			panelOf(
 				buttonOf("Save", this::save),
-				buttonOf("Open", this::saveAs),
+				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			)
 		), BorderLayout.CENTER);
 	}
 	
 	private void save() {
-		// TODO
+		// TODO: Remember saved file
+		saveAs();
 	}
 	
 	private void saveAs() {
-		// TODO
+		pathChooser.showSaveDialog().ifPresent(path -> {
+			saveState.setSaveDestination(path);
+			board.save(path);
+		});
 	}
 	
 	private void open() {
-		// TODO
+		pathChooser.showOpenDialog().ifPresent(path -> {
+			saveState.setSaveDestination(path);
+			board.open(path);
+		});
 	}
 	
 	private JPanel vboxOf(JComponent... components) {

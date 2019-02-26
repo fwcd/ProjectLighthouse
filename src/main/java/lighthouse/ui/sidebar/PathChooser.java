@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 /**
  * A lightweight abstraction over {@link JFileChooser}
  * that uses {@link Path} instead of {@link File}.
+ * Allows the user to select a file from the file system.
  */
 public class PathChooser {
 	private final JComponent parent;
