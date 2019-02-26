@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.StyleManager;
+import com.alee.skin.flat.FlatSkin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +25,8 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 public class LighthouseMain {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseMain.class);
 	private static final String TITLE = "Lighthouse";
-	private static final int WINDOW_WIDTH = 680;
-	private static final int WINDOW_HEIGHT = 550;
+	private static final int WINDOW_WIDTH = 700;
+	private static final int WINDOW_HEIGHT = 600;
 	
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException {
 		long startTime = System.currentTimeMillis();
@@ -38,7 +40,11 @@ public class LighthouseMain {
 		
 		AppModel model = new AppModel();
 		SwingUtilities.invokeAndWait(() -> {
+			// Setup look and feel
 			WebLookAndFeel.install();
+			StyleManager.setSkin(new FlatSkin());
+			
+			// Instantiate application
 			AppFrame frame = new AppFrame(model, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 			frame.show();
 		});
