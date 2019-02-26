@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import lighthouse.util.IntVec;
+import lighthouse.util.ListenerList;
 
 /**
  * The game board model representing
@@ -19,7 +20,9 @@ public class Board implements Serializable {
 	private int columns;
 	private int rows;
 	private List<Brick> bricks = new ArrayList<>();
+	
 	private transient BoardEditState editState;
+	private transient ListenerList<Brick> brickListeners;
 	
 	/** Creates a new board with the default size of 4x6. */
 	public Board() {
@@ -114,5 +117,14 @@ public class Board implements Serializable {
 			editState = new BoardEditState();
 		}
 		return editState;
+	}
+	
+	/** Fetches the lazily loaded brick listeners.  */
+	public ListenerList<Brick> getBrickListeners() {
+		if (brickListeners == null) {
+			// Lazy initialization/reinitalization after deserialization
+			brickListeners = new ListenerList<>();
+		}
+		return brickListeners;
 	}
 }
