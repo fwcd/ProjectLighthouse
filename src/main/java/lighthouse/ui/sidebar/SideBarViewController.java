@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.model.AppModel;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.view.LocalLighthouseGridView;
 import lighthouse.ui.loop.GameLoop;
 
@@ -22,7 +22,7 @@ import lighthouse.ui.loop.GameLoop;
 public class SideBarViewController implements ViewController {
 	private final JPanel component;
 	
-	public SideBarViewController(AppModel model, BoardViewController board, GameLoop loop) {
+	public SideBarViewController(AppModel model, GameViewController game, GameLoop loop) {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
@@ -31,17 +31,17 @@ public class SideBarViewController implements ViewController {
 		accordion.setFillSpace(false);
 		
 		// Adds a panel containing game and file controls
-		GameControlsViewController controls = new GameControlsViewController(board, model, loop);
+		GameControlsViewController controls = new GameControlsViewController(game, model, loop);
 		accordion.addPane("Game Controls", controls.getComponent());
 		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
-		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(board);
+		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(game.getBoard());
 		accordion.addPane("Lighthouse Connector", connector.getComponent());
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseGridView preview = new LocalLighthouseGridView();
-		board.addLighthouseGridView(preview);
+		game.getBoard().addLighthouseGridView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(120, 240));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		

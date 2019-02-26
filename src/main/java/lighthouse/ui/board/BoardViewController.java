@@ -11,6 +11,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardArrangeController;
 import lighthouse.ui.board.controller.BoardDrawController;
 import lighthouse.ui.board.controller.BoardPlayController;
+import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
@@ -62,15 +63,20 @@ public class BoardViewController implements ViewController, Renderer {
 		// Adds controller input
 		BoardInput xboxInput = new BoardXboxControllerInput();
 		xboxInput.addResponder(responder);
-		
-		// Initially enter game mode
-		newGame();
 	}
 	
 	public void updateModel(Board model) {
 		this.model = model;
 		lhModel = new LighthouseGrid(model);
 		responder.updateBoard(model);
+	}
+	
+	public void setResponder(BoardResponder responder) {
+		this.responder.setDelegate(responder);
+	}
+	
+	public void reset() {
+		responder.reset();
 	}
 
 	@Override
@@ -81,20 +87,6 @@ public class BoardViewController implements ViewController, Renderer {
 		for (LighthouseGridView lhView : lhGridViews) {
 			lhView.draw(lhModel);
 		}
-	}
-	
-	public void newGame() {
-		model.getEditState().setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		responder.setDelegate(new BoardPlayController(model));
-	}
-	
-	public void edit() {
-		model.getEditState().setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		responder.setDelegate(new BoardDrawController(model));
-	}
-	
-	public void reset() {
-		responder.reset();
 	}
 	
 	public void addLighthouseGridView(LighthouseGridView view) {

@@ -22,12 +22,15 @@ public class Game {
 	private static final Gson GSON = new Gson();
     private Board board;
     private Level level;
+    
     private Board backup;
 	private GameStage selectedStage = GameStages.CURRENT;
+	private Status status;
 	
 	private final ListenerList<GameStage> stageListeners = new ListenerList<>();
     private final ListenerList<Level> levelListeners = new ListenerList<>();
     private final ListenerList<Board> boardListeners = new ListenerList<>();
+	private final ListenerList<Status> statusListeners = new ListenerList<>();
 
     private boolean won = false;
 
@@ -92,6 +95,15 @@ public class Game {
     public void backupBoard() { backup = board.copy(); }
     
     public boolean isWon() { return won; }
+	
+	public Status getStatus() { return status; }
+	
+	public void setStatus(Status status) {
+		this.status = status;
+		statusListeners.fire(status);
+	}
+	
+	public ListenerList<Status> getStatusListeners() { return statusListeners; }
     
     public ListenerList<Level> getLevelListeners() { return levelListeners; }
     

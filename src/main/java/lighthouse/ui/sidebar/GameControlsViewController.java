@@ -13,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
-import lighthouse.model.BoardEditState;
+import lighthouse.model.Game;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.loop.GameLoop;
 
 /**
@@ -31,30 +31,30 @@ public class GameControlsViewController implements ViewController {
 	private final PathChooser pathChooser;
 	private final AppModel model;
 
-	public GameControlsViewController(BoardViewController board, AppModel model, GameLoop loop) {
+	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
 		this.model = model;
+		Game gameModel = model.getGame();
 		
 		component = new JPanel();
 		pathChooser = new PathChooser(component, ".json");
 		component.setLayout(new BorderLayout());
 		
 		// Setup status bar
-		BoardEditState editState = board.getModel().getEditState();
 		statusBar = new StatusBar();
-		statusBar.display(editState.getStatus());
+		statusBar.display(gameModel.getStatus());
 		component.add(statusBar.getComponent(), BorderLayout.NORTH);
 		
-		editState.getStatusListeners().add(statusBar::display);
-		model.getGame().getBoardListeners().add(newBoard -> {
-			newBoard.getEditState().getStatusListeners().add(statusBar::display);
+		gameModel.getStatusListeners().add(statusBar::display);
+		gameModel.getBoardListeners().add(newBoard -> {
+			gameModel.getStatusListeners().add(statusBar::display);
 		});
 		
 		// Setup control panel
 		component.add(vboxOf(
 			panelOf(
-				buttonOf("New Game", board::newGame),
-				buttonOf("Reset", board::reset),
-				buttonOf("Edit", board::edit)
+				buttonOf("New Game", game::newGame),
+				buttonOf("Reset", game::reset),
+				buttonOf("Edit", game::edit)
 			),
 			panelOf(
 				buttonOf("Save", this::save),
