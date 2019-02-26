@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import lighthouse.model.Board;
 import lighthouse.util.IntVec;
+import lighthouse.util.LhConstants;
 
 /**
  * A class that wraps the board preparing it for
@@ -14,6 +15,10 @@ public class LighthouseGrid {
 	private final int columns;
 	private final int rows;
 	private final Board board;
+	
+	public LighthouseGrid(Board board) {
+		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
+	}
 	
 	public LighthouseGrid(Board board, int columns, int rows) {
 		this.board = board;
