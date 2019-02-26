@@ -16,6 +16,7 @@ import lighthouse.model.AppModel;
 import lighthouse.model.BoardEditState;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.loop.GameLoop;
 
 /**
  * Manages a view containing game and file
@@ -30,7 +31,7 @@ public class GameControlsViewController implements ViewController {
 	private final PathChooser pathChooser;
 	private final AppModel model;
 
-	public GameControlsViewController(BoardViewController board, AppModel model) {
+	public GameControlsViewController(BoardViewController board, AppModel model, GameLoop loop) {
 		this.model = model;
 		
 		component = new JPanel();
@@ -60,7 +61,7 @@ public class GameControlsViewController implements ViewController {
 				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			),
-			new LevelNavigatorViewController(model.getGame()).getComponent()
+			new LevelNavigatorViewController(model.getGame(), loop).getComponent()
 		), BorderLayout.CENTER);
 	}
 	

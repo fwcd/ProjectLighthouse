@@ -16,7 +16,7 @@ import lighthouse.ui.sidebar.SideBarViewController;
  */
 public class AppViewController implements ViewController {
 	private final JComponent component;
-	private final GameLoop loop;
+	private final GameLoop loop = new GameLoop();
 	
 	public AppViewController(AppModel model) {
 		component = new JPanel();
@@ -30,11 +30,10 @@ public class AppViewController implements ViewController {
 		model.getGame().getBoardListeners().add(board::updateModel);
 		component.add(boardWrapper, BorderLayout.CENTER);
 		
-		SideBarViewController sideBar = new SideBarViewController(model, board);
+		SideBarViewController sideBar = new SideBarViewController(model, board, loop);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 		
-		// Create and start game loop
-		loop = new GameLoop();
+		// Start the game loop
 		loop.addRenderer(board);
 		loop.start();
 	}

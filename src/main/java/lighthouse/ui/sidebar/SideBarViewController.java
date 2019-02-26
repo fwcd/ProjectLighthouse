@@ -12,6 +12,7 @@ import lighthouse.model.AppModel;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.view.LocalLighthouseGridView;
+import lighthouse.ui.loop.GameLoop;
 
 /**
  * Manages the sidebar view which in turn deals
@@ -21,7 +22,7 @@ import lighthouse.ui.board.view.LocalLighthouseGridView;
 public class SideBarViewController implements ViewController {
 	private final JPanel component;
 	
-	public SideBarViewController(AppModel model, BoardViewController board) {
+	public SideBarViewController(AppModel model, BoardViewController board, GameLoop loop) {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
@@ -30,7 +31,7 @@ public class SideBarViewController implements ViewController {
 		accordion.setFillSpace(false);
 		
 		// Adds a panel containing game and file controls
-		GameControlsViewController controls = new GameControlsViewController(board, model);
+		GameControlsViewController controls = new GameControlsViewController(board, model, loop);
 		accordion.addPane("Game Controls", controls.getComponent());
 		
 		// Add the connector panel which allows the user

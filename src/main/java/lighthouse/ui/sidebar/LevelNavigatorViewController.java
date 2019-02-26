@@ -12,6 +12,7 @@ import lighthouse.model.Game;
 import lighthouse.model.GameStage;
 import lighthouse.model.GameStages;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.loop.GameLoop;
 
 /**
  * Manages the level navigation that allows the
@@ -22,11 +23,11 @@ public class LevelNavigatorViewController implements ViewController {
 	private final Game game;
 	private GameStage selectedStage;
 	
-	public LevelNavigatorViewController(Game game) {
+	public LevelNavigatorViewController(Game game, GameLoop loop) {
 		this.game = game;
 		component = new WebStepProgress();
 		component.addSteps(GameStages.STAGES.stream().sorted()
-			.map(stage -> new GameStageIconViewController(stage, game))
+			.map(stage -> new GameStageIconViewController(stage, game, loop))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		

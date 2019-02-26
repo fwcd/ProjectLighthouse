@@ -2,6 +2,7 @@ package lighthouse.model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Holds the various stages of a game match.
@@ -28,6 +29,9 @@ public class GameStages {
 			}
 			game.setBoard(game.getLevel().getStart());
 		}
+		
+		@Override
+		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getStart()); }
 	}
 	
 	private static class Current implements GameStage {
@@ -46,6 +50,9 @@ public class GameStages {
 		
 		@Override
 		public boolean isCurrent() { return true; }
+		
+		@Override
+		public Optional<Board> getBoardFrom(Game game) { return Optional.empty(); }
 	}
 	
 	private static class Goal implements GameStage {
@@ -62,5 +69,8 @@ public class GameStages {
 			}
 			game.setBoard(game.getLevel().getGoal());
 		}
+		
+		@Override
+		public Optional<Board> getBoardFrom(Game game) { return Optional.of(game.getLevel().getStart()); }
 	}
 }
