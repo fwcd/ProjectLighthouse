@@ -45,7 +45,10 @@ public class Board implements Serializable {
 	public Collection<Brick> getBricks() { return bricks; }
 	
 	/** Pushes a brick onto the board. */
-	public void add(Brick brick) { bricks.add(brick); }
+	public void add(Brick brick) {
+		bricks.add(brick);
+		changeListeners.fire(null);
+	}
 	
 	/** Replaces a brick. */
 	public void replace(Brick oldBrick, Brick newBrick) {
@@ -71,6 +74,7 @@ public class Board implements Serializable {
 	public void clear() {
 		bricks.clear();
 		editState.reset();
+		changeListeners.fire(null);
 	}
 	
 	/** Fetches the cell's color at the specified position. */
