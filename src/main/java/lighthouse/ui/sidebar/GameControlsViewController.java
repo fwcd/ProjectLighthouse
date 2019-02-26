@@ -35,7 +35,7 @@ public class GameControlsViewController {
 		this.model = model;
 		
 		component = new JPanel();
-		pathChooser = new PathChooser(component);
+		pathChooser = new PathChooser(component, ".json");
 		component.setLayout(new BorderLayout());
 
 		BoardEditState editState = board.getModel().getEditState();
