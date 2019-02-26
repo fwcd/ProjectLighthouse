@@ -28,11 +28,11 @@ public class ScaleTransform implements CoordinateMapper {
 	
 	@Override
 	public IntVec toGridPos(IntVec pixelCoordinate) {
-		return pixelCoordinate.scale(inverseXFactor, inverseYFactor);
+		return pixelCoordinate.scale(inverseXFactor, inverseYFactor).castToInt();
 	}
 	
 	@Override
 	public IntVec toPixelPos(IntVec gridPos) {
-		return gridPos.scale(xFactor, yFactor);
+		return gridPos.scale(xFactor, yFactor).castToInt();
 	}
 }

@@ -40,15 +40,17 @@ public class IntVec {
 	
 	public IntVec sub(Direction dir) { return new IntVec(x - dir.getDx(), y - dir.getDy()); }
 	
-	public IntVec scale(double factor) { return new IntVec((int) (x * factor), (int) (y * factor)); }
+	public DoubleVec scale(double factor) { return new DoubleVec(x * factor, y * factor); }
 	
-	public IntVec scale(double xFactor, double yFactor) { return new IntVec((int) (x * xFactor), (int) (y * yFactor)); }
+	public DoubleVec scale(double xFactor, double yFactor) { return new DoubleVec(x * xFactor, y * yFactor); }
 	
 	public IntVec scale(int factor) { return new IntVec(x * factor, y * factor); }
 	
 	public IntVec scale(int xFactor, int yFactor) { return new IntVec(x * xFactor, y * yFactor); }
 	
 	public IntVec scale(IntVec other) { return new IntVec(x * other.x, y * other.y); }
+	
+	public DoubleVec toDouble() { return new DoubleVec(x, y); }
 	
 	public IntVec invert() { return new IntVec(-x, -y); }
 	

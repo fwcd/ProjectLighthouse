@@ -120,8 +120,8 @@ public class LocalBoardView implements BoardView {
 		IntVec fromPos = cellPos.sub(direction);
 		IntVec topLeft = coordinateMapper.toPixelPos(fromPos.min(cellPos));
 		IntVec bottomRight = coordinateMapper.toPixelPos(fromPos.max(cellPos)).add(cellSize);
-		IntVec scaledCellSize = cellSize.scale(scale);
-		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5);
+		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
+		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
 		IntVec innerTopLeft = topLeft.add(cornerOffset);
 		IntVec innerBottomRight = bottomRight.sub(cornerOffset);
 		IntVec scaledConnSize = innerBottomRight.sub(innerTopLeft);
@@ -139,8 +139,8 @@ public class LocalBoardView implements BoardView {
 	
 	private void renderCell(Graphics2D g2d, IntVec cellPos, IntVec cellSize, double scale) {
 		IntVec topLeft = coordinateMapper.toPixelPos(cellPos);
-		IntVec scaledCellSize = cellSize.scale(scale);
-		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5);
+		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
+		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
 		IntVec innerTopLeft = topLeft.add(cornerOffset);
 		
 		g2d.fillRect(innerTopLeft.getX(), innerTopLeft.getY(), scaledCellSize.getX(), scaledCellSize.getY());
