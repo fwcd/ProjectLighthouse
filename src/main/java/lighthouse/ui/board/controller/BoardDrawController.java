@@ -7,15 +7,15 @@ import lighthouse.model.Board;
 import lighthouse.util.IntVec;
 
 /**
- * A responder implementation responsible for editing stuff.
+ * A responder implementation responsible for drawing new bricks.
  */
-public class BoardEditController implements BoardResponder {
-	private static final Logger LOG = LoggerFactory.getLogger(BoardEditController.class);
+public class BoardDrawController implements BoardResponder {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardDrawController.class);
 	private Board board;
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardEditController(Board model) {
+	public BoardDrawController(Board model) {
 		board = model;
 	}
 	

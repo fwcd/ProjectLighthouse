@@ -9,7 +9,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Status;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardArrangeController;
-import lighthouse.ui.board.controller.BoardEditController;
+import lighthouse.ui.board.controller.BoardDrawController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.DelegateResponder;
 import lighthouse.ui.board.input.BoardInput;
@@ -90,7 +90,7 @@ public class BoardViewController implements ViewController, Renderer {
 	
 	public void edit() {
 		model.getEditState().setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		responder.setDelegate(new BoardEditController(model));
+		responder.setDelegate(new BoardDrawController(model));
 	}
 	
 	public void reset() {
