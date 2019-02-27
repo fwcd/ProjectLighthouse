@@ -90,6 +90,8 @@ public class GameViewController implements ViewController {
 		perspectiveListeners.fire(perspective);
 	}
 	
+	public GameMode getMode() { return mode; }
+	
 	public GamePerspective getPerspective() { return perspective; }
 	
 	public ListenerList<GamePerspective> getPerspectiveListeners() { return perspectiveListeners; }
