@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 
@@ -18,6 +21,7 @@ import lighthouse.util.IntVec;
  * <p>Note that bricks are immutable.</p>
  */
 public class Brick implements GameBlock, Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(Brick.class);
 	private static final long serialVersionUID = -4396959159634915799L;
 	private List<Direction> structure;
 	private List<Edge> edges = new ArrayList<>();
@@ -43,6 +47,7 @@ public class Brick implements GameBlock, Serializable {
 		this.pos = pos;
 		this.color = color;
 		this.structure = structure;
+		
 		IntVec off = IntVec.ZERO;
 		
 		for (Direction dir : structure) {
@@ -50,10 +55,10 @@ public class Brick implements GameBlock, Serializable {
 			IntVec tmpOff = off;
 			
 			for (Direction inDir : Direction.values()) {
-				if (!this.edges.stream().anyMatch(edge -> edge.matches(tmpOff, dir))) {
-					this.edges.add(new Edge(off, inDir.getOpposite()));
+				if (!edges.stream().anyMatch(edge -> edge.matches(tmpOff, dir))) {
+					edges.add(new Edge(off, inDir.getOpposite()));
 				} else {
-					this.edges.removeIf(edge -> edge.matches(tmpOff, dir));
+					edges.removeIf(edge -> edge.matches(tmpOff, dir));
 				}
 			}
 		}
