@@ -31,8 +31,12 @@ public class SideBarViewController implements ViewController {
 		accordion.setFillSpace(false);
 		
 		// Adds a panel containing game and file controls
-		GameControlsViewController controls = new GameControlsViewController(game, model, loop);
-		accordion.addPane("Game Controls", controls.getComponent());
+		GameControlsViewController gameControls = new GameControlsViewController(game, model, loop);
+		accordion.addPane("Game Controls", gameControls.getComponent());
+		
+		// Adds a panel containing AI controls
+		AIControlsViewController aiControls = new AIControlsViewController();
+		accordion.addPane("AI Controls", aiControls.getComponent());
 		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
