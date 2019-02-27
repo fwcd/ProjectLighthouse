@@ -28,7 +28,6 @@ public class AppViewController implements ViewController {
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 		
 		// Start the game loop
-		loop.addTicker(model.getGame());
 		loop.addRenderer(game.getBoard());
 		loop.start();
 	}

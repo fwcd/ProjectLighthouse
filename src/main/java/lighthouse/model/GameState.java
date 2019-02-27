@@ -31,6 +31,10 @@ public class GameState {
     
     public void backupBoard() { backupBoard = board.copy(); }
     
+    public boolean isWon() {
+        return board.equals(level.getGoal());
+    }
+    
     public void revertToBackupBoardOr(Supplier<Board> otherwise) {
         if (backupBoard == null) {
             setBoard(otherwise.get());
