@@ -106,13 +106,19 @@ public class Board implements Serializable {
 		return bricks.stream().anyMatch(brick -> brick.contains(gridPos));
 	}
 	
+	/** Finds a brick at a given position and returns null if there is none. */
 	public Brick locateBrick(IntVec gridPos) {
 		return bricks.stream()
 			.filter(brick -> brick.contains(gridPos))
 			.findFirst()
 			.orElse(null);
 	}
-    
+	
+	/** Performs a given move. */
+	public void perform(Move move) {
+		replace(move.getOldBrick(), move.getNewBrick());
+	}
+	
     /** Fetches the limits into each direction for a brick. */
     public Map<Direction, Integer> getLimitsFor(Brick brick) {
         Map<Direction, Integer> limits = new HashMap<>();

@@ -12,7 +12,7 @@ public class Move {
 		this.newBrick = newBrick;
 	}
 	
-	public void perform(Board board) {
-		board.replace(oldBrick, newBrick);
-	}
+	public Brick getOldBrick() { return oldBrick; }
+	
+	public Brick getNewBrick() { return newBrick; }
 }
