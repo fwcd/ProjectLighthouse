@@ -20,7 +20,7 @@ import lighthouse.util.IntVec;
 public class BoardPlayController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	
-	private final FloatingContext floating;
+	private final FloatingContext floatingCtx;
 	private final Map<Direction, Integer> limits = new HashMap<>();
 	private Board board;
 	private boolean dragEvent;
@@ -28,8 +28,8 @@ public class BoardPlayController implements BoardResponder {
 	private IntVec start;
 	private Brick brick;
 
-	public BoardPlayController(Board model, FloatingContext floating) {
-		this.floating = floating;
+	public BoardPlayController(Board model, FloatingContext floatingCtx) {
+		this.floatingCtx = floatingCtx;
 		board = model;
 		resetLimits();
 	}
@@ -99,6 +99,23 @@ public class BoardPlayController implements BoardResponder {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
+	}
+	
+	@Override
+	public void floatingPress(IntVec pixelPos) {
+		floatingCtx.setBlock(brick);
+		floatingCtx.setPixelPos(pixelPos);
+	}
+	
+	@Override
+	public void floatingDragTo(IntVec pixelPos) {
+		floatingCtx.setPixelPos(pixelPos);
+	}
+	
+	@Override
+	public void floatingRelease(IntVec pixelPos) {
+		floatingCtx.setBlock(null);
+		floatingCtx.setPixelPos(null);
 	}
 	
 	@Override

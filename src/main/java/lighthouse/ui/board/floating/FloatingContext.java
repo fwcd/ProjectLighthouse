@@ -1,21 +1,21 @@
 package lighthouse.ui.board.floating;
 
-import lighthouse.model.Brick;
+import lighthouse.model.GameBlock;
 import lighthouse.util.IntVec;
 
 /**
- * Wraps a "floating" brick for the sole purpose
+ * Wraps a "floating" block for the sole purpose
  * of visually more appealing mouse drags.
  */
 public class FloatingContext {
-	private Brick brick;
+	private GameBlock block;
 	private IntVec pixelPos;
 	
 	public void setPixelPos(IntVec pixelPos) { this.pixelPos = pixelPos; }
 	
 	public IntVec getPixelPos() { return pixelPos; }
 	
-	public void setBrick(Brick brick) { this.brick = brick; }
+	public void setBlock(GameBlock block) { this.block = block; }
 	
-	public Brick getBrick() { return brick; }
+	public GameBlock getBlock() { return block; }
 }
