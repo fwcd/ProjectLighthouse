@@ -1,4 +1,4 @@
-package lighthouse.model;
+package lighthouse.ui.stage;
 
 /**
  * Defined external, polymorphic behavior

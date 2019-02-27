@@ -7,11 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lighthouse.model.Game;
-import lighthouse.model.GameStage;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.ScaleTransform;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.loop.GameLoop;
+import lighthouse.ui.stage.GameStage;
 import lighthouse.ui.util.CenterPanel;
 
 public class GameStageIconViewController implements ViewController {

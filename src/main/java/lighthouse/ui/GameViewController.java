@@ -3,22 +3,28 @@ package lighthouse.ui;
 import javax.swing.JComponent;
 
 import lighthouse.model.Game;
-import lighthouse.model.GameStage;
 import lighthouse.model.Level;
 import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.EditingControllerPicker;
+import lighthouse.ui.stage.GameStage;
+import lighthouse.ui.stage.GameStages;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.Listener;
+import lighthouse.util.ListenerList;
 
 /**
- * Manages the game board view and the current
- * game state.
+ * Manages the game board view and the current game state.
  */
 public class GameViewController implements ViewController {
 	private final Game model;
 	private final BoardViewController board;
+	
+	private GameStage stage = GameStages.CURRENT;
+	
+	private final ListenerList<GameStage> stageListeners = new ListenerList<>();
+	private final Listener<GameStage> playControlListener;
 	private final Listener<GameStage> editControlListener;
 	
 	public GameViewController(Game model) {
@@ -30,9 +36,14 @@ public class GameViewController implements ViewController {
 		editControlListener = stage -> {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getBoard())));
 		};
+		playControlListener = stage -> {
+			// TODO: Multiple play controllers
+			board.setResponder(new BoardPlayController(model.getState().getBoard()));
+		};
 		
 		model.getState().getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
+			stage.transitionFrom(stage, model.getState());
 		});
 		Level initialLevel = model.getState().getLevel();
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
@@ -45,21 +56,39 @@ public class GameViewController implements ViewController {
 	public void play() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
 		board.setResponder(new BoardPlayController(model.getState().getBoard()));
-		model.getStageListeners().remove(editControlListener);
+		stageListeners.remove(editControlListener);
+		stageListeners.add(playControlListener);
+		playControlListener.on(stage);
 	}
 	
 	/** Switches to editing mode. */
 	public void edit() {
 		model.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		model.getStageListeners().add(editControlListener);
-		editControlListener.on(model.getCurrentStage());
+		stageListeners.add(editControlListener);
+		stageListeners.remove(playControlListener);
+		editControlListener.on(stage);
 	}
 	
 	public void reset() {
 		board.reset();
 	}
 	
+	public void switchToStage(GameStage newStage) {
+		if (stage != null && newStage.getIndex() != stage.getIndex()) {
+			newStage.transitionFrom(stage, model.getState());
+		}
+		stage = newStage;
+		stageListeners.fire(newStage);
+	}
+	
 	public BoardViewController getBoard() { return board; }
+	
+	/** Fetches the currently viewed stage. */
+	public GameStage getStage() { return stage; }
+	
+	public Game getModel() { return model; }
+	
+	public ListenerList<GameStage> getStageListeners() { return stageListeners; }
 	
 	@Override
 	public JComponent getComponent() { return board.getComponent(); }

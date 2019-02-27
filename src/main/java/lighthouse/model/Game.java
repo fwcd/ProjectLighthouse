@@ -1,8 +1,5 @@
 package lighthouse.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lighthouse.ui.loop.Ticker;
 import lighthouse.util.ListenerList;
 
@@ -12,19 +9,12 @@ import lighthouse.util.ListenerList;
  * the current stage).
  */
 public class Game implements Ticker {
-	private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 	private GameState state = new GameState();
-	private GameStage stage = GameStages.CURRENT;
 	private Status status;
 	
-	private final ListenerList<GameStage> stageListeners = new ListenerList<>();
 	private final ListenerList<Status> statusListeners = new ListenerList<>();
 
 	private boolean won = false;
-	
-	public Game() {
-		setupListeners();
-	}
 
 	@Override
 	public void tick() {
@@ -34,24 +24,7 @@ public class Game implements Ticker {
 		// }
 	}
 	
-	private void setupListeners() {
-		state.getLevelListeners().add(level -> {
-			// Update stage if the level has changed
-			stage.transitionFrom(stage, state);
-		});
-	}
-	
 	public GameState getState() { return state; }
-	
-	public GameStage getCurrentStage() { return stage; }
-	
-	public void switchToStage(GameStage newStage) {
-		if (stage != null && newStage.getIndex() != stage.getIndex()) {
-			newStage.transitionFrom(stage, state);
-		}
-		stage = newStage;
-		stageListeners.fire(newStage);
-	}
 	
 	public boolean isWon() { return won; }
 	
@@ -63,6 +36,4 @@ public class Game implements Ticker {
 	}
 	
 	public ListenerList<Status> getStatusListeners() { return statusListeners; }
-	
-	public ListenerList<GameStage> getStageListeners() { return stageListeners; }
 }

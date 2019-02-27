@@ -8,10 +8,10 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.model.Game;
-import lighthouse.model.GameStages;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
+import lighthouse.ui.stage.GameStages;
 
 /**
  * Manages the level navigation that allows the
@@ -20,10 +20,10 @@ import lighthouse.ui.loop.GameLoop;
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(Game game, GameLoop loop) {
+	public LevelNavigatorViewController(GameViewController game, GameLoop loop) {
 		component = new WebStepProgress();
 		component.addSteps(GameStages.STAGES.stream().sorted()
-			.map(stage -> new GameStageIconViewController(stage, game, loop))
+			.map(stage -> new GameStageIconViewController(stage, game.getModel(), loop))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		
@@ -36,7 +36,7 @@ public class LevelNavigatorViewController implements ViewController {
 			
 			private void onChange() {
 				int newIndex = component.getSelectedStepIndex();
-				if (newIndex != game.getCurrentStage().getIndex()) {
+				if (newIndex != game.getStage().getIndex()) {
 					game.switchToStage(GameStages.STAGES.get(newIndex));
 				}
 			}
@@ -48,7 +48,7 @@ public class LevelNavigatorViewController implements ViewController {
 		game.getStageListeners().add(stage -> {
 			component.setSelectedStepIndex(stage.getIndex());
 		});
-		component.setSelectedStepIndex(game.getCurrentStage().getIndex());
+		component.setSelectedStepIndex(game.getStage().getIndex());
 	}
 	
 	@Override
