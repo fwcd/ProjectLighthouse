@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 import com.google.gson.Gson;
 
@@ -20,22 +19,15 @@ import lighthouse.util.ListenerList;
  */
 public class GameState {
     private static final Logger LOG = LoggerFactory.getLogger(GameState.class);
-	private static final Gson GSON = new Gson();
+    private static final Gson GSON = new Gson();
     
     /** The in-game board. */
     private Board board;
     /** The level played. */
     private Level level;
-    /**
-     * A "backup" of the current in game board in case the
-     * user looks at the start or end board of the level.
-     */
-    private Board storedInGameBoard;
 	
     private final ListenerList<Level> levelListeners = new ListenerList<>();
 	private final ListenerList<Board> boardListeners = new ListenerList<>();
-    
-    public void storeInGameBoard() { storedInGameBoard = board.copy(); }
     
     public GameState() {
         board = new Board();
@@ -53,14 +45,6 @@ public class GameState {
     
     public void startLevel() {
         setBoard(level.getStart().copy());
-    }
-    
-    public void revertToInGameBoardOr(Supplier<Board> otherwise) {
-        if (storedInGameBoard == null) {
-            setBoard(otherwise.get());
-        } else {
-            setBoard(storedInGameBoard.copy());
-        }
     }
     
     public void setBoard(Board board) {

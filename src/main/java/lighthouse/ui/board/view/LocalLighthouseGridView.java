@@ -17,8 +17,6 @@ import javax.swing.SwingUtilities;
 public class LocalLighthouseGridView implements LighthouseGridView {
 	private final JComponent component;
 	private LighthouseGrid model = null;
-	private int cellWidth = 13;
-	private int cellHeight = 30;
 	
 	public LocalLighthouseGridView() {
 		component = new JPanel() {
@@ -30,16 +28,6 @@ public class LocalLighthouseGridView implements LighthouseGridView {
 				render((Graphics2D) g, getSize());
 			}
 		};
-	}
-	
-	/** Fetches the pixel width of each individual cell. */
-	public int getCellWidth() {
-		return cellWidth;
-	}
-	
-	/** Fetches the pixel height of each individual cell. */
-	public int getCellHeight() {
-		return cellHeight;
 	}
 	
 	@Override
@@ -58,8 +46,8 @@ public class LocalLighthouseGridView implements LighthouseGridView {
 			int cols = model.getColumns();
 			int rows = model.getRows();
 			
-			cellWidth = Math.min(cellWidth, canvasSize.width / cols);
-			cellHeight = Math.min(cellHeight, canvasSize.height / rows);
+			int cellWidth = component.getPreferredSize().width / cols;
+			int cellHeight = component.getPreferredSize().height / rows;
 			
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
