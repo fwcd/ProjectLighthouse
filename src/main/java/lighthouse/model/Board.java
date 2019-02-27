@@ -3,9 +3,15 @@ package lighthouse.model;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
@@ -16,6 +22,7 @@ import lighthouse.util.ListenerList;
  */
 public class Board implements Serializable {
 	private static final long serialVersionUID = 6367414981719952292L;
+	private static final Logger LOG = LoggerFactory.getLogger(Board.class);
 	private int columns;
 	private int rows;
 	private Set<Brick> bricks = new HashSet<>();
@@ -105,6 +112,38 @@ public class Board implements Serializable {
 			.findFirst()
 			.orElse(null);
 	}
+    
+    /** Fetches the limits into each direction for a brick. */
+    public Map<Direction, Integer> getLimitsFor(Brick brick) {
+        Map<Direction, Integer> limits = new HashMap<>();
+        
+		limits.put(Direction.UP, Integer.MAX_VALUE);
+		limits.put(Direction.DOWN, Integer.MAX_VALUE);
+		limits.put(Direction.RIGHT, Integer.MAX_VALUE);
+        limits.put(Direction.LEFT, Integer.MAX_VALUE);
+        
+        List<Edge> edgeList = brick.getEdges();
+		for (Direction dir : Direction.values()) {
+			edgeList.stream().filter(edge -> edge.getDir().getIndex() == dir.getIndex()).forEach(edge -> {
+				IntVec face = brick.getPos().add(edge.getOff()).add(dir);
+				int limit = 0;
+				while (!hasBrickAt(face) && face.xIn(0, columns) && face.yIn(0, rows)) {
+					limit += 1;
+					face = face.add(dir);
+				}
+				if (limits.get(dir) > limit) {
+					LOG.debug("Looking {} I found a smaller limit than {}: {}", dir, limits.get(dir), limit);
+					limits.put(dir, limit);
+				}
+				if (limit > 0) {
+					edge.setHighlighted(true);
+				}
+			});
+		}
+        LOG.debug("Limits: {}", limits);
+        
+        return limits;
+    }
 	
 	/** Synchronizes this board's bricks with another board. */
 	public void bindToUpdates(Board other) {

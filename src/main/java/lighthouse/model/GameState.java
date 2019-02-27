@@ -5,12 +5,16 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 
 /**
@@ -51,7 +55,7 @@ public class GameState {
         this.board = board;
         boardListeners.fire(board);
     }
-	
+    
 	/** Saves a level as JSON to a file. */
 	public void saveLevelTo(Path path) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
