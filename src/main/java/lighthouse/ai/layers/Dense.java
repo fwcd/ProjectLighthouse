@@ -2,20 +2,14 @@ package lighthouse.ai.layers;
 
 import lighthouse.ai.Model;
 
-public class Dense implements Layer{
+public class Dense{
 
     private Model model;
 
     public Dense(Model model){
         this.model = model;
     }
-    
-    @Override
-    public double[][] calculate(double[][] in, int height, int width) {
-        throw new IllegalArgumentException("Wrong Layer");
-    }
 
-    @Override
     public double[][] calculate(double[][] in, int size){
         double[][] res = new double[size][];
         for (int i = 0; i < size; i++){

@@ -32,10 +32,6 @@ public class Model{
         return weights.get(weightCounter++);
     }
 
-    public void resetCounter(){
-        this.weightCounter = 0;
-    }
-
     public void addDense(int size){
         int[] i = {size};
         this.args.add(i);
@@ -54,6 +50,7 @@ public class Model{
                 in = conv.calculate(in, arg[0], arg[1]);
             }
         }
+        this.weightCounter = 0;
         return in[0][0];
     }
 
