@@ -10,14 +10,11 @@ import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.ScaleTransform;
-import lighthouse.ui.board.controller.BoardPlayController;
+import lighthouse.ui.modes.GameMode;
+import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
-import lighthouse.ui.perspectives.InGamePerspective;
-import lighthouse.ui.perspectives.StartPerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
-import lighthouse.ui.util.Status;
-import lighthouse.util.ColorUtils;
 import lighthouse.util.ListenerList;
 
 /**
@@ -31,6 +28,7 @@ public class GameViewController implements ViewController {
 	private final CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
 	private final BoardViewController board;
 	
+	private GameMode mode;
 	private GamePerspective perspective;
 	
 	private final TickerList tickers = new TickerList();
@@ -59,26 +57,7 @@ public class GameViewController implements ViewController {
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
 		
 		// Enter playing mode
-		play();
-	}
-	
-	/** Switches to playing mode. */
-	public void play() {
-		context.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getBoard()));
-		
-		tickers.add(winChecker);
-		winChecker.reset();
-		
-		show(InGamePerspective.INSTANCE);
-		model.startLevel();
-	}
-	
-	/** Switches to editing mode. */
-	public void edit() {
-		context.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		tickers.remove(winChecker);
-		show(StartPerspective.INSTANCE);
+		enter(PlayingMode.INSTANCE);
 	}
 	
 	public void reset() {
@@ -91,7 +70,25 @@ public class GameViewController implements ViewController {
 		}
 	}
 	
-	public void show(GamePerspective perspective) { this.perspective = perspective; }
+	public void enter(GameMode mode) {
+		this.mode = mode;
+		context.setStatus(mode.getBaseStatus());
+		
+		if (mode.isPlaying()) {
+			tickers.add(winChecker);
+			winChecker.reset();
+			model.startLevel();
+		} else {
+			tickers.remove(winChecker);
+		}
+		
+		show(mode.getInitialPerspective());
+	}
+	
+	public void show(GamePerspective perspective) {
+		this.perspective = perspective;
+		perspectiveListeners.fire(perspective);
+	}
 	
 	public GamePerspective getPerspective() { return perspective; }
 	

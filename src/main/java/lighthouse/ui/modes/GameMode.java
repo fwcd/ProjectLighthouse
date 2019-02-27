@@ -11,5 +11,9 @@ import lighthouse.ui.util.Status;
 public interface GameMode {
 	Status getBaseStatus();
 	
+	GamePerspective getInitialPerspective();
+	
 	BoardResponder createController(GamePerspective perspective, Board board);
+	
+	default boolean isPlaying() { return false; }
 }

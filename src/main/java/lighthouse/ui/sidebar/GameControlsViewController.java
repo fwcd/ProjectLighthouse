@@ -18,6 +18,8 @@ import lighthouse.ui.GameContext;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
+import lighthouse.ui.modes.EditingMode;
+import lighthouse.ui.modes.PlayingMode;
 
 /**
  * Manages a view containing game and file controls and is responsible for
@@ -54,9 +56,9 @@ public class GameControlsViewController implements ViewController {
 		// Setup control panel
 		component.add(vboxOf(
 			panelOf(
-				buttonOf("Play", game::play),
+				buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				buttonOf("Reset", game::reset),
-				buttonOf("Edit", game::edit)
+				buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
 			),
 			panelOf(
 				buttonOf("Save", this::save),
