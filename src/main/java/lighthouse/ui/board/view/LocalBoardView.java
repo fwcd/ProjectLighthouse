@@ -36,7 +36,7 @@ public class LocalBoardView implements BoardView {
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
-	private boolean drawEdges = false;
+	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.HIGHLIGHTED_ONLY;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
 	
@@ -55,6 +55,10 @@ public class LocalBoardView implements BoardView {
 				render((Graphics2D) g, getSize());
 			}
 		};
+	}
+	
+	public static enum EdgeDrawMode {
+		NONE, HIGHLIGHTED_ONLY, ALL;
 	}
 	
 	@Override
@@ -104,7 +108,7 @@ public class LocalBoardView implements BoardView {
 			for (Brick brick : model.getBricks()) {
 				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
-				if (drawEdges) {
+				if (edgeDrawMode != EdgeDrawMode.NONE) {
 					renderEdges(g2d, brick.getPos(), brick.getEdges(), placedBrickScale);
 				}
 			}
@@ -121,7 +125,9 @@ public class LocalBoardView implements BoardView {
 	
 	private void renderEdges(Graphics2D g2d, IntVec blockPos, List<Edge> edges, double blockScale) {
 		for (Edge edge : edges) {
-			renderEdge(g2d, blockPos, edge, blockScale);
+			if (edgeDrawMode == EdgeDrawMode.ALL || (edgeDrawMode == EdgeDrawMode.HIGHLIGHTED_ONLY && edge.isHighlighted())) {
+				renderEdge(g2d, blockPos, edge, blockScale);
+			}
 		}
 	}
 	
@@ -229,9 +235,9 @@ public class LocalBoardView implements BoardView {
 	
 	public double getPlacedBrickScale() { return placedBrickScale; }
 	
-	public void setDrawEdges(boolean drawEdges) { this.drawEdges = drawEdges; }
+	public EdgeDrawMode getEdgeDrawMode() { return edgeDrawMode; }
 	
-	public boolean doesDrawEdges() { return drawEdges; }
+	public void setEdgeDrawMode(EdgeDrawMode edgeDrawMode) { this.edgeDrawMode = edgeDrawMode; }
 	
 	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
 	

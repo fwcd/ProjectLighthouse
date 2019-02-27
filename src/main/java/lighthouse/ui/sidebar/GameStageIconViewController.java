@@ -28,6 +28,7 @@ public class GameStageIconViewController implements ViewController {
 				boardView.setActiveBrickScale(1.0);
 				boardView.setPlacedBrickScale(1.0);
 				boardView.setDrawGrid(false);
+				boardView.setEdgeDrawMode(LocalBoardView.EdgeDrawMode.NONE);
 				boardView.relayout(initialBoard.getColumns(), initialBoard.getRows());
 				
 				loop.addRenderer(() -> stage.getBoardFrom(game.getState()).ifPresent(boardView::draw));

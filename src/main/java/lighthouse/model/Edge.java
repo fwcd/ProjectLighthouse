@@ -55,6 +55,8 @@ public class Edge implements Serializable {
 	
 	public Direction getDir() { return dir; }
 	
+	public boolean isHighlighted() { return highlighted; }
+	
 	public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
 	
 	/** Deeply copies this edge. */
