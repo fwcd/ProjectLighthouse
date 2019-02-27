@@ -38,6 +38,7 @@ public class LocalBoardView implements BoardView {
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
+	private boolean drawFloating = true;
 	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.NONE;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
@@ -127,10 +128,12 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the floating state
-			GameBlock floatingBlock = floatingCtx.getBlock();
-			IntVec floatingPos = floatingCtx.getPixelPos();
-			if (floatingBlock != null && floatingPos != null) {
-				renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(80, Color.BLACK));
+			if (drawFloating) {
+				GameBlock floatingBlock = floatingCtx.getBlock();
+				IntVec floatingPos = floatingCtx.getPixelPos();
+				if (floatingBlock != null && floatingPos != null) {
+					renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(80, Color.BLACK));
+				}
 			}
 		}
 	}
@@ -250,6 +253,10 @@ public class LocalBoardView implements BoardView {
 	public EdgeDrawMode getEdgeDrawMode() { return edgeDrawMode; }
 	
 	public void setEdgeDrawMode(EdgeDrawMode edgeDrawMode) { this.edgeDrawMode = edgeDrawMode; }
+	
+	public boolean doesDrawFloating() { return drawFloating; }
+	
+	public void setDrawFloating(boolean drawFloating) { this.drawFloating = drawFloating; }
 	
 	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
 	
