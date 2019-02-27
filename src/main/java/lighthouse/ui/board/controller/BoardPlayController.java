@@ -49,11 +49,14 @@ public class BoardPlayController implements BoardResponder {
 				edge.setHighlighted(true);
 				IntVec face = brick.getPos().add(edge.getOff()).add(dir);
 				int limit = 0;
-				while (board.locateBrick(face) == null && face.xIn(0, board.getColumns()) && face.yIn(0, board.getRows())) {
+				while (!board.hasBrickAt(face) && face.xIn(0, board.getColumns()) && face.yIn(0, board.getRows())) {
 					limit += 1;
 					face = face.add(dir);
 				}
-				if (limits.get(dir) > limit) limits.put(dir, limit);
+				if (limits.get(dir) > limit) {
+					LOG.debug("Looking {} I found a smaller limit than {}: {}", dir, limits.get(dir), limit);
+					limits.put(dir, limit);
+				}
 			});
 		}
 		LOG.info("Limits: {}", limits);
