@@ -66,7 +66,7 @@ public interface GameBlock {
 		}
 		
 		edges.removeAll(removed);
-		LOG.info("Found edges {}", edges);
+		LOG.debug("Found edges {}", edges);
 		
 		return edges;
 	}
