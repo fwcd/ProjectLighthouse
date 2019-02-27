@@ -37,12 +37,11 @@ public class BoardViewController implements ViewController, Renderer {
 	private final FloatingContext floatingCtx = new FloatingContext();
 	private final DelegateResponder responder;
 
-	public BoardViewController(Board model) {
-		responder = new DelegateResponder(new BoardPlayController(model, floatingCtx));
+	public BoardViewController(Board model, CoordinateMapper coordinateMapper) {
+		responder = new DelegateResponder(new BoardPlayController(model, floatingCtx, coordinateMapper));
 		updateModel(model);
 		
 		// Creates a local view and hooks up the Swing component
-		CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
 		LocalBoardView localView = new LocalBoardView(coordinateMapper, floatingCtx);
 		localView.relayout(model.getColumns(), model.getRows());
 		component = localView.getComponent();

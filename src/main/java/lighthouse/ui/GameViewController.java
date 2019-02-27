@@ -8,6 +8,8 @@ import lighthouse.model.LevelStage;
 import lighthouse.model.LevelStages;
 import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.CoordinateMapper;
+import lighthouse.ui.board.ScaleTransform;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.EditingControllerPicker;
 import lighthouse.ui.board.controller.PlayControllerPicker;
@@ -21,6 +23,7 @@ import lighthouse.util.Listener;
  */
 public class GameViewController implements ViewController {
 	private final Game model;
+	private final CoordinateMapper coordinateMapper;
 	private final BoardViewController board;
 	
 	private final TickerList tickers = new TickerList();
@@ -33,7 +36,8 @@ public class GameViewController implements ViewController {
 		this.model = model;
 		
 		// Initialize board
-		board = new BoardViewController(model.getState().getActiveBoard());
+		coordinateMapper = new ScaleTransform(70, 70);
+		board = new BoardViewController(model.getState().getActiveBoard(), coordinateMapper);
 		model.getState().getBoardListeners().add(board::updateModel);
 		
 		// Setup tickers
@@ -44,7 +48,7 @@ public class GameViewController implements ViewController {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getActiveBoard())));
 		};
 		playControlListener = stage -> {
-			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getActiveBoard(), board.getFloatingContext())));
+			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getActiveBoard(), board.getFloatingContext(), coordinateMapper)));
 		};
 		
 		// Add level hooks
@@ -63,7 +67,7 @@ public class GameViewController implements ViewController {
 	/** Switches to playing mode. */
 	public void play() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getState().getActiveBoard(), board.getFloatingContext()));
+		board.setResponder(new BoardPlayController(model.getState().getActiveBoard(), board.getFloatingContext(), coordinateMapper));
 		
 		model.getLevelStageListeners().remove(editControlListener);
 		model.getLevelStageListeners().add(playControlListener);

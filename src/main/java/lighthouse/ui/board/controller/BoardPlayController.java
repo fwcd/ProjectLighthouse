@@ -11,6 +11,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
+import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.util.IntVec;
 
@@ -21,15 +22,19 @@ public class BoardPlayController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	
 	private final FloatingContext floatingCtx;
+	private final CoordinateMapper coordinateMapper;
 	private final Map<Direction, Integer> limits = new HashMap<>();
 	private Board board;
 	private boolean dragEvent;
-
-	private IntVec start;
+	
+	private IntVec floatingOffset;
+	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(Board model, FloatingContext floatingCtx) {
+	public BoardPlayController(Board model, FloatingContext floatingCtx, CoordinateMapper coordinateMapper) {
 		this.floatingCtx = floatingCtx;
+		this.coordinateMapper = coordinateMapper;
+		
 		board = model;
 		resetLimits();
 	}
@@ -69,15 +74,15 @@ public class BoardPlayController implements BoardResponder {
 		brick = board.locateBrick(gridPos);
 		if (brick == null) return;
 		dragEvent = true;
-		start = gridPos;
+		startGridPos = gridPos;
 		computeLimits();
 	}
 	
 	@Override
 	public void dragTo(IntVec gridPos) {
 		if (!dragEvent) return;
-		if (!gridPos.equals(start)) {
-			IntVec at = gridPos.sub(start);
+		if (!gridPos.equals(startGridPos)) {
+			IntVec at = gridPos.sub(startGridPos);
 			Direction atDir = at.nearestDirection();
 			
 			if (limits.get(atDir) > 0) {
@@ -85,7 +90,7 @@ public class BoardPlayController implements BoardResponder {
 				Brick newBrick = brick.movedInto(atDir);
 				board.replace(brick, newBrick);
 				brick = newBrick;
-				start = gridPos;
+				startGridPos = gridPos;
 				computeLimits();
 			}
 		}
@@ -103,19 +108,27 @@ public class BoardPlayController implements BoardResponder {
 	
 	@Override
 	public void floatingPress(IntVec pixelPos) {
-		floatingCtx.setBlock(brick);
-		floatingCtx.setPixelPos(pixelPos);
+		if (brick != null) {
+			IntVec brickPixelPos = coordinateMapper.toPixelPos(brick.getPos());
+			
+			floatingOffset = pixelPos.sub(brickPixelPos);
+			floatingCtx.setBlock(brick);
+			floatingCtx.setPixelPos(pixelPos.sub(floatingOffset));
+		}
 	}
 	
 	@Override
 	public void floatingDragTo(IntVec pixelPos) {
-		floatingCtx.setPixelPos(pixelPos);
+		if (floatingOffset != null) {
+			floatingCtx.setPixelPos(pixelPos.sub(floatingOffset));
+		}
 	}
 	
 	@Override
 	public void floatingRelease(IntVec pixelPos) {
 		floatingCtx.setBlock(null);
 		floatingCtx.setPixelPos(null);
+		floatingOffset = null;
 	}
 	
 	@Override
