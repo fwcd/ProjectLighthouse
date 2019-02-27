@@ -54,4 +54,7 @@ public class Edge implements Serializable {
 		copied.highlighted = highlighted;
 		return copied;
 	}
+	
+	@Override
+	public String toString() { return dir.toArrow() + off.toString(); }
 }

@@ -5,15 +5,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Board;
 import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.BrickBuilder;
+import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
@@ -25,11 +30,13 @@ import lighthouse.util.IntVec;
  * A local high-resolution (Swing-based) view of the GameBoard.
  */
 public class LocalBoardView implements BoardView {
+	private static final Logger LOG = LoggerFactory.getLogger(LocalBoardView.class);
 	private final Color background = Color.WHITE;
 	private final Color gridLineColor = Color.LIGHT_GRAY;
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
+	private boolean drawEdges = true;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
 	
@@ -95,7 +102,11 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
+				LOG.info("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
+				if (drawEdges) {
+					renderEdges(g2d, brick.getPos(), brick.getEdges(), placedBrickScale);
+				}
 			}
 			
 			// Draw the editing state
@@ -105,6 +116,39 @@ public class LocalBoardView implements BoardView {
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);
 			}
+		}
+	}
+	
+	private void renderEdges(Graphics2D g2d, IntVec blockPos, List<Edge> edges, double blockScale) {
+		for (Edge edge : edges) {
+			renderEdge(g2d, blockPos, edge, blockScale);
+		}
+	}
+	
+	private void renderEdge(Graphics2D g2d, IntVec blockPos, Edge edge, double scale) {
+		g2d.setStroke(new BasicStroke(2.0F));
+		g2d.setColor(Color.ORANGE);
+		
+		IntVec cellSize = getCellSize();
+		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
+		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
+		IntVec innerTopLeft = coordinateMapper.toPixelPos(blockPos.add(edge.getOff())).add(cornerOffset);
+		IntVec innerBottomRight = innerTopLeft.add(scaledCellSize);
+		
+		switch (edge.getDir()) {
+			case UP:
+				g2d.drawLine(innerTopLeft.getX(), innerTopLeft.getY(), innerBottomRight.getX(), innerTopLeft.getY());
+				break;
+			case DOWN:
+				g2d.drawLine(innerTopLeft.getX(), innerBottomRight.getY(), innerBottomRight.getX(), innerBottomRight.getY());
+				break;
+			case RIGHT:
+				g2d.drawLine(innerBottomRight.getX(), innerTopLeft.getY(), innerBottomRight.getX(), innerBottomRight.getY());
+				break;
+			case LEFT:
+				g2d.drawLine(innerTopLeft.getX(), innerTopLeft.getY(), innerTopLeft.getX(), innerBottomRight.getY());
+				break;
+			default: throw new IllegalArgumentException("Will never happen.");
 		}
 	}
 	
@@ -166,10 +210,10 @@ public class LocalBoardView implements BoardView {
 			if (neighborBottomRight && neighborBelow && neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), bottomRight.getY() - cornerOffset.getY(), cornerOffset.getX(), cornerOffset.getY());
 			
 			// Draw sides
-			if (neighborAbove) g2d.fillRect(topLeft.getX() + cornerOffset.getX(), topLeft.getY(), scaledCellSize.getX(), cornerOffset.getY());
-			if (neighborBelow) g2d.fillRect(topLeft.getX() + cornerOffset.getX(), bottomRight.getY() - cornerOffset.getY(), scaledCellSize.getX(), cornerOffset.getY());
-			if (neighborLeft)  g2d.fillRect(topLeft.getX(), topLeft.getY() + cornerOffset.getY(), cornerOffset.getX(), scaledCellSize.getY());
-			if (neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), topLeft.getY() + cornerOffset.getY(), cornerOffset.getX(), scaledCellSize.getY());
+			if (neighborAbove) g2d.fillRect(innerTopLeft.getX(), topLeft.getY(), scaledCellSize.getX(), cornerOffset.getY());
+			if (neighborBelow) g2d.fillRect(innerTopLeft.getX(), bottomRight.getY() - cornerOffset.getY(), scaledCellSize.getX(), cornerOffset.getY());
+			if (neighborLeft)  g2d.fillRect(topLeft.getX(), innerTopLeft.getY(), cornerOffset.getX(), scaledCellSize.getY());
+			if (neighborRight) g2d.fillRect(bottomRight.getX() - cornerOffset.getX(), innerTopLeft.getY(), cornerOffset.getX(), scaledCellSize.getY());
 		}
 	}
 	
