@@ -124,7 +124,7 @@ public class Board implements Serializable {
 	
 	/** Encodes this board as an array of columns * rows item.. */
 	public double[] encode1D() {
-		return IntStream.rangeClosed(0, columns * rows)
+		return IntStream.range(0, columns * rows)
 			.mapToObj(i -> colorAt(i % columns, i / columns))
 			.mapToDouble(ColorUtils::getBrightnessPercent)
 			.toArray();
@@ -132,8 +132,8 @@ public class Board implements Serializable {
 	
 	/** Encodes this board as a 2D array of columns * rows item.. */
 	public double[][] encode2D() {
-		return IntStream.rangeClosed(0, columns)
-			.mapToObj(x -> IntStream.rangeClosed(0, rows)
+		return IntStream.range(0, columns)
+			.mapToObj(x -> IntStream.range(0, rows)
 				.mapToObj(y -> colorAt(x, y))
 				.mapToDouble(ColorUtils::getBrightnessPercent)
 				.toArray())
@@ -153,8 +153,9 @@ public class Board implements Serializable {
 	}
 	
 	/** Computes the possible moves of a brick into a certain direction. */
-	private Stream<Move> movesIntoDirection(Brick brick, Direction direction, int limit) {
-		throw new RuntimeException("TODO");
+	private Stream<Move> movesIntoDirection(Brick brick, Direction dir, int limit) {
+		return IntStream.range(0, limit)
+			.mapToObj(i -> new Move(brick, brick.movedBy(new IntVec(dir.getDx(), dir.getDy()).scale(limit))));
 	}
 	
     /** Fetches the limits into each direction for a brick. */
