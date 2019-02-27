@@ -126,8 +126,7 @@ public class BoardPlayController implements BoardResponder {
 	
 	@Override
 	public void floatingRelease(IntVec pixelPos) {
-		floatingCtx.setBlock(null);
-		floatingCtx.setPixelPos(null);
+		floatingCtx.clear();
 		floatingOffset = null;
 	}
 	

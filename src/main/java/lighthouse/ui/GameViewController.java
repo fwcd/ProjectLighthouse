@@ -41,7 +41,7 @@ public class GameViewController implements ViewController {
 		model.getState().getBoardListeners().add(board::updateModel);
 		
 		// Setup tickers
-		winChecker = new GameWinChecker(board.getComponent(), model);
+		winChecker = new GameWinChecker(board.getComponent(), model, board.getFloatingContext());
 		
 		// Setup controller pickers
 		editControlListener = stage -> {

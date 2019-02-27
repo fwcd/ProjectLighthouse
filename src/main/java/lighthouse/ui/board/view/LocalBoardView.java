@@ -25,6 +25,7 @@ import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.util.ArrayUtils;
+import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 
 /**
@@ -129,7 +130,7 @@ public class LocalBoardView implements BoardView {
 			GameBlock floatingBlock = floatingCtx.getBlock();
 			IntVec floatingPos = floatingCtx.getPixelPos();
 			if (floatingBlock != null && floatingPos != null) {
-				renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale);
+				renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(80, floatingBlock.getColor()));
 			}
 		}
 	}
@@ -170,14 +171,14 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
-		renderBlock(g2d, block, coordinateMapper.toPixelPos(block.getPos()), blockScale);
+		renderBlock(g2d, block, coordinateMapper.toPixelPos(block.getPos()), blockScale, block.getColor());
 	}
 	
-	private void renderBlock(Graphics2D g2d, GameBlock block, IntVec pixelPos, double blockScale) {
+	private void renderBlock(Graphics2D g2d, GameBlock block, IntVec pixelPos, double blockScale, Color color) {
 		IntVec cellSize = getCellSize();
 		IntVec[][] fragments = block.to2DArray();
 		
-		g2d.setColor(block.getColor());
+		g2d.setColor(color);
 		
 		for (int y = 0; y < fragments.length; y++) {
 			for (int x = 0; x < fragments[y].length; x++) {

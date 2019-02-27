@@ -11,6 +11,11 @@ public class FloatingContext {
 	private GameBlock block;
 	private IntVec pixelPos;
 	
+	public void clear() {
+		block = null;
+		pixelPos = null;
+	}
+	
 	public void setPixelPos(IntVec pixelPos) { this.pixelPos = pixelPos; }
 	
 	public IntVec getPixelPos() { return pixelPos; }

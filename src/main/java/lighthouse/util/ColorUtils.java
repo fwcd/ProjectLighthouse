@@ -16,4 +16,8 @@ public class ColorUtils {
 		Random r = ThreadLocalRandom.current();
 		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
 	}
+	
+	public static Color withAlpha(int newAlpha, Color color) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), newAlpha);
+	}
 }
