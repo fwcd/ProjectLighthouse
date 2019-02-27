@@ -28,10 +28,10 @@ public class Game implements Ticker {
 
 	@Override
 	public void tick() {
-		if (state.getLevel().isCompleted(state.getBoard())) {
-			LOG.info("Completed level");
-			won = true;
-		}
+		// if (state.getLevel().isCompleted(state.getBoard())) {
+		// 	LOG.info("Completed level");
+		// 	won = true;
+		// }
 	}
 	
 	private void setupListeners() {
