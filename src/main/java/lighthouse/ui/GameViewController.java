@@ -8,8 +8,8 @@ import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.EditingControllerPicker;
-import lighthouse.ui.stage.GameStage;
-import lighthouse.ui.stage.GameStages;
+import lighthouse.ui.stage.LevelStage;
+import lighthouse.ui.stage.LevelStages;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
@@ -21,11 +21,11 @@ public class GameViewController implements ViewController {
 	private final Game model;
 	private final BoardViewController board;
 	
-	private GameStage stage = GameStages.CURRENT;
+	private LevelStage stage = LevelStages.CURRENT;
 	
-	private final ListenerList<GameStage> stageListeners = new ListenerList<>();
-	private final Listener<GameStage> playControlListener;
-	private final Listener<GameStage> editControlListener;
+	private final ListenerList<LevelStage> stageListeners = new ListenerList<>();
+	private final Listener<LevelStage> playControlListener;
+	private final Listener<LevelStage> editControlListener;
 	
 	public GameViewController(Game model) {
 		this.model = model;
@@ -73,7 +73,7 @@ public class GameViewController implements ViewController {
 		board.reset();
 	}
 	
-	public void switchToStage(GameStage newStage) {
+	public void switchToStage(LevelStage newStage) {
 		if (stage != null && newStage.getIndex() != stage.getIndex()) {
 			newStage.transitionFrom(stage, model.getState());
 		}
@@ -84,11 +84,11 @@ public class GameViewController implements ViewController {
 	public BoardViewController getBoard() { return board; }
 	
 	/** Fetches the currently viewed stage. */
-	public GameStage getStage() { return stage; }
+	public LevelStage getStage() { return stage; }
 	
 	public Game getModel() { return model; }
 	
-	public ListenerList<GameStage> getStageListeners() { return stageListeners; }
+	public ListenerList<LevelStage> getStageListeners() { return stageListeners; }
 	
 	@Override
 	public JComponent getComponent() { return board.getComponent(); }

@@ -11,13 +11,13 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.ScaleTransform;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.loop.GameLoop;
-import lighthouse.ui.stage.GameStage;
+import lighthouse.ui.stage.LevelStage;
 import lighthouse.ui.util.CenterPanel;
 
 public class GameStageIconViewController implements ViewController {
 	private final JComponent component;
 	
-	public GameStageIconViewController(GameStage stage, Game game, GameLoop loop) {
+	public GameStageIconViewController(LevelStage stage, Game game, GameLoop loop) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		

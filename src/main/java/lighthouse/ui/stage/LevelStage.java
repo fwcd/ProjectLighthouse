@@ -11,19 +11,19 @@ import lighthouse.model.GameState;
  * useful, since the game naturally requires
  * some differentiation between start and end states.
  */
-public interface GameStage extends Comparable<GameStage> {
+public interface LevelStage extends Comparable<LevelStage> {
 	int getIndex();
 	
 	String getName();
 	
-	void transitionFrom(GameStage lastStage, GameState game);
+	void transitionFrom(LevelStage lastStage, GameState game);
 	
 	Optional<Board> getBoardFrom(GameState game);
 	
-	<T> T accept(GameStageVisitor<T> visitor);
+	<T> T accept(LevelStageVisitor<T> visitor);
 	
 	default boolean isCurrent() { return false; }
 	
 	@Override
-	default int compareTo(GameStage o) { return Integer.compare(getIndex(), o.getIndex()); }
+	default int compareTo(LevelStage o) { return Integer.compare(getIndex(), o.getIndex()); }
 }

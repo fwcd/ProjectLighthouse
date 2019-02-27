@@ -1,14 +1,14 @@
 package lighthouse.ui.board.controller;
 
 import lighthouse.model.Board;
-import lighthouse.ui.stage.GameStageVisitor;
-import lighthouse.ui.stage.GameStages;
+import lighthouse.ui.stage.LevelStageVisitor;
+import lighthouse.ui.stage.LevelStages;
 
 /**
  * A GameStageVisitor that determines the editing
  * controller to pick based on a stage.
  */
-public class EditingControllerPicker implements GameStageVisitor<BoardResponder> {
+public class EditingControllerPicker implements LevelStageVisitor<BoardResponder> {
 	private final Board board;
 	
 	public EditingControllerPicker(Board board) {
@@ -16,11 +16,11 @@ public class EditingControllerPicker implements GameStageVisitor<BoardResponder>
 	}
 	
 	@Override
-	public BoardResponder visitStart(GameStages.Start stage) { return new BoardDrawController(board); }
+	public BoardResponder visitStart(LevelStages.Start stage) { return new BoardDrawController(board); }
 	
 	@Override
-	public BoardResponder visitCurrent(GameStages.Current stage) { return new BoardDrawController(board); }
+	public BoardResponder visitCurrent(LevelStages.Current stage) { return new BoardDrawController(board); }
 	
 	@Override
-	public BoardResponder visitGoal(GameStages.Goal stage) { return new BoardArrangeController(board); }
+	public BoardResponder visitGoal(LevelStages.Goal stage) { return new BoardArrangeController(board); }
 }

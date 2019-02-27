@@ -11,7 +11,7 @@ import com.alee.extended.progress.WebStepProgress;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
-import lighthouse.ui.stage.GameStages;
+import lighthouse.ui.stage.LevelStages;
 
 /**
  * Manages the level navigation that allows the
@@ -22,7 +22,7 @@ public class LevelNavigatorViewController implements ViewController {
 	
 	public LevelNavigatorViewController(GameViewController game, GameLoop loop) {
 		component = new WebStepProgress();
-		component.addSteps(GameStages.STAGES.stream().sorted()
+		component.addSteps(LevelStages.STAGES.stream().sorted()
 			.map(stage -> new GameStageIconViewController(stage, game.getModel(), loop))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
@@ -37,14 +37,14 @@ public class LevelNavigatorViewController implements ViewController {
 			private void onChange() {
 				int newIndex = component.getSelectedStepIndex();
 				if (newIndex != game.getStage().getIndex()) {
-					game.switchToStage(GameStages.STAGES.get(newIndex));
+					game.switchToStage(LevelStages.STAGES.get(newIndex));
 				}
 			}
 		};
 		component.addMouseListener(mouseAdapter);
 		component.addMouseMotionListener(mouseAdapter);
 		
-		game.switchToStage(GameStages.CURRENT);
+		game.switchToStage(LevelStages.CURRENT);
 		game.getStageListeners().add(stage -> {
 			component.setSelectedStepIndex(stage.getIndex());
 		});
