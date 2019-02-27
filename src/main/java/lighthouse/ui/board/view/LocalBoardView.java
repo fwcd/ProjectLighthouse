@@ -132,7 +132,7 @@ public class LocalBoardView implements BoardView {
 				GameBlock floatingBlock = floatingCtx.getBlock();
 				IntVec floatingPos = floatingCtx.getPixelPos();
 				if (floatingBlock != null && floatingPos != null) {
-					renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(80, Color.BLACK));
+					renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(40, Color.BLACK));
 				}
 			}
 		}

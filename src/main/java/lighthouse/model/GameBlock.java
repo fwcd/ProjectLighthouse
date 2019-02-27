@@ -1,9 +1,13 @@
 package lighthouse.model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lighthouse.util.IntVec;
 
@@ -13,11 +17,59 @@ import lighthouse.util.IntVec;
  * and a start position.
  */
 public interface GameBlock {
+	Logger LOG = LoggerFactory.getLogger(GameBlock.class);
+	
 	List<? extends Direction> getStructure();
 	
 	IntVec getPos();
 	
 	Color getColor();
+	
+	default List<? extends Edge> getEdges() { return computeEdges(); }
+	
+	default List<Edge> computeEdges() {
+		List<Edge> edges = new ArrayList<>();
+		
+		edges.add(new Edge(IntVec.ZERO, Direction.UP));
+		edges.add(new Edge(IntVec.ZERO, Direction.RIGHT));
+		edges.add(new Edge(IntVec.ZERO, Direction.DOWN));
+		edges.add(new Edge(IntVec.ZERO, Direction.LEFT));
+		
+		IntVec off = IntVec.ZERO;
+		
+		LOG.debug("Initial edges: {}", edges);
+		
+		// Traverse the structure
+		for (Direction dir : getStructure()) {
+			off = off.add(dir);
+			
+			// Initially add all directions
+			for (Direction inDir : Direction.values()) {
+				edges.add(new Edge(off, inDir));
+			}
+		}
+		
+		// Remove all pairs of edges that are duplicated
+		List<Edge> removed = new ArrayList<>();
+		
+		for (int i = 0; i < edges.size(); i++) {
+			for (int j = i + 1; j < edges.size(); j++) {
+				Edge a = edges.get(i);
+				Edge b = edges.get(j);
+				
+				if (a.isDuplicateOf(b)) {
+					LOG.debug("{} and {} are duplicates", a, b);
+					removed.add(a);
+					removed.add(b);
+				}
+			}
+		}
+		
+		edges.removeAll(removed);
+		LOG.info("Found edges {}", edges);
+		
+		return edges;
+	}
 	
 	/** Converts this brick into a set of occupied positions. */
 	default Set<IntVec> getOccupiedPositions() {
