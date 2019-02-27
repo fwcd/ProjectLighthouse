@@ -24,6 +24,9 @@ public class InGamePerspective implements GamePerspective {
 	public Board getActiveBoard(GameState model) { return model.getBoard(); }
 	
 	@Override
+	public boolean isInGame() { return true; }
+	
+	@Override
 	public BoardResponder createEditController(Board board) { return NoResponder.INSTANCE; }
 	
 	@Override
