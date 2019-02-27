@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
@@ -79,12 +80,13 @@ public class Board implements Serializable {
 	
 	/** Fetches the cell's color at the specified position. */
 	public Color colorAt(IntVec gridPos) {
-		Brick brick = locateBrick(gridPos);
-		if (brick == null) {
-			return Color.BLACK;
-		} else {
-			return brick.getColor();
+		GameBlock block = locateBrick(gridPos);
+		
+		if (block == null) {
+			block = getEditState().getBrickInProgress();
 		}
+		
+		return (block == null || !block.contains(gridPos)) ? Color.BLACK : block.getColor();
 	}
 	
 	public Color colorAt(int x, int y) {
