@@ -48,20 +48,32 @@ public class Brick implements GameBlock, Serializable {
 		this.color = color;
 		this.structure = structure;
 		
+		findEdges();
+	}
+	
+	private void findEdges() {
 		IntVec off = IntVec.ZERO;
+		IntVec lastOff = IntVec.ZERO;
+		
+		LOG.debug("Initial edges: {}", edges);
 		
 		for (Direction dir : structure) {
 			off = off.add(dir);
+			
 			IntVec tmpOff = off;
+			IntVec tmpLastOff = lastOff;
 			
 			for (Direction inDir : Direction.values()) {
-				if (!edges.stream().anyMatch(edge -> edge.matches(tmpOff, dir))) {
-					edges.add(new Edge(off, inDir.getOpposite()));
-				} else {
-					edges.removeIf(edge -> edge.matches(tmpOff, dir));
-				}
+				edges.add(new Edge(off, inDir));
 			}
+			
+			edges.removeIf(edge -> edge.matches(tmpLastOff, dir) || edge.matches(tmpOff, dir.getOpposite()));
+		
+			LOG.debug("Edges at {} (moved {}): {}", off, dir, edges);
+			lastOff = off;
 		}
+		
+		LOG.info("Found edges {}", edges);
 	}
 	
 	/** Tests whether two bricks intersect. */
