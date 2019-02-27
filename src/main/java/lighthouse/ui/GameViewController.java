@@ -3,7 +3,7 @@ package lighthouse.ui;
 import javax.swing.JComponent;
 
 import lighthouse.model.Game;
-import lighthouse.model.GamePlayingState;
+import lighthouse.model.GameState;
 import lighthouse.model.Level;
 import lighthouse.model.LevelStage;
 import lighthouse.model.LevelStages;
@@ -73,9 +73,8 @@ public class GameViewController implements ViewController {
 		tickers.add(winChecker);
 		winChecker.reset();
 		
-		GamePlayingState state = model.getState();
 		model.switchToStage(LevelStages.IN_GAME);
-		state.setBoard(state.getLevel().getStart().copy());
+		model.getState().startLevel();
 	}
 	
 	/** Switches to editing mode. */
@@ -89,7 +88,13 @@ public class GameViewController implements ViewController {
 	}
 	
 	public void reset() {
-		board.reset();
+		if (model.getLevelStage().isInGame()) {
+			// Reset to the starting board...
+			model.getState().startLevel();
+		} else {
+			// Otherwise delegate 'reset()'-call to board
+			board.reset();
+		}
 	}
 	
 	public BoardViewController getBoard() { return board; }

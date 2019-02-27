@@ -13,9 +13,9 @@ public interface LevelStage extends Comparable<LevelStage> {
 	
 	String getName();
 	
-	void transitionFrom(LevelStage lastStage, GamePlayingState game);
+	void transitionFrom(LevelStage lastStage, GameState game);
 	
-	Optional<Board> getBoardFrom(GamePlayingState game);
+	Optional<Board> getBoardFrom(GameState game);
 	
 	<T> T accept(LevelStageVisitor<T> visitor);
 	

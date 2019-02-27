@@ -18,8 +18,8 @@ import lighthouse.util.ListenerList;
  * Holds the current game state which includes the actively manipulated board,
  * the current level and more.
  */
-public class GamePlayingState {
-    private static final Logger LOG = LoggerFactory.getLogger(GamePlayingState.class);
+public class GameState {
+    private static final Logger LOG = LoggerFactory.getLogger(GameState.class);
 	private static final Gson GSON = new Gson();
     
     /** The active board. Usually displayed to the user. */
@@ -39,6 +39,10 @@ public class GamePlayingState {
     
     public boolean isWon() {
         return activeBoard.equals(level.getGoal());
+    }
+    
+    public void startLevel() {
+        setBoard(level.getStart().copy());
     }
     
     public void revertToInGameBoardOr(Supplier<Board> otherwise) {
