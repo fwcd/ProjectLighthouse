@@ -11,8 +11,6 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
-import lighthouse.ui.board.CoordinateMapper;
-import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.util.IntVec;
 
 /**
@@ -21,20 +19,14 @@ import lighthouse.util.IntVec;
 public class BoardPlayController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	
-	private final FloatingContext floatingCtx;
-	private final CoordinateMapper coordinateMapper;
 	private final Map<Direction, Integer> limits = new HashMap<>();
 	private Board board;
 	private boolean dragEvent;
 	
-	private IntVec floatingOffset;
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(Board model, FloatingContext floatingCtx, CoordinateMapper coordinateMapper) {
-		this.floatingCtx = floatingCtx;
-		this.coordinateMapper = coordinateMapper;
-		
+	public BoardPlayController(Board model) {
 		board = model;
 		resetLimits();
 	}
@@ -106,30 +98,6 @@ public class BoardPlayController implements BoardResponder {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
-	}
-	
-	@Override
-	public void floatingPress(IntVec pixelPos) {
-		if (brick != null) {
-			IntVec brickPixelPos = coordinateMapper.toPixelPos(brick.getPos());
-			
-			floatingOffset = pixelPos.sub(brickPixelPos);
-			floatingCtx.setBlock(brick);
-			floatingCtx.setPixelPos(pixelPos.sub(floatingOffset));
-		}
-	}
-	
-	@Override
-	public void floatingDragTo(IntVec pixelPos) {
-		if (floatingOffset != null) {
-			floatingCtx.setPixelPos(pixelPos.sub(floatingOffset));
-		}
-	}
-	
-	@Override
-	public void floatingRelease(IntVec pixelPos) {
-		floatingCtx.clear();
-		floatingOffset = null;
 	}
 	
 	@Override

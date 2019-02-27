@@ -22,8 +22,8 @@ public class GameState {
     private static final Logger LOG = LoggerFactory.getLogger(GameState.class);
 	private static final Gson GSON = new Gson();
     
-    /** The active board. Usually displayed to the user. */
-    private Board activeBoard;
+    /** The in-game board. */
+    private Board board;
     /** The level played. */
     private Level level;
     /**
@@ -35,20 +35,20 @@ public class GameState {
     private final ListenerList<Level> levelListeners = new ListenerList<>();
 	private final ListenerList<Board> boardListeners = new ListenerList<>();
     
-    public void storeInGameBoard() { storedInGameBoard = activeBoard.copy(); }
+    public void storeInGameBoard() { storedInGameBoard = board.copy(); }
     
     public GameState() {
-        activeBoard = new Board();
+        board = new Board();
         level = new Level();
     }
     
     public GameState(Board initialBoard, Level level) {
-        activeBoard = initialBoard;
+        board = initialBoard;
         this.level = level;
     }
     
     public boolean isWon() {
-        return activeBoard.equals(level.getGoal());
+        return board.equals(level.getGoal());
     }
     
     public void startLevel() {
@@ -64,7 +64,7 @@ public class GameState {
     }
     
     public void setBoard(Board board) {
-        this.activeBoard = board;
+        this.board = board;
         boardListeners.fire(board);
     }
 	
@@ -85,7 +85,7 @@ public class GameState {
 		}
     }
 	
-	public Board getActiveBoard() { return activeBoard; }
+	public Board getBoard() { return board; }
 	
 	public Level getLevel() { return level; }
 	
@@ -93,5 +93,5 @@ public class GameState {
 	
     public ListenerList<Board> getBoardListeners() { return boardListeners; }
     
-    public GameState withCopiedBoard() { return new GameState(activeBoard.copy(), level); }
+    public GameState withCopiedBoard() { return new GameState(board.copy(), level); }
 }

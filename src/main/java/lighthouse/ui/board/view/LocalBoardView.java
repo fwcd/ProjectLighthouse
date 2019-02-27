@@ -21,11 +21,9 @@ import lighthouse.model.BrickBuilder;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
-import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.util.ArrayUtils;
-import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 
 /**
@@ -44,13 +42,11 @@ public class LocalBoardView implements BoardView {
 	private double placedBrickScale = 0.8;
 	
 	private final JComponent component;
-	private final FloatingContext floatingCtx;
 	private final CoordinateMapper coordinateMapper;
 	private Board model = null;
 	
-	public LocalBoardView(CoordinateMapper coordinateMapper, FloatingContext floatingCtx) {
+	public LocalBoardView(CoordinateMapper coordinateMapper) {
 		this.coordinateMapper = coordinateMapper;
-		this.floatingCtx = floatingCtx;
 		
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -125,17 +121,6 @@ public class LocalBoardView implements BoardView {
 			
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);
-			}
-			
-			// Draw the floating state
-			if (drawFloating) {
-				GameBlock floatingBlock = floatingCtx.getBlock();
-				IntVec floatingPos = floatingCtx.getPixelPos();
-				if (floatingBlock != null && floatingPos != null) {
-					// Uncomment to render outline
-					// renderEdges(g2d, floatingPos, floatingBlock.getEdges(), 1.0F, Color.DARK_GRAY, 1.0F);
-					renderBlock(g2d, floatingPos, floatingBlock, placedBrickScale, ColorUtils.withAlpha(80, Color.BLACK));
-				}
 			}
 		}
 	}

@@ -23,11 +23,5 @@ public interface BoardResponder {
 	
 	default void release(IntVec gridPos) {}
 	
-	default void floatingPress(IntVec pixelPos) {}
-	
-	default void floatingDragTo(IntVec pixelPos) {}
-	
-	default void floatingRelease(IntVec pixelPos) {}
-	
 	default void reset() {}
 }

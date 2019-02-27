@@ -71,7 +71,7 @@ public class GameControlsViewController implements ViewController {
 			saveAs();
 		} else {
 			try {
-				model.getGameState().getState().saveLevelTo(destination);
+				model.getGameState().saveLevelTo(destination);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -82,7 +82,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showSaveDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGameState().getState().saveLevelTo(path);
+				model.getGameState().saveLevelTo(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -93,7 +93,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showOpenDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGameState().getState().loadLevelFrom(path);
+				model.getGameState().loadLevelFrom(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}

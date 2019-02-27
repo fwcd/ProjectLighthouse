@@ -10,7 +10,7 @@ import lighthouse.ui.board.controller.NoResponder;
  * Shows the starting board of the level.
  */
 public class StartPerspective implements GamePerspective {
-	public static final StartPerspective INSTANCE = new StartPerspective();
+	public static final GoalPerspective INSTANCE = new GoalPerspective();
 	
 	@Override
 	public Board getActiveBoard(GameState model) { return model.getLevel().getStart(); }

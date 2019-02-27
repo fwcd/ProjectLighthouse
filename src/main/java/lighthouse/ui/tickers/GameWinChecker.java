@@ -24,7 +24,7 @@ public class GameWinChecker implements Ticker {
 	@Override
 	public void tick() {
 		GameState state = game.getState();
-		if (!alreadyWon && state.isWon() && !state.getActiveBoard().isEmpty() && game.getLevelStage().isInGame()) {
+		if (!alreadyWon && state.isWon() && !state.getBoard().isEmpty() && game.getLevelStage().isInGame()) {
 			alreadyWon = true;
 			floatingCtx.clear();
 			
