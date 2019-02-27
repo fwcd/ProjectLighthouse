@@ -19,7 +19,8 @@ import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.ListenerList;
 
 /**
- * Manages the game board view and the current game/level stage.
+ * Manages the game board view, the current
+ * perspective and the active game mode.
  */
 public class GameViewController implements ViewController {
 	private final JComponent component;
@@ -36,7 +37,8 @@ public class GameViewController implements ViewController {
 	private final GameWinChecker winChecker;
 
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>();
-
+	
+	/** Creates a new game view controller using a given model. */
 	public GameViewController(GameState model) {
 		this.model = model;
 
@@ -60,7 +62,8 @@ public class GameViewController implements ViewController {
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
 	}
-
+	
+	/** "Resets" the game in some way. */
 	public void reset() {
 		if (perspective.isInGame()) {
 			// Reset to the starting board...
@@ -70,7 +73,8 @@ public class GameViewController implements ViewController {
 			board.reset();
 		}
 	}
-
+	
+	/** Enters a game mode such as "editing" or "playing". */
 	public void enter(GameMode mode) {
 		this.mode = mode;
 		context.setStatus(mode.getBaseStatus());
@@ -85,7 +89,8 @@ public class GameViewController implements ViewController {
 
 		show(mode.getInitialPerspective());
 	}
-
+	
+	/** Presents a perspective of the game to the user. */
 	public void show(GamePerspective perspective) {
 		this.perspective = perspective;
 		
@@ -96,8 +101,10 @@ public class GameViewController implements ViewController {
 		perspectiveListeners.fire(perspective);
 	}
 	
+	/** Fetche sthe currently active mode such as "editing" or "playing". */
 	public GameMode getMode() { return mode; }
 	
+	/** Fetches the currently active perspective such as "start" or "in-game". */
 	public GamePerspective getPerspective() { return perspective; }
 	
 	public ListenerList<GamePerspective> getPerspectiveListeners() { return perspectiveListeners; }
