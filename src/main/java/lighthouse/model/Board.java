@@ -2,11 +2,10 @@ package lighthouse.model;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
@@ -19,7 +18,7 @@ public class Board implements Serializable {
 	private static final long serialVersionUID = 6367414981719952292L;
 	private int columns;
 	private int rows;
-	private List<Brick> bricks = new ArrayList<>();
+	private Set<Brick> bricks = new HashSet<>();
 	
 	private transient BoardEditState lazyEditState;
 	private transient ListenerList<Void> lazyChangeListeners;
@@ -55,7 +54,8 @@ public class Board implements Serializable {
 	
 	/** Replaces a brick. */
 	public void replace(Brick oldBrick, Brick newBrick) {
-		Collections.replaceAll(bricks, oldBrick, newBrick);
+		bricks.remove(oldBrick);
+		bricks.add(newBrick);
 		getChangeListeners().fire(null);
 	}
 	

@@ -5,8 +5,10 @@ import javax.swing.JOptionPane;
 
 import lighthouse.model.Game;
 import lighthouse.model.GameState;
+import lighthouse.model.Status;
 import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.loop.Ticker;
+import lighthouse.util.ColorUtils;
 
 public class GameWinChecker implements Ticker {
 	private final JComponent parent;
@@ -33,6 +35,7 @@ public class GameWinChecker implements Ticker {
 			} else {
 				message += " Hooray!";
 			}
+			game.setStatus(new Status("Won", ColorUtils.LIGHT_VIOLET));
 			JOptionPane.showMessageDialog(parent, message);
 		}
 	}
