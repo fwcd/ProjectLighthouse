@@ -1,6 +1,8 @@
 package lighthouse.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 
@@ -88,12 +90,19 @@ public class IntVec implements Serializable {
 	/** Efficiently determines whether this IntVec has length 1 (thus if it is a unit vector). */
 	public boolean isUnit() { return (Math.abs(x) == 1 && y == 0) || (x == 0 && Math.abs(y) == 1); }
 	
+	/** Fetches the first directions from the possible "nearest" directions. */
 	public Direction nearestDirection() {
-		if (-y >= Math.abs(x)) return Direction.UP;
-		if (-y <= -Math.abs(x)) return Direction.DOWN;
-		if (-y >= -x && -y < x) return Direction.RIGHT;
-		if (-y >= x && -y < -x) return Direction.LEFT;
-		throw new IllegalStateException("Will never happen");
+		return nearestDirections().get(0);
+	}
+	
+	/** Fetches all possible "nearest" directions. Potentially ambiguous. */
+	public List<Direction> nearestDirections() {
+		List<Direction> dirs = new ArrayList<>();
+		if (-y >= Math.abs(x)) dirs.add(Direction.UP);
+		if (-y <= -Math.abs(x)) dirs.add(Direction.DOWN);
+		if (-y >= -x && -y <= x) dirs.add(Direction.RIGHT);
+		if (-y >= x && -y <= -x) dirs.add(Direction.LEFT);
+		return dirs;
 	}
 	
 	/** Combines this int-vector with another using a binary operator. */

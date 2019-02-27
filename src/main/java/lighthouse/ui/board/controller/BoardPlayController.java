@@ -83,16 +83,18 @@ public class BoardPlayController implements BoardResponder {
 		if (!dragEvent) return;
 		if (!gridPos.equals(startGridPos)) {
 			IntVec at = gridPos.sub(startGridPos);
-			Direction atDir = at.nearestDirection();
-			
-			if (limits.get(atDir) > 0) {
-				limits.put(atDir, limits.get(atDir) - 1);
-				Brick newBrick = brick.movedInto(atDir);
-				board.replace(brick, newBrick);
-				brick = newBrick;
-				startGridPos = gridPos;
-				computeLimits();
-			}
+			List<Direction> atDirs = at.nearestDirections();
+
+			atDirs.forEach(atDir -> {
+				if (limits.get(atDir) > 0) {
+					limits.put(atDir, limits.get(atDir) - 1);
+					Brick newBrick = brick.movedInto(atDir);
+					board.replace(brick, newBrick);
+					brick = newBrick;
+					startGridPos = startGridPos.add(atDir);
+					computeLimits();
+				}
+			});
 		}
 	}
 	
