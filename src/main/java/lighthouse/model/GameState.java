@@ -23,9 +23,9 @@ public class GameState {
 	private static final Gson GSON = new Gson();
     
     /** The active board. Usually displayed to the user. */
-    private Board activeBoard = new Board();
+    private Board activeBoard;
     /** The level played. */
-    private Level level = new Level();
+    private Level level;
     /**
      * A "backup" of the current in game board in case the
      * user looks at the start or end board of the level.
@@ -36,6 +36,16 @@ public class GameState {
 	private final ListenerList<Board> boardListeners = new ListenerList<>();
     
     public void storeInGameBoard() { storedInGameBoard = activeBoard.copy(); }
+    
+    public GameState() {
+        activeBoard = new Board();
+        level = new Level();
+    }
+    
+    public GameState(Board initialBoard, Level level) {
+        activeBoard = initialBoard;
+        this.level = level;
+    }
     
     public boolean isWon() {
         return activeBoard.equals(level.getGoal());
@@ -81,5 +91,7 @@ public class GameState {
 	
 	public ListenerList<Level> getLevelListeners() { return levelListeners; }
 	
-	public ListenerList<Board> getBoardListeners() { return boardListeners; }
+    public ListenerList<Board> getBoardListeners() { return boardListeners; }
+    
+    public GameState withCopiedBoard() { return new GameState(activeBoard.copy(), level); }
 }
