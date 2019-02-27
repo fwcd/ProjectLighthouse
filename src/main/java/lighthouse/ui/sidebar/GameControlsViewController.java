@@ -14,39 +14,41 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.model.GameState;
+import lighthouse.ui.GameContext;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
 
 /**
- * Manages a view containing game and file
- * controls and is responsible for presenting
- * a path chooser to the user.
+ * Manages a view containing game and file controls and is responsible for
+ * presenting a path chooser to the user.
  */
 public class GameControlsViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(GameControlsViewController.class);
 	private final JComponent component;
 	private final StatusBar statusBar;
-	
+
 	private final PathChooser pathChooser;
 	private final AppModel model;
 
 	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
 		this.model = model;
-		
+
 		component = new JPanel();
 		pathChooser = new PathChooser(component, ".json");
 		component.setLayout(new BorderLayout());
+
+		GameContext context = game.getContext();
+		GameState gameState = model.getGameState();
 		
 		// Setup status bar
 		statusBar = new StatusBar();
-		statusBar.display(game.getStatus());
+		statusBar.display(context.getStatus());
 		component.add(statusBar.getComponent(), BorderLayout.NORTH);
 		
-		GameState gameState = model.getGameState();
-		game.getStatusListeners().add(statusBar::display);
+		context.getStatusListeners().add(statusBar::display);
 		gameState.getBoardListeners().add(newBoard -> {
-			game.getStatusListeners().add(statusBar::display);
+			context.getStatusListeners().add(statusBar::display);
 		});
 		
 		// Setup control panel
@@ -61,7 +63,7 @@ public class GameControlsViewController implements ViewController {
 				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			),
-			new LevelNavigatorViewController(model.getGameState(), loop).getComponent()
+			new LevelNavigatorViewController(game, loop).getComponent()
 		), BorderLayout.CENTER);
 	}
 	

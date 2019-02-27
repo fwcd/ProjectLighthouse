@@ -49,7 +49,7 @@ public class GameViewController implements ViewController {
 		
 		
 		// Setup tickers
-		winChecker = new GameWinChecker(board.getComponent(), model);
+		winChecker = new GameWinChecker(board.getComponent(), model, context);
 		
 		// Add level hooks
 		model.getLevelListeners().add(level -> {
@@ -100,6 +100,8 @@ public class GameViewController implements ViewController {
 	public BoardViewController getBoard() { return board; }
 	
 	public GameState getModel() { return model; }
+	
+	public GameContext getContext() { return context; }
 	
 	public TickerList getTickers() { return tickers; }
 	
