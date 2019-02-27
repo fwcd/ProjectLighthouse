@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,23 +123,39 @@ public class Board implements Serializable {
 	}
 	
 	/** Encodes this board as an array of columns * rows item.. */
-	public double[] encode() {
-		return IntStream.of(columns * rows)
+	public double[] encode1D() {
+		return IntStream.rangeClosed(0, columns * rows)
 			.mapToObj(i -> colorAt(i % columns, i / columns))
 			.mapToDouble(ColorUtils::getBrightnessPercent)
 			.toArray();
 	}
 	
-	// WIP
-	// public Stream<Move> streamPossibleMoves() {
-	// 	return bricks.stream()
-	// 		.flatMap(this::streamPossibleMovesFor);
-	// }
+	/** Encodes this board as a 2D array of columns * rows item.. */
+	public double[][] encode2D() {
+		return IntStream.rangeClosed(0, columns)
+			.mapToObj(x -> IntStream.rangeClosed(0, rows)
+				.mapToObj(y -> colorAt(x, y))
+				.mapToDouble(ColorUtils::getBrightnessPercent)
+				.toArray())
+			.toArray(double[][]::new);
+	}
 	
-	// /**  */
-	// public Stream<Move> streamPossibleMovesFor(Brick brick) {
-	// 	return getLimitsFor(brick)
-	// }
+	/** Fetches all possible moves. */
+	public Stream<Move> streamPossibleMoves() {
+		return bricks.stream()
+			.flatMap(this::streamPossibleMovesFor);
+	}
+	
+	/** Fetches possible moves for a single moves. */
+	public Stream<Move> streamPossibleMovesFor(Brick brick) {
+		return getLimitsFor(brick).entrySet().stream()
+			.flatMap(entry -> movesIntoDirection(brick, entry.getKey(), entry.getValue()));
+	}
+	
+	/** Computes the possible moves of a brick into a certain direction. */
+	private Stream<Move> movesIntoDirection(Brick brick, Direction direction, int limit) {
+		throw new RuntimeException("TODO");
+	}
 	
     /** Fetches the limits into each direction for a brick. */
     public Map<Direction, Integer> getLimitsFor(Brick brick) {
