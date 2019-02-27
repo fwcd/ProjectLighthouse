@@ -7,19 +7,18 @@ import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 
 /**
- * A mode that allows the user to edit the
- * current level.
+ * The mode in which the player plays. Simple, right?
  */
-public class EditMode implements GameMode {
-	public static final GameMode INSTANCE = new EditMode();
+public class PlayMode implements GameMode {
+	public static final GameMode INSTANCE = new PlayMode();
 	
-	private EditMode() {}
+	private PlayMode() {}
 	
 	@Override
-	public Status getBaseStatus() { return new Status("Editing", ColorUtils.LIGHT_ORANGE); }
+	public Status getBaseStatus() { return new Status("Playing", ColorUtils.LIGHT_GREEN); }
 	
 	@Override
 	public BoardResponder createController(GamePerspective perspective, Board board) {
-		return perspective.createEditController(board);
+		return perspective.createPlayController(board);
 	}
 }
