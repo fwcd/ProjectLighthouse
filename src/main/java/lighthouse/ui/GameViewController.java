@@ -88,6 +88,8 @@ public class GameViewController implements ViewController {
 		model.getLevelStageListeners().remove(playControlListener);
 		tickers.remove(winChecker);
 		editControlListener.on(model.getLevelStage());
+		
+		model.switchToStage(LevelStages.START);
 	}
 	
 	public void reset() {
