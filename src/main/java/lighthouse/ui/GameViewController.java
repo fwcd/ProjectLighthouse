@@ -8,6 +8,7 @@ import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.EditingControllerPicker;
+import lighthouse.ui.board.controller.PlayControllerPicker;
 import lighthouse.ui.stage.LevelStage;
 import lighthouse.ui.stage.LevelStages;
 import lighthouse.util.ColorUtils;
@@ -15,7 +16,7 @@ import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
 
 /**
- * Manages the game board view and the current game state.
+ * Manages the game board view and the current game/level stage.
  */
 public class GameViewController implements ViewController {
 	private final Game model;
@@ -37,8 +38,7 @@ public class GameViewController implements ViewController {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getBoard())));
 		};
 		playControlListener = stage -> {
-			// TODO: Multiple play controllers
-			board.setResponder(new BoardPlayController(model.getState().getBoard()));
+			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getBoard())));
 		};
 		
 		model.getState().getLevelListeners().add(level -> {
