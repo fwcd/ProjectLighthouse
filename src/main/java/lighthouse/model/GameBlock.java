@@ -31,8 +31,9 @@ public interface GameBlock {
 		return positions;
 	}
 	
-	/** Converts the brick into a 2D-array of positions. */
+	/** Converts the brick into a 2D-array of offset positions. */
 	default IntVec[][] to2DArray() {
+		IntVec blockPos = getPos();
 		Set<IntVec> positions = getOccupiedPositions();
 		IntVec min = positions.stream().reduce(IntVec::min).orElse(IntVec.ZERO);
 		IntVec max = positions.stream().reduce(IntVec::max).orElse(IntVec.ZERO);
@@ -47,7 +48,7 @@ public interface GameBlock {
 		
 		for (IntVec pos : positions) {
 			IntVec relPos = pos.sub(min);
-			arr[relPos.getY()][relPos.getX()] = pos;
+			arr[relPos.getY()][relPos.getX()] = pos.sub(blockPos);
 		}
 		
 		return arr;

@@ -10,6 +10,7 @@ import lighthouse.model.Game;
 import lighthouse.model.LevelStage;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.ScaleTransform;
+import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.loop.GameLoop;
 import lighthouse.ui.util.CenterPanel;
@@ -23,7 +24,7 @@ public class GameStageIconViewController implements ViewController {
 		
 		stage.getBoardFrom(game.getState())
 			.ifPresent(initialBoard -> {
-				LocalBoardView boardView = new LocalBoardView(new ScaleTransform(4, 4));
+				LocalBoardView boardView = new LocalBoardView(new ScaleTransform(4, 4), new FloatingContext());
 				
 				boardView.setActiveBrickScale(1.0);
 				boardView.setPlacedBrickScale(1.0);

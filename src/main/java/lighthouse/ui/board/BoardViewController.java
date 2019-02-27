@@ -43,7 +43,7 @@ public class BoardViewController implements ViewController, Renderer {
 		
 		// Creates a local view and hooks up the Swing component
 		CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
-		LocalBoardView localView = new LocalBoardView(coordinateMapper);
+		LocalBoardView localView = new LocalBoardView(coordinateMapper, floatingCtx);
 		localView.relayout(model.getColumns(), model.getRows());
 		component = localView.getComponent();
 		addBoardView(localView);

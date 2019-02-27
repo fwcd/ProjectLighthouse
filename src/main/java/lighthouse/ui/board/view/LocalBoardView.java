@@ -21,6 +21,7 @@ import lighthouse.model.BrickBuilder;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
+import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.util.ArrayUtils;
@@ -41,11 +42,14 @@ public class LocalBoardView implements BoardView {
 	private double placedBrickScale = 0.8;
 	
 	private final JComponent component;
+	private final FloatingContext floatingCtx;
 	private final CoordinateMapper coordinateMapper;
 	private Board model = null;
 	
-	public LocalBoardView(CoordinateMapper coordinateMapper) {
+	public LocalBoardView(CoordinateMapper coordinateMapper, FloatingContext floatingCtx) {
 		this.coordinateMapper = coordinateMapper;
+		this.floatingCtx = floatingCtx;
+		
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			
@@ -120,6 +124,13 @@ public class LocalBoardView implements BoardView {
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);
 			}
+			
+			// Draw the floating state
+			GameBlock floatingBlock = floatingCtx.getBlock();
+			IntVec floatingPos = floatingCtx.getPixelPos();
+			if (floatingBlock != null && floatingPos != null) {
+				renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale);
+			}
 		}
 	}
 	
@@ -159,8 +170,11 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
+		renderBlock(g2d, block, coordinateMapper.toPixelPos(block.getPos()), blockScale);
+	}
+	
+	private void renderBlock(Graphics2D g2d, GameBlock block, IntVec pixelPos, double blockScale) {
 		IntVec cellSize = getCellSize();
-		IntVec blockPos = block.getPos();
 		IntVec[][] fragments = block.to2DArray();
 		
 		g2d.setColor(block.getColor());
@@ -168,7 +182,7 @@ public class LocalBoardView implements BoardView {
 		for (int y = 0; y < fragments.length; y++) {
 			for (int x = 0; x < fragments[y].length; x++) {
 				if (fragments[y][x] != null) {
-					renderCell(g2d, blockPos, fragments, new IntVec(x, y), cellSize, blockScale);
+					renderCell(g2d, coordinateMapper.toPixelPos(fragments[y][x]).add(pixelPos), fragments, new IntVec(x, y), cellSize, blockScale);
 				}
 			}
 		}
@@ -182,12 +196,9 @@ public class LocalBoardView implements BoardView {
 		g2d.setColor(tmpColor);
 	}
 	
-	private void renderCell(Graphics2D g2d, IntVec blockPos, IntVec[][] fragments, IntVec cellRelPos, IntVec cellSize, double scale) {
+	private void renderCell(Graphics2D g2d, IntVec topLeft, IntVec[][] fragments, IntVec cellRelPos, IntVec cellSize, double scale) {
 		int relY = cellRelPos.getY();
 		int relX = cellRelPos.getX();
-		
-		IntVec cellPos = fragments[relY][relX];
-		IntVec topLeft = coordinateMapper.toPixelPos(cellPos);
 		
 		if (Math.abs(scale - 1.0) < 0.01) {
 			// Use simpler rendering algorithm if the scale is approximately one
