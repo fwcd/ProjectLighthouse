@@ -36,7 +36,7 @@ public class LocalBoardView implements BoardView {
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
-	private boolean drawEdges = true;
+	private boolean drawEdges = false;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
 	
@@ -228,6 +228,10 @@ public class LocalBoardView implements BoardView {
 	public void setPlacedBrickScale(double placedBrickScale) { this.placedBrickScale = placedBrickScale; }
 	
 	public double getPlacedBrickScale() { return placedBrickScale; }
+	
+	public void setDrawEdges(boolean drawEdges) { this.drawEdges = drawEdges; }
+	
+	public boolean doesDrawEdges() { return drawEdges; }
 	
 	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
 	
