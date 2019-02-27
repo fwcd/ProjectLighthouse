@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
@@ -14,6 +17,7 @@ import lighthouse.util.IntVec;
  * The primary responder implementation for playing.
  */
 public class BoardPlayController implements BoardResponder {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	private final Map<Direction, Integer> limits = new HashMap<>();
 	private Board board;
 	private boolean dragEvent;
@@ -23,13 +27,14 @@ public class BoardPlayController implements BoardResponder {
 
 	public BoardPlayController(Board model) {
 		board = model;
+		resetLimits();
 	}
 
-	void resetLimits() {
-		limits.put(Direction.UP, 99);
-		limits.put(Direction.DOWN, 99);
-		limits.put(Direction.RIGHT, 99);
-		limits.put(Direction.LEFT, 99);
+	public void resetLimits() {
+		limits.put(Direction.UP, Integer.MAX_VALUE);
+		limits.put(Direction.DOWN, Integer.MAX_VALUE);
+		limits.put(Direction.RIGHT, Integer.MAX_VALUE);
+		limits.put(Direction.LEFT, Integer.MAX_VALUE);
 	}
 	
 	@Override
@@ -51,7 +56,7 @@ public class BoardPlayController implements BoardResponder {
 				if (limits.get(dir) > limit) limits.put(dir, limit);
 			});
 		}
-
+		LOG.info("Limits: {}", limits);
 	}
 	
 	@Override
@@ -62,7 +67,7 @@ public class BoardPlayController implements BoardResponder {
 			Direction atDir = at.nearestDirection();
 			
 			if (limits.get(atDir) > 0) {
-				limits.put(atDir,limits.get(atDir) -1);
+				limits.put(atDir, limits.get(atDir) - 1);
 				Brick newBrick = brick.movedInto(atDir);
 				board.replace(brick, newBrick);
 				brick = newBrick;
