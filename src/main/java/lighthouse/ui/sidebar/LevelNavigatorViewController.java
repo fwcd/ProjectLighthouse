@@ -8,10 +8,11 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.model.GameState;
-import lighthouse.model.LevelStages;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
+import lighthouse.ui.perspectives.CommonPerspective;
+import lighthouse.ui.perspectives.InGamePerspective;
 
 /**
  * Manages the level navigation that allows the
@@ -20,10 +21,11 @@ import lighthouse.ui.loop.GameLoop;
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(GameState game, GameLoop loop) {
+	public LevelNavigatorViewController(GameViewController game, GameLoop loop) {
 		component = new WebStepProgress();
-		component.addSteps(LevelStages.STAGES.stream().sorted()
-			.map(perspective -> new PerspectiveIconViewController(perspective, game, loop))
+		component.addSteps(CommonPerspective.PERSPECTIVES.stream()
+			.sorted()
+			.map(perspective -> new PerspectiveIconViewController(perspective, game.getModel(), loop))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		
@@ -36,19 +38,19 @@ public class LevelNavigatorViewController implements ViewController {
 			
 			private void onChange() {
 				int newIndex = component.getSelectedStepIndex();
-				if (newIndex != game.getLevelStage().getIndex()) {
-					game.switchToStage(LevelStages.STAGES.get(newIndex));
+				if (newIndex != game.getPerspective().getIndex()) {
+					game.show(CommonPerspective.byIndex(newIndex));
 				}
 			}
 		};
 		component.addMouseListener(mouseAdapter);
 		component.addMouseMotionListener(mouseAdapter);
 		
-		game.switchToStage(LevelStages.IN_GAME);
-		game.getLevelStageListeners().add(stage -> {
-			component.setSelectedStepIndex(stage.getIndex());
+		game.show(InGamePerspective.INSTANCE);
+		game.getPerspectiveListeners().add(perspective -> {
+			component.setSelectedStepIndex(perspective.getIndex());
 		});
-		component.setSelectedStepIndex(game.getLevelStage().getIndex());
+		component.setSelectedStepIndex(game.getPerspective().getIndex());
 	}
 	
 	@Override

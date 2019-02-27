@@ -7,12 +7,13 @@ import javax.swing.JPanel;
 
 import lighthouse.model.GameState;
 import lighthouse.model.Level;
-import lighthouse.model.LevelStages;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.ScaleTransform;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.perspectives.GamePerspective;
+import lighthouse.ui.perspectives.InGamePerspective;
+import lighthouse.ui.perspectives.StartPerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.ui.util.Status;
@@ -26,16 +27,16 @@ public class GameViewController implements ViewController {
 	private final JComponent component;
 	
 	private final GameState model;
-	private final CoordinateMapper coordinateMapper;
+	private final GameContext context = new GameContext();
+	private final CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
 	private final BoardViewController board;
 	
-	private Status status;
 	private GamePerspective perspective;
 	
 	private final TickerList tickers = new TickerList();
 	private final GameWinChecker winChecker;
 	
-	private final ListenerList<Status> statusListeners = new ListenerList<>();
+	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>();
 	
 	public GameViewController(GameState model) {
 		this.model = model;
@@ -43,7 +44,6 @@ public class GameViewController implements ViewController {
 		component = new JPanel(new BorderLayout());
 		
 		// Initialize board
-		coordinateMapper = new ScaleTransform(70, 70);
 		board = new BoardViewController(model.getBoard(), coordinateMapper);
 		model.getBoardListeners().add(board::updateModel);
 		
@@ -64,34 +64,25 @@ public class GameViewController implements ViewController {
 	
 	/** Switches to playing mode. */
 	public void play() {
-		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getBoard(), board.getFloatingContext(), coordinateMapper));
-		
-		model.getLevelStageListeners().remove(editControlListener);
-		model.getLevelStageListeners().add(playControlListener);
-		playControlListener.on(model.getLevelStage());
+		context.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
+		board.setResponder(new BoardPlayController(model.getBoard()));
 		
 		tickers.add(winChecker);
 		winChecker.reset();
 		
-		model.switchToStage(LevelStages.IN_GAME);
+		show(InGamePerspective.INSTANCE);
 		model.startLevel();
 	}
 	
 	/** Switches to editing mode. */
 	public void edit() {
-		model.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
-		
-		model.getLevelStageListeners().add(editControlListener);
-		model.getLevelStageListeners().remove(playControlListener);
+		context.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
 		tickers.remove(winChecker);
-		editControlListener.on(model.getLevelStage());
-		
-		model.switchToStage(LevelStages.START);
+		show(StartPerspective.INSTANCE);
 	}
 	
 	public void reset() {
-		if (model.getLevelStage().isInGame()) {
+		if (perspective.isInGame()) {
 			// Reset to the starting board...
 			model.startLevel();
 		} else {
@@ -100,13 +91,11 @@ public class GameViewController implements ViewController {
 		}
 	}
 	
-	public Status getStatus() { return status; }
+	public void show(GamePerspective perspective) { this.perspective = perspective; }
 	
-	public void setStatus(Status status) { this.status = status; }
+	public GamePerspective getPerspective() { return perspective; }
 	
-	public ListenerList<Status> getStatusListeners() { return statusListeners; }
-	
-	public void setPerspective(GamePerspective perspective) { this.perspective = perspective; }
+	public ListenerList<GamePerspective> getPerspectiveListeners() { return perspectiveListeners; }
 	
 	public BoardViewController getBoard() { return board; }
 	
