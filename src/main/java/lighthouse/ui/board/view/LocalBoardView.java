@@ -115,7 +115,7 @@ public class LocalBoardView implements BoardView {
 				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
 				if (edgeDrawMode != EdgeDrawMode.NONE) {
-					renderEdges(g2d, brick.getPos(), brick.getEdges(), placedBrickScale);
+					renderEdges(g2d, coordinateMapper.toPixelPos(brick.getPos()), brick.getEdges(), placedBrickScale);
 				}
 			}
 			
@@ -132,28 +132,34 @@ public class LocalBoardView implements BoardView {
 				GameBlock floatingBlock = floatingCtx.getBlock();
 				IntVec floatingPos = floatingCtx.getPixelPos();
 				if (floatingBlock != null && floatingPos != null) {
-					renderBlock(g2d, floatingBlock, floatingPos, placedBrickScale, ColorUtils.withAlpha(40, Color.BLACK));
+					// Uncomment to render outline
+					// renderEdges(g2d, floatingPos, floatingBlock.getEdges(), 1.0F, Color.DARK_GRAY, 1.0F);
+					renderBlock(g2d, floatingPos, floatingBlock, placedBrickScale, ColorUtils.withAlpha(80, Color.BLACK));
 				}
 			}
 		}
 	}
 	
-	private void renderEdges(Graphics2D g2d, IntVec blockPos, List<Edge> edges, double blockScale) {
+	private void renderEdges(Graphics2D g2d, IntVec pixelPos, List<? extends Edge> edges, double blockScale) {
+		renderEdges(g2d, pixelPos, edges, blockScale, Color.ORANGE, 2.0F);
+	}
+	
+	private void renderEdges(Graphics2D g2d, IntVec pixelPos, List<? extends Edge> edges, double blockScale, Color color, float thickness) {
 		for (Edge edge : edges) {
 			if (edgeDrawMode == EdgeDrawMode.ALL || (edgeDrawMode == EdgeDrawMode.HIGHLIGHTED_ONLY && edge.isHighlighted())) {
-				renderEdge(g2d, blockPos, edge, blockScale);
+				renderEdge(g2d, pixelPos, edge, blockScale, color, thickness);
 			}
 		}
 	}
 	
-	private void renderEdge(Graphics2D g2d, IntVec blockPos, Edge edge, double scale) {
-		g2d.setStroke(new BasicStroke(2.0F));
-		g2d.setColor(Color.ORANGE);
+	private void renderEdge(Graphics2D g2d, IntVec pixelPos, Edge edge, double scale, Color color, float thickness) {
+		g2d.setStroke(new BasicStroke(thickness));
+		g2d.setColor(color);
 		
 		IntVec cellSize = getCellSize();
 		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
 		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
-		IntVec innerTopLeft = coordinateMapper.toPixelPos(blockPos.add(edge.getOff())).add(cornerOffset);
+		IntVec innerTopLeft = pixelPos.add(coordinateMapper.toPixelPos(edge.getOff())).add(cornerOffset);
 		IntVec innerBottomRight = innerTopLeft.add(scaledCellSize);
 		
 		switch (edge.getDir()) {
@@ -174,10 +180,10 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
-		renderBlock(g2d, block, coordinateMapper.toPixelPos(block.getPos()), blockScale, block.getColor());
+		renderBlock(g2d, coordinateMapper.toPixelPos(block.getPos()), block, blockScale, block.getColor());
 	}
 	
-	private void renderBlock(Graphics2D g2d, GameBlock block, IntVec pixelPos, double blockScale, Color color) {
+	private void renderBlock(Graphics2D g2d, IntVec pixelPos, GameBlock block, double blockScale, Color color) {
 		IntVec cellSize = getCellSize();
 		IntVec[][] fragments = block.to2DArray();
 		
