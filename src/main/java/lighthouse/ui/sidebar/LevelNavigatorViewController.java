@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.model.Game;
+import lighthouse.model.GameState;
 import lighthouse.model.LevelStages;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
@@ -20,7 +20,7 @@ import lighthouse.ui.loop.GameLoop;
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(Game game, GameLoop loop) {
+	public LevelNavigatorViewController(GameState game, GameLoop loop) {
 		component = new WebStepProgress();
 		component.addSteps(LevelStages.STAGES.stream().sorted()
 			.map(stage -> new GameStageIconViewController(stage, game, loop))

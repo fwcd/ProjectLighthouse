@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
-import lighthouse.model.Game;
+import lighthouse.model.GameState;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
@@ -33,7 +33,7 @@ public class GameControlsViewController implements ViewController {
 
 	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
 		this.model = model;
-		Game gameModel = model.getGame();
+		GameState gameModel = model.getGameState();
 		
 		component = new JPanel();
 		pathChooser = new PathChooser(component, ".json");
@@ -61,7 +61,7 @@ public class GameControlsViewController implements ViewController {
 				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			),
-			new LevelNavigatorViewController(model.getGame(), loop).getComponent()
+			new LevelNavigatorViewController(model.getGameState(), loop).getComponent()
 		), BorderLayout.CENTER);
 	}
 	
@@ -71,7 +71,7 @@ public class GameControlsViewController implements ViewController {
 			saveAs();
 		} else {
 			try {
-				model.getGame().getState().saveLevelTo(destination);
+				model.getGameState().getState().saveLevelTo(destination);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -82,7 +82,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showSaveDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGame().getState().saveLevelTo(path);
+				model.getGameState().getState().saveLevelTo(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -93,7 +93,7 @@ public class GameControlsViewController implements ViewController {
 		pathChooser.showOpenDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGame().getState().loadLevelFrom(path);
+				model.getGameState().getState().loadLevelFrom(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}

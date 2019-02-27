@@ -3,20 +3,19 @@ package lighthouse.ui.tickers;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import lighthouse.model.Game;
 import lighthouse.model.GameState;
-import lighthouse.model.Status;
 import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.loop.Ticker;
+import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 
 public class GameWinChecker implements Ticker {
 	private final JComponent parent;
-	private final Game game;
+	private final GameState game;
 	private final FloatingContext floatingCtx;
 	private boolean alreadyWon = false;
 	
-	public GameWinChecker(JComponent parent, Game game, FloatingContext floatingCtx) {
+	public GameWinChecker(JComponent parent, GameState game, FloatingContext floatingCtx) {
 		this.parent = parent;
 		this.game = game;
 		this.floatingCtx = floatingCtx;

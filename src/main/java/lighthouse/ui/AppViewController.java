@@ -21,7 +21,7 @@ public class AppViewController implements ViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		GameViewController game = new GameViewController(model.getGame());
+		GameViewController game = new GameViewController(model.getGameState());
 		component.add(new CenterPanel(game.getComponent()), BorderLayout.CENTER);
 		
 		SideBarViewController sideBar = new SideBarViewController(model, game, loop);

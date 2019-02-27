@@ -6,7 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import lighthouse.model.Game;
+import lighthouse.model.GameState;
 import lighthouse.model.LevelStage;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.ScaleTransform;
@@ -18,7 +18,7 @@ import lighthouse.ui.util.CenterPanel;
 public class GameStageIconViewController implements ViewController {
 	private final JComponent component;
 	
-	public GameStageIconViewController(LevelStage stage, Game game, GameLoop loop) {
+	public GameStageIconViewController(LevelStage stage, GameState game, GameLoop loop) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		

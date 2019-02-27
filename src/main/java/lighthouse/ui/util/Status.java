@@ -1,4 +1,4 @@
-package lighthouse.model;
+package lighthouse.ui.util;
 
 import java.awt.Color;
 
