@@ -18,7 +18,7 @@ public class GameWinChecker implements Ticker {
 	
 	@Override
 	public void tick() {
-		if (!alreadyWon && gameState.isWon()) {
+		if (!alreadyWon && gameState.isWon() && !gameState.getBoard().isEmpty()) {
 			alreadyWon = true;
 			JOptionPane.showMessageDialog(parent, "GAME WON! Hooray!");
 		}

@@ -1,8 +1,8 @@
 package lighthouse.ui.board.controller;
 
 import lighthouse.model.Board;
-import lighthouse.ui.stage.LevelStageVisitor;
-import lighthouse.ui.stage.LevelStages;
+import lighthouse.model.LevelStageVisitor;
+import lighthouse.model.LevelStages;
 
 /**
  * A GameStageVisitor that determines the playing

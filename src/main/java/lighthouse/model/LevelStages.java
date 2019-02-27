@@ -1,11 +1,8 @@
-package lighthouse.ui.stage;
+package lighthouse.model;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import lighthouse.model.Board;
-import lighthouse.model.GameState;
 
 /**
  * Holds the various stages of a game match.

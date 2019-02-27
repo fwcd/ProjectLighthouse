@@ -5,18 +5,17 @@ import javax.swing.JComponent;
 import lighthouse.model.Game;
 import lighthouse.model.GameState;
 import lighthouse.model.Level;
+import lighthouse.model.LevelStage;
+import lighthouse.model.LevelStages;
 import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.EditingControllerPicker;
 import lighthouse.ui.board.controller.PlayControllerPicker;
-import lighthouse.ui.stage.LevelStage;
-import lighthouse.ui.stage.LevelStages;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.Listener;
-import lighthouse.util.ListenerList;
 
 /**
  * Manages the game board view and the current game/level stage.
@@ -25,10 +24,7 @@ public class GameViewController implements ViewController {
 	private final Game model;
 	private final BoardViewController board;
 	
-	private LevelStage stage = LevelStages.IN_GAME;
-	
 	private final TickerList tickers = new TickerList();
-	private final ListenerList<LevelStage> stageListeners = new ListenerList<>();
 	
 	private final GameWinChecker winChecker;
 	private final Listener<LevelStage> playControlListener;
@@ -54,6 +50,7 @@ public class GameViewController implements ViewController {
 		
 		// Add level hooks
 		model.getState().getLevelListeners().add(level -> {
+			LevelStage stage = model.getLevelStage();
 			level.getGoal().bindToUpdates(level.getStart());
 			stage.transitionFrom(stage, model.getState());
 		});
@@ -69,15 +66,15 @@ public class GameViewController implements ViewController {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
 		board.setResponder(new BoardPlayController(model.getState().getBoard()));
 		
-		stageListeners.remove(editControlListener);
-		stageListeners.add(playControlListener);
-		playControlListener.on(stage);
+		model.getLevelStageListeners().remove(editControlListener);
+		model.getLevelStageListeners().add(playControlListener);
+		playControlListener.on(model.getLevelStage());
 		
 		tickers.add(winChecker);
 		winChecker.reset();
 		
 		GameState state = model.getState();
-		switchToStage(LevelStages.IN_GAME);
+		model.switchToStage(LevelStages.IN_GAME);
 		state.setBoard(state.getLevel().getStart().copy());
 	}
 	
@@ -85,34 +82,21 @@ public class GameViewController implements ViewController {
 	public void edit() {
 		model.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
 		
-		stageListeners.add(editControlListener);
-		stageListeners.remove(playControlListener);
+		model.getLevelStageListeners().add(editControlListener);
+		model.getLevelStageListeners().remove(playControlListener);
 		tickers.remove(winChecker);
-		editControlListener.on(stage);
+		editControlListener.on(model.getLevelStage());
 	}
 	
 	public void reset() {
 		board.reset();
 	}
 	
-	public void switchToStage(LevelStage newStage) {
-		if (stage != null && newStage.getIndex() != stage.getIndex()) {
-			newStage.transitionFrom(stage, model.getState());
-		}
-		stage = newStage;
-		stageListeners.fire(newStage);
-	}
-	
 	public BoardViewController getBoard() { return board; }
-	
-	/** Fetches the currently viewed stage. */
-	public LevelStage getStage() { return stage; }
 	
 	public Game getModel() { return model; }
 	
 	public TickerList getTickers() { return tickers; }
-	
-	public ListenerList<LevelStage> getStageListeners() { return stageListeners; }
 	
 	@Override
 	public JComponent getComponent() { return board.getComponent(); }

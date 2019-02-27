@@ -1,9 +1,6 @@
-package lighthouse.ui.stage;
+package lighthouse.model;
 
 import java.util.Optional;
-
-import lighthouse.model.Board;
-import lighthouse.model.GameState;
 
 /**
  * Represents a stage in the game such

@@ -61,7 +61,7 @@ public class GameControlsViewController implements ViewController {
 				buttonOf("Save As", this::saveAs),
 				buttonOf("Open", this::open)
 			),
-			new LevelNavigatorViewController(game, loop).getComponent()
+			new LevelNavigatorViewController(model.getGame(), loop).getComponent()
 		), BorderLayout.CENTER);
 	}
 	
