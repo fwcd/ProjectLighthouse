@@ -3,8 +3,6 @@ package lighthouse.ui.sidebar;
 import java.awt.BorderLayout;
 import java.nio.file.Path;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,6 +18,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.loop.GameLoop;
 import lighthouse.ui.modes.EditingMode;
 import lighthouse.ui.modes.PlayingMode;
+import lighthouse.ui.util.LayoutUtils;
 
 /**
  * Manages a view containing game and file controls and is responsible for
@@ -54,16 +53,16 @@ public class GameControlsViewController implements ViewController {
 		});
 		
 		// Setup control panel
-		component.add(vboxOf(
-			panelOf(
-				buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
-				buttonOf("Reset", game::reset),
-				buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
+		component.add(LayoutUtils.vboxOf(
+			LayoutUtils.panelOf(
+				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
+				LayoutUtils.buttonOf("Reset", game::reset),
+				LayoutUtils.buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
 			),
-			panelOf(
-				buttonOf("Save", this::save),
-				buttonOf("Save As", this::saveAs),
-				buttonOf("Open", this::open)
+			LayoutUtils.panelOf(
+				LayoutUtils.buttonOf("Save", this::save),
+				LayoutUtils.buttonOf("Save As", this::saveAs),
+				LayoutUtils.buttonOf("Open", this::open)
 			),
 			new LevelNavigatorViewController(game, loop).getComponent()
 		), BorderLayout.CENTER);
@@ -107,29 +106,6 @@ public class GameControlsViewController implements ViewController {
 	private void showWarning(Exception e) {
 		LOG.warn("Error while saving/loading files", e);
 		JOptionPane.showMessageDialog(component, e.getMessage(), e.getClass().getSimpleName() + " while saving/loading a file", JOptionPane.WARNING_MESSAGE);
-	}
-	
-	private JPanel vboxOf(JComponent... components) {
-		JPanel vbox = new JPanel();
-		vbox.setLayout(new BoxLayout(vbox, BoxLayout.Y_AXIS));
-		for (JComponent child : components) {
-			vbox.add(child);
-		}
-		return vbox;
-	}
-	
-	private JPanel panelOf(JComponent... components) {
-		JPanel bar = new JPanel();
-		for (JComponent child : components) {
-			bar.add(child);
-		}
-		return bar;
-	}
-	
-	private JButton buttonOf(String label, Runnable action) {
-		JButton button = new JButton(label);
-		button.addActionListener(l -> action.run());
-		return button;
 	}
 	
 	@Override
