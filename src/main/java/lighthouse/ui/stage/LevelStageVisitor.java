@@ -7,7 +7,7 @@ package lighthouse.ui.stage;
 public interface LevelStageVisitor<T> {
 	T visitStart(LevelStages.Start stage);
 	
-	T visitCurrent(LevelStages.Current stage);
+	T visitInGame(LevelStages.InGame stage);
 	
 	T visitGoal(LevelStages.Goal stage);
 }

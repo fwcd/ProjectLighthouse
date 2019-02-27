@@ -44,7 +44,7 @@ public class LevelNavigatorViewController implements ViewController {
 		component.addMouseListener(mouseAdapter);
 		component.addMouseMotionListener(mouseAdapter);
 		
-		game.switchToStage(LevelStages.CURRENT);
+		game.switchToStage(LevelStages.IN_GAME);
 		game.getStageListeners().add(stage -> {
 			component.setSelectedStepIndex(stage.getIndex());
 		});

@@ -19,7 +19,7 @@ public class EditingControllerPicker implements LevelStageVisitor<BoardResponder
 	public BoardResponder visitStart(LevelStages.Start stage) { return new BoardDrawController(board); }
 	
 	@Override
-	public BoardResponder visitCurrent(LevelStages.Current stage) { return new BoardDrawController(board); }
+	public BoardResponder visitInGame(LevelStages.InGame stage) { return new BoardDrawController(board); }
 	
 	@Override
 	public BoardResponder visitGoal(LevelStages.Goal stage) { return new BoardArrangeController(board); }

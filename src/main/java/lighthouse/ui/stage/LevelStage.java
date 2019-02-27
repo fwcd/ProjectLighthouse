@@ -22,7 +22,7 @@ public interface LevelStage extends Comparable<LevelStage> {
 	
 	<T> T accept(LevelStageVisitor<T> visitor);
 	
-	default boolean isCurrent() { return false; }
+	default boolean isInGame() { return false; }
 	
 	@Override
 	default int compareTo(LevelStage o) { return Integer.compare(getIndex(), o.getIndex()); }

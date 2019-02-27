@@ -19,7 +19,7 @@ public class PlayControllerPicker implements LevelStageVisitor<BoardResponder> {
 	public BoardResponder visitStart(LevelStages.Start stage) { return NoResponder.INSTANCE; }
 	
 	@Override
-	public BoardResponder visitCurrent(LevelStages.Current stage) { return new BoardPlayController(board); }
+	public BoardResponder visitInGame(LevelStages.InGame stage) { return new BoardPlayController(board); }
 	
 	@Override
 	public BoardResponder visitGoal(LevelStages.Goal stage) { return NoResponder.INSTANCE; }

@@ -12,9 +12,9 @@ import lighthouse.model.GameState;
  */
 public class LevelStages {
 	public static final LevelStage START = new Start();
-	public static final LevelStage CURRENT = new Current();
+	public static final LevelStage IN_GAME = new InGame();
 	public static final LevelStage GOAL = new Goal();
-	public static final List<LevelStage> STAGES = Arrays.asList(START, CURRENT, GOAL);
+	public static final List<LevelStage> STAGES = Arrays.asList(START, IN_GAME, GOAL);
 	
 	private LevelStages() {}
 	
@@ -29,7 +29,7 @@ public class LevelStages {
 		
 		@Override
 		public void transitionFrom(LevelStage lastStage, GameState state) {
-			if (lastStage.isCurrent()) {
+			if (lastStage.isInGame()) {
 				state.backupBoard();
 			}
 			state.setBoard(state.getLevel().getStart());
@@ -41,26 +41,26 @@ public class LevelStages {
 		public Optional<Board> getBoardFrom(GameState state) { return Optional.of(state.getLevel().getStart()); }
 	}
 	
-	public static class Current implements LevelStage {
-		Current() {}
+	public static class InGame implements LevelStage {
+		InGame() {}
 		
 		@Override
 		public int getIndex() { return 1; }
 		
 		@Override
-		public String getName() { return "Current"; }
+		public String getName() { return "InGame"; }
 		
 		@Override
 		public void transitionFrom(LevelStage lastStage, GameState state) {
-			if (!lastStage.isCurrent()) {
+			if (!lastStage.isInGame()) {
 				state.revertToBackupBoardOr(Board::new);
 			}
 		}
 		
 		@Override
-		public boolean isCurrent() { return true; }
+		public boolean isInGame() { return true; }
 	
-		public <T> T accept(LevelStageVisitor<T> visitor) { return visitor.visitCurrent(this); }
+		public <T> T accept(LevelStageVisitor<T> visitor) { return visitor.visitInGame(this); }
 		
 		@Override
 		public Optional<Board> getBoardFrom(GameState state) { return Optional.empty(); }
@@ -77,7 +77,7 @@ public class LevelStages {
 		
 		@Override
 		public void transitionFrom(LevelStage lastStage, GameState state) {
-			if (lastStage.isCurrent()) {
+			if (lastStage.isInGame()) {
 				state.backupBoard();
 			}
 			state.setBoard(state.getLevel().getGoal());

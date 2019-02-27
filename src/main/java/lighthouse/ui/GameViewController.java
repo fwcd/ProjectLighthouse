@@ -3,6 +3,7 @@ package lighthouse.ui;
 import javax.swing.JComponent;
 
 import lighthouse.model.Game;
+import lighthouse.model.GameState;
 import lighthouse.model.Level;
 import lighthouse.model.Status;
 import lighthouse.ui.board.BoardViewController;
@@ -22,7 +23,7 @@ public class GameViewController implements ViewController {
 	private final Game model;
 	private final BoardViewController board;
 	
-	private LevelStage stage = LevelStages.CURRENT;
+	private LevelStage stage = LevelStages.IN_GAME;
 	
 	private final ListenerList<LevelStage> stageListeners = new ListenerList<>();
 	private final Listener<LevelStage> playControlListener;
@@ -56,14 +57,20 @@ public class GameViewController implements ViewController {
 	public void play() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
 		board.setResponder(new BoardPlayController(model.getState().getBoard()));
+		
 		stageListeners.remove(editControlListener);
 		stageListeners.add(playControlListener);
 		playControlListener.on(stage);
+		
+		GameState state = model.getState();
+		state.setBoard(state.getLevel().getStart());
+		switchToStage(LevelStages.IN_GAME);
 	}
 	
 	/** Switches to editing mode. */
 	public void edit() {
 		model.setStatus(new Status("Editing", ColorUtils.LIGHT_ORANGE));
+		
 		stageListeners.add(editControlListener);
 		stageListeners.remove(playControlListener);
 		editControlListener.on(stage);
