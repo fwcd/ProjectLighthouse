@@ -29,31 +29,43 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		IntVec pos = gridPosOf(e);
+		IntVec pixelPos = pixelPosOf(e);
+		IntVec gridPos = mapper.toGridPos(pixelPos);
 		if (SwingUtilities.isRightMouseButton(e)) {
-			responders.forEach(r -> r.rightPress(pos));
+			responders.forEach(r -> r.rightPress(gridPos));
 		} else {
-			responders.forEach(r -> r.press(pos));
+			responders.forEach(r -> {
+				r.press(gridPos);
+				r.floatingPress(pixelPos);
+			});
 		}
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
-			IntVec pos = gridPosOf(e);
-			responders.forEach(r -> r.dragTo(pos));
+			IntVec pixelPos = pixelPosOf(e);
+			IntVec gridPos = mapper.toGridPos(pixelPos);
+			responders.forEach(r -> {
+				r.dragTo(gridPos);
+				r.floatingDragTo(pixelPos);
+			});
 		}
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
-			IntVec pos = gridPosOf(e);
-			responders.forEach(r -> r.release(pos));
+			IntVec pixelPos = pixelPosOf(e);
+			IntVec gridPos = mapper.toGridPos(pixelPos);
+			responders.forEach(r -> {
+				r.release(gridPos);
+				r.floatingRelease(pixelPos);
+			});
 		}
 	}
 	
-	private IntVec gridPosOf(MouseEvent e) {
-		return mapper.toGridPos(new IntVec(e.getX(), e.getY()));
+	private IntVec pixelPosOf(MouseEvent e) {
+		return new IntVec(e.getX(), e.getY());
 	}
 }
