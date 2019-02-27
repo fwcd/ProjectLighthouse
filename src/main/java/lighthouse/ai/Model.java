@@ -6,7 +6,7 @@ import java.util.Random;
 import lighthouse.ai.layers.Conv2d;
 import lighthouse.ai.layers.Dense;
 
-public class Model{
+public class Model implements WeightIterator{
 
     private Random r = new Random();
     private ArrayList<Double> weights = new ArrayList<>();
@@ -25,6 +25,7 @@ public class Model{
         this.weights = weights;
     }
 
+    @Override
     public double getNextWeight(){
         if (this.weights.size() <= weightCounter){
             this.weights.add(r.nextDouble());

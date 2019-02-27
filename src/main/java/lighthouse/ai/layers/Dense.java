@@ -1,12 +1,12 @@
 package lighthouse.ai.layers;
 
-import lighthouse.ai.Model;
+import lighthouse.ai.WeightIterator;
 
 public class Dense{
 
-    private Model model;
+    private WeightIterator model;
 
-    public Dense(Model model){
+    public Dense(WeightIterator model){
         this.model = model;
     }
 
