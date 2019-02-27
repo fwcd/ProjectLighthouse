@@ -102,7 +102,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the board's bricks
 			for (Brick brick : model.getBricks()) {
-				LOG.info("Rendering {}", brick);
+				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
 				if (drawEdges) {
 					renderEdges(g2d, brick.getPos(), brick.getEdges(), placedBrickScale);
