@@ -63,8 +63,8 @@ public class GameViewController implements ViewController {
 		playControlListener.on(stage);
 		
 		GameState state = model.getState();
-		state.setBoard(state.getLevel().getStart());
 		switchToStage(LevelStages.IN_GAME);
+		state.setBoard(state.getLevel().getStart().copy());
 	}
 	
 	/** Switches to editing mode. */
