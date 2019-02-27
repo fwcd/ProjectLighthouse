@@ -82,9 +82,9 @@ public class Brick implements GameBlock, Serializable {
 		return structure.equals(brick.structure);
 	}
 	
-	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure); }
+	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure, color); }
 	
-	public Brick movedInto(Direction dir) { return new Brick(pos.add(dir), structure); }
+	public Brick movedInto(Direction dir) { return new Brick(pos.add(dir), structure, color); }
 	
 	@Override
 	public IntVec getPos() { return pos; }
