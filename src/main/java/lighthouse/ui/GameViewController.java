@@ -87,6 +87,7 @@ public class GameViewController implements ViewController {
 	
 	public void show(GamePerspective perspective) {
 		this.perspective = perspective;
+		board.setResponder(mode.createController(perspective, perspective.getActiveBoard(model)));
 		perspectiveListeners.fire(perspective);
 	}
 	
