@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import lighthouse.model.Board;
 import lighthouse.model.GameState;
 import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
@@ -22,44 +23,44 @@ import lighthouse.util.ListenerList;
  */
 public class GameViewController implements ViewController {
 	private final JComponent component;
-	
+
 	private final GameState model;
 	private final GameContext context = new GameContext();
 	private final CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
 	private final BoardViewController board;
-	
+
 	private GameMode mode;
 	private GamePerspective perspective;
-	
+
 	private final TickerList tickers = new TickerList();
 	private final GameWinChecker winChecker;
-	
+
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>();
-	
+
 	public GameViewController(GameState model) {
 		this.model = model;
-		
+
 		component = new JPanel(new BorderLayout());
-		
+
 		// Initialize board
 		board = new BoardViewController(model.getBoard(), coordinateMapper);
 		model.getBoardListeners().add(board::updateModel);
 		component.add(board.getComponent(), BorderLayout.CENTER);
-		
+
 		// Setup tickers
 		winChecker = new GameWinChecker(board.getComponent(), model, context);
-		
+
 		// Add level hooks
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 		});
 		Level initialLevel = model.getLevel();
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
-		
+
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
 	}
-	
+
 	public void reset() {
 		if (perspective.isInGame()) {
 			// Reset to the starting board...
@@ -69,11 +70,11 @@ public class GameViewController implements ViewController {
 			board.reset();
 		}
 	}
-	
+
 	public void enter(GameMode mode) {
 		this.mode = mode;
 		context.setStatus(mode.getBaseStatus());
-		
+
 		if (mode.isPlaying()) {
 			tickers.add(winChecker);
 			winChecker.reset();
@@ -81,13 +82,17 @@ public class GameViewController implements ViewController {
 		} else {
 			tickers.remove(winChecker);
 		}
-		
+
 		show(mode.getInitialPerspective());
 	}
-	
+
 	public void show(GamePerspective perspective) {
 		this.perspective = perspective;
-		board.setResponder(mode.createController(perspective, perspective.getActiveBoard(model)));
+		
+		Board activeBoard = perspective.getActiveBoard(model);
+		board.setResponder(mode.createController(perspective, activeBoard));
+		board.updateModel(activeBoard);
+		
 		perspectiveListeners.fire(perspective);
 	}
 	
