@@ -4,6 +4,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import lighthouse.model.Game;
+import lighthouse.model.GameState;
 import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.loop.Ticker;
 
@@ -21,10 +22,18 @@ public class GameWinChecker implements Ticker {
 	
 	@Override
 	public void tick() {
-		if (!alreadyWon && game.getState().isWon() && !game.getState().getActiveBoard().isEmpty() && game.getLevelStage().isInGame()) {
+		GameState state = game.getState();
+		if (!alreadyWon && state.isWon() && !state.getActiveBoard().isEmpty() && game.getLevelStage().isInGame()) {
 			alreadyWon = true;
 			floatingCtx.clear();
-			JOptionPane.showMessageDialog(parent, "GAME WON! Hooray!");
+			
+			String message = "GAME WON!";
+			if (state.getLevel().isTooEasy()) {
+				message += " (Pretty easily though, since your goal board exactly matches your starting board)";
+			} else {
+				message += " Hooray!";
+			}
+			JOptionPane.showMessageDialog(parent, message);
 		}
 	}
 	

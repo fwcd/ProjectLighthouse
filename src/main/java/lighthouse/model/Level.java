@@ -22,6 +22,8 @@ public class Level implements Serializable {
 		this.goal = goal;
 	}
 	
+	public boolean isTooEasy() { return start.equals(goal); }
+	
 	public Board getStart() { return start; }
 	
 	public Board getGoal() { return goal; }
