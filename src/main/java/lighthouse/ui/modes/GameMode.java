@@ -1,5 +1,6 @@
 package lighthouse.ui.modes;
 
+import lighthouse.model.Board;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.util.Status;
@@ -10,5 +11,5 @@ import lighthouse.ui.util.Status;
 public interface GameMode {
 	Status getBaseStatus();
 	
-	BoardResponder createController(GamePerspective perspective);
+	BoardResponder createController(GamePerspective perspective, Board board);
 }
