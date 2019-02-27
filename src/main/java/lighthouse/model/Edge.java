@@ -26,6 +26,15 @@ public class Edge implements Serializable {
 			&& this.dir.equals(dir);
 	}
 	
+	public boolean isDuplicateOf(Edge other) {
+		return step().equals(other.off) && other.step().equals(off);
+	}
+	
+	/** Steps into the direction the edge is facing. */
+	public IntVec step() {
+		return off.add(dir);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;

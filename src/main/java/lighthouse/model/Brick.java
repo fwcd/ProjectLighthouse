@@ -53,25 +53,36 @@ public class Brick implements GameBlock, Serializable {
 	
 	private void findEdges() {
 		IntVec off = IntVec.ZERO;
-		IntVec lastOff = IntVec.ZERO;
 		
 		LOG.debug("Initial edges: {}", edges);
 		
+		// Traverse the structure
 		for (Direction dir : structure) {
 			off = off.add(dir);
 			
-			IntVec tmpOff = off;
-			IntVec tmpLastOff = lastOff;
-			
+			// Initially add all directions
 			for (Direction inDir : Direction.values()) {
 				edges.add(new Edge(off, inDir));
 			}
-			
-			edges.removeIf(edge -> edge.matches(tmpLastOff, dir) || edge.matches(tmpOff, dir.getOpposite()));
-		
-			LOG.debug("Edges at {} (moved {}): {}", off, dir, edges);
-			lastOff = off;
 		}
+		
+		// Remove all pairs of edges that are duplicated
+		List<Edge> removed = new ArrayList<>();
+		
+		for (int i = 0; i < edges.size(); i++) {
+			for (int j = i + 1; j < edges.size(); j++) {
+				Edge a = edges.get(i);
+				Edge b = edges.get(j);
+				
+				if (a.isDuplicateOf(b)) {
+					LOG.debug("{} and {} are duplicates", a, b);
+					removed.add(a);
+					removed.add(b);
+				}
+			}
+		}
+		
+		edges.removeAll(removed);
 		
 		LOG.info("Found edges {}", edges);
 	}

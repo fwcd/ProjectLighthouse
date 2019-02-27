@@ -82,7 +82,11 @@ public class IntVec implements Serializable {
 	
 	public boolean yIn(int startInclusive, int endExclusive) { return y >= startInclusive && y < endExclusive; }
 	
+	/** Efficiently determines whether this IntVec has length 0. */
 	public boolean isZero() { return x == 0 && y == 0; }
+	
+	/** Efficiently determines whether this IntVec has length 1 (thus if it is a unit vector). */
+	public boolean isUnit() { return (Math.abs(x) == 1 && y == 0) || (x == 0 && Math.abs(y) == 1); }
 	
 	public Direction nearestDirection() {
 		if (-y >= Math.abs(x)) return Direction.UP;
