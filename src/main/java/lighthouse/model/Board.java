@@ -9,10 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 
@@ -118,6 +120,25 @@ public class Board implements Serializable {
 	public void perform(Move move) {
 		replace(move.getOldBrick(), move.getNewBrick());
 	}
+	
+	/** Encodes this board as an array of columns * rows item.. */
+	public double[] encode() {
+		return IntStream.of(columns * rows)
+			.mapToObj(i -> colorAt(i % columns, i / columns))
+			.mapToDouble(ColorUtils::getBrightnessPercent)
+			.toArray();
+	}
+	
+	// WIP
+	// public Stream<Move> streamPossibleMoves() {
+	// 	return bricks.stream()
+	// 		.flatMap(this::streamPossibleMovesFor);
+	// }
+	
+	// /**  */
+	// public Stream<Move> streamPossibleMovesFor(Brick brick) {
+	// 	return getLimitsFor(brick)
+	// }
 	
     /** Fetches the limits into each direction for a brick. */
     public Map<Direction, Integer> getLimitsFor(Brick brick) {

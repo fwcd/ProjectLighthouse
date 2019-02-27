@@ -20,4 +20,12 @@ public class ColorUtils {
 	public static Color withAlpha(int newAlpha, Color color) {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), newAlpha);
 	}
+	
+	public static int getBrightness(Color color) {
+		return (color.getRed() + color.getGreen() + color.getBlue()) / 3;
+	}
+	
+	public static double getBrightnessPercent(Color color) {
+		return getBrightness(color) / 255.0;
+	}
 }
