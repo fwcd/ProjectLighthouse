@@ -38,7 +38,7 @@ public class LocalBoardView implements BoardView {
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
-	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.HIGHLIGHTED_ONLY;
+	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.NONE;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
 	
