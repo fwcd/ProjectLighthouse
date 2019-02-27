@@ -25,9 +25,9 @@ public class LevelStages {
 		public String getName() { return "Start"; }
 		
 		@Override
-		public void transitionFrom(LevelStage lastStage, GameState state) {
+		public void transitionFrom(LevelStage lastStage, GamePlayingState state) {
 			if (lastStage.isInGame()) {
-				state.backupBoard();
+				state.storeInGameBoard();
 			}
 			state.setBoard(state.getLevel().getStart());
 		}
@@ -35,7 +35,7 @@ public class LevelStages {
 		public <T> T accept(LevelStageVisitor<T> visitor) { return visitor.visitStart(this); }
 		
 		@Override
-		public Optional<Board> getBoardFrom(GameState state) { return Optional.of(state.getLevel().getStart()); }
+		public Optional<Board> getBoardFrom(GamePlayingState state) { return Optional.of(state.getLevel().getStart()); }
 	}
 	
 	public static class InGame implements LevelStage {
@@ -48,9 +48,9 @@ public class LevelStages {
 		public String getName() { return "InGame"; }
 		
 		@Override
-		public void transitionFrom(LevelStage lastStage, GameState state) {
+		public void transitionFrom(LevelStage lastStage, GamePlayingState state) {
 			if (!lastStage.isInGame()) {
-				state.revertToBackupBoardOr(Board::new);
+				state.revertToInGameBoardOr(Board::new);
 			}
 		}
 		
@@ -60,7 +60,7 @@ public class LevelStages {
 		public <T> T accept(LevelStageVisitor<T> visitor) { return visitor.visitInGame(this); }
 		
 		@Override
-		public Optional<Board> getBoardFrom(GameState state) { return Optional.empty(); }
+		public Optional<Board> getBoardFrom(GamePlayingState state) { return Optional.empty(); }
 	}
 	
 	public static class Goal implements LevelStage {
@@ -73,9 +73,9 @@ public class LevelStages {
 		public String getName() { return "Goal"; }
 		
 		@Override
-		public void transitionFrom(LevelStage lastStage, GameState state) {
+		public void transitionFrom(LevelStage lastStage, GamePlayingState state) {
 			if (lastStage.isInGame()) {
-				state.backupBoard();
+				state.storeInGameBoard();
 			}
 			state.setBoard(state.getLevel().getGoal());
 		}
@@ -83,6 +83,6 @@ public class LevelStages {
 		public <T> T accept(LevelStageVisitor<T> visitor) { return visitor.visitGoal(this); }
 		
 		@Override
-		public Optional<Board> getBoardFrom(GameState state) { return Optional.of(state.getLevel().getGoal()); }
+		public Optional<Board> getBoardFrom(GamePlayingState state) { return Optional.of(state.getLevel().getGoal()); }
 	}
 }

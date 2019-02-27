@@ -8,14 +8,14 @@ import lighthouse.util.ListenerList;
  * the current stage).
  */
 public class Game {
-	private GameState state = new GameState();
+	private GamePlayingState state = new GamePlayingState();
 	private Status status;
 	private LevelStage stage = LevelStages.IN_GAME;
 	
 	private final ListenerList<LevelStage> stageListeners = new ListenerList<>();
 	private final ListenerList<Status> statusListeners = new ListenerList<>();
 	
-	public GameState getState() { return state; }
+	public GamePlayingState getState() { return state; }
 	
 	public Status getStatus() { return status; }
 	

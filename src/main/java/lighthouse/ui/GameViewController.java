@@ -3,7 +3,7 @@ package lighthouse.ui;
 import javax.swing.JComponent;
 
 import lighthouse.model.Game;
-import lighthouse.model.GameState;
+import lighthouse.model.GamePlayingState;
 import lighthouse.model.Level;
 import lighthouse.model.LevelStage;
 import lighthouse.model.LevelStages;
@@ -34,18 +34,18 @@ public class GameViewController implements ViewController {
 		this.model = model;
 		
 		// Initialize board
-		board = new BoardViewController(model.getState().getBoard());
+		board = new BoardViewController(model.getState().getActiveBoard());
 		model.getState().getBoardListeners().add(board::updateModel);
 		
 		// Setup tickers
-		winChecker = new GameWinChecker(board.getComponent(), model.getState());
+		winChecker = new GameWinChecker(board.getComponent(), model);
 		
 		// Setup controller pickers
 		editControlListener = stage -> {
-			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getBoard())));
+			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getActiveBoard())));
 		};
 		playControlListener = stage -> {
-			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getBoard())));
+			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getActiveBoard())));
 		};
 		
 		// Add level hooks
@@ -64,7 +64,7 @@ public class GameViewController implements ViewController {
 	/** Switches to playing mode. */
 	public void play() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getState().getBoard()));
+		board.setResponder(new BoardPlayController(model.getState().getActiveBoard()));
 		
 		model.getLevelStageListeners().remove(editControlListener);
 		model.getLevelStageListeners().add(playControlListener);
@@ -73,7 +73,7 @@ public class GameViewController implements ViewController {
 		tickers.add(winChecker);
 		winChecker.reset();
 		
-		GameState state = model.getState();
+		GamePlayingState state = model.getState();
 		model.switchToStage(LevelStages.IN_GAME);
 		state.setBoard(state.getLevel().getStart().copy());
 	}

@@ -18,33 +18,39 @@ import lighthouse.util.ListenerList;
  * Holds the current game state which includes the actively manipulated board,
  * the current level and more.
  */
-public class GameState {
-    private static final Logger LOG = LoggerFactory.getLogger(GameState.class);
+public class GamePlayingState {
+    private static final Logger LOG = LoggerFactory.getLogger(GamePlayingState.class);
 	private static final Gson GSON = new Gson();
-	
-    private Board board = new Board();
+    
+    /** The active board. Usually displayed to the user. */
+    private Board activeBoard = new Board();
+    /** The level played. */
     private Level level = new Level();
-	private Board backupBoard;
+    /**
+     * A "backup" of the current in game board in case the
+     * user looks at the start or end board of the level.
+     */
+    private Board storedInGameBoard;
 	
     private final ListenerList<Level> levelListeners = new ListenerList<>();
 	private final ListenerList<Board> boardListeners = new ListenerList<>();
     
-    public void backupBoard() { backupBoard = board.copy(); }
+    public void storeInGameBoard() { storedInGameBoard = activeBoard.copy(); }
     
     public boolean isWon() {
-        return board.equals(level.getGoal());
+        return activeBoard.equals(level.getGoal());
     }
     
-    public void revertToBackupBoardOr(Supplier<Board> otherwise) {
-        if (backupBoard == null) {
+    public void revertToInGameBoardOr(Supplier<Board> otherwise) {
+        if (storedInGameBoard == null) {
             setBoard(otherwise.get());
         } else {
-            setBoard(backupBoard.copy());
+            setBoard(storedInGameBoard.copy());
         }
     }
     
     public void setBoard(Board board) {
-        this.board = board;
+        this.activeBoard = board;
         boardListeners.fire(board);
     }
 	
@@ -65,7 +71,7 @@ public class GameState {
 		}
     }
 	
-	public Board getBoard() { return board; }
+	public Board getActiveBoard() { return activeBoard; }
 	
 	public Level getLevel() { return level; }
 	
