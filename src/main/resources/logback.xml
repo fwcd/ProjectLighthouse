@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 	
-	<logger name="lighthouse.ui.board.controller.BoardPlayController" level="DEBUG"></logger>
+	<logger name="lighthouse.ui.board.controller.BoardPlayController" level="INFO"></logger>
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>

@@ -37,12 +37,8 @@ public class BoardPlayController implements BoardResponder {
 		limits.put(Direction.LEFT, Integer.MAX_VALUE);
 	}
 	
-	@Override
-	public void press(IntVec gridPos) {
-		brick = board.locateBrick(gridPos);
-		if (brick == null) return;
-		dragEvent = true;
-		start = gridPos;
+	private void computeLimits() {
+		resetLimits();
 		List<Edge> edgeList = brick.getEdges();
 		for (Direction dir : Direction.values()) {
 			edgeList.stream().filter(edge -> edge.getDir().getIndex() == dir.getIndex()).forEach(edge -> {
@@ -59,7 +55,16 @@ public class BoardPlayController implements BoardResponder {
 				}
 			});
 		}
-		LOG.info("Limits: {}", limits);
+		LOG.debug("Limits: {}", limits);
+	}
+	
+	@Override
+	public void press(IntVec gridPos) {
+		brick = board.locateBrick(gridPos);
+		if (brick == null) return;
+		dragEvent = true;
+		start = gridPos;
+		computeLimits();
 	}
 	
 	@Override
@@ -75,6 +80,7 @@ public class BoardPlayController implements BoardResponder {
 				board.replace(brick, newBrick);
 				brick = newBrick;
 				start = gridPos;
+				computeLimits();
 			}
 		}
 	}
