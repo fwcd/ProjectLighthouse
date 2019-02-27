@@ -2,7 +2,7 @@ package lighthouse.ai.layers;
 
 import lighthouse.ai.Model;
 
-public class Conv2d implements Layer{
+public class Conv2d{
 
     private Model model;
 
@@ -10,14 +10,9 @@ public class Conv2d implements Layer{
         this.model = model;
     }
 
-    @Override
-    public double[][] calculate(double[][] in, int size){
-        throw new IllegalArgumentException("Wrong Layer");
-    }
-
-    @Override
     public double[][] calculate(double[][] in, int height, int width){
         double[][] res = new double[in.length - (height - 1)][];
+        double bias = model.getNextWeight();
         for(int row = 0; row < res.length; row++){
             res[row] = new double[in[row].length - (width - 1)];
             for (int col = 0; col < res[row].length; col++){
@@ -26,6 +21,7 @@ public class Conv2d implements Layer{
                         res[row][col] += in[i][o] * model.getNextWeight();
                     }
                 }
+                res[row][col] += bias;
             }
         }
         return res;

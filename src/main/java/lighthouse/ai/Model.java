@@ -49,6 +49,11 @@ public class Model{
             }else{
                 in = conv.calculate(in, arg[0], arg[1]);
             }
+            for(int i = 0; i < in.length; i++){
+                for(int o = 0; o < in[i].length; o++){
+                    in[i][o] = Math.max(0, in[i][o]);
+                }
+            }
         }
         this.weightCounter = 0;
         return in[0][0];
