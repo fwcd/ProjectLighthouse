@@ -9,6 +9,7 @@ import lighthouse.ui.loop.Ticker;
 public class GameWinChecker implements Ticker {
 	private final JComponent parent;
 	private final GameState gameState;
+	private boolean alreadyWon = false;
 	
 	public GameWinChecker(JComponent parent, GameState gameState) {
 		this.parent = parent;
@@ -17,8 +18,13 @@ public class GameWinChecker implements Ticker {
 	
 	@Override
 	public void tick() {
-		if (gameState.isWon()) {
+		if (!alreadyWon && gameState.isWon()) {
+			alreadyWon = true;
 			JOptionPane.showMessageDialog(parent, "GAME WON! Hooray!");
 		}
+	}
+	
+	public void reset() {
+		alreadyWon = false;
 	}
 }

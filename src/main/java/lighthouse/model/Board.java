@@ -44,6 +44,9 @@ public class Board implements Serializable {
 	/** Fetches all bricks on this board. */
 	public Collection<Brick> getBricks() { return bricks; }
 	
+	/** Checks whether the board is empty. */
+	public boolean isEmpty() { return bricks.isEmpty(); }
+	
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) {
 		bricks.add(brick);

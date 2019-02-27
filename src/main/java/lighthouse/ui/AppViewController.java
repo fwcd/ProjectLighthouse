@@ -27,8 +27,11 @@ public class AppViewController implements ViewController {
 		SideBarViewController sideBar = new SideBarViewController(model, game, loop);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 		
-		// Start the game loop
+		// Setup loop hooks
+		loop.addTicker(game.getTickers());
 		loop.addRenderer(game.getBoard());
+		
+		// Start the game loop
 		loop.start();
 	}
 	

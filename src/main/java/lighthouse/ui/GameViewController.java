@@ -12,6 +12,8 @@ import lighthouse.ui.board.controller.EditingControllerPicker;
 import lighthouse.ui.board.controller.PlayControllerPicker;
 import lighthouse.ui.stage.LevelStage;
 import lighthouse.ui.stage.LevelStages;
+import lighthouse.ui.tickers.GameWinChecker;
+import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
@@ -25,16 +27,24 @@ public class GameViewController implements ViewController {
 	
 	private LevelStage stage = LevelStages.IN_GAME;
 	
+	private final TickerList tickers = new TickerList();
 	private final ListenerList<LevelStage> stageListeners = new ListenerList<>();
+	
+	private final GameWinChecker winChecker;
 	private final Listener<LevelStage> playControlListener;
 	private final Listener<LevelStage> editControlListener;
 	
 	public GameViewController(Game model) {
 		this.model = model;
 		
+		// Initialize board
 		board = new BoardViewController(model.getState().getBoard());
 		model.getState().getBoardListeners().add(board::updateModel);
 		
+		// Setup tickers
+		winChecker = new GameWinChecker(board.getComponent(), model.getState());
+		
+		// Setup controller pickers
 		editControlListener = stage -> {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getBoard())));
 		};
@@ -42,6 +52,7 @@ public class GameViewController implements ViewController {
 			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getBoard())));
 		};
 		
+		// Add level hooks
 		model.getState().getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 			stage.transitionFrom(stage, model.getState());
@@ -49,7 +60,7 @@ public class GameViewController implements ViewController {
 		Level initialLevel = model.getState().getLevel();
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
 		
-		// Initially enter game mode
+		// Enter playing mode
 		play();
 	}
 	
@@ -62,6 +73,9 @@ public class GameViewController implements ViewController {
 		stageListeners.add(playControlListener);
 		playControlListener.on(stage);
 		
+		tickers.add(winChecker);
+		winChecker.reset();
+		
 		GameState state = model.getState();
 		switchToStage(LevelStages.IN_GAME);
 		state.setBoard(state.getLevel().getStart().copy());
@@ -73,6 +87,7 @@ public class GameViewController implements ViewController {
 		
 		stageListeners.add(editControlListener);
 		stageListeners.remove(playControlListener);
+		tickers.remove(winChecker);
 		editControlListener.on(stage);
 	}
 	
@@ -94,6 +109,8 @@ public class GameViewController implements ViewController {
 	public LevelStage getStage() { return stage; }
 	
 	public Game getModel() { return model; }
+	
+	public TickerList getTickers() { return tickers; }
 	
 	public ListenerList<LevelStage> getStageListeners() { return stageListeners; }
 	
