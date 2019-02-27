@@ -10,7 +10,15 @@ import lighthouse.ui.board.controller.NoResponder;
  * Shows the in-game board of the level.
  */
 public class InGamePerspective implements GamePerspective {
-	public static final StartPerspective INSTANCE = new StartPerspective();
+	public static final GamePerspective INSTANCE = new InGamePerspective();
+	
+	private InGamePerspective() {}
+	
+	@Override
+	public String getName() { return "InGame"; }
+	
+	@Override
+	public int getIndex() { return 1; }
 	
 	@Override
 	public Board getActiveBoard(GameState model) { return model.getBoard(); }

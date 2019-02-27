@@ -33,7 +33,6 @@ public class GameControlsViewController implements ViewController {
 
 	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
 		this.model = model;
-		GameState gameModel = model.getGameState();
 		
 		component = new JPanel();
 		pathChooser = new PathChooser(component, ".json");
@@ -41,12 +40,13 @@ public class GameControlsViewController implements ViewController {
 		
 		// Setup status bar
 		statusBar = new StatusBar();
-		statusBar.display(gameModel.getStatus());
+		statusBar.display(game.getStatus());
 		component.add(statusBar.getComponent(), BorderLayout.NORTH);
 		
-		gameModel.getStatusListeners().add(statusBar::display);
-		gameModel.getState().getBoardListeners().add(newBoard -> {
-			gameModel.getStatusListeners().add(statusBar::display);
+		GameState gameState = model.getGameState();
+		game.getStatusListeners().add(statusBar::display);
+		gameState.getBoardListeners().add(newBoard -> {
+			game.getStatusListeners().add(statusBar::display);
 		});
 		
 		// Setup control panel

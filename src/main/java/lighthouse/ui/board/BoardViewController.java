@@ -10,7 +10,6 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
-import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;

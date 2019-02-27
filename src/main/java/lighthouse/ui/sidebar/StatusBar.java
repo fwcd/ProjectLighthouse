@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import lighthouse.model.Status;
+import lighthouse.ui.util.Status;
 
 /**
  * A simple Swing component to display a status.

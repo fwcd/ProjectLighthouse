@@ -23,7 +23,7 @@ public class LevelNavigatorViewController implements ViewController {
 	public LevelNavigatorViewController(GameState game, GameLoop loop) {
 		component = new WebStepProgress();
 		component.addSteps(LevelStages.STAGES.stream().sorted()
-			.map(stage -> new GameStageIconViewController(stage, game, loop))
+			.map(perspective -> new PerspectiveIconViewController(perspective, game, loop))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		
