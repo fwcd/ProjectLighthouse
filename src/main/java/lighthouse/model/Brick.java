@@ -94,15 +94,14 @@ public class Brick implements GameBlock, Serializable {
 	
 	@Override
 	public int hashCode() {
-		return structure.hashCode() * edges.hashCode() * pos.add(1, 1).hashCode() * 7;
+		return structure.hashCode() * pos.add(1, 1).hashCode() * 7;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Brick)) return false; 
 		Brick brick = (Brick) obj;
-		if (!pos.equals(brick.pos)) return false;
-		return structure.equals(brick.structure);
+		return structure.equals(brick.structure) && pos.equals(brick.pos);
 	}
 	
 	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure, color); }
