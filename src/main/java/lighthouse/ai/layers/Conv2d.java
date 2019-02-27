@@ -1,12 +1,12 @@
 package lighthouse.ai.layers;
 
-import lighthouse.ai.Model;
+import lighthouse.ai.WeightIterator;
 
 public class Conv2d{
 
-    private Model model;
+    private WeightIterator model;
 
-    public Conv2d(Model model){
+    public Conv2d(WeightIterator model){
         this.model = model;
     }
 
