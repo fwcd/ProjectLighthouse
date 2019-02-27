@@ -37,5 +37,14 @@ public class DelegateResponder implements BoardResponder {
 	public void reset() { delegate.reset(); }
 	
 	@Override
+	public void floatingPress(IntVec pixelPos) { delegate.floatingPress(pixelPos); }
+	
+	@Override
+	public void floatingDragTo(IntVec pixelPos) { delegate.floatingDragTo(pixelPos); }
+	
+	@Override
+	public void floatingRelease(IntVec pixelPos) { delegate.floatingRelease(pixelPos); }
+	
+	@Override
 	public void updateBoard(Board board) { delegate.updateBoard(board); }
 }

@@ -7,7 +7,7 @@ import lighthouse.util.IntVec;
  * Wraps a "floating" brick for the sole purpose
  * of visually more appealing mouse drags.
  */
-public class FloatingBrick {
+public class FloatingContext {
 	private Brick brick;
 	private IntVec pixelPos;
 	

@@ -10,6 +10,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
+import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -33,10 +34,11 @@ public class BoardViewController implements ViewController, Renderer {
 	private final List<LighthouseGridView> lhGridViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	
+	private final FloatingContext floatingCtx = new FloatingContext();
 	private final DelegateResponder responder;
 
 	public BoardViewController(Board model) {
-		responder = new DelegateResponder(new BoardPlayController(model));
+		responder = new DelegateResponder(new BoardPlayController(model, floatingCtx));
 		updateModel(model);
 		
 		// Creates a local view and hooks up the Swing component
@@ -74,6 +76,8 @@ public class BoardViewController implements ViewController, Renderer {
 	public void reset() {
 		responder.reset();
 	}
+	
+	public FloatingContext getFloatingContext() { return floatingCtx; }
 
 	@Override
 	public void render() {

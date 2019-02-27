@@ -3,7 +3,6 @@ package lighthouse.ui;
 import javax.swing.JComponent;
 
 import lighthouse.model.Game;
-import lighthouse.model.GameState;
 import lighthouse.model.Level;
 import lighthouse.model.LevelStage;
 import lighthouse.model.LevelStages;
@@ -45,7 +44,7 @@ public class GameViewController implements ViewController {
 			board.setResponder(stage.accept(new EditingControllerPicker(model.getState().getActiveBoard())));
 		};
 		playControlListener = stage -> {
-			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getActiveBoard())));
+			board.setResponder(stage.accept(new PlayControllerPicker(model.getState().getActiveBoard(), board.getFloatingContext())));
 		};
 		
 		// Add level hooks
@@ -64,7 +63,7 @@ public class GameViewController implements ViewController {
 	/** Switches to playing mode. */
 	public void play() {
 		model.setStatus(new Status("Playing", ColorUtils.LIGHT_GREEN));
-		board.setResponder(new BoardPlayController(model.getState().getActiveBoard()));
+		board.setResponder(new BoardPlayController(model.getState().getActiveBoard(), board.getFloatingContext()));
 		
 		model.getLevelStageListeners().remove(editControlListener);
 		model.getLevelStageListeners().add(playControlListener);

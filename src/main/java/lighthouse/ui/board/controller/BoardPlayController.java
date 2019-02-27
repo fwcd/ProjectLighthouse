@@ -11,6 +11,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
+import lighthouse.ui.board.floating.FloatingContext;
 import lighthouse.util.IntVec;
 
 /**
@@ -18,6 +19,8 @@ import lighthouse.util.IntVec;
  */
 public class BoardPlayController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
+	
+	private final FloatingContext floating;
 	private final Map<Direction, Integer> limits = new HashMap<>();
 	private Board board;
 	private boolean dragEvent;
@@ -25,7 +28,8 @@ public class BoardPlayController implements BoardResponder {
 	private IntVec start;
 	private Brick brick;
 
-	public BoardPlayController(Board model) {
+	public BoardPlayController(Board model, FloatingContext floating) {
+		this.floating = floating;
 		board = model;
 		resetLimits();
 	}
