@@ -13,7 +13,10 @@ public class GameContext {
 	
 	public Status getStatus() { return status; }
 	
-	public void setStatus(Status status) { this.status = status; }
+	public void setStatus(Status status) {
+		this.status = status;
+		statusListeners.fire(status);
+	}
 	
 	public ListenerList<Status> getStatusListeners() { return statusListeners; }
 }
