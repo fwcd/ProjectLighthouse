@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.Board;
 import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
-import lighthouse.model.BrickBuilder;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
@@ -120,7 +119,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the editing state
 			BoardEditState editState = model.getEditState();
-			BrickBuilder brickInProgress = editState.getBrickInProgress();
+			GameBlock brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);

@@ -34,7 +34,7 @@ public class BoardArrangeController implements BoardResponder {
 	public void dragTo(IntVec gridPos) {
 		if (dragging) {
 			IntVec delta = gridPos.sub(last);
-			board.getEditState().getBrickInProgress().moveBy(delta);
+			board.getEditState().moveBy(delta);
 			last = gridPos;
 		}
 	}

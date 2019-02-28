@@ -26,13 +26,18 @@ public class BoardEditState {
 		changeListeners.fire();
 	}
 	
+	public void moveBy(IntVec delta) {
+		brickInProgress.moveBy(delta);
+		changeListeners.fire();
+	}
+	
 	public Brick finishEdit(IntVec end) {
 		Brick brick = brickInProgress.build();
 		reset();
 		return brick;
 	}
 	
-	public BrickBuilder getBrickInProgress() { return brickInProgress; }
+	public GameBlock getBrickInProgress() { return brickInProgress; }
 	
 	public ListenerList<Void> getChangeListeners() { return changeListeners; }
 	
