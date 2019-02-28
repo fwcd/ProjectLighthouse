@@ -14,8 +14,10 @@ public class ListenerGraph {
 	private final List<ListenerList<?>> nodes = new ArrayList<>();
 	private final List<GraphEdge> edges = new ArrayList<>();
 	
-	public ListenerGraph(ListenerList<?> rootListeners) {
-		buildWith(rootListeners);
+	public ListenerGraph(ListenerList<?>... roots) {
+		for (ListenerList<?> root : roots) {
+			buildWith(root);
+		}
 	}
 	
 	private int buildWith(ListenerList<?> node) {
