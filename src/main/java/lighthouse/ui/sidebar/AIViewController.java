@@ -15,14 +15,14 @@ import lighthouse.model.AppModel;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.util.LayoutUtils;
 
-public class AIControlsViewController implements ViewController {
+public class AIViewController implements ViewController {
 	private static int threadIndex = 0;
 	private final AppModel appModel;
 	private final JPanel component;
 	private final WebProgressBar progressBar;
 	private Thread thread;
 	
-	public AIControlsViewController(AppModel appModel) {
+	public AIViewController(AppModel appModel) {
 		this.appModel = appModel;
 		
 		WebSpinner populationSize = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));

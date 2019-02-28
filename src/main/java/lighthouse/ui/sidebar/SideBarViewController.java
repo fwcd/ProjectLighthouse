@@ -38,7 +38,7 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("Game Controls", gameControls.getComponent());
 		
 		// Adds a panel containing AI controls
-		AIControlsViewController aiControls = new AIControlsViewController(model);
+		AIViewController aiControls = new AIViewController(model);
 		accordion.addPane("AI Controls", aiControls.getComponent());
 		
 		// Add the connector panel which allows the user
