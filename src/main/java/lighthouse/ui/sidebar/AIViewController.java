@@ -31,11 +31,11 @@ public class AIViewController implements ViewController {
 		
 		progressBar = new WebProgressBar();		
 		component = LayoutUtils.vboxOf(
-			LayoutUtils.panelOf(new FlowLayout(FlowLayout.LEADING, 2, 0),
+			LayoutUtils.compoundOf(
 				new JLabel("Population size:"),
 				populationSize
 			),
-			LayoutUtils.panelOf(new FlowLayout(FlowLayout.LEADING, 2, 0),
+			LayoutUtils.compoundOf(
 				new JLabel("Iterations:"),
 				iterations
 			),

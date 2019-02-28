@@ -1,15 +1,19 @@
 package lighthouse.ui.util;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
+
+import lighthouse.util.ListenerList;
 
 /**
  * Static methods for building declarative Swing layouts.
@@ -51,6 +55,14 @@ public class LayoutUtils {
 		return bar;
 	}
 	
+	public static JPanel compoundOf(Component... components) {
+		JPanel bar = new JPanel(new FlowLayout(FlowLayout.LEADING, 2, 0));
+		for (Component child : components) {
+			bar.add(child);
+		}
+		return bar;
+	}
+	
 	public static JButton buttonOf(String label, Runnable action) {
 		JButton button = new JButton(label);
 		button.addActionListener(l -> action.run());
@@ -77,5 +89,11 @@ public class LayoutUtils {
 		WebMenuItem item = new WebMenuItem(label);
 		item.addActionListener(l -> action.run());
 		return item;
+	}
+	
+	public static <T> JLabel labelOf(T value, ListenerList<T> listeners) {
+		JLabel label = new JLabel(value.toString());
+		listeners.add(it -> label.setText(it.toString()));
+		return label;
 	}
 }

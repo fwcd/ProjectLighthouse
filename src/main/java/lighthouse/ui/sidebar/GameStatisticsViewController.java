@@ -1,6 +1,7 @@
 package lighthouse.ui.sidebar;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import lighthouse.model.GameStatistics;
 import lighthouse.ui.ViewController;
@@ -11,7 +12,14 @@ public class GameStatisticsViewController implements ViewController {
 	
 	public GameStatisticsViewController(GameStatistics model) {
 		component = LayoutUtils.vboxOf(
-			
+			LayoutUtils.compoundOf(
+				new JLabel("Move count:"),
+				LayoutUtils.labelOf(model.getMoveCount(), model.getMoveCountListeners())
+			),
+			LayoutUtils.compoundOf(
+				new JLabel("Estimated distance to goal:"),
+				LayoutUtils.labelOf(model.getEstimatedDistanceToGoal(), model.getDistanceToGoalListeners())
+			)
 		);
 	}
 	
