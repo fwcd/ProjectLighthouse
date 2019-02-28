@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import lighthouse.model.Board;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.ScaleTransform;
+import lighthouse.ui.board.transform.ScaleTransform;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.util.CenterPanel;

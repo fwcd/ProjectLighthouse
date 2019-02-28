@@ -20,10 +20,10 @@ import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
-import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.overlay.Overlay;
+import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 

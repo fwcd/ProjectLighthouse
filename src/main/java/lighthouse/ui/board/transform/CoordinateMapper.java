@@ -1,4 +1,4 @@
-package lighthouse.ui.board;
+package lighthouse.ui.board.transform;
 
 import lighthouse.util.IntVec;
 

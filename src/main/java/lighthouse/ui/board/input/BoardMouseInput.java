@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.controller.BoardResponder;
+import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.util.IntVec;
 
 /**

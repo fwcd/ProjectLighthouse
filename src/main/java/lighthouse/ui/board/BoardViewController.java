@@ -18,6 +18,7 @@ import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.overlay.Animation;
 import lighthouse.ui.board.overlay.AnimationState;
+import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseGridView;
