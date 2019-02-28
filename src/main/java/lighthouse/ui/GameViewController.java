@@ -112,6 +112,7 @@ public class GameViewController implements ViewController {
 		}
 
 		show(mode.getInitialPerspective());
+		update();
 	}
 	
 	/** Presents a perspective of the game to the user. */
@@ -123,6 +124,7 @@ public class GameViewController implements ViewController {
 		board.updateModel(activeBoard);
 		
 		perspectiveListeners.fire(perspective);
+		update();
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
