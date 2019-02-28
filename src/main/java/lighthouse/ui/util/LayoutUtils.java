@@ -24,6 +24,15 @@ public class LayoutUtils {
 		return vbox;
 	}
 	
+	public static JPanel hboxOf(JComponent... components) {
+		JPanel hbox = new JPanel();
+		hbox.setLayout(new BoxLayout(hbox, BoxLayout.X_AXIS));
+		for (JComponent child : components) {
+			hbox.add(child);
+		}
+		return hbox;
+	}
+	
 	public static JPanel panelOf(JComponent... components) {
 		JPanel bar = new JPanel();
 		for (JComponent child : components) {

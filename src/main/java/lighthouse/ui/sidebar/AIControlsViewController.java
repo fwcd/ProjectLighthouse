@@ -1,6 +1,10 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.GridLayout;
+
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 
 import com.alee.laf.progressbar.WebProgressBar;
@@ -18,21 +22,39 @@ public class AIControlsViewController implements ViewController {
 	
 	public AIControlsViewController(AppModel appModel) {
 		this.appModel = appModel;
-		WebSpinner spinner = new WebSpinner(new SpinnerNumberModel(10, 1, 10000, 1));
+		
+		WebSpinner populationSize = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
+		WebSpinner iterations = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
+		
 		progressBar = new WebProgressBar();
 		component = LayoutUtils.vboxOf(
+			LayoutUtils.hboxOf(
+				new JLabel("Population size:"),
+				populationSize
+			),
+			LayoutUtils.hboxOf(
+				new JLabel("Iterations:"),
+				iterations
+			),
 			LayoutUtils.panelOf(
-				spinner,
-				LayoutUtils.buttonOf("Train Population", () -> {}),
-				progressBar
-			)
+				LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue()))
+			),
+			progressBar
 		);
 	}
 	
-	private void train(int populationSize) {
-		AIMain ai = new AIMain(populationSize);
-		appModel.setAI(ai);
-		ai.train(appModel.getGameState().getLevel());
+	private void train(int populationSize, int iterations) {
+		new Thread(() -> {
+			AIMain ai = new AIMain(populationSize);
+			appModel.setAI(ai);
+			progressBar.setMinimum(0);
+			progressBar.setMaximum(iterations);
+			
+			for (int i = 0; i < iterations; i++) {
+				ai.train(appModel.getGameState().getLevel());
+				progressBar.setValue(i);
+			}
+		}, "AI training").start();
 	}
 	
 	@Override
