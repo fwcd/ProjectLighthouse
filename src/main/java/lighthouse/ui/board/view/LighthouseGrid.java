@@ -18,7 +18,7 @@ public class LighthouseGrid implements ColorGrid {
 	private final int columns;
 	private final int rows;
 	private final Board board;
-	private final WritableColorGrid overlay;
+	private final WritableColorGrid overlayGrid;
 	
 	public LighthouseGrid(Board board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
@@ -28,7 +28,7 @@ public class LighthouseGrid implements ColorGrid {
 		this.board = board;
 		this.columns = columns;
 		this.rows = rows;
-		overlay = new ArrayColorGrid(rows, columns);
+		overlayGrid = new ArrayColorGrid(rows, columns);
 	}
 	
 	/** Fetches the Lighthouse grid's columns. */
@@ -37,11 +37,11 @@ public class LighthouseGrid implements ColorGrid {
 	/** Fetches the Lighthouse grid's rows. */
 	public int getRows() { return rows; }
 	
-	public WritableColorGrid getOverlay() { return overlay; }
+	public WritableColorGrid getOverlayGrid() { return overlayGrid; }
 	
 	@Override
 	public Color getColorAt(IntVec lhGridPos) {
-		Color overlayColor = overlay.getColorAt(lhGridPos);
+		Color overlayColor = overlayGrid.getColorAt(lhGridPos);
 		return (overlayColor == null)
 			? board.getColorAt(lhGridPos.sub(4, 1).scale(0.2, 0.5).floor())
 			: overlayColor;

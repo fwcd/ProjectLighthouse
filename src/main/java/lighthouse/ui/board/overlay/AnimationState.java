@@ -5,7 +5,8 @@ import java.awt.Graphics2D;
 import lighthouse.model.grid.WritableColorGrid;
 
 /**
- * A state wrapper for an animation that iterates once through the frames.
+ * A state wrapper that iterates through the
+ * frames of an animation.
  */
 public class AnimationState implements Overlay {
 	private final Animation animation;
@@ -15,8 +16,8 @@ public class AnimationState implements Overlay {
 		this.animation = animation;
 	}
 	
-	public boolean hasFrame() {
-		return frame < animation.getTotalFrames();
+	public boolean hasNextFrame() {
+		return frame < (animation.getTotalFrames() - 1);
 	}
 	
 	@Override
