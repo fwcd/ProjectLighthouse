@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.spinner.WebSpinner;
@@ -63,7 +64,8 @@ public class AIViewController implements ViewController {
 			
 			for (int i = 0; i < iterations && !Thread.interrupted(); i++) {
 				ai.train(appModel.getGameState().getLevel());
-				progressBar.setValue(i);
+				int index = i;
+				SwingUtilities.invokeLater(() -> progressBar.setValue(index));
 			}
 		}, "AI" + threadIndex);
 		threadIndex++;
