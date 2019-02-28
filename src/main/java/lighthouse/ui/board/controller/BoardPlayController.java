@@ -80,4 +80,21 @@ public class BoardPlayController implements BoardResponder {
 	public void updateBoard(Board board) {
 		this.board = board;
 	}
+
+	public Brick getCurrentBrick(){
+		return brick;
+	}
+
+	public void setCurrentBrick(Brick brick){
+		this.brick = brick;
+		computeLimits();
+	}
+
+	public void setCurrentBoard(Board board){
+		this.board = board;
+	}
+
+	public Map<Direction, Integer> getCurrentLimits(){
+		return limits;
+	}
 }

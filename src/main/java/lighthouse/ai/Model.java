@@ -6,7 +6,7 @@ import java.util.Random;
 import lighthouse.ai.layers.Conv2d;
 import lighthouse.ai.layers.Dense;
 
-public class Model implements WeightIterator{
+public class Model implements WeightIterator, Comparable{
 
     private Random r = new Random();
     private ArrayList<Double> weights = new ArrayList<>();
@@ -72,6 +72,12 @@ public class Model implements WeightIterator{
         for (int i = 0; i < weights.size(); i++){
             weights.set(i, weights.get(i) * r.nextGaussian());
         }
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Model other = (Model) o;
+        return fitness > other.fitness ? 1 : (fitness == other.fitness ? 0 : -1);
     }
     
 }
