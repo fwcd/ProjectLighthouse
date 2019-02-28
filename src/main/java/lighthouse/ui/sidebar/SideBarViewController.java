@@ -1,8 +1,8 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -23,12 +23,11 @@ public class SideBarViewController implements ViewController {
 	private final JPanel component;
 	
 	public SideBarViewController(AppModel model, GameViewController game, GameLoop loop) {
-		component = new JPanel();
-		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
+		component = new JPanel(new BorderLayout());
 		
 		// Adds a menu bar on top
 		MenuBarViewController menuBar = new MenuBarViewController(model);
-		component.add(menuBar.getComponent());
+		component.add(menuBar.getComponent(), BorderLayout.NORTH);
 		
 		WebAccordion accordion = new WebAccordion();
 		accordion.setMultiplySelectionAllowed(true);
@@ -53,7 +52,7 @@ public class SideBarViewController implements ViewController {
 		preview.getComponent().setPreferredSize(new Dimension(180, 200));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
-		component.add(accordion);
+		component.add(accordion, BorderLayout.CENTER);
 	}
 
 	@Override
