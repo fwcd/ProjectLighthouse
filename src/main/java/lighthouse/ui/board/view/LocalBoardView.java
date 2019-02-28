@@ -19,7 +19,6 @@ import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
-import lighthouse.ui.Repaintable;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -29,7 +28,7 @@ import lighthouse.util.IntVec;
 /**
  * A local high-resolution (Swing-based) view of the GameBoard.
  */
-public class LocalBoardView implements BoardView, Repaintable {
+public class LocalBoardView implements BoardView {
 	private static final Logger LOG = LoggerFactory.getLogger(LocalBoardView.class);
 	private final Color background = Color.WHITE;
 	private final Color gridLineColor = Color.LIGHT_GRAY;
@@ -70,7 +69,6 @@ public class LocalBoardView implements BoardView, Repaintable {
 		repaint();
 	}
 	
-	@Override
 	public void repaint() {
 		SwingUtilities.invokeLater(component::repaint);
 	}

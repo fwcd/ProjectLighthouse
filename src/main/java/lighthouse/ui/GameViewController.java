@@ -57,7 +57,6 @@ public class GameViewController implements ViewController {
 			board.updateModel(boardModel);
 			context.getStatistics().reset();
 		});
-		model.getChangeListeners().add(v -> update());
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 		});
