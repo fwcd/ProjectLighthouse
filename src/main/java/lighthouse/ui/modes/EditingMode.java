@@ -6,6 +6,7 @@ import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.perspectives.StartPerspective;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
+import lighthouse.util.Updatable;
 
 /**
  * A mode that allows the user to edit the
@@ -23,7 +24,7 @@ public class EditingMode implements GameMode {
 	public GamePerspective getInitialPerspective() { return StartPerspective.INSTANCE; }
 	
 	@Override
-	public BoardResponder createController(GamePerspective perspective, Board board) { return perspective.createEditController(board); }
+	public BoardResponder createController(GamePerspective perspective, Board board, Updatable gameUpdater) { return perspective.createEditController(board, gameUpdater); }
 	
 	@Override
 	public boolean isPlaying() { return false; }

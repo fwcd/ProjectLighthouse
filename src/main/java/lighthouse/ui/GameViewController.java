@@ -46,7 +46,7 @@ public class GameViewController implements ViewController {
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
-		board = new BoardViewController(model.getBoard(), coordinateMapper);
+		board = new BoardViewController(model.getBoard(), coordinateMapper, this::update);
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
@@ -111,7 +111,7 @@ public class GameViewController implements ViewController {
 		this.perspective = perspective;
 		
 		Board activeBoard = perspective.getActiveBoard(model);
-		board.setResponder(mode.createController(perspective, activeBoard));
+		board.setResponder(mode.createController(perspective, activeBoard, this::update));
 		board.updateModel(activeBoard);
 		
 		perspectiveListeners.fire(perspective);

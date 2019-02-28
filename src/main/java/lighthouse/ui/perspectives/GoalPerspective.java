@@ -5,6 +5,7 @@ import lighthouse.model.GameState;
 import lighthouse.ui.board.controller.BoardArrangeController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.NoResponder;
+import lighthouse.util.Updatable;
 
 /**
  * Shows the goal board of the level.
@@ -24,8 +25,8 @@ public class GoalPerspective implements GamePerspective {
 	public Board getActiveBoard(GameState model) { return model.getLevel().getGoal(); }
 	
 	@Override
-	public BoardResponder createEditController(Board board) { return new BoardArrangeController(board); }
+	public BoardResponder createEditController(Board board, Updatable gameUpdater) { return new BoardArrangeController(board, gameUpdater); }
 	
 	@Override
-	public BoardResponder createPlayController(Board board) { return NoResponder.INSTANCE; }
+	public BoardResponder createPlayController(Board board, Updatable gameUpdater) { return NoResponder.INSTANCE; }
 }

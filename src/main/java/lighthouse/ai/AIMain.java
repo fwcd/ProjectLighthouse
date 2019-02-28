@@ -41,7 +41,7 @@ public class AIMain {
         Board start = level.getStart();
         Board goal = level.getGoal();
 
-        controller = new BoardPlayController(start);
+        controller = new BoardPlayController(start, () -> {});
 
         for (Model m : population){
             Board current = start.copy();

@@ -9,19 +9,22 @@ import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
 import lighthouse.util.IntVec;
+import lighthouse.util.Updatable;
 
 /**
  * The primary responder implementation for playing.
  */
 public class BoardPlayController implements BoardResponder {
 	private Map<Direction, Integer> limits;
+	private Updatable updater;
 	private Board board;
 	private boolean dragEvent;
 	
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(Board model) {
+	public BoardPlayController(Board model, Updatable updater) {
+		this.updater = updater;
 		board = model;
 		resetLimits();
 	}
@@ -44,6 +47,7 @@ public class BoardPlayController implements BoardResponder {
 		dragEvent = true;
 		startGridPos = gridPos;
 		computeLimits();
+		updater.update();
 	}
 	
 	@Override
@@ -63,6 +67,7 @@ public class BoardPlayController implements BoardResponder {
 					computeLimits();
 				}
 			});
+			updater.update();
 		}
 	}
 	
@@ -74,6 +79,7 @@ public class BoardPlayController implements BoardResponder {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
+		updater.update();
 	}
 	
 	@Override

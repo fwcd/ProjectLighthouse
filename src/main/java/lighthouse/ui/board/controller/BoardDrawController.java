@@ -5,17 +5,20 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
 import lighthouse.util.IntVec;
+import lighthouse.util.Updatable;
 
 /**
  * A responder implementation responsible for drawing new bricks.
  */
 public class BoardDrawController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardDrawController.class);
+	private final Updatable updater;
 	private Board board;
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardDrawController(Board model) {
+	public BoardDrawController(Board model, Updatable updater) {
+		this.updater = updater;
 		board = model;
 	}
 	
@@ -26,6 +29,7 @@ public class BoardDrawController implements BoardResponder {
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
 			dragging = true;
+			updater.update();
 		}
 	}
 	
@@ -43,6 +47,7 @@ public class BoardDrawController implements BoardResponder {
 				if (!board.hasBrickAt(gridPos)) {
 					board.getEditState().appendToEdit(delta.nearestDirection());
 					LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
+					updater.update();
 				}
 				last = gridPos;
 			}
@@ -56,6 +61,7 @@ public class BoardDrawController implements BoardResponder {
 			board.add(board.getEditState().finishEdit(gridPos));
 			last = null;
 			dragging = false;
+			updater.update();
 		}
 	}
 	
@@ -63,6 +69,7 @@ public class BoardDrawController implements BoardResponder {
 	public void reset() {
 		LOG.debug("Resetting");
 		board.clear();
+		updater.update();
 	}
 	
 	@Override

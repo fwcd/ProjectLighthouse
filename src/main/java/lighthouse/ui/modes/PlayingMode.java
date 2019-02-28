@@ -6,6 +6,7 @@ import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.perspectives.InGamePerspective;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
+import lighthouse.util.Updatable;
 
 /**
  * The mode in which the player plays. Simple, right?
@@ -22,7 +23,7 @@ public class PlayingMode implements GameMode {
 	public GamePerspective getInitialPerspective() { return InGamePerspective.INSTANCE; }
 	
 	@Override
-	public BoardResponder createController(GamePerspective perspective, Board board) { return perspective.createPlayController(board); }
+	public BoardResponder createController(GamePerspective perspective, Board board, Updatable gameUpdater) { return perspective.createPlayController(board, gameUpdater); }
 	
 	@Override
 	public boolean isPlaying() { return true; }

@@ -5,6 +5,7 @@ import lighthouse.model.GameState;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.NoResponder;
+import lighthouse.util.Updatable;
 
 /**
  * Shows the in-game board of the level.
@@ -27,8 +28,8 @@ public class InGamePerspective implements GamePerspective {
 	public boolean isInGame() { return true; }
 	
 	@Override
-	public BoardResponder createEditController(Board board) { return NoResponder.INSTANCE; }
+	public BoardResponder createEditController(Board board, Updatable gameUpdater) { return NoResponder.INSTANCE; }
 	
 	@Override
-	public BoardResponder createPlayController(Board board) { return new BoardPlayController(board); }
+	public BoardResponder createPlayController(Board board, Updatable gameUpdater) { return new BoardPlayController(board, gameUpdater); }
 }

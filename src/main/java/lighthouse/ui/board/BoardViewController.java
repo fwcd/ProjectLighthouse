@@ -18,6 +18,7 @@ import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseGridView;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.util.Updatable;
 
 /**
  * Manages the different board views. It assembles the
@@ -34,8 +35,8 @@ public class BoardViewController implements ViewController {
 	
 	private final DelegateResponder responder;
 
-	public BoardViewController(Board model, CoordinateMapper coordinateMapper) {
-		responder = new DelegateResponder(new BoardPlayController(model));
+	public BoardViewController(Board model, CoordinateMapper coordinateMapper, Updatable gameUpdater) {
+		responder = new DelegateResponder(new BoardPlayController(model, gameUpdater));
 		updateModel(model);
 		
 		// Creates a local view and hooks up the Swing component

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
 import lighthouse.util.IntVec;
+import lighthouse.util.Updatable;
 
 /**
  * A responder implementation that allows
@@ -12,11 +13,13 @@ import lighthouse.util.IntVec;
  */
 public class BoardArrangeController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardArrangeController.class);
+	private final Updatable updater;
 	private Board board;
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardArrangeController(Board model) {
+	public BoardArrangeController(Board model, Updatable updater) {
+		this.updater = updater;
 		board = model;
 	}
 	
@@ -27,6 +30,7 @@ public class BoardArrangeController implements BoardResponder {
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
 			dragging = true;
+			updater.update();
 		}
 	}
 	
@@ -36,6 +40,7 @@ public class BoardArrangeController implements BoardResponder {
 			IntVec delta = gridPos.sub(last);
 			board.getEditState().moveBy(delta);
 			last = gridPos;
+			updater.update();
 		}
 	}
 	
@@ -46,6 +51,7 @@ public class BoardArrangeController implements BoardResponder {
 			board.add(board.getEditState().finishEdit(gridPos));
 			last = null;
 			dragging = false;
+			updater.update();
 		}
 	}
 	
@@ -53,6 +59,7 @@ public class BoardArrangeController implements BoardResponder {
 	public void reset() {
 		LOG.debug("Resetting");
 		board.clear();
+		updater.update();
 	}
 	
 	@Override
