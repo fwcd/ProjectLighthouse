@@ -45,7 +45,6 @@ public class GameControlsViewController implements ViewController {
 		// Setup status bar
 		statusBar = new StatusBar();
 		statusBar.display(context.getStatus());
-		component.add(statusBar.getComponent(), BorderLayout.NORTH);
 		
 		context.getStatusListeners().add(statusBar::display);
 		gameState.getBoardListeners().add(newBoard -> {
@@ -54,6 +53,7 @@ public class GameControlsViewController implements ViewController {
 		
 		// Setup control panel
 		component.add(LayoutUtils.vboxOf(
+			statusBar.getComponent(),
 			LayoutUtils.panelOf(
 				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				LayoutUtils.buttonOf("Reset", game::reset),

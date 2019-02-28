@@ -5,6 +5,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import com.alee.laf.menu.WebMenu;
+import com.alee.laf.menu.WebMenuBar;
+import com.alee.laf.menu.WebMenuItem;
+
 /**
  * Static methods for building declarative Swing layouts.
  */
@@ -32,5 +36,27 @@ public class LayoutUtils {
 		JButton button = new JButton(label);
 		button.addActionListener(l -> action.run());
 		return button;
+	}
+	
+	public static WebMenuBar menuBarOf(WebMenu... menus) {
+		WebMenuBar menuBar = new WebMenuBar();
+		for (WebMenu menu : menus) {
+			menuBar.add(menu);
+		}
+		return menuBar;
+	}
+	
+	public static WebMenu menuOf(WebMenuItem... items) {
+		WebMenu menu = new WebMenu();
+		for (WebMenuItem item : items) {
+			menu.add(item);
+		}
+		return menu;
+	}
+	
+	public static WebMenuItem itemOf(String label, Runnable action) {
+		WebMenuItem item = new WebMenuItem(label);
+		item.addActionListener(l -> action.run());
+		return item;
 	}
 }
