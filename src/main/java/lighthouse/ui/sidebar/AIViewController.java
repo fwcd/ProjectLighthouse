@@ -1,6 +1,5 @@
 package lighthouse.ui.sidebar;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JComponent;
