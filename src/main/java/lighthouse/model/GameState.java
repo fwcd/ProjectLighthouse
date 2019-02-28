@@ -69,9 +69,19 @@ public class GameState {
 	public void loadLevelFrom(Path path) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
             LOG.info("Loading level from {}...", path);
-            level = GSON.fromJson(reader, Level.class);
-			levelListeners.fire(level);
+            setLevel(GSON.fromJson(reader, Level.class));
 		}
+    }
+    
+    public void setLevel(Level level) {
+        if (this.level != null) {
+            this.level.getStart().getChangeListeners().remove(changeListeners);
+            this.level.getGoal().getChangeListeners().remove(changeListeners);
+        }
+        this.level = level;
+        levelListeners.fire(level);
+        level.getStart().getChangeListeners().add(changeListeners);
+        level.getGoal().getChangeListeners().add(changeListeners);
     }
 	
 	public Board getBoard() { return board; }

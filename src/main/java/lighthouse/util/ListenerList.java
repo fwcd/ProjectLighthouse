@@ -18,7 +18,9 @@ public class ListenerList<T> implements Listener<T> {
 	}
 	
 	public void fire(T value) {
-		listeners.forEach(l -> l.on(value));
+		for (Listener<T> listener : listeners) {
+			listener.on(value);
+		}
 	}
 	
 	public void fire() {

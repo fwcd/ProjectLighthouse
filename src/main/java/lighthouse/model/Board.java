@@ -198,6 +198,7 @@ public class Board implements Serializable {
 		other.getChangeListeners().add(v -> {
 			bricks.clear();
 			bricks.addAll(other.bricks);
+			getChangeListeners().fire();
 		});
 	}
 	
