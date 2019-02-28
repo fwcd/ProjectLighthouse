@@ -38,6 +38,8 @@ public class ListenerGraph {
 		}
 	}
 	
+	public ListenerList<?> nodeByIndex(int index) { return nodes.get(index); }
+	
 	public List<ListenerList<?>> getNodes() { return nodes; }
 	
 	public List<GraphEdge> getEdges() { return edges; }

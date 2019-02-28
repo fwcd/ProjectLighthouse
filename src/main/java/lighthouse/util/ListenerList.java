@@ -32,6 +32,8 @@ public class ListenerList<T> implements Listener<T>, Iterable<Listener<T>> {
 	
 	public long getLastFiredTime() { return lastFiredTime; }
 	
+	public boolean wasFiredRecently(long maxDelta) { return (System.currentTimeMillis() - nodeA.getLastFiredTime()) < maxDelta; }
+	
 	@Override
 	public void on(T event) { fire(event); }
 	

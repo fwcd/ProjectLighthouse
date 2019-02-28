@@ -1,16 +1,21 @@
 package lighthouse.ui.debug;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 
@@ -40,6 +45,8 @@ public class ListenerGraphView {
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (models != null) {
+			Map<ListenerList<?>, IntVec> nodePositions = new HashMap<>();
+			Map<ListenerList<?>, List<ListenerList<?>>> connections = new HashMap<>();
 			int startX = 100;
 			int rowDy = 80;
 			IntVec pos = new IntVec(startX, 100);
@@ -48,31 +55,56 @@ public class ListenerGraphView {
 			for (ListenerGraph graph : models) {
 				// Render nodes
 				for (ListenerList<?> node : graph.getNodes()) {
-					int dx = renderNode(g2d, node.getName(), pos);
+					nodePositions.put(node, pos);
+					int dx = renderNode(g2d, node, pos);
 					pos = pos.add(dx, 0);
 					if (pos.getX() >= (canvasSize.getWidth() - 50)) {
 						pos = pos.withX(startX).add(0, rowDy);
 					}
 				}
+				
+				// Render edges
+				for (GraphEdge edge : graph.getEdges()) {
+					ListenerList<?> nodeA = graph.nodeByIndex(edge.getStart());
+					ListenerList<?> nodeB = graph.nodeByIndex(edge.getEnd());
+					
+					connections.putIfAbsent(nodeA, new ArrayList<>());
+					List<ListenerList<?>> outgoing = connections.get(nodeA);
+					
+					if (!outgoing.contains(nodeB)) {
+						if (nodeA.wasFiredRecently(300)) {
+							g2d.setStroke(new BasicStroke(2.0F));
+							g2d.setColor(Color.GREEN);
+						} else {
+							g2d.setStroke(new BasicStroke(1.0F));
+							g2d.setColor(Color.DARK_GRAY);
+						}
+						outgoing.add(nodeB);
+						IntVec posA = nodePositions.get(nodeA);
+						IntVec posB = nodePositions.get(nodeB);
+						g2d.drawLine(posA.getX(), posA.getY(), posB.getX(), posB.getY());
+					}
+				}
+				
 				pos = pos.withX(startX).add(0, rowDy);
 			}
 		}
 	}
 	
-	private int renderNode(Graphics2D g2d, String label, IntVec pos) {
+	private int renderNode(Graphics2D g2d, ListenerList<?> node, IntVec pos) {
 		FontMetrics metrics = g2d.getFontMetrics();
-		int strWidth = metrics.stringWidth(label);
+		int strWidth = metrics.stringWidth(node.getName());
 		int strHeight = metrics.getHeight();
 		int ovalWidth = strWidth + 20;
 		int ovalHeight = strHeight + 20;
 		int x = pos.getX() - (ovalWidth / 2);
 		int y = pos.getY() - (ovalHeight / 2);
 		
-		g2d.setColor(Color.WHITE);
+		g2d.setColor(node.wasFiredRecently(300) ? ColorUtils.LIGHT_GREEN : Color.WHITE);
 		g2d.fillOval(x, y, ovalWidth, ovalHeight);
 		g2d.setColor(Color.BLACK);
 		g2d.drawOval(x, y, ovalWidth, ovalHeight);
-		g2d.drawString(label, x + 4, y + strHeight + 4);
+		g2d.drawString(node.getName(), x + 4, y + strHeight + 4);
 		
 		return ovalWidth + 10;
 	}
