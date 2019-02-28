@@ -1,5 +1,6 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JComponent;
@@ -28,7 +29,7 @@ public class AIViewController implements ViewController {
 		WebSpinner populationSize = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
 		WebSpinner iterations = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
 		
-		progressBar = new WebProgressBar();
+		progressBar = new WebProgressBar();		
 		component = LayoutUtils.vboxOf(
 			LayoutUtils.panelOf(new FlowLayout(FlowLayout.LEADING, 2, 0),
 				new JLabel("Population size:"),

@@ -26,7 +26,7 @@ public class LighthouseMain {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseMain.class);
 	private static final String TITLE = "Lighthouse";
 	private static final int WINDOW_WIDTH = 700;
-	private static final int WINDOW_HEIGHT = 600;
+	private static final int WINDOW_HEIGHT = 660;
 	
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException {
 		long startTime = System.currentTimeMillis();
