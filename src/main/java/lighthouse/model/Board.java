@@ -140,6 +140,9 @@ public class Board implements Serializable {
 			.toArray(double[][]::new);
 	}
 	
+	/** Streams the bricks on this board. */
+	public Stream<Brick> streamBricks() { return bricks.stream(); }
+	
 	/** Fetches all possible moves. */
 	public Stream<Move> streamPossibleMoves() {
 		return bricks.stream()
