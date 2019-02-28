@@ -221,7 +221,6 @@ public class Board implements Serializable {
 		if (lazyEditState == null) {
 			// Lazy initialization/reinitalization after deserialization
 			lazyEditState = new BoardEditState();
-			lazyEditState.getChangeListeners().add(getChangeListeners());
 		}
 		return lazyEditState;
 	}
