@@ -1,11 +1,14 @@
 package lighthouse.ui.board.view;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import lighthouse.model.Board;
 import lighthouse.model.grid.ArrayColorGrid;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.model.grid.WritableColorGrid;
+import lighthouse.ui.board.overlay.Overlay;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 
@@ -19,6 +22,7 @@ public class LighthouseGrid implements ColorGrid {
 	private final int rows;
 	private final Board board;
 	private final WritableColorGrid overlayGrid;
+	private final List<Overlay> overlays = new ArrayList<>();
 	
 	public LighthouseGrid(Board board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
@@ -38,6 +42,17 @@ public class LighthouseGrid implements ColorGrid {
 	public int getRows() { return rows; }
 	
 	public WritableColorGrid getOverlayGrid() { return overlayGrid; }
+	
+	public void renderOverlays() {
+		overlayGrid.clear();
+		for (Overlay overlay : overlays) {
+			overlay.drawLowRes(overlayGrid);
+		}
+	}
+	
+	public void addOverlay(Overlay overlay) { overlays.add(overlay); }
+	
+	public void removeOverlay(Overlay overlay) { overlays.remove(overlay); }
 	
 	@Override
 	public Color getColorAt(IntVec lhGridPos) {

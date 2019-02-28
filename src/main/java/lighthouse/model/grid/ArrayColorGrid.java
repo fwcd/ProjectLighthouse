@@ -28,7 +28,7 @@ public class ArrayColorGrid implements WritableColorGrid {
 	
 	@Override
 	public Color getColorAt(IntVec pos) {
-		return colors[pos.getY()][pos.getX()];
+		return getColorAt(pos.getY(), pos.getX());
 	}
 	
 	@Override
