@@ -11,7 +11,7 @@ public class Model implements WeightIterator, Comparable{
     private Random r = new Random();
     private ArrayList<Double> weights = new ArrayList<>();
     private int weightCounter = 0;
-    public Double fitness;
+    public double fitness = 0d;
     private ArrayList<int[]> args = new ArrayList<>();
     private Dense dense;
     private Conv2d conv;
