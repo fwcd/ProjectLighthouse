@@ -6,7 +6,7 @@ import java.util.Random;
 import lighthouse.ai.layers.Conv2d;
 import lighthouse.ai.layers.Dense;
 
-public class Model implements WeightIterator, Comparable{
+public class Model implements WeightIterator, Comparable<Model> {
 
     private Random r = new Random();
     private ArrayList<Double> weights = new ArrayList<>();
@@ -75,8 +75,7 @@ public class Model implements WeightIterator, Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        Model other = (Model) o;
+    public int compareTo(Model other) {
         return fitness > other.fitness ? 1 : (fitness == other.fitness ? 0 : -1);
     }
     
