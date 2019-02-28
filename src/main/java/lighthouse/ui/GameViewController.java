@@ -57,12 +57,7 @@ public class GameViewController implements ViewController {
 			board.updateModel(boardModel);
 			context.getStatistics().reset();
 		});
-		model.getChangeListeners().add(v -> {
-			board.render();
-			GameStatistics stats = context.getStatistics();
-			stats.incrementMoveCount();
-			stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
-		});
+		model.getChangeListeners().add(v -> update());
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 		});
@@ -71,6 +66,16 @@ public class GameViewController implements ViewController {
 
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
+		update();
+	}
+	
+	private void update() {
+		tickers.tick();
+		board.render();
+		
+		GameStatistics stats = context.getStatistics();
+		stats.incrementMoveCount();
+		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}
 	
 	/** "Resets" the game in some way. */
