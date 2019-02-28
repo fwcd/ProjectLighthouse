@@ -21,6 +21,10 @@ public class ListenerList<T> implements Listener<T> {
 		listeners.forEach(l -> l.on(value));
 	}
 	
+	public void fire() {
+		fire(null);
+	}
+	
 	@Override
 	public void on(T event) {
 		fire(event);

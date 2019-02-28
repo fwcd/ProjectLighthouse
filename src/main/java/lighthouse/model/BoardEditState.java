@@ -1,6 +1,7 @@
 package lighthouse.model;
 
 import lighthouse.util.IntVec;
+import lighthouse.util.ListenerList;
 
 /**
  * The current editing state of the board. Any selections,
@@ -9,6 +10,7 @@ import lighthouse.util.IntVec;
  */
 public class BoardEditState {
 	private BrickBuilder brickInProgress;
+	private final ListenerList<Void> changeListeners = new ListenerList<>();
 	
 	public void beginEdit(Brick edited) {
 		brickInProgress = new BrickBuilder(edited);
@@ -16,10 +18,12 @@ public class BoardEditState {
 	
 	public void beginEdit(IntVec startPos) {
 		brickInProgress = new BrickBuilder(startPos);
+		changeListeners.fire();
 	}
 	
 	public void appendToEdit(Direction direction) {
 		brickInProgress.append(direction);
+		changeListeners.fire();
 	}
 	
 	public Brick finishEdit(IntVec end) {
@@ -30,7 +34,10 @@ public class BoardEditState {
 	
 	public BrickBuilder getBrickInProgress() { return brickInProgress; }
 	
+	public ListenerList<Void> getChangeListeners() { return changeListeners; }
+	
 	public void reset() {
 		brickInProgress = null;
+		changeListeners.fire();
 	}
 }

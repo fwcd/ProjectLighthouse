@@ -59,14 +59,14 @@ public class Board implements Serializable {
 	/** Pushes a brick onto the board. */
 	public void add(Brick brick) {
 		bricks.add(brick);
-		getChangeListeners().fire(null);
+		getChangeListeners().fire();
 	}
 	
 	/** Replaces a brick. */
 	public void replace(Brick oldBrick, Brick newBrick) {
 		bricks.remove(oldBrick);
 		bricks.add(newBrick);
-		getChangeListeners().fire(null);
+		getChangeListeners().fire();
 	}
 	
 	/** Removes and returns a brick at a certain position. */
@@ -76,7 +76,7 @@ public class Board implements Serializable {
 			Brick brick = iterator.next();
 			if (brick.contains(gridPos)) {
 				iterator.remove();
-				getChangeListeners().fire(null);
+				getChangeListeners().fire();
 				return brick;
 			}
 		}
@@ -87,7 +87,7 @@ public class Board implements Serializable {
 	public void clear() {
 		bricks.clear();
 		getEditState().reset();
-		getChangeListeners().fire(null);
+		getChangeListeners().fire();
 	}
 	
 	/** Fetches the cell's color at the specified position. */
@@ -220,6 +220,7 @@ public class Board implements Serializable {
 		if (lazyEditState == null) {
 			// Lazy initialization/reinitalization after deserialization
 			lazyEditState = new BoardEditState();
+			lazyEditState.getChangeListeners().add(getChangeListeners());
 		}
 		return lazyEditState;
 	}
