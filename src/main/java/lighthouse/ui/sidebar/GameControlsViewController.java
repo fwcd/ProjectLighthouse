@@ -1,14 +1,9 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
-import java.nio.file.Path;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.model.GameState;
@@ -25,18 +20,11 @@ import lighthouse.ui.util.LayoutUtils;
  * presenting a path chooser to the user.
  */
 public class GameControlsViewController implements ViewController {
-	private static final Logger LOG = LoggerFactory.getLogger(GameControlsViewController.class);
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	private final PathChooser pathChooser;
-	private final AppModel model;
-
 	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
-		this.model = model;
-
 		component = new JPanel();
-		pathChooser = new PathChooser(component, ".json");
 		component.setLayout(new BorderLayout());
 
 		GameContext context = game.getContext();
@@ -54,13 +42,6 @@ public class GameControlsViewController implements ViewController {
 		// Setup control panel
 		component.add(LayoutUtils.vboxOf(
 			statusBar.getComponent(),
-			LayoutUtils.menuBarOf(
-				LayoutUtils.menuOf("File",
-					LayoutUtils.itemOf("Save", this::save),
-					LayoutUtils.itemOf("Save As", this::saveAs),
-					LayoutUtils.itemOf("Open", this::open)
-				)
-			),
 			LayoutUtils.panelOf(
 				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				LayoutUtils.buttonOf("Reset", game::reset),
@@ -68,46 +49,6 @@ public class GameControlsViewController implements ViewController {
 			),
 			new LevelNavigatorViewController(game, loop).getComponent()
 		), BorderLayout.CENTER);
-	}
-	
-	private void save() {
-		Path destination = model.getSaveState().getSaveDestination();
-		if (destination == null) {
-			saveAs();
-		} else {
-			try {
-				model.getGameState().saveLevelTo(destination);
-			} catch (Exception e) {
-				showWarning(e);
-			}
-		}
-	}
-	
-	private void saveAs() {
-		pathChooser.showSaveDialog().ifPresent(path -> {
-			model.getSaveState().setSaveDestination(path);
-			try {
-				model.getGameState().saveLevelTo(path);
-			} catch (Exception e) {
-				showWarning(e);
-			}
-		});
-	}
-	
-	private void open() {
-		pathChooser.showOpenDialog().ifPresent(path -> {
-			model.getSaveState().setSaveDestination(path);
-			try {
-				model.getGameState().loadLevelFrom(path);
-			} catch (Exception e) {
-				showWarning(e);
-			}
-		});
-	}
-	
-	private void showWarning(Exception e) {
-		LOG.warn("Error while saving/loading files", e);
-		JOptionPane.showMessageDialog(component, e.getMessage(), e.getClass().getSimpleName() + " while saving/loading a file", JOptionPane.WARNING_MESSAGE);
 	}
 	
 	@Override

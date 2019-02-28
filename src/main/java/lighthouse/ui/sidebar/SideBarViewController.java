@@ -26,6 +26,10 @@ public class SideBarViewController implements ViewController {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
+		// Adds a menu bar on top
+		MenuBarViewController menuBar = new MenuBarViewController(model);
+		component.add(menuBar.getComponent());
+		
 		WebAccordion accordion = new WebAccordion();
 		accordion.setMultiplySelectionAllowed(true);
 		accordion.setFillSpace(false);
