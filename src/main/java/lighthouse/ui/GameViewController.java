@@ -73,8 +73,8 @@ public class GameViewController implements ViewController {
 	}
 	
 	private void update() {
-		tickers.tick();
 		board.render();
+		tickers.tick();
 		
 		for (Updatable updater : externalUpdaters) {
 			updater.update();
