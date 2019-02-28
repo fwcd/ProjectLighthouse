@@ -77,6 +77,7 @@ public class GameViewController implements ViewController {
 		if (perspective.isInGame()) {
 			// Reset to the starting board...
 			model.startLevel();
+			winChecker.reset();
 		} else {
 			// Otherwise delegate 'reset()'-call to board
 			board.reset();
