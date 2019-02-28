@@ -7,20 +7,20 @@ import lighthouse.util.ListenerList;
  */
 public class GameStatistics {
 	private int moveCount = 0;
-	private double estimatedDistanceToGoal = 0;
+	private double avgDistanceToGoal = 0;
 	
 	private final ListenerList<Integer> moveCountListeners = new ListenerList<>();
 	private final ListenerList<Double> distanceToGoalListeners = new ListenerList<>();
 	
 	public int getMoveCount() { return moveCount; }
 	
-	public double getEstimatedDistanceToGoal() { return estimatedDistanceToGoal; }
+	public double getAvgDistanceToGoal() { return avgDistanceToGoal; }
 	
 	public void reset() {
 		moveCount = 0;
-		estimatedDistanceToGoal = 0;
+		avgDistanceToGoal = 0;
 		moveCountListeners.fire(moveCount);
-		distanceToGoalListeners.fire(estimatedDistanceToGoal);
+		distanceToGoalListeners.fire(avgDistanceToGoal);
 	}
 	
 	public void incrementMoveCount() {
@@ -28,9 +28,9 @@ public class GameStatistics {
 		moveCountListeners.fire(moveCount);
 	}
 	
-	public void setEstimatedDistanceToGoal(double estimatedDistanceToGoal) {
-		this.estimatedDistanceToGoal = estimatedDistanceToGoal;
-		distanceToGoalListeners.fire(estimatedDistanceToGoal);
+	public void setAvgDistanceToGoal(double avgDistanceToGoal) {
+		this.avgDistanceToGoal = avgDistanceToGoal;
+		distanceToGoalListeners.fire(avgDistanceToGoal);
 	}
 	
 	public ListenerList<Integer> getMoveCountListeners() { return moveCountListeners; }

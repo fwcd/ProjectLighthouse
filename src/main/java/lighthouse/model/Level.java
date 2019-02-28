@@ -46,7 +46,7 @@ public class Level implements Serializable {
 	}
 	
 	/** Fetches the average distance to the goal state from the given board. */
-	public double estimatedDistanceToGoal(Board board) {
+	public double avgDistanceToGoal(Board board) {
 		return board.streamBricks()
 			.mapToDouble(brick -> goalBrickFor(brick)
 				.map(goalBrick -> goalBrick.getPos().sub(brick.getPos()).length())
