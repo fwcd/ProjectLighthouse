@@ -24,7 +24,7 @@ public class LevelNavigatorViewController implements ViewController {
 		component = new WebStepProgress();
 		component.addSteps(CommonPerspective.PERSPECTIVES.stream()
 			.sorted()
-			.map(perspective -> new PerspectiveIconViewController(perspective, game.getModel()))
+			.map(perspective -> new PerspectiveIconViewController(perspective, game))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		

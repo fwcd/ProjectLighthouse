@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lighthouse.model.Board;
-import lighthouse.model.GameState;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.ScaleTransform;
 import lighthouse.ui.board.view.LocalBoardView;
@@ -17,7 +17,7 @@ import lighthouse.ui.util.CenterPanel;
 public class PerspectiveIconViewController implements ViewController {
 	private final JComponent component;
 	
-	public PerspectiveIconViewController(GamePerspective perspective, GameState game) {
+	public PerspectiveIconViewController(GamePerspective perspective, GameViewController game) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
@@ -27,10 +27,10 @@ public class PerspectiveIconViewController implements ViewController {
 		boardView.setDrawGrid(false);
 		boardView.setEdgeDrawMode(LocalBoardView.EdgeDrawMode.NONE);
 		
-		Board initialBoard = perspective.getActiveBoard(game);
+		Board initialBoard = perspective.getActiveBoard(game.getModel());
 		boardView.relayout(initialBoard.getColumns(), initialBoard.getRows());
 		
-		game.getBoard().getChangeListeners().add(v -> boardView.draw(perspective.getActiveBoard(game)));
+		game.getExternalUpdaters().add(() -> boardView.draw(perspective.getActiveBoard(game.getModel())));
 		component.add(new CenterPanel(boardView.getComponent()), BorderLayout.CENTER);
 		component.add(new JLabel(perspective.getName()), BorderLayout.SOUTH);
 	}
