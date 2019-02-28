@@ -31,24 +31,32 @@ public class Level implements Serializable {
 	public boolean isCompleted(Board tested) { return tested.equals(goal); }
 	
 	/**
-	 * Fetches the target brick for a brick from the starting board.
+	 * Fetches the target brick for a brick.
 	 * @throws IllegalStateException if the brick could not be found
 	 */
-	public Brick goalBrickFor(Brick startBrick) {
+	public Brick goalBrickFor(Brick brick) {
 		return goal.streamBricks()
-			.filter(startBrick::matchesIDOf)
+			.filter(brick::matchesIDOf)
 			.findAny()
-			.orElseThrow(() -> new IllegalStateException("Goal board does not contain " + startBrick + " from start board!"));
+			.orElseThrow(() -> new IllegalStateException("Goal board does not contain " + brick + " from start board!"));
 	}
 	
 	/**
-	 * Fetches the starting brick for a brick for the target/goal board.
+	 * Fetches the starting brick for a brick.
 	 * @throws IllegalStateException if the brick could not be found
 	 */
-	public Brick startBrickFor(Brick goalBrick) {
+	public Brick startBrickFor(Brick brick) {
 		return start.streamBricks()
-			.filter(goalBrick::matchesIDOf)
+			.filter(brick::matchesIDOf)
 			.findAny()
-			.orElseThrow(() -> new IllegalStateException("Start board does not contain " + goalBrick + " from goal board!"));
+			.orElseThrow(() -> new IllegalStateException("Start board does not contain " + brick + " from goal board!"));
+	}
+	
+	/** Fetches the average distance to the goal state from the given board. */
+	public double estimatedDistanceToGoal(Board board) {
+		return board.streamBricks()
+			.mapToDouble(brick -> goalBrickFor(brick).getPos().sub(brick.getPos()).length())
+			.average()
+			.orElse(Double.NaN);
 	}
 }
