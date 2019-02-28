@@ -18,7 +18,7 @@ public class GameStatisticsViewController implements ViewController {
 			),
 			LayoutUtils.compoundOf(
 				new JLabel("Avg. distance to goal:"),
-				LayoutUtils.labelOf(model.getAvgDistanceToGoal(), model.getDistanceToGoalListeners())
+				LayoutUtils.labelOf(model.getAvgDistanceToGoal(), model.getDistanceToGoalListeners(), it -> String.format("%.2f", it))
 			)
 		);
 	}

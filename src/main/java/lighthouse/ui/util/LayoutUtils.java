@@ -3,6 +3,7 @@ package lighthouse.ui.util;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.util.function.Function;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -94,6 +95,12 @@ public class LayoutUtils {
 	public static <T> JLabel labelOf(T value, ListenerList<T> listeners) {
 		JLabel label = new JLabel(value.toString());
 		listeners.add(it -> label.setText(it.toString()));
+		return label;
+	}
+	
+	public static <T> JLabel labelOf(T value, ListenerList<T> listeners, Function<T, String> stringifier) {
+		JLabel label = new JLabel(stringifier.apply(value));
+		listeners.add(it -> label.setText(stringifier.apply(it)));
 		return label;
 	}
 }
