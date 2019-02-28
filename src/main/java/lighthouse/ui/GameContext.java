@@ -1,5 +1,6 @@
 package lighthouse.ui;
 
+import lighthouse.model.GameStatistics;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ListenerList;
 
@@ -8,8 +9,11 @@ import lighthouse.util.ListenerList;
  * UI state of the game.
  */
 public class GameContext {
+	private final GameStatistics statistics = new GameStatistics();
 	private Status status;
 	private final ListenerList<Status> statusListeners = new ListenerList<>();
+	
+	public GameStatistics getStatistics() { return statistics; }
 	
 	public Status getStatus() { return status; }
 	
