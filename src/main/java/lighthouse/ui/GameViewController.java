@@ -1,6 +1,8 @@
 package lighthouse.ui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.ListenerList;
+import lighthouse.util.Updatable;
 
 /**
  * Manages the game board view, the current
@@ -33,7 +36,8 @@ public class GameViewController implements ViewController {
 
 	private GameMode mode;
 	private GamePerspective perspective;
-
+	
+	private final List<Updatable> externalUpdaters = new ArrayList<>();
 	private final TickerList tickers = new TickerList();
 	private final GameWinChecker winChecker;
 
@@ -71,6 +75,10 @@ public class GameViewController implements ViewController {
 	private void update() {
 		tickers.tick();
 		board.render();
+		
+		for (Updatable updater : externalUpdaters) {
+			updater.update();
+		}
 		
 		GameStatistics stats = context.getStatistics();
 		stats.incrementMoveCount();
@@ -132,6 +140,8 @@ public class GameViewController implements ViewController {
 	public GameContext getContext() { return context; }
 	
 	public TickerList getTickers() { return tickers; }
+	
+	public List<Updatable> getExternalUpdaters() { return externalUpdaters; }
 	
 	@Override
 	public JComponent getComponent() { return component; }
