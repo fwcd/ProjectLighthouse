@@ -36,9 +36,7 @@ public class AIControlsViewController implements ViewController {
 				new JLabel("Iterations:"),
 				iterations
 			),
-			LayoutUtils.panelOf(
-				LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue()))
-			),
+			LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue())),
 			progressBar
 		);
 	}
