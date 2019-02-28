@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import lighthouse.model.Board;
 import lighthouse.model.GameState;
+import lighthouse.model.GameStatistics;
 import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.CoordinateMapper;
@@ -46,13 +47,21 @@ public class GameViewController implements ViewController {
 
 		// Initialize board
 		board = new BoardViewController(model.getBoard(), coordinateMapper);
-		model.getBoardListeners().add(board::updateModel);
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
 		winChecker = new GameWinChecker(board.getComponent(), model, context);
 
-		// Add level hooks
+		// Add hooks
+		model.getBoardListeners().add(boardModel -> {
+			board.updateModel(boardModel);
+			context.getStatistics().reset();
+			boardModel.getChangeListeners().add(v -> {
+				GameStatistics stats = context.getStatistics();
+				stats.incrementMoveCount();
+				stats.setEstimatedDistanceToGoal(model.getLevel().estimatedDistanceToGoal(boardModel));
+			});
+		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
 		});

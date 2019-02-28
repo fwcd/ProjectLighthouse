@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lighthouse.util.ColorUtils;
+import lighthouse.util.IDGenerator;
 import lighthouse.util.IntVec;
 
 /**
@@ -18,8 +19,6 @@ import lighthouse.util.IntVec;
  */
 public class Brick implements GameBlock, Serializable {
 	private static final long serialVersionUID = -4396959159634915799L;
-	private static int globalId = 0;
-	
 	/** An id that is preserved through move copies. */
 	private int id;
 	private List<Direction> structure;
@@ -36,7 +35,7 @@ public class Brick implements GameBlock, Serializable {
 	}
 	
 	public Brick(IntVec pos, List<Direction> structure, Color color) {
-		this(pos, structure, color, globalId++);
+		this(pos, structure, color, IDGenerator.INSTANCE.nextID());
 	}
 	
 	public Brick(IntVec pos, List<Direction> structure, Color color, int id) {
