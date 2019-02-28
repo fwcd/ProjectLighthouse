@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
@@ -12,7 +15,8 @@ import lighthouse.model.Level;
 import lighthouse.ui.board.controller.BoardPlayController;
 
 public class AIMain {
-
+    private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);
+    
     ArrayList<Model> population;
     BoardPlayController controller;
     int size;
@@ -50,6 +54,7 @@ public class AIMain {
         }
 
         population.sort(null);
+        LOG.info("Fitnesses: {}", population);
 
         for (int i = 0; i < size/2; i++){
             ArrayList<Double> m = population.get(i + size/2).getWeights();

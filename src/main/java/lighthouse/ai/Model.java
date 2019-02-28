@@ -80,4 +80,8 @@ public class Model implements WeightIterator, Comparable{
         return fitness > other.fitness ? 1 : (fitness == other.fitness ? 0 : -1);
     }
     
+    @Override
+    public String toString() {
+        return "fitness=" + fitness;
+    }
 }
