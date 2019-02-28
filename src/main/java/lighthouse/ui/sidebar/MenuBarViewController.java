@@ -1,13 +1,11 @@
 package lighthouse.ui.sidebar;
 
-import java.awt.BorderLayout;
 import java.nio.file.Path;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import com.alee.extended.window.WebPopOver;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.style.Skin;

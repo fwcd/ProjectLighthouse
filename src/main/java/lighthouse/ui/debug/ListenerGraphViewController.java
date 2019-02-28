@@ -2,6 +2,10 @@ package lighthouse.ui.debug;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.JComponent;
@@ -26,7 +30,7 @@ public class ListenerGraphViewController implements ViewController {
 	
 	private final JComponent component;
 	private final ListenerGraphView view;
-	private ListenerGraph model;
+	private List<ListenerGraph> models;
 	
 	public ListenerGraphViewController(AppModel appModel, GameViewController gameVC) {
 		this.appModel = appModel;
@@ -40,32 +44,45 @@ public class ListenerGraphViewController implements ViewController {
 	}
 	
 	private void update() {
-		model = buildGraph();
-		view.draw(model);
+		models = buildGraphs();
+		view.draw(models);
 	}
 	
-	public ListenerGraph buildGraph() {
-		Stream<ListenerList<?>> stream = Stream.concat(
-			findListenerListsIn(appModel),
-			findListenerListsIn(gameVC)
-		);
-		return new ListenerGraph(stream.toArray(ListenerList[]::new));
+	public List<ListenerGraph> buildGraphs() {
+		Set<ListenerList<?>> roots = new HashSet<>();
+		Set<Field> visited = new HashSet<>();
+		findListenerListsIn(appModel.getGameState(), visited, roots);
+		findListenerListsIn(gameVC, visited, roots);
+		return roots.stream()
+			.map(ListenerGraph::new)
+			.collect(Collectors.toList());
 	}
 	
-	private Stream<ListenerList<?>> findListenerListsIn(Object obj) {
-		return findFieldsIn(obj.getClass())
-			.filter(field -> ListenerList.class.isAssignableFrom(field.getType()))
-			.flatMap(field -> {
-				if (!field.isAccessible()) {
-					field.setAccessible(true);
-				}
-				try {
-					return Stream.of((ListenerList<?>) field.get(obj));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					LOG.error("Error while accessing listener list field:", e);
-					return Stream.empty();
-				}
-			});
+	private void findListenerListsIn(Object obj, Set<Field> visited, Set<ListenerList<?>> set) {
+		if (obj != null) {
+			Class<? extends Object> clazz = obj.getClass();
+			if (clazz.getName().startsWith("lighthouse")) {
+				findFieldsIn(clazz)
+					.forEach(field -> {
+						if (!visited.contains(field)) {
+							visited.add(field);
+						
+							if (!field.isAccessible()) {
+								field.setAccessible(true);
+							}
+							try {
+								Object fieldObj = field.get(obj);
+								if (ListenerList.class.isAssignableFrom(field.getType())) {
+									set.add((ListenerList<?>) fieldObj);
+								}
+								findListenerListsIn(fieldObj, visited, set);
+							} catch (IllegalArgumentException | IllegalAccessException e) {
+								LOG.error("Error while accessing listener list field:", e);
+							}
+						}
+					});
+			}
+		}
 	}
 	
 	private Stream<Field> findFieldsIn(Class<?> objClass) {
