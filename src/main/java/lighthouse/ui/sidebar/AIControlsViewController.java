@@ -16,9 +16,11 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.util.LayoutUtils;
 
 public class AIControlsViewController implements ViewController {
+	private static int threadIndex = 0;
 	private final AppModel appModel;
 	private final JPanel component;
 	private final WebProgressBar progressBar;
+	private Thread thread;
 	
 	public AIControlsViewController(AppModel appModel) {
 		this.appModel = appModel;
@@ -37,24 +39,34 @@ public class AIControlsViewController implements ViewController {
 				iterations
 			),
 			LayoutUtils.panelOf(
-				LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue()))
+				LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue())),
+				LayoutUtils.buttonOf("Stop", () -> stopTraining())
 			),
 			progressBar
 		);
 	}
 	
+	private void stopTraining() {
+		if (thread != null) {
+			thread.interrupt();
+		}
+	}
+	
 	private void train(int populationSize, int iterations) {
-		new Thread(() -> {
+		stopTraining();
+		thread = new Thread(() -> {
 			AIMain ai = new AIMain(populationSize);
 			appModel.setAI(ai);
 			progressBar.setMinimum(0);
 			progressBar.setMaximum(iterations);
 			
-			for (int i = 0; i < iterations; i++) {
+			for (int i = 0; i < iterations && !Thread.interrupted(); i++) {
 				ai.train(appModel.getGameState().getLevel());
 				progressBar.setValue(i);
 			}
-		}, "AI training").start();
+		}, "AI" + threadIndex);
+		threadIndex++;
+		thread.start();
 	}
 	
 	@Override

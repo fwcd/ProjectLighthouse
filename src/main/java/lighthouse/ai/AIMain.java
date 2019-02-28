@@ -49,7 +49,7 @@ public class AIMain {
             while(!current.equals(goal) && i < 200){
                 i += 1;
                 current = nextTurn(m, current);
-                LOG.debug("Currently in round {}", i);
+                LOG.trace("Currently in round {}", i);
             }
             m.fitness += current.equals(goal) ? 1 - i/200 : -1;
         }
