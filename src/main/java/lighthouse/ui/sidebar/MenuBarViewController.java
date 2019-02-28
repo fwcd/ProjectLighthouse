@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.board.overlay.DemoAnimation;
 import lighthouse.ui.debug.ListenerGraphViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceIcon;
@@ -48,7 +49,8 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
 			),
 			LayoutUtils.menuOf("Debug", new ResourceIcon("/icons/debug.png").get(),
-				LayoutUtils.itemOf("Show Listener graph", this::showListenerGraph)
+				LayoutUtils.itemOf("Show Listener graph", this::showListenerGraph),
+				LayoutUtils.itemOf("Play Demo animation", this::playDemoAnimation)
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -87,6 +89,10 @@ public class MenuBarViewController implements ViewController {
 				showWarning(e);
 			}
 		});
+	}
+	
+	private void playDemoAnimation() {
+		game.getBoard().play(new DemoAnimation());
 	}
 	
 	private void switchToLightTheme() { applySkin(new WebSkin()); }
