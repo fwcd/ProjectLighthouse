@@ -37,7 +37,7 @@ public class GameViewController implements ViewController {
 	private final TickerList tickers = new TickerList();
 	private final GameWinChecker winChecker;
 
-	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>();
+	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
 	public GameViewController(GameState model) {

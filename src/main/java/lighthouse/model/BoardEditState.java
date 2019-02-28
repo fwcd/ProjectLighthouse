@@ -10,7 +10,7 @@ import lighthouse.util.ListenerList;
  */
 public class BoardEditState {
 	private BrickBuilder brickInProgress;
-	private final ListenerList<Void> changeListeners = new ListenerList<>();
+	private final ListenerList<Void> changeListeners = new ListenerList<>("BoardEditState.changeListeners");
 	
 	public void beginEdit(Brick edited) {
 		brickInProgress = new BrickBuilder(edited);

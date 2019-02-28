@@ -230,7 +230,7 @@ public class Board implements Serializable {
 	public ListenerList<Void> getChangeListeners() {
 		if (lazyChangeListeners == null) {
 			// Lazy initialization/reinitalization after deserialization
-			lazyChangeListeners = new ListenerList<>();
+			lazyChangeListeners = new ListenerList<>("Board.changeListeners");
 		}
 		return lazyChangeListeners;
 	}

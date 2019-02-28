@@ -11,7 +11,7 @@ import lighthouse.util.ListenerList;
 public class GameContext {
 	private final GameStatistics statistics = new GameStatistics();
 	private Status status;
-	private final ListenerList<Status> statusListeners = new ListenerList<>();
+	private final ListenerList<Status> statusListeners = new ListenerList<>("GameContext.statusListeners");
 	
 	public GameStatistics getStatistics() { return statistics; }
 	

@@ -26,9 +26,9 @@ public class GameState {
     /** The level played. */
     private Level level;
 	
-    private final ListenerList<Level> levelListeners = new ListenerList<>();
-    private final ListenerList<Board> boardListeners = new ListenerList<>();
-    private final ListenerList<Void> changeListeners = new ListenerList<>();
+    private final ListenerList<Level> levelListeners = new ListenerList<>("GameState.levelListeners");
+    private final ListenerList<Board> boardListeners = new ListenerList<>("GameState.boardListeners");
+    private final ListenerList<Void> changeListeners = new ListenerList<>("GameState.changeListeners");
     
     public GameState() {
         board = new Board();

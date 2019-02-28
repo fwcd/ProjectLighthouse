@@ -9,7 +9,7 @@ import lighthouse.util.ListenerList;
  */
 public class FileSaveState {
 	private Path saveDestination = null;
-	private final ListenerList<Path> saveDestinationListeners = new ListenerList<>();
+	private final ListenerList<Path> saveDestinationListeners = new ListenerList<>("FileSaveState.saveDestinationListeners");
 	
 	public Path getSaveDestination() { return saveDestination; }
 	

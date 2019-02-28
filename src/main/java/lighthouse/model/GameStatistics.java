@@ -9,8 +9,8 @@ public class GameStatistics {
 	private int moveCount = 0;
 	private double avgDistanceToGoal = 0;
 	
-	private final ListenerList<Integer> moveCountListeners = new ListenerList<>();
-	private final ListenerList<Double> distanceToGoalListeners = new ListenerList<>();
+	private final ListenerList<Integer> moveCountListeners = new ListenerList<>("GameStatistics.moveCountListeners");
+	private final ListenerList<Double> distanceToGoalListeners = new ListenerList<>("GameStatistics.distanceToGoalListeners");
 	
 	public int getMoveCount() { return moveCount; }
 	

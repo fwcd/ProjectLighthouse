@@ -8,14 +8,15 @@ import java.util.List;
  */
 public class ListenerList<T> implements Listener<T> {
 	private final List<Listener<T>> listeners = new ArrayList<>();
+	private final String name;
 	
-	public void add(Listener<T> listener) {
-		listeners.add(listener);
-	}
+	public ListenerList() { this("?"); }
 	
-	public void remove(Listener<T> listener) {
-		listeners.remove(listener);
-	}
+	public ListenerList(String name) { this.name = name; }
+	
+	public void add(Listener<T> listener) { listeners.add(listener); }
+	
+	public void remove(Listener<T> listener) { listeners.remove(listener); }
 	
 	public void fire(T value) {
 		for (Listener<T> listener : listeners) {
@@ -23,12 +24,13 @@ public class ListenerList<T> implements Listener<T> {
 		}
 	}
 	
-	public void fire() {
-		fire(null);
-	}
+	public void fire() { fire(null); }
 	
 	@Override
-	public void on(T event) {
-		fire(event);
-	}
+	public void on(T event) { fire(event); }
+	
+	@Override
+	public String toString() { return name; }
+	
+	public String getName() { return name; }
 }
