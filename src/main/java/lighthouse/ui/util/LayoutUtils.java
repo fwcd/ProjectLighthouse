@@ -6,6 +6,7 @@ import java.awt.LayoutManager;
 import java.util.function.Function;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -86,8 +87,22 @@ public class LayoutUtils {
 		return menu;
 	}
 	
+	public static WebMenu menuOf(String name, Icon icon, WebMenuItem... items) {
+		WebMenu menu = new WebMenu(name, icon);
+		for (WebMenuItem item : items) {
+			menu.add(item);
+		}
+		return menu;
+	}
+	
 	public static WebMenuItem itemOf(String label, Runnable action) {
 		WebMenuItem item = new WebMenuItem(label);
+		item.addActionListener(l -> action.run());
+		return item;
+	}
+	
+	public static WebMenuItem itemOf(String label, Icon icon, Runnable action) {
+		WebMenuItem item = new WebMenuItem(label, icon);
 		item.addActionListener(l -> action.run());
 		return item;
 	}

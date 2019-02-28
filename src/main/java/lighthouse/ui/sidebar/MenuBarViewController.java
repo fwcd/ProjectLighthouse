@@ -23,6 +23,7 @@ import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.debug.ListenerGraphViewController;
 import lighthouse.ui.util.LayoutUtils;
+import lighthouse.ui.util.ResourceIcon;
 
 public class MenuBarViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
@@ -37,16 +38,16 @@ public class MenuBarViewController implements ViewController {
 		this.game = game;
 		
 		component = LayoutUtils.menuBarOf(
-			LayoutUtils.menuOf("File",
+			LayoutUtils.menuOf("File", new ResourceIcon("/icons/file.png").get(),
 				LayoutUtils.itemOf("Save", this::save),
 				LayoutUtils.itemOf("Save As", this::saveAs),
 				LayoutUtils.itemOf("Open", this::open)
 			),
-			LayoutUtils.menuOf("UI",
+			LayoutUtils.menuOf("UI", new ResourceIcon("/icons/ui.png").get(),
 				LayoutUtils.itemOf("Light theme", this::switchToLightTheme),
 				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
 			),
-			LayoutUtils.menuOf("Debug",
+			LayoutUtils.menuOf("Debug", new ResourceIcon("/icons/debug.png").get(),
 				LayoutUtils.itemOf("Show Listener graph", this::showListenerGraph)
 			)
 		);
