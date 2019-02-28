@@ -45,7 +45,7 @@ public class Model implements WeightIterator, Comparable{
 
     public double feed(double[][] in){
         for (int [] arg : args){
-            if (arg.length > 1){
+            if (arg.length < 2){
                 in = dense.calculate(in, arg[0]);
             }else{
                 in = conv.calculate(in, arg[0], arg[1]);

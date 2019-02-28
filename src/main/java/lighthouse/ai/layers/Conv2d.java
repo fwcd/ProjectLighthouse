@@ -16,8 +16,8 @@ public class Conv2d{
         for(int row = 0; row < res.length; row++){
             res[row] = new double[in[row].length - (width - 1)];
             for (int col = 0; col < res[row].length; col++){
-                for (int i = 0 + row; i < height + row; i++){
-                    for (int o = 0 + col; o < width + col; i++){
+                for (int i = 0 + row; i < height + row && i < in.length; i++){
+                    for (int o = 0 + col; o < width + col && o < in[i].length; o++){
                         res[row][col] += in[i][o] * model.getNextWeight();
                     }
                 }

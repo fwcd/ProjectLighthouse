@@ -33,7 +33,7 @@ public class AIMain {
             m.addDense(3);
             m.addDense(2);
             m.addDense(1);
-            population.set(i, m);
+            population.add(m);
         }
     }
 
