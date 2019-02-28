@@ -4,8 +4,13 @@ import java.nio.file.Path;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.alee.laf.menu.WebMenuBar;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleManager;
+import com.alee.skin.dark.DarkSkin;
+import com.alee.skin.web.WebSkin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +33,10 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Save", this::save),
 				LayoutUtils.itemOf("Save As", this::saveAs),
 				LayoutUtils.itemOf("Open", this::open)
+			),
+			LayoutUtils.menuOf("UI",
+				LayoutUtils.itemOf("Light theme", this::switchToLightTheme),
+				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -65,6 +74,16 @@ public class MenuBarViewController implements ViewController {
 			} catch (Exception e) {
 				showWarning(e);
 			}
+		});
+	}
+	
+	private void switchToLightTheme() { applySkin(new WebSkin()); }
+	
+	private void switchToDarkTheme() { applySkin(new DarkSkin()); }
+	
+	private void applySkin(Skin skin) {
+		SwingUtilities.invokeLater(() -> {
+			StyleManager.setSkin(skin);
 		});
 	}
 	

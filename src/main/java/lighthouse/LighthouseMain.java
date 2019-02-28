@@ -5,8 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleManager;
-import com.alee.skin.flat.FlatSkin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +40,6 @@ public class LighthouseMain {
 		SwingUtilities.invokeAndWait(() -> {
 			// Setup look and feel
 			WebLookAndFeel.install();
-			StyleManager.setSkin(new FlatSkin());
 			
 			// Instantiate application
 			AppFrame frame = new AppFrame(model, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
