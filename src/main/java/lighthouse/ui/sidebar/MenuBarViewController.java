@@ -1,12 +1,15 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.BorderLayout;
 import java.nio.file.Path;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.alee.extended.window.WebPopOver;
 import com.alee.laf.menu.WebMenuBar;
+import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
 import com.alee.skin.dark.DarkSkin;
@@ -16,7 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
+import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.debug.ListenerGraphViewController;
 import lighthouse.ui.util.LayoutUtils;
 
 public class MenuBarViewController implements ViewController {
@@ -25,9 +30,12 @@ public class MenuBarViewController implements ViewController {
 
 	private final PathChooser pathChooser;
 	private final AppModel model;
+	private final GameViewController game;
 	
-	public MenuBarViewController(AppModel model) {
+	public MenuBarViewController(AppModel model, GameViewController game) {
 		this.model = model;
+		this.game = game;
+		
 		component = LayoutUtils.menuBarOf(
 			LayoutUtils.menuOf("File",
 				LayoutUtils.itemOf("Save", this::save),
@@ -37,6 +45,9 @@ public class MenuBarViewController implements ViewController {
 			LayoutUtils.menuOf("UI",
 				LayoutUtils.itemOf("Light theme", this::switchToLightTheme),
 				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
+			),
+			LayoutUtils.menuOf("Debug",
+				LayoutUtils.itemOf("Show Listener graph", this::showListenerGraph)
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -90,6 +101,15 @@ public class MenuBarViewController implements ViewController {
 	private void showWarning(Exception e) {
 		LOG.warn("Error while saving/loading files", e);
 		JOptionPane.showMessageDialog(component, e.getMessage(), e.getClass().getSimpleName() + " while saving/loading a file", JOptionPane.WARNING_MESSAGE);
+	}
+	
+	private void showListenerGraph() {
+		ListenerGraphViewController graph = new ListenerGraphViewController(model, game);
+		WebFrame popup = new WebFrame("Listener graph");
+		popup.setDefaultCloseOperation(WebFrame.DISPOSE_ON_CLOSE);
+		popup.add(graph.getComponent());
+		popup.setSize(640, 480);
+		popup.setVisible(true);
 	}
 	
 	@Override
