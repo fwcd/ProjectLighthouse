@@ -18,6 +18,7 @@ import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.util.LayoutUtils;
+import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
 
 /**
@@ -30,7 +31,8 @@ public class ListenerGraphViewController implements ViewController {
 	
 	private final JComponent component;
 	private final ListenerGraphView view;
-	private List<ListenerGraph> models;
+	private List<ListenerGraph> models = Collections.emptyList();
+	private Listener<Object> updateHook;
 	
 	public ListenerGraphViewController(AppModel appModel, GameViewController gameVC) {
 		this.appModel = appModel;
@@ -41,11 +43,31 @@ public class ListenerGraphViewController implements ViewController {
 		
 		view = new ListenerGraphView();
 		component.add(view.getComponent(), BorderLayout.CENTER);
+		
+		updateHook = v -> component.repaint();
 	}
 	
 	private void update() {
+		removeUpdateHooks();
 		models = buildGraphs();
 		view.draw(models);
+		addUpdateHooks();
+	}
+	
+	public void addUpdateHooks() {
+		for (ListenerGraph graph : models) {
+			for (ListenerList<?> node : graph.getNodes()) {
+				node.remove(updateHook);
+			}
+		}
+	}
+	
+	public void removeUpdateHooks() {
+		for (ListenerGraph graph : models) {
+			for (ListenerList<?> node : graph.getNodes()) {
+				node.add(updateHook);
+			}
+		}
 	}
 	
 	public List<ListenerGraph> buildGraphs() {
