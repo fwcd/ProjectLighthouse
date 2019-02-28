@@ -18,6 +18,10 @@ import lighthouse.util.IntVec;
  */
 public class Brick implements GameBlock, Serializable {
 	private static final long serialVersionUID = -4396959159634915799L;
+	private static int globalId = 0;
+	
+	/** An id that is preserved through move copies. */
+	private int id;
 	private List<Direction> structure;
 	private List<Edge> edges;
 	
@@ -32,9 +36,14 @@ public class Brick implements GameBlock, Serializable {
 	}
 	
 	public Brick(IntVec pos, List<Direction> structure, Color color) {
+		this(pos, structure, color, globalId++);
+	}
+	
+	public Brick(IntVec pos, List<Direction> structure, Color color, int id) {
 		this.pos = pos;
 		this.color = color;
 		this.structure = structure;
+		this.id = id;
 		edges = computeEdges();
 	}
 	
@@ -55,9 +64,12 @@ public class Brick implements GameBlock, Serializable {
 		return structure.equals(brick.structure) && pos.equals(brick.pos);
 	}
 	
-	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure, color); }
+	/** Fetches the brick ids. */
+	public int getID() { return id; }
 	
-	public Brick movedInto(Direction dir) { return new Brick(pos.add(dir), structure, color); }
+	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure, color, id); }
+	
+	public Brick movedInto(Direction dir) { return new Brick(pos.add(dir), structure, color, id); }
 	
 	@Override
 	public IntVec getPos() { return pos; }
