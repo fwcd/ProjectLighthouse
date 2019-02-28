@@ -10,7 +10,6 @@ import com.alee.extended.progress.WebStepProgress;
 
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.loop.GameLoop;
 import lighthouse.ui.perspectives.CommonPerspective;
 import lighthouse.ui.perspectives.InGamePerspective;
 
@@ -21,11 +20,11 @@ import lighthouse.ui.perspectives.InGamePerspective;
 public class LevelNavigatorViewController implements ViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(GameViewController game, GameLoop loop) {
+	public LevelNavigatorViewController(GameViewController game) {
 		component = new WebStepProgress();
 		component.addSteps(CommonPerspective.PERSPECTIVES.stream()
 			.sorted()
-			.map(perspective -> new PerspectiveIconViewController(perspective, game.getModel(), loop))
+			.map(perspective -> new PerspectiveIconViewController(perspective, game.getModel()))
 			.map(ViewController::getComponent)
 			.toArray(Component[]::new));
 		

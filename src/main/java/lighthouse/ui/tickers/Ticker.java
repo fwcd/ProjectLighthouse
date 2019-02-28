@@ -1,4 +1,4 @@
-package lighthouse.ui.loop;
+package lighthouse.ui.tickers;
 
 public interface Ticker {
 	void tick();

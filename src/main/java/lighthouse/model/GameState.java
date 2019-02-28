@@ -27,7 +27,8 @@ public class GameState {
     private Level level;
 	
     private final ListenerList<Level> levelListeners = new ListenerList<>();
-	private final ListenerList<Board> boardListeners = new ListenerList<>();
+    private final ListenerList<Board> boardListeners = new ListenerList<>();
+    private final ListenerList<Void> changeListeners = new ListenerList<>();
     
     public GameState() {
         board = new Board();
@@ -48,8 +49,12 @@ public class GameState {
     }
     
     public void setBoard(Board board) {
+        if (this.board != null) {
+            this.board.getChangeListeners().remove(changeListeners);
+        }
         this.board = board;
         boardListeners.fire(board);
+        board.getChangeListeners().add(changeListeners);
     }
     
 	/** Saves a level as JSON to a file. */
@@ -76,6 +81,8 @@ public class GameState {
 	public ListenerList<Level> getLevelListeners() { return levelListeners; }
 	
     public ListenerList<Board> getBoardListeners() { return boardListeners; }
+    
+    public ListenerList<Void> getChangeListeners() { return changeListeners; }
     
     public GameState withCopiedBoard() { return new GameState(board.copy(), level); }
 }

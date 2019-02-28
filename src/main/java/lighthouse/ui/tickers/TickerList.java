@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lighthouse.ui.loop.Ticker;
-
 /**
  * A combined ticker.
  */

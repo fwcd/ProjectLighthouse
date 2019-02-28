@@ -18,14 +18,13 @@ import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseGridView;
 import lighthouse.ui.board.view.LocalBoardView;
-import lighthouse.ui.loop.Renderer;
 
 /**
  * Manages the different board views. It assembles the
  * necessary inputs and views, while still allowing the
  * user of this class to hook custom views.
  */
-public class BoardViewController implements ViewController, Renderer {
+public class BoardViewController implements ViewController {
 	private final JComponent component;
 	private Board model;
 	private LighthouseGrid lhModel;
@@ -66,15 +65,6 @@ public class BoardViewController implements ViewController, Renderer {
 		responder.updateBoard(model);
 	}
 	
-	public void setResponder(BoardResponder responder) {
-		this.responder.setDelegate(responder);
-	}
-	
-	public void reset() {
-		responder.reset();
-	}
-
-	@Override
 	public void render() {
 		for (BoardView view : boardViews) {
 			view.draw(model);
@@ -82,6 +72,14 @@ public class BoardViewController implements ViewController, Renderer {
 		for (LighthouseGridView lhView : lhGridViews) {
 			lhView.draw(lhModel);
 		}
+	}
+	
+	public void setResponder(BoardResponder responder) {
+		this.responder.setDelegate(responder);
+	}
+	
+	public void reset() {
+		responder.reset();
 	}
 	
 	public void addLighthouseGridView(LighthouseGridView view) {

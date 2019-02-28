@@ -6,7 +6,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.model.AppModel;
-import lighthouse.ui.loop.GameLoop;
 import lighthouse.ui.sidebar.SideBarViewController;
 import lighthouse.ui.util.CenterPanel;
 
@@ -15,7 +14,6 @@ import lighthouse.ui.util.CenterPanel;
  */
 public class AppViewController implements ViewController {
 	private final JComponent component;
-	private final GameLoop loop = new GameLoop();
 	
 	public AppViewController(AppModel model) {
 		component = new JPanel();
@@ -24,15 +22,8 @@ public class AppViewController implements ViewController {
 		GameViewController game = new GameViewController(model.getGameState());
 		component.add(new CenterPanel(game.getComponent()), BorderLayout.CENTER);
 		
-		SideBarViewController sideBar = new SideBarViewController(model, game, loop);
+		SideBarViewController sideBar = new SideBarViewController(model, game);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
-		
-		// Setup loop hooks
-		loop.addTicker(game.getTickers());
-		loop.addRenderer(game.getBoard());
-		
-		// Start the game loop
-		loop.start();
 	}
 	
 	@Override

@@ -10,7 +10,6 @@ import lighthouse.model.GameState;
 import lighthouse.ui.GameContext;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.loop.GameLoop;
 import lighthouse.ui.modes.EditingMode;
 import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.util.LayoutUtils;
@@ -23,7 +22,7 @@ public class GameControlsViewController implements ViewController {
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	public GameControlsViewController(GameViewController game, AppModel model, GameLoop loop) {
+	public GameControlsViewController(GameViewController game, AppModel model) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 
@@ -47,7 +46,7 @@ public class GameControlsViewController implements ViewController {
 				LayoutUtils.buttonOf("Reset", game::reset),
 				LayoutUtils.buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
 			),
-			new LevelNavigatorViewController(game, loop).getComponent()
+			new LevelNavigatorViewController(game).getComponent()
 		), BorderLayout.CENTER);
 	}
 	

@@ -56,11 +56,12 @@ public class GameViewController implements ViewController {
 		model.getBoardListeners().add(boardModel -> {
 			board.updateModel(boardModel);
 			context.getStatistics().reset();
-			boardModel.getChangeListeners().add(v -> {
-				GameStatistics stats = context.getStatistics();
-				stats.incrementMoveCount();
-				stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(boardModel));
-			});
+		});
+		model.getChangeListeners().add(v -> {
+			board.render();
+			GameStatistics stats = context.getStatistics();
+			stats.incrementMoveCount();
+			stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());

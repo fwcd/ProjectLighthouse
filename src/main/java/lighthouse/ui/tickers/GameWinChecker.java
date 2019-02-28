@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 
 import lighthouse.model.GameState;
 import lighthouse.ui.GameContext;
-import lighthouse.ui.loop.Ticker;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 
