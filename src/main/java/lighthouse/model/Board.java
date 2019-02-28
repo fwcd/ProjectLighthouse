@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.grid.ColorGrid;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
@@ -23,7 +24,7 @@ import lighthouse.util.ListenerList;
  * The game board model representing
  * the entire state of the "Schimmler"-game.
  */
-public class Board implements Serializable {
+public class Board implements Serializable, ColorGrid {
 	private static final long serialVersionUID = 6367414981719952292L;
 	private static final Logger LOG = LoggerFactory.getLogger(Board.class);
 	private int columns;
@@ -91,7 +92,8 @@ public class Board implements Serializable {
 	}
 	
 	/** Fetches the cell's color at the specified position. */
-	public Color colorAt(IntVec gridPos) {
+	@Override
+	public Color getColorAt(IntVec gridPos) {
 		GameBlock block = locateBrick(gridPos);
 		
 		if (block == null) {
@@ -99,10 +101,6 @@ public class Board implements Serializable {
 		}
 		
 		return (block == null || !block.contains(gridPos)) ? Color.BLACK : block.getColor();
-	}
-	
-	public Color colorAt(int x, int y) {
-		return colorAt(new IntVec(x, y));
 	}
 	
 	public boolean hasBrickAt(IntVec gridPos) {
@@ -125,7 +123,7 @@ public class Board implements Serializable {
 	/** Encodes this board as an array of columns * rows item.. */
 	public double[] encode1D() {
 		return IntStream.range(0, columns * rows)
-			.mapToObj(i -> colorAt(i % columns, i / columns))
+			.mapToObj(i -> getColorAt(i % columns, i / columns))
 			.mapToDouble(ColorUtils::getBrightnessPercent)
 			.toArray();
 	}
@@ -134,7 +132,7 @@ public class Board implements Serializable {
 	public double[][] encode2D() {
 		return IntStream.range(0, columns)
 			.mapToObj(x -> IntStream.range(0, rows)
-				.mapToObj(y -> colorAt(x, y))
+				.mapToObj(y -> getColorAt(x, y))
 				.mapToDouble(ColorUtils::getBrightnessPercent)
 				.toArray())
 			.toArray(double[][]::new);

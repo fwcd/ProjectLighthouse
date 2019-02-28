@@ -58,7 +58,7 @@ public class RemoteLighthouseGridView implements LighthouseGridView {
 		
 		for (int y = 0; y < LhConstants.LIGHTHOUSE_ROWS; y++) {
 			for (int x = 0; x < LhConstants.LIGHTHOUSE_COLS; x++) {
-				Color cell = grid.colorAt(x, y);
+				Color cell = grid.getColorAt(x, y);
 				data[i] = (byte) cell.getRed();
 				data[i + 1] = (byte) cell.getGreen();
 				data[i + 2] = (byte) cell.getBlue();

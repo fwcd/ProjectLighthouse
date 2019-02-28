@@ -3,6 +3,7 @@ package lighthouse.ui.board.view;
 import java.awt.Color;
 
 import lighthouse.model.Board;
+import lighthouse.model.grid.ColorGrid;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 
@@ -11,7 +12,7 @@ import lighthouse.util.LhConstants;
  * the big screen (the Lighthouse) by scaling and
  * translating the grid positions.
  */
-public class LighthouseGrid {
+public class LighthouseGrid implements ColorGrid {
 	private final int columns;
 	private final int rows;
 	private final Board board;
@@ -36,11 +37,8 @@ public class LighthouseGrid {
 		return rows;
 	}
 	
-	public Color colorAt(IntVec lhGridPos) {
-		return board.colorAt(lhGridPos.sub(4, 1).scale(0.2, 0.5).floor());
-	}
-	
-	public Color colorAt(int x, int y) {
-		return colorAt(new IntVec(x, y));
+	@Override
+	public Color getColorAt(IntVec lhGridPos) {
+		return board.getColorAt(lhGridPos.sub(4, 1).scale(0.2, 0.5).floor());
 	}
 }
