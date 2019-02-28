@@ -54,15 +54,17 @@ public class GameControlsViewController implements ViewController {
 		// Setup control panel
 		component.add(LayoutUtils.vboxOf(
 			statusBar.getComponent(),
+			LayoutUtils.menuBarOf(
+				LayoutUtils.menuOf("File",
+					LayoutUtils.itemOf("Save", this::save),
+					LayoutUtils.itemOf("Save As", this::saveAs),
+					LayoutUtils.itemOf("Open", this::open)
+				)
+			),
 			LayoutUtils.panelOf(
 				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				LayoutUtils.buttonOf("Reset", game::reset),
 				LayoutUtils.buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
-			),
-			LayoutUtils.panelOf(
-				LayoutUtils.buttonOf("Save", this::save),
-				LayoutUtils.buttonOf("Save As", this::saveAs),
-				LayoutUtils.buttonOf("Open", this::open)
 			),
 			new LevelNavigatorViewController(game, loop).getComponent()
 		), BorderLayout.CENTER);

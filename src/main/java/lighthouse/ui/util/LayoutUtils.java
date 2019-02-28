@@ -46,8 +46,8 @@ public class LayoutUtils {
 		return menuBar;
 	}
 	
-	public static WebMenu menuOf(WebMenuItem... items) {
-		WebMenu menu = new WebMenu();
+	public static WebMenu menuOf(String name, WebMenuItem... items) {
+		WebMenu menu = new WebMenu(name);
 		for (WebMenuItem item : items) {
 			menu.add(item);
 		}
