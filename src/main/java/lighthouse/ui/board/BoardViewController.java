@@ -14,6 +14,7 @@ import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.input.BoardXboxControllerInput;
+import lighthouse.ui.board.overlay.Animation;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseGridView;
@@ -29,6 +30,7 @@ public class BoardViewController implements ViewController {
 	private final JComponent component;
 	private Board model;
 	private LighthouseGrid lhModel;
+	private int animationFPS = 60;
 	
 	private final List<LighthouseGridView> lhGridViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();

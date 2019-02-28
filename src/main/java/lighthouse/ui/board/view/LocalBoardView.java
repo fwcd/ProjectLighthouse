@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -22,6 +23,7 @@ import lighthouse.model.GameBlock;
 import lighthouse.ui.board.CoordinateMapper;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
+import lighthouse.ui.board.overlay.Overlay;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 
@@ -42,6 +44,7 @@ public class LocalBoardView implements BoardView {
 	
 	private final JComponent component;
 	private final CoordinateMapper coordinateMapper;
+	private final List<Overlay> overlays = new ArrayList<>();
 	private Board model = null;
 	
 	public LocalBoardView(CoordinateMapper coordinateMapper) {
@@ -127,6 +130,11 @@ public class LocalBoardView implements BoardView {
 			
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);
+			}
+			
+			// Draw the overlays
+			for (Overlay overlay : overlays) {
+				overlay.drawHighRes(g2d);
 			}
 		}
 	}
@@ -264,6 +272,14 @@ public class LocalBoardView implements BoardView {
 	
 	public void addKeyInput(BoardKeyInput listener) {
 		component.addKeyListener(listener);
+	}
+	
+	public void addOverlay(Overlay overlay) {
+		overlays.add(overlay);
+	}
+	
+	public void removeOverlay(Overlay overlay) {
+		overlays.remove(overlay);
 	}
 	
 	public JComponent getComponent() {
