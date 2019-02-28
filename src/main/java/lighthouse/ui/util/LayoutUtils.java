@@ -1,8 +1,10 @@
 package lighthouse.ui.util;
 
+import java.awt.Component;
+import java.awt.LayoutManager;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.alee.laf.menu.WebMenu;
@@ -15,27 +17,35 @@ import com.alee.laf.menu.WebMenuItem;
 public class LayoutUtils {
 	private LayoutUtils() {}
 	
-	public static JPanel vboxOf(JComponent... components) {
+	public static JPanel vboxOf(Component... components) {
 		JPanel vbox = new JPanel();
 		vbox.setLayout(new BoxLayout(vbox, BoxLayout.Y_AXIS));
-		for (JComponent child : components) {
+		for (Component child : components) {
 			vbox.add(child);
 		}
 		return vbox;
 	}
 	
-	public static JPanel hboxOf(JComponent... components) {
+	public static JPanel hboxOf(Component... components) {
 		JPanel hbox = new JPanel();
 		hbox.setLayout(new BoxLayout(hbox, BoxLayout.X_AXIS));
-		for (JComponent child : components) {
+		for (Component child : components) {
 			hbox.add(child);
 		}
 		return hbox;
 	}
 	
-	public static JPanel panelOf(JComponent... components) {
+	public static JPanel panelOf(LayoutManager layout, Component... components) {
+		JPanel bar = new JPanel(layout);
+		for (Component child : components) {
+			bar.add(child);
+		}
+		return bar;
+	}
+	
+	public static JPanel panelOf(Component... components) {
 		JPanel bar = new JPanel();
-		for (JComponent child : components) {
+		for (Component child : components) {
 			bar.add(child);
 		}
 		return bar;

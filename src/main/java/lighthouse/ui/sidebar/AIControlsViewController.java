@@ -1,6 +1,6 @@
 package lighthouse.ui.sidebar;
 
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,7 +17,7 @@ import lighthouse.ui.util.LayoutUtils;
 
 public class AIControlsViewController implements ViewController {
 	private final AppModel appModel;
-	private final JComponent component;
+	private final JPanel component;
 	private final WebProgressBar progressBar;
 	
 	public AIControlsViewController(AppModel appModel) {
@@ -28,15 +28,17 @@ public class AIControlsViewController implements ViewController {
 		
 		progressBar = new WebProgressBar();
 		component = LayoutUtils.vboxOf(
-			LayoutUtils.hboxOf(
+			LayoutUtils.panelOf(new FlowLayout(FlowLayout.LEADING, 2, 0),
 				new JLabel("Population size:"),
 				populationSize
 			),
-			LayoutUtils.hboxOf(
+			LayoutUtils.panelOf(new FlowLayout(FlowLayout.LEADING, 2, 0),
 				new JLabel("Iterations:"),
 				iterations
 			),
-			LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue())),
+			LayoutUtils.panelOf(
+				LayoutUtils.buttonOf("Train Population", () -> train((int) populationSize.getValue(), (int) iterations.getValue()))
+			),
 			progressBar
 		);
 	}
