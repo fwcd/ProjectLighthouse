@@ -42,7 +42,7 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("AI Controls", aiControls.getComponent());
 		
 		GameStatisticsViewController statistics = new GameStatisticsViewController(game.getContext().getStatistics());
-		accordion.addPane("Game Statistics", statistics.getComponent());
+		accordion.addPane("Game Statistics", statistics.getComponent()).collapse();
 		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
@@ -53,7 +53,7 @@ public class SideBarViewController implements ViewController {
 		LocalLighthouseGridView preview = new LocalLighthouseGridView();
 		game.getBoard().addLighthouseGridView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(180, 200));
-		accordion.addPane("Lighthouse Preview", preview.getComponent()).collapse();
+		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
 		component.add(accordion, BorderLayout.CENTER);
 	}
