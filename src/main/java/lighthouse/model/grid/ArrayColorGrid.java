@@ -23,4 +23,13 @@ public class ArrayColorGrid implements WritableColorGrid {
 	public Color getColorAt(IntVec pos) {
 		return colors[pos.getY()][pos.getX()];
 	}
+	
+	@Override
+	public void clear() {
+		for (int y = 0; y < colors.length; y++) {
+			for (int x = 0; x < colors[y].length; x++) {
+				colors[y][x] = null;
+			}
+		}
+	}
 }
