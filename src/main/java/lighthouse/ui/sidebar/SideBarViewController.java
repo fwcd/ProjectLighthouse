@@ -41,6 +41,9 @@ public class SideBarViewController implements ViewController {
 		AIViewController aiControls = new AIViewController(model);
 		accordion.addPane("AI Controls", aiControls.getComponent());
 		
+		GameStatisticsViewController statistics = new GameStatisticsViewController(game.getContext().getStatistics());
+		accordion.addPane("Game Statistics", statistics.getComponent());
+		
 		// Add the connector panel which allows the user
 		// to connect to the Lighthouse.
 		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(game.getBoard());
