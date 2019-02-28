@@ -1,5 +1,7 @@
 package lighthouse.ui.sidebar;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 
 import javax.swing.JComponent;
@@ -104,7 +106,14 @@ public class MenuBarViewController implements ViewController {
 	private void showListenerGraph() {
 		ListenerGraphViewController graph = new ListenerGraphViewController(model, game);
 		WebFrame popup = new WebFrame("Listener graph");
-		popup.setDefaultCloseOperation(WebFrame.DISPOSE_ON_CLOSE);
+		popup.setDefaultCloseOperation(WebFrame.DO_NOTHING_ON_CLOSE);
+		popup.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				graph.removeUpdateHooks();
+				e.getWindow().dispose();
+			}
+		});
 		popup.add(graph.getComponent());
 		popup.setSize(640, 480);
 		popup.setVisible(true);

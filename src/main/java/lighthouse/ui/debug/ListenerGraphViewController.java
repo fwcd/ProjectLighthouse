@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +46,10 @@ public class ListenerGraphViewController implements ViewController {
 		view = new ListenerGraphView();
 		component.add(view.getComponent(), BorderLayout.CENTER);
 		
-		updateHook = v -> component.repaint();
+		updateHook = v -> SwingUtilities.invokeLater(() -> {
+			component.repaint();
+			new Timer(1000, l -> component.repaint()).start();
+		});
 	}
 	
 	private void update() {
@@ -57,7 +62,7 @@ public class ListenerGraphViewController implements ViewController {
 	public void addUpdateHooks() {
 		for (ListenerGraph graph : models) {
 			for (ListenerList<?> node : graph.getNodes()) {
-				node.remove(updateHook);
+				node.add(updateHook);
 			}
 		}
 	}
@@ -65,7 +70,7 @@ public class ListenerGraphViewController implements ViewController {
 	public void removeUpdateHooks() {
 		for (ListenerGraph graph : models) {
 			for (ListenerList<?> node : graph.getNodes()) {
-				node.add(updateHook);
+				node.remove(updateHook);
 			}
 		}
 	}

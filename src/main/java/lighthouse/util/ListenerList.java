@@ -15,7 +15,9 @@ public class ListenerList<T> implements Listener<T>, Iterable<Listener<? super T
 	
 	public ListenerList() { this("?"); }
 	
-	public ListenerList(String name) { this.name = name; }
+	public ListenerList(String name) {
+		this.name = name;
+	}
 	
 	public void add(Listener<? super T> listener) { listeners.add(listener); }
 	

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +45,11 @@ public class ListenerGraphView {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (models != null) {
 			Map<ListenerList<?>, IntVec> nodePositions = new HashMap<>();
 			Map<ListenerList<?>, List<ListenerList<?>>> connections = new HashMap<>();
-			int startX = 100;
+			int startX = 140;
 			int rowDy = 80;
 			IntVec pos = new IntVec(startX, 100);
 			g2d.setFont(g2d.getFont().deriveFont(14.0F));
@@ -56,9 +58,9 @@ public class ListenerGraphView {
 				// Render nodes
 				for (ListenerList<?> node : graph.getNodes()) {
 					nodePositions.put(node, pos);
-					int dx = renderNode(g2d, node, pos);
-					pos = pos.add(dx, 0);
-					if (pos.getX() >= (canvasSize.getWidth() - 50)) {
+					IntVec size = renderNode(g2d, node, pos);
+					pos = pos.add(size.getX() + 10, 0);
+					if (pos.getX() >= (canvasSize.getWidth() - 80)) {
 						pos = pos.withX(startX).add(0, rowDy);
 					}
 				}
@@ -72,11 +74,11 @@ public class ListenerGraphView {
 					List<ListenerList<?>> outgoing = connections.get(nodeA);
 					
 					if (!outgoing.contains(nodeB)) {
-						if (nodeA.wasFiredRecently(300)) {
-							g2d.setStroke(new BasicStroke(2.0F));
+						if (nodeA.wasFiredRecently(1000)) {
+							g2d.setStroke(new BasicStroke(4.0F));
 							g2d.setColor(Color.GREEN);
 						} else {
-							g2d.setStroke(new BasicStroke(1.0F));
+							g2d.setStroke(new BasicStroke(2.0F));
 							g2d.setColor(Color.DARK_GRAY);
 						}
 						outgoing.add(nodeB);
@@ -91,22 +93,23 @@ public class ListenerGraphView {
 		}
 	}
 	
-	private int renderNode(Graphics2D g2d, ListenerList<?> node, IntVec pos) {
+	private IntVec renderNode(Graphics2D g2d, ListenerList<?> node, IntVec pos) {
 		FontMetrics metrics = g2d.getFontMetrics();
-		int strWidth = metrics.stringWidth(node.getName());
+		String label = Integer.toHexString(node.hashCode()).substring(3) + ": " + node.getName();
+		int strWidth = metrics.stringWidth(label);
 		int strHeight = metrics.getHeight();
 		int ovalWidth = strWidth + 20;
 		int ovalHeight = strHeight + 20;
 		int x = pos.getX() - (ovalWidth / 2);
-		int y = pos.getY() - (ovalHeight / 2);
+		int y = pos.getY() - ovalHeight;
 		
-		g2d.setColor(node.wasFiredRecently(300) ? ColorUtils.LIGHT_GREEN : Color.WHITE);
+		g2d.setColor(node.wasFiredRecently(1000) ? ColorUtils.LIGHT_GREEN : Color.WHITE);
 		g2d.fillOval(x, y, ovalWidth, ovalHeight);
 		g2d.setColor(Color.BLACK);
 		g2d.drawOval(x, y, ovalWidth, ovalHeight);
-		g2d.drawString(node.getName(), x + 4, y + strHeight + 4);
+		g2d.drawString(label, x + 4, y + strHeight + 4);
 		
-		return ovalWidth + 10;
+		return new IntVec(ovalWidth, ovalHeight);
 	}
 	
 	public JComponent getComponent() { return component; }
