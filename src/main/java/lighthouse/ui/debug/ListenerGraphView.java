@@ -41,6 +41,7 @@ public class ListenerGraphView {
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (models != null) {
 			int startX = 100;
+			int rowDy = 80;
 			IntVec pos = new IntVec(startX, 100);
 			g2d.setFont(g2d.getFont().deriveFont(14.0F));
 			
@@ -49,8 +50,11 @@ public class ListenerGraphView {
 				for (ListenerList<?> node : graph.getNodes()) {
 					int dx = renderNode(g2d, node.getName(), pos);
 					pos = pos.add(dx, 0);
+					if (pos.getX() >= (canvasSize.getWidth() - 50)) {
+						pos = pos.withX(startX).add(0, rowDy);
+					}
 				}
-				pos = pos.withX(startX).add(0, 50);
+				pos = pos.withX(startX).add(0, rowDy);
 			}
 		}
 	}

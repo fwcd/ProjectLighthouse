@@ -2,10 +2,10 @@ package lighthouse.ui.debug;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.JComponent;
@@ -53,9 +53,7 @@ public class ListenerGraphViewController implements ViewController {
 		Set<Field> visited = new HashSet<>();
 		findListenerListsIn(appModel.getGameState(), visited, roots);
 		findListenerListsIn(gameVC, visited, roots);
-		return roots.stream()
-			.map(ListenerGraph::new)
-			.collect(Collectors.toList());
+		return Collections.singletonList(new ListenerGraph(roots.stream().toArray(ListenerList[]::new)));
 	}
 	
 	private void findListenerListsIn(Object obj, Set<Field> visited, Set<ListenerList<?>> set) {
