@@ -36,7 +36,7 @@ public class LocalBoardView implements BoardView {
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
-	private boolean drawFloating = false;
+	private boolean drawBackground = true;
 	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.NONE;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
@@ -82,8 +82,11 @@ public class LocalBoardView implements BoardView {
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		int canvasWidth = (int) canvasSize.getWidth();
 		int canvasHeight = (int) canvasSize.getHeight();
-		g2d.setColor(background);
-		g2d.fillRect(0, 0, canvasWidth, canvasHeight);
+		
+		if (drawBackground) {
+			g2d.setColor(background);
+			g2d.fillRect(0, 0, canvasWidth, canvasHeight);
+		}
 
 		if (model == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
@@ -245,9 +248,9 @@ public class LocalBoardView implements BoardView {
 	
 	public void setEdgeDrawMode(EdgeDrawMode edgeDrawMode) { this.edgeDrawMode = edgeDrawMode; }
 	
-	public boolean doesDrawFloating() { return drawFloating; }
+	public boolean doesDrawBackground() { return drawBackground; }
 	
-	public void setDrawFloating(boolean drawFloating) { this.drawFloating = drawFloating; }
+	public void setDrawBackground(boolean drawBackground) { this.drawBackground = drawBackground; }
 	
 	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
 	
