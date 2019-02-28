@@ -1,9 +1,11 @@
 package lighthouse.ui.debug;
 
+import java.awt.BorderLayout;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.ListenerList;
 
 /**
@@ -21,6 +24,7 @@ public class ListenerGraphViewController implements ViewController {
 	private final AppModel appModel;
 	private final GameViewController gameVC;
 	
+	private final JComponent component;
 	private final ListenerGraphView view;
 	private ListenerGraph model;
 	
@@ -28,7 +32,11 @@ public class ListenerGraphViewController implements ViewController {
 		this.appModel = appModel;
 		this.gameVC = gameVC;
 		
+		component = new JPanel(new BorderLayout());
+		component.add(LayoutUtils.buttonOf("Update", this::update), BorderLayout.NORTH);
+		
 		view = new ListenerGraphView();
+		component.add(view.getComponent(), BorderLayout.CENTER);
 	}
 	
 	private void update() {
@@ -77,5 +85,5 @@ public class ListenerGraphViewController implements ViewController {
 	}
 	
 	@Override
-	public JComponent getComponent() { return view.getComponent(); }
+	public JComponent getComponent() { return component; }
 }
