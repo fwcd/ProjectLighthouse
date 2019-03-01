@@ -13,6 +13,7 @@ public class ListenerList<T> implements Listener<T>, Iterable<Listener<? super T
 	private final String name;
 	private long lastFiredTime = 0;
 	
+	@Deprecated
 	public ListenerList() { this("?"); }
 	
 	public ListenerList(String name) {

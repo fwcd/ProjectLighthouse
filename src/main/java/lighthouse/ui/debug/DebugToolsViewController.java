@@ -19,7 +19,7 @@ public class DebugToolsViewController implements ViewController, AutoCloseable {
 		
 		listenerGraph = new ListenerGraphViewController(appModel, gameVC);
 		component.addTab("Listeners", listenerGraph.getComponent());
-		component.addTab("Active Animations", new ActiveAnimationsViewController().getComponent());
+		component.addTab("Active Animations", new ActiveAnimationsViewController(gameVC.getBoard().getAnimationTracker()).getComponent());
 	}
 	
 	@Override

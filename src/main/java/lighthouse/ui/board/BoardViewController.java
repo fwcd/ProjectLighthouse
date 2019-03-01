@@ -75,7 +75,7 @@ public class BoardViewController implements ViewController {
 
 	/** Plays an animation in high and low resolution on the board views. */
 	public void play(Animation animation) {
-		String name = animation.getName();
+		String name = animation.getName() + " #" + Integer.toHexString(animation.hashCode());
 		int totalFrames = animation.getTotalFrames();
 		AnimationPlayer player = new AnimationPlayer(animation);
 		
