@@ -50,13 +50,12 @@ public class LighthouseDisplay implements AutoCloseable {
 	 * "wss://lighthouse.uni-kiel.de/user/<username>/model" and Certificate checking
 	 * disabled (root CA unknown)
 	 * 
-	 * @throws InvalidAttributeValueException
-	 *             if "username" is invalid for creating a connection
-	 * @throws IOException
-	 *             if there is an error while connecting or constructing the
-	 *             web-socket
-	 * @throws Exception
-	 *             if there is an error constructing a web-socket-client
+	 * @throws InvalidAttributeValueException if "username" is invalid for creating
+	 *                                        a connection
+	 * @throws IOException                    if there is an error while connecting
+	 *                                        or constructing the web-socket
+	 * @throws Exception                      if there is an error constructing a
+	 *                                        web-socket-client
 	 */
 	public void connect() throws Exception {
 		try {
@@ -69,13 +68,11 @@ public class LighthouseDisplay implements AutoCloseable {
 	/**
 	 * Connects to the lighthouse server at the given web-socket address
 	 * 
-	 * @throws URISyntaxException
-	 *             if destUri contains errors
-	 * @throws IOException
-	 *             if there is an error while connecting or constructing the
-	 *             web-socket
-	 * @throws Exception
-	 *             if there is an error constructing a web-socket-client
+	 * @throws URISyntaxException if destUri contains errors
+	 * @throws IOException        if there is an error while connecting or
+	 *                            constructing the web-socket
+	 * @throws Exception          if there is an error constructing a
+	 *                            web-socket-client
 	 */
 	public void connect(String destUri) throws Exception {
 		connect(destUri, false);
@@ -86,13 +83,11 @@ public class LighthouseDisplay implements AutoCloseable {
 	 * disables certificate validation if selfSigned is true. Connection is
 	 * finalized asynchronous
 	 * 
-	 * @throws URISyntaxException
-	 *             if destUri contains errors
-	 * @throws IOException
-	 *             if there is an error while connecting or constructing the
-	 *             web-socket
-	 * @throws Exception
-	 *             if there is an error constructing a web-socket-client
+	 * @throws URISyntaxException if destUri contains errors
+	 * @throws IOException        if there is an error while connecting or
+	 *                            constructing the web-socket
+	 * @throws Exception          if there is an error constructing a
+	 *                            web-socket-client
 	 */
 	public void connect(String destUri, boolean selfSigned) throws Exception {
 		if (selfSigned) {
@@ -137,10 +132,8 @@ public class LighthouseDisplay implements AutoCloseable {
 	 * corner. If less bytes are sent, only the first windows are updated. The next
 	 * transmission starts at the first window again.
 	 *
-	 * @param data
-	 *            The data to send
-	 * @throws IOException
-	 *             if some error occurs during sending of the data.
+	 * @param data The data to send
+	 * @throws IOException if some error occurs during sending of the data.
 	 */
 	public void send(byte[] data) throws IOException {
 		handler.send(data, 0, data.length);
@@ -156,7 +149,7 @@ public class LighthouseDisplay implements AutoCloseable {
 	public boolean isConnected() {
 		return handler.isConnected();
 	}
-	
+
 	@Override
 	public void close() {
 		handler.close();
@@ -185,14 +178,10 @@ public class LighthouseDisplay implements AutoCloseable {
 		/**
 		 * this method sends the given data as a lighthouse request to the server
 		 * 
-		 * @param data
-		 *            the data to send
-		 * @param offset
-		 *            the offset to start in the data
-		 * @param length
-		 *            the length to send
-		 * @throws IOException
-		 *             on errors while transmitting the data
+		 * @param data   the data to send
+		 * @param offset the offset to start in the data
+		 * @param length the length to send
+		 * @throws IOException on errors while transmitting the data
 		 */
 		public void send(byte[] data, int offset, int length) throws IOException {
 			if (isConnected()) {
