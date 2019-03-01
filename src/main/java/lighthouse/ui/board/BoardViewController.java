@@ -22,9 +22,8 @@ import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
 import lighthouse.ui.board.viewmodel.overlay.AnimationPlayer;
-import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
-import lighthouse.util.transform.Bijection;
+import lighthouse.util.transform.DoubleVecBijection;
 
 /**
  * Manages the different board views. It assembles the necessary inputs and
@@ -44,7 +43,7 @@ public class BoardViewController implements ViewController {
 
 	private final DelegateResponder responder;
 
-	public BoardViewController(Board model, Bijection<IntVec, IntVec> gridToPixels, Updatable gameUpdater) {
+	public BoardViewController(Board model, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
 
 		viewModel = new BoardViewModel(model);

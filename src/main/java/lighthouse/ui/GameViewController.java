@@ -17,11 +17,10 @@ import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
-import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
-import lighthouse.util.transform.Bijection;
-import lighthouse.util.transform.IntScaling;
+import lighthouse.util.transform.DoubleVecBijection;
+import lighthouse.util.transform.Scaling;
 
 /**
  * Manages the game board view, the current
@@ -32,7 +31,7 @@ public class GameViewController implements ViewController {
 
 	private final GameState model;
 	private final GameContext context = new GameContext();
-	private final Bijection<IntVec, IntVec> gridToPixels = new IntScaling(70, 70);
+	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
 	private final BoardViewController board;
 
 	private GameMode mode;
