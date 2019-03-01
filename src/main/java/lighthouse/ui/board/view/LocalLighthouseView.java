@@ -14,11 +14,11 @@ import javax.swing.SwingUtilities;
 /**
  * A local (Swing-based) view of the Lighthouse grid.
  */
-public class LocalLighthouseGridView implements LighthouseGridView {
+public class LocalLighthouseView implements LighthouseView {
 	private final JComponent component;
 	private LighthouseGrid model = null;
 	
-	public LocalLighthouseGridView() {
+	public LocalLighthouseView() {
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			

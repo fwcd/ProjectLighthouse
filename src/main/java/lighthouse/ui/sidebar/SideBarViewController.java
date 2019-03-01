@@ -11,7 +11,7 @@ import com.alee.extended.panel.WebAccordion;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.view.LocalLighthouseGridView;
+import lighthouse.ui.board.view.LocalLighthouseView;
 
 /**
  * Manages the sidebar view which in turn deals
@@ -49,7 +49,7 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("Lighthouse Connector", connector.getComponent());
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
-		LocalLighthouseGridView preview = new LocalLighthouseGridView();
+		LocalLighthouseView preview = new LocalLighthouseView();
 		game.getBoard().addLighthouseGridView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(180, 200));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
