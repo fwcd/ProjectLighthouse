@@ -15,7 +15,6 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
@@ -23,6 +22,7 @@ import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.overlay.Overlay;
 import lighthouse.ui.board.transform.CoordinateMapper;
+import lighthouse.ui.board.viewmodel.BoardEditState;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
@@ -116,7 +116,7 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the board's bricks
-			for (Brick brick : viewModel.getModel().getBricks()) {
+			for (Brick brick : viewModel.getBricks()) {
 				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
 				if (edgeDrawMode != EdgeDrawMode.NONE) {
@@ -125,7 +125,7 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the editing state
-			BoardEditState editState = viewModel.getModel().getEditState();
+			BoardEditState editState = viewModel.getEditState();
 			GameBlock brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {

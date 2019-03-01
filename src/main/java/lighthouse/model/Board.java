@@ -31,7 +31,6 @@ public class Board implements Serializable, ColorGrid {
 	private int rows;
 	private Set<Brick> bricks = new HashSet<>();
 	
-	private transient BoardEditState lazyEditState;
 	private transient ListenerList<Void> lazyChangeListeners;
 	
 	/** Creates a new board with the default size of 4x6. */
@@ -87,7 +86,6 @@ public class Board implements Serializable, ColorGrid {
 	/** Clears the board's contents. */
 	public void clear() {
 		bricks.clear();
-		getEditState().reset();
 		getChangeListeners().fire();
 	}
 	
@@ -95,12 +93,7 @@ public class Board implements Serializable, ColorGrid {
 	@Override
 	public Color getColorAt(IntVec gridPos) {
 		GameBlock block = locateBrick(gridPos);
-		
-		if (block == null) {
-			block = getEditState().getBrickInProgress();
-		}
-		
-		return (block == null || !block.contains(gridPos)) ? Color.BLACK : block.getColor();
+		return (block == null) ? null : block.getColor();
 	}
 	
 	public boolean hasBrickAt(IntVec gridPos) {
@@ -212,15 +205,6 @@ public class Board implements Serializable, ColorGrid {
 		Board copied = new Board(columns, rows);
 		copied.bricks.addAll(bricks);
 		return copied;
-	}
-	
-	/** Fetches the current editing state of the board. */
-	public BoardEditState getEditState() {
-		if (lazyEditState == null) {
-			// Lazy initialization/reinitalization after deserialization
-			lazyEditState = new BoardEditState();
-		}
-		return lazyEditState;
 	}
 	
 	/** Fetches the lazily loaded change listeners.  */

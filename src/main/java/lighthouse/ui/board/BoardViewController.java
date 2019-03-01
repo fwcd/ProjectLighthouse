@@ -46,8 +46,8 @@ public class BoardViewController implements ViewController {
 	public BoardViewController(Board model, CoordinateMapper coordinateMapper, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
 
-		responder = new DelegateResponder(new BoardPlayController(model, gameUpdater));
 		updateModel(model);
+		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater));
 
 		// Creates a local view and hooks up the Swing component
 		localView = new LocalBoardView(coordinateMapper);
@@ -95,7 +95,7 @@ public class BoardViewController implements ViewController {
 	public void updateModel(Board model) {
 		viewModel = new BoardViewModel(model);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
-		responder.updateBoard(model);
+		responder.updateViewModel(viewModel);
 	}
 	
 	public void render() {
@@ -122,6 +122,10 @@ public class BoardViewController implements ViewController {
 	
 	public void addBoardView(BoardView view) {
 		boardViews.add(view);
+	}
+	
+	public BoardViewModel getViewModel() {
+		return viewModel;
 	}
 	
 	@Override

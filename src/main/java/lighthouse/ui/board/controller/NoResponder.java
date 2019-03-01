@@ -1,6 +1,6 @@
 package lighthouse.ui.board.controller;
 
-import lighthouse.model.Board;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 
 public class NoResponder implements BoardResponder {
 	public static final NoResponder INSTANCE = new NoResponder();
@@ -8,5 +8,5 @@ public class NoResponder implements BoardResponder {
 	private NoResponder() {}
 	
 	@Override
-	public void updateBoard(Board board) {}
+	public void updateViewModel(BoardViewModel viewModel) {}
 }

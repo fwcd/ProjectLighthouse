@@ -8,6 +8,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
@@ -17,15 +18,15 @@ import lighthouse.util.Updatable;
 public class BoardPlayController implements BoardResponder {
 	private Map<Direction, Integer> limits;
 	private Updatable updater;
-	private Board board;
+	private BoardViewModel viewModel;
 	private boolean dragEvent;
 	
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(Board model, Updatable updater) {
+	public BoardPlayController(BoardViewModel viewModel, Updatable updater) {
 		this.updater = updater;
-		board = model;
+		this.viewModel = viewModel;
 		resetLimits();
 	}
 	
@@ -37,12 +38,12 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	private void computeLimits() {
-		limits = board.getLimitsFor(brick);
+		limits = viewModel.getLimitsFor(brick);
 	}
 	
 	@Override
 	public void press(IntVec gridPos) {
-		brick = board.locateBrick(gridPos);
+		brick = viewModel.locateBrick(gridPos);
 		if (brick == null) return;
 		dragEvent = true;
 		startGridPos = gridPos;
@@ -61,7 +62,7 @@ public class BoardPlayController implements BoardResponder {
 				if (limits.get(atDir) > 0) {
 					limits.put(atDir, limits.get(atDir) - 1);
 					Brick newBrick = brick.movedInto(atDir);
-					board.replace(brick, newBrick);
+					viewModel.replace(brick, newBrick);
 					brick = newBrick;
 					startGridPos = startGridPos.add(atDir);
 					computeLimits();
@@ -83,23 +84,27 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	@Override
-	public void updateBoard(Board board) {
-		this.board = board;
+	public void updateViewModel(BoardViewModel viewModel) {
+		this.viewModel = viewModel;
 	}
-
+	
+	@Deprecated
 	public Brick getCurrentBrick(){
 		return brick;
 	}
-
+	
+	@Deprecated
 	public void setCurrentBrick(Brick brick){
 		this.brick = brick;
 		computeLimits();
 	}
-
+	
+	@Deprecated
 	public void setCurrentBoard(Board board){
-		this.board = board;
+		this.viewModel = new BoardViewModel(board);
 	}
-
+	
+	@Deprecated
 	public Map<Direction, Integer> getCurrentLimits(){
 		return limits;
 	}

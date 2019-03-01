@@ -3,7 +3,7 @@ package lighthouse.ui.board.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
@@ -14,19 +14,19 @@ import lighthouse.util.Updatable;
 public class BoardArrangeController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardArrangeController.class);
 	private final Updatable updater;
-	private Board board;
+	private BoardViewModel viewModel;
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardArrangeController(Board model, Updatable updater) {
+	public BoardArrangeController(BoardViewModel viewModel, Updatable updater) {
 		this.updater = updater;
-		board = model;
+		this.viewModel = viewModel;
 	}
 	
 	@Override
 	public void press(IntVec gridPos) {
-		if (board.hasBrickAt(gridPos)) {
-			board.getEditState().beginEdit(board.removeBrickAt(gridPos));
+		if (viewModel.hasBrickAt(gridPos)) {
+			viewModel.getEditState().beginEdit(viewModel.removeBrickAt(gridPos));
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
 			dragging = true;
@@ -38,7 +38,7 @@ public class BoardArrangeController implements BoardResponder {
 	public void dragTo(IntVec gridPos) {
 		if (dragging) {
 			IntVec delta = gridPos.sub(last);
-			board.getEditState().moveBy(delta);
+			viewModel.getEditState().moveBy(delta);
 			last = gridPos;
 			updater.update();
 		}
@@ -48,7 +48,7 @@ public class BoardArrangeController implements BoardResponder {
 	public void release(IntVec gridPos) {
 		if (dragging) {
 			LOG.debug("Released at {}", gridPos);
-			board.add(board.getEditState().finishEdit(gridPos));
+			viewModel.add(viewModel.getEditState().finishEdit(gridPos));
 			last = null;
 			dragging = false;
 			updater.update();
@@ -58,12 +58,12 @@ public class BoardArrangeController implements BoardResponder {
 	@Override
 	public void reset() {
 		LOG.debug("Resetting");
-		board.clear();
+		viewModel.clear();
 		updater.update();
 	}
 	
 	@Override
-	public void updateBoard(Board board) {
-		this.board = board;
+	public void updateViewModel(BoardViewModel viewModel) {
+		this.viewModel = viewModel;
 	}
 }

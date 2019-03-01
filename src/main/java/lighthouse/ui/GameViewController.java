@@ -120,8 +120,8 @@ public class GameViewController implements ViewController {
 		this.perspective = perspective;
 		
 		Board activeBoard = perspective.getActiveBoard(model);
-		board.setResponder(mode.createController(perspective, activeBoard, this::update));
 		board.updateModel(activeBoard);
+		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update));
 		
 		perspectiveListeners.fire(perspective);
 		update();

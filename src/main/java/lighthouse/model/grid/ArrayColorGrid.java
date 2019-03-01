@@ -34,7 +34,7 @@ public class ArrayColorGrid implements WritableColorGrid {
 	@Override
 	public Color getColorAt(int x, int y) {
 		if (outOfBoundsDrawingEnabled && (x < 0 || x >= width || y < 0 || y >= height)) {
-			return Color.BLACK;
+			return null;
 		} else {
 			return colors[y][x];
 		}

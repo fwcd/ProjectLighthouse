@@ -1,7 +1,7 @@
 package lighthouse.ui.modes;
 
-import lighthouse.model.Board;
 import lighthouse.ui.board.controller.BoardResponder;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.perspectives.InGamePerspective;
 import lighthouse.ui.util.Status;
@@ -23,7 +23,7 @@ public class PlayingMode implements GameMode {
 	public GamePerspective getInitialPerspective() { return InGamePerspective.INSTANCE; }
 	
 	@Override
-	public BoardResponder createController(GamePerspective perspective, Board board, Updatable gameUpdater) { return perspective.createPlayController(board, gameUpdater); }
+	public BoardResponder createController(GamePerspective perspective, BoardViewModel board, Updatable gameUpdater) { return perspective.createPlayController(board, gameUpdater); }
 	
 	@Override
 	public boolean isPlaying() { return true; }

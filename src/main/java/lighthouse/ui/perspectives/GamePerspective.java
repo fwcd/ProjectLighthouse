@@ -3,6 +3,7 @@ package lighthouse.ui.perspectives;
 import lighthouse.model.Board;
 import lighthouse.model.GameState;
 import lighthouse.ui.board.controller.BoardResponder;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.Updatable;
 
 /**
@@ -16,9 +17,9 @@ public interface GamePerspective extends Comparable<GamePerspective> {
 	
 	Board getActiveBoard(GameState model);
 	
-	BoardResponder createEditController(Board board, Updatable gameUpdater);
+	BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater);
 	
-	BoardResponder createPlayController(Board board, Updatable gameUpdater);
+	BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater);
 	
 	default boolean isInGame() { return false; }
 	

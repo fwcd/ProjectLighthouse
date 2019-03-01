@@ -1,5 +1,9 @@
-package lighthouse.model;
+package lighthouse.ui.board.viewmodel;
 
+import lighthouse.model.Brick;
+import lighthouse.model.BrickBuilder;
+import lighthouse.model.Direction;
+import lighthouse.model.GameBlock;
 import lighthouse.util.IntVec;
 
 /**

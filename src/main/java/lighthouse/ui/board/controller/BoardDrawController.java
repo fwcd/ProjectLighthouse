@@ -3,7 +3,7 @@ package lighthouse.ui.board.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
@@ -13,19 +13,19 @@ import lighthouse.util.Updatable;
 public class BoardDrawController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardDrawController.class);
 	private final Updatable updater;
-	private Board board;
+	private BoardViewModel viewModel;
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardDrawController(Board model, Updatable updater) {
+	public BoardDrawController(BoardViewModel viewModel, Updatable updater) {
 		this.updater = updater;
-		board = model;
+		this.viewModel = viewModel;
 	}
 	
 	@Override
 	public void press(IntVec gridPos) {
-		if (!board.hasBrickAt(gridPos)) {
-			board.getEditState().beginEdit(gridPos);
+		if (!viewModel.hasBrickAt(gridPos)) {
+			viewModel.getEditState().beginEdit(gridPos);
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
 			dragging = true;
@@ -35,7 +35,7 @@ public class BoardDrawController implements BoardResponder {
 	
 	@Override
 	public void rightPress(IntVec gridPos) {
-		board.removeBrickAt(gridPos);
+		viewModel.removeBrickAt(gridPos);
 	}
 	
 	@Override
@@ -44,8 +44,8 @@ public class BoardDrawController implements BoardResponder {
 			IntVec delta = gridPos.sub(last);
 			
 			if (!gridPos.equals(last)) {
-				if (!board.hasBrickAt(gridPos)) {
-					board.getEditState().appendToEdit(delta.nearestDirection());
+				if (!viewModel.hasBrickAt(gridPos)) {
+					viewModel.getEditState().appendToEdit(delta.nearestDirection());
 					LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
 					updater.update();
 				}
@@ -58,7 +58,7 @@ public class BoardDrawController implements BoardResponder {
 	public void release(IntVec gridPos) {
 		if (dragging) {
 			LOG.debug("Released at {}", gridPos);
-			board.add(board.getEditState().finishEdit(gridPos));
+			viewModel.add(viewModel.getEditState().finishEdit(gridPos));
 			last = null;
 			dragging = false;
 			updater.update();
@@ -68,12 +68,12 @@ public class BoardDrawController implements BoardResponder {
 	@Override
 	public void reset() {
 		LOG.debug("Resetting");
-		board.clear();
+		viewModel.clear();
 		updater.update();
 	}
 	
 	@Override
-	public void updateBoard(Board board) {
-		this.board = board;
+	public void updateViewModel(BoardViewModel viewModel) {
+		this.viewModel = viewModel;
 	}
 }
