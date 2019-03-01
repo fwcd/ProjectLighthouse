@@ -29,7 +29,7 @@ public class BoardViewModel implements ColorGrid {
 		
 		if (color == null) {
 			GameBlock bip = editState.getBrickInProgress();
-			if (bip != null) {
+			if (bip != null && bip.contains(gridPos)) {
 				color = bip.getColor();
 			}
 		}
