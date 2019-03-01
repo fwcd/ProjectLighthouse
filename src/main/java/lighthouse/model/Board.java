@@ -96,6 +96,16 @@ public class Board implements Serializable, ColorGrid {
 		return (block == null) ? null : block.getColor();
 	}
 	
+	public Color getColorOrBlackAt(IntVec gridPos) {
+		Color color = getColorAt(gridPos);
+		return (color == null) ? Color.BLACK : color;
+	}
+	
+	public Color getColorOrBlackAt(int x, int y) {
+		Color color = getColorAt(x, y);
+		return (color == null) ? Color.BLACK : color;
+	}
+	
 	public boolean hasBrickAt(IntVec gridPos) {
 		return bricks.stream().anyMatch(brick -> brick.contains(gridPos));
 	}
@@ -116,7 +126,7 @@ public class Board implements Serializable, ColorGrid {
 	/** Encodes this board as an array of columns * rows item.. */
 	public double[] encode1D() {
 		return IntStream.range(0, columns * rows)
-			.mapToObj(i -> getColorAt(i % columns, i / columns))
+			.mapToObj(i -> getColorOrBlackAt(i % columns, i / columns))
 			.mapToDouble(ColorUtils::getBrightnessPercent)
 			.toArray();
 	}
@@ -125,7 +135,7 @@ public class Board implements Serializable, ColorGrid {
 	public double[][] encode2D() {
 		return IntStream.range(0, columns)
 			.mapToObj(x -> IntStream.range(0, rows)
-				.mapToObj(y -> getColorAt(x, y))
+				.mapToObj(y -> getColorOrBlackAt(x, y))
 				.mapToDouble(ColorUtils::getBrightnessPercent)
 				.toArray())
 			.toArray(double[][]::new);
