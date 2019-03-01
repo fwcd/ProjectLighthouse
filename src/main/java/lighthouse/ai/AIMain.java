@@ -13,13 +13,16 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Level;
+import lighthouse.ui.board.controller.BoardPlayController;
 
 public class AIMain {
     private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);
     
-    private List<Model> population;
-    private int size;
-    private Random r = new Random();
+    ArrayList<Model> population;
+    BoardPlayController controller;
+    int size;
+    Random r = new Random();
+    ArrayList<Board> forbidden = new ArrayList<>();
 
     public AIMain(int pop){
         size = pop;
@@ -29,8 +32,9 @@ public class AIMain {
             m.addConv(3, 3);
             m.addConv(2, 1);
             m.addConv(1, 2);
+            m.addDense(-1);
+            m.addDense(6);
             m.addDense(3);
-            m.addDense(2);
             m.addDense(1);
             population.add(m);
         }
@@ -41,18 +45,25 @@ public class AIMain {
         Board goal = level.getGoal();
 
         for (Model m : population){
+            forbidden.clear();
+            m.fitness = 0;
             Board current = start.copy();
             int i = 0;
             while(!current.equals(goal) && i < 200){
+                if(forbidden.contains(current)){                    
+                    m.fitness += forbidden.size();
+                    break;
+                }
+                forbidden.add(current);
                 i += 1;
-                current = nextTurn(m, current);
-                LOG.trace("Currently in round {}", i);
+                current = nextTurn(m, current, goal);
+                //LOG.trace("Currently in round {}", i);
             }
-            m.fitness += current.equals(goal) ? 1 - i/200 : -1;
+            m.fitness += current.equals(goal) ? 200 - i: 0;
         }
 
         population.sort(null);
-        LOG.info("Fitnesses: {}", population);
+        LOG.info("Fitnesses: {}", population.get(size-1));
 
         for (int i = 0; i < size/2; i++){
             List<Double> m = population.get(i + size/2).getWeights();
@@ -73,7 +84,7 @@ public class AIMain {
         }
     }
 
-    private Board nextTurn(Model m, Board b){
+    private Board nextTurn(Model m, Board b, Board g){
         Collection<Brick> bricks =  b.getBricks();
         double max = -1;
         Board best = null;
@@ -83,7 +94,7 @@ public class AIMain {
                 if(limits.get(dir) > 0){
                     Board c = b.copy();
                     c.replace(brick, brick.movedInto(dir));
-                    double rating = m.feed(c.encode2D());
+                    double rating = m.feed(c.encode2D(), g.encode2D());
                     if (rating > max){
                         best = c;
                         max = rating;

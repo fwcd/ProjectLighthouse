@@ -44,12 +44,23 @@ public class Model implements WeightIterator, Comparable<Model> {
         this.args.add(i);
     }
 
-    public double feed(double[][] in){
+    public double feed(double[][] in, double[][] goal){
         for (int [] arg : args){
-            if (arg.length < 2){
+            if (arg[0] == -1){
+                double[][] nin = new double[in.length* 2][];
+                for (int i = 0; i < in.length; i++){
+                    nin[i] = new double[0];
+                    nin[i+1] = new double[0];
+                    nin[i][0] = in[i][0];
+                    nin[i+1][0] = goal[i][0];
+                }
+                in = nin;
+            }
+            else if (arg.length == 1){
                 in = dense.calculate(in, arg[0]);
             }else{
                 in = conv.calculate(in, arg[0], arg[1]);
+                goal = conv.calculate(goal, arg[0], arg[1]);
             }
             for(int i = 0; i < in.length; i++){
                 for(int o = 0; o < in[i].length; o++){
@@ -71,7 +82,7 @@ public class Model implements WeightIterator, Comparable<Model> {
 
     public void mutateWeights(){
         for (int i = 0; i < weights.size(); i++){
-            weights.set(i, weights.get(i) * r.nextGaussian());
+            weights.set(i, weights.get(i) + 5 * r.nextGaussian());
         }
     }
 
