@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import lighthouse.model.Board;
 import lighthouse.model.grid.ArrayColorGrid;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.model.grid.WritableColorGrid;
@@ -20,15 +19,15 @@ import lighthouse.util.LhConstants;
 public class LighthouseViewModel implements ColorGrid {
 	private final int columns;
 	private final int rows;
-	private final Board board;
+	private final BoardViewModel board;
 	private final WritableColorGrid overlayGrid;
 	private final List<Overlay> overlays = new ArrayList<>();
 	
-	public LighthouseViewModel(Board board) {
+	public LighthouseViewModel(BoardViewModel board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
 	}
 	
-	public LighthouseViewModel(Board board, int columns, int rows) {
+	public LighthouseViewModel(BoardViewModel board, int columns, int rows) {
 		this.board = board;
 		this.columns = columns;
 		this.rows = rows;

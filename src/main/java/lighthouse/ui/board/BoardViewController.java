@@ -21,6 +21,7 @@ import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Updatable;
 
@@ -32,8 +33,8 @@ public class BoardViewController implements ViewController {
 	private final JComponent component;
 
 	private final Updatable gameUpdater;
-	private Board model;
-	private LighthouseViewModel lhModel;
+	private BoardViewModel viewModel;
+	private LighthouseViewModel lighthouseViewModel;
 	private int animationFPS = 60;
 
 	private final List<LighthouseView> lhViews = new ArrayList<>();
@@ -73,7 +74,7 @@ public class BoardViewController implements ViewController {
 	public void play(Animation animation) {
 		AnimationState state = new AnimationState(animation);
 		localView.addOverlay(state);
-		lhModel.addOverlay(state);
+		lighthouseViewModel.addOverlay(state);
 		
 		Timer timer = new Timer(1000 / animationFPS, e -> {
 			if (state.hasNextFrame()) {
@@ -81,7 +82,7 @@ public class BoardViewController implements ViewController {
 				gameUpdater.update();
 			} else {
 				localView.removeOverlay(state);
-				lhModel.removeOverlay(state);
+				lighthouseViewModel.removeOverlay(state);
 				gameUpdater.update();
 				((Timer) e.getSource()).stop();
 			}
@@ -92,18 +93,18 @@ public class BoardViewController implements ViewController {
 	}
 	
 	public void updateModel(Board model) {
-		this.model = model;
-		lhModel = new LighthouseViewModel(model);
+		viewModel = new BoardViewModel(model);
+		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		responder.updateBoard(model);
 	}
 	
 	public void render() {
 		for (BoardView view : boardViews) {
-			view.draw(model);
+			view.draw(viewModel);
 		}
-		lhModel.renderOverlays();
+		lighthouseViewModel.renderOverlays();
 		for (LighthouseView lhView : lhViews) {
-			lhView.draw(lhModel);
+			lhView.draw(lighthouseViewModel);
 		}
 	}
 	
@@ -121,10 +122,6 @@ public class BoardViewController implements ViewController {
 	
 	public void addBoardView(BoardView view) {
 		boardViews.add(view);
-	}
-	
-	public Board getModel() {
-		return model;
 	}
 	
 	@Override

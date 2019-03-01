@@ -11,6 +11,7 @@ import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.transform.ScaleTransform;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.util.CenterPanel;
 
@@ -30,7 +31,7 @@ public class PerspectiveIconViewController implements ViewController {
 		Board initialBoard = perspective.getActiveBoard(game.getModel());
 		boardView.relayout(initialBoard.getColumns(), initialBoard.getRows());
 		
-		game.getExternalUpdaters().add(() -> boardView.draw(perspective.getActiveBoard(game.getModel())));
+		game.getExternalUpdaters().add(() -> boardView.draw(new BoardViewModel(perspective.getActiveBoard(game.getModel()))));
 		component.add(new CenterPanel(boardView.getComponent()), BorderLayout.CENTER);
 		component.add(new JLabel(perspective.getName()), BorderLayout.SOUTH);
 	}

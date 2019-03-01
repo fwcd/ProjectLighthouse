@@ -15,7 +15,6 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
 import lighthouse.model.BoardEditState;
 import lighthouse.model.Brick;
 import lighthouse.model.Edge;
@@ -24,6 +23,7 @@ import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.overlay.Overlay;
 import lighthouse.ui.board.transform.CoordinateMapper;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 
@@ -45,7 +45,7 @@ public class LocalBoardView implements BoardView {
 	private final JComponent component;
 	private final CoordinateMapper coordinateMapper;
 	private final List<Overlay> overlays = new ArrayList<>();
-	private Board model = null;
+	private BoardViewModel viewModel = null;
 	
 	public LocalBoardView(CoordinateMapper coordinateMapper) {
 		this.coordinateMapper = coordinateMapper;
@@ -66,8 +66,8 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	@Override
-	public void draw(Board model) {
-		this.model = model;
+	public void draw(BoardViewModel viewModel) {
+		this.viewModel = viewModel;
 		// Redraw the component
 		repaint();
 	}
@@ -94,7 +94,7 @@ public class LocalBoardView implements BoardView {
 			g2d.fillRect(0, 0, canvasWidth, canvasHeight);
 		}
 
-		if (model == null) {
+		if (viewModel == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
@@ -116,7 +116,7 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the board's bricks
-			for (Brick brick : model.getBricks()) {
+			for (Brick brick : viewModel.getModel().getBricks()) {
 				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
 				if (edgeDrawMode != EdgeDrawMode.NONE) {
@@ -125,7 +125,7 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the editing state
-			BoardEditState editState = model.getEditState();
+			BoardEditState editState = viewModel.getModel().getEditState();
 			GameBlock brickInProgress = editState.getBrickInProgress();
 			
 			if (brickInProgress != null) {
