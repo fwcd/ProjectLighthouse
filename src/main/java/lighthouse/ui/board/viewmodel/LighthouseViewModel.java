@@ -58,11 +58,16 @@ public class LighthouseViewModel implements ColorGrid {
 	}
 	
 	@Override
-	public Color getColorAt(IntVec lhGridPos) {
+	public Color getColorAt(IntVec gridPos) {
 		renderOverlays();
-		Color overlayColor = overlayGrid.getColorAt(lhGridPos);
+		Color overlayColor = overlayGrid.getColorAt(gridPos);
 		return (overlayColor == null)
-			? board.getColorAt(lighthousePosToGrid.apply(lhGridPos).floor())
+			? board.getColorAt(lighthousePosToGrid.apply(gridPos).floor())
 			: overlayColor;
+	}
+	
+	@Override
+	public Color getColorAt(int x, int y) {
+		return getColorAt(new IntVec(x, y));
 	}
 }

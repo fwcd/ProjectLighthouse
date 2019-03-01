@@ -28,6 +28,7 @@ public class BoardViewModel implements ColorGrid {
 		this.model = model;
 	}
 	
+	@Override
 	public Color getColorAt(IntVec gridPos) {
 		Color color = model.getColorAt(gridPos);
 		
@@ -39,6 +40,11 @@ public class BoardViewModel implements ColorGrid {
 		}
 		
 		return (color == null) ? Color.BLACK : color;
+	}
+	
+	@Override
+	public Color getColorAt(int x, int y) {
+		return getColorAt(new IntVec(x, y));
 	}
 	
 	/** Fetches the current editing state of the board. */

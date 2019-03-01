@@ -96,6 +96,11 @@ public class Board implements Serializable, ColorGrid {
 		return (block == null) ? null : block.getColor();
 	}
 	
+	@Override
+	public Color getColorAt(int x, int y) {
+		return getColorAt(new IntVec(x, y));
+	}
+	
 	public Color getColorOrBlackAt(IntVec gridPos) {
 		Color color = getColorAt(gridPos);
 		return (color == null) ? Color.BLACK : color;
