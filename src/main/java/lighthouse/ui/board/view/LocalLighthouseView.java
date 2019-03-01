@@ -11,12 +11,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import lighthouse.ui.board.viewmodel.LighthouseViewModel;
+
 /**
  * A local (Swing-based) view of the Lighthouse grid.
  */
 public class LocalLighthouseView implements LighthouseView {
 	private final JComponent component;
-	private LighthouseGrid model = null;
+	private LighthouseViewModel viewModel = null;
 	
 	public LocalLighthouseView() {
 		component = new JPanel() {
@@ -31,20 +33,20 @@ public class LocalLighthouseView implements LighthouseView {
 	}
 	
 	@Override
-	public void draw(LighthouseGrid model) {
-		this.model = model;
+	public void draw(LighthouseViewModel viewModel) {
+		this.viewModel = viewModel;
 		// Redraw the component
 		SwingUtilities.invokeLater(component::repaint);
 	}
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		if (model == null) {
+		if (viewModel == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
-			int cols = model.getColumns();
-			int rows = model.getRows();
+			int cols = viewModel.getColumns();
+			int rows = viewModel.getRows();
 			
 			int cellWidth = component.getPreferredSize().width / cols;
 			int cellHeight = component.getPreferredSize().height / rows;
@@ -52,7 +54,7 @@ public class LocalLighthouseView implements LighthouseView {
 			// Draw the cell grid
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
-					g2d.setColor(model.getColorAt(x, y));
+					g2d.setColor(viewModel.getColorAt(x, y));
 					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 				}
 			}

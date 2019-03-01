@@ -50,7 +50,7 @@ public class SideBarViewController implements ViewController {
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseView preview = new LocalLighthouseView();
-		game.getBoard().addLighthouseGridView(preview);
+		game.getBoard().addLighthouseView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(180, 200));
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		

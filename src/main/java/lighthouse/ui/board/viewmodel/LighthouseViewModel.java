@@ -1,4 +1,4 @@
-package lighthouse.ui.board.view;
+package lighthouse.ui.board.viewmodel;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,18 +17,18 @@ import lighthouse.util.LhConstants;
  * the big screen (the Lighthouse) by scaling and
  * translating the grid positions.
  */
-public class LighthouseGrid implements ColorGrid {
+public class LighthouseViewModel implements ColorGrid {
 	private final int columns;
 	private final int rows;
 	private final Board board;
 	private final WritableColorGrid overlayGrid;
 	private final List<Overlay> overlays = new ArrayList<>();
 	
-	public LighthouseGrid(Board board) {
+	public LighthouseViewModel(Board board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
 	}
 	
-	public LighthouseGrid(Board board, int columns, int rows) {
+	public LighthouseViewModel(Board board, int columns, int rows) {
 		this.board = board;
 		this.columns = columns;
 		this.rows = rows;

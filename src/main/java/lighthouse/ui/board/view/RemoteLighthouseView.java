@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.LhConstants;
 
 /**
@@ -37,20 +38,20 @@ public class RemoteLighthouseView implements LighthouseView {
 	}
 
 	@Override
-	public void draw(LighthouseGrid model) {
+	public void draw(LighthouseViewModel viewModel) {
 		try {
-			api.send(encode(model));
+			api.send(encode(viewModel));
 		} catch (IOException e) {
 			LOG.error("An IOException occurred while sending the grid to the Lighthouse: ", e);
 		}
 	}
 	
 	/** Encodes the colored grid in a byte array. */
-	private byte[] encode(LighthouseGrid grid) {
-		if (grid.getRows() != LhConstants.LIGHTHOUSE_ROWS) {
-			throw new IllegalArgumentException("Colored grid has " + grid.getRows() + " rows, but should have " + LhConstants.LIGHTHOUSE_ROWS);
-		} else if (grid.getColumns() != LhConstants.LIGHTHOUSE_COLS) {
-			throw new IllegalArgumentException("Colored grid has " + grid.getColumns() + " columns, but should have " + LhConstants.LIGHTHOUSE_COLS);
+	private byte[] encode(LighthouseViewModel viewModel) {
+		if (viewModel.getRows() != LhConstants.LIGHTHOUSE_ROWS) {
+			throw new IllegalArgumentException("Colored grid has " + viewModel.getRows() + " rows, but should have " + LhConstants.LIGHTHOUSE_ROWS);
+		} else if (viewModel.getColumns() != LhConstants.LIGHTHOUSE_COLS) {
+			throw new IllegalArgumentException("Colored grid has " + viewModel.getColumns() + " columns, but should have " + LhConstants.LIGHTHOUSE_COLS);
 		}
 		
 		byte[] data = new byte[LIGHTHOUSE_BYTES];
@@ -58,7 +59,7 @@ public class RemoteLighthouseView implements LighthouseView {
 		
 		for (int y = 0; y < LhConstants.LIGHTHOUSE_ROWS; y++) {
 			for (int x = 0; x < LhConstants.LIGHTHOUSE_COLS; x++) {
-				Color cell = grid.getColorAt(x, y);
+				Color cell = viewModel.getColorAt(x, y);
 				data[i] = (byte) cell.getRed();
 				data[i + 1] = (byte) cell.getGreen();
 				data[i + 2] = (byte) cell.getBlue();

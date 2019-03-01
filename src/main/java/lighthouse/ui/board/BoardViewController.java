@@ -19,9 +19,9 @@ import lighthouse.ui.board.overlay.Animation;
 import lighthouse.ui.board.overlay.AnimationState;
 import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.ui.board.view.BoardView;
-import lighthouse.ui.board.view.LighthouseGrid;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Updatable;
 
 /**
@@ -33,10 +33,10 @@ public class BoardViewController implements ViewController {
 
 	private final Updatable gameUpdater;
 	private Board model;
-	private LighthouseGrid lhModel;
+	private LighthouseViewModel lhModel;
 	private int animationFPS = 60;
 
-	private final List<LighthouseView> lhGridViews = new ArrayList<>();
+	private final List<LighthouseView> lhViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	private final LocalBoardView localView;
 
@@ -93,7 +93,7 @@ public class BoardViewController implements ViewController {
 	
 	public void updateModel(Board model) {
 		this.model = model;
-		lhModel = new LighthouseGrid(model);
+		lhModel = new LighthouseViewModel(model);
 		responder.updateBoard(model);
 	}
 	
@@ -102,7 +102,7 @@ public class BoardViewController implements ViewController {
 			view.draw(model);
 		}
 		lhModel.renderOverlays();
-		for (LighthouseView lhView : lhGridViews) {
+		for (LighthouseView lhView : lhViews) {
 			lhView.draw(lhModel);
 		}
 	}
@@ -115,8 +115,8 @@ public class BoardViewController implements ViewController {
 		responder.reset();
 	}
 	
-	public void addLighthouseGridView(LighthouseView view) {
-		lhGridViews.add(view);
+	public void addLighthouseView(LighthouseView view) {
+		lhViews.add(view);
 	}
 	
 	public void addBoardView(BoardView view) {

@@ -58,7 +58,7 @@ public class LighthouseConnectorViewController implements ViewController {
 		} else {
 			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
 			remoteView.connect();
-			grid.addLighthouseGridView(remoteView);
+			grid.addLighthouseView(remoteView);
 			connected = true;
 		}
 	}
