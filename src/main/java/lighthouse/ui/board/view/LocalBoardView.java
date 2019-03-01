@@ -132,6 +132,7 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the overlays
+			g2d.setStroke(new BasicStroke(3.0F));
 			OverlayShapeVisitor overlayRenderer = new LocalBoardOverlayRenderer(g2d, gridToPixels.floor());
 			
 			for (Overlay overlay : viewModel.getOverlays()) {
