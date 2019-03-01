@@ -1,7 +1,9 @@
 package lighthouse.ui.board.viewmodel;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import lighthouse.model.Board;
@@ -9,6 +11,7 @@ import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.GameBlock;
 import lighthouse.model.grid.ColorGrid;
+import lighthouse.ui.board.viewmodel.overlay.Overlay;
 import lighthouse.util.IntVec;
 
 /**
@@ -19,6 +22,7 @@ import lighthouse.util.IntVec;
 public class BoardViewModel implements ColorGrid {
 	private final Board model;
 	private final BoardEditState editState = new BoardEditState();
+	private final List<Overlay> overlays = new ArrayList<>();
 	
 	public BoardViewModel(Board model) {
 		this.model = model;
@@ -44,6 +48,12 @@ public class BoardViewModel implements ColorGrid {
 		model.clear();
 		editState.reset();
 	}
+	
+	public List<? extends Overlay> getOverlays() { return overlays; }
+	
+	public void addOverlay(Overlay overlay) { overlays.add(overlay); } 
+	
+	public void removeOverlay(Overlay overlay) { overlays.remove(overlay); }
 	
 	// === Delegated methods ===
 	
