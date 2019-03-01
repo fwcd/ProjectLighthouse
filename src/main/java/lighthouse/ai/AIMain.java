@@ -48,8 +48,7 @@ public class AIMain {
             Board current = start.copy();
             int i = 0;
             while(!current.equals(goal) && i < 200){
-                if(forbidden.contains(current)){                    
-                    m.fitness += forbidden.size();
+                if(forbidden.contains(current)){
                     break;
                 }
                 forbidden.add(current);
@@ -57,26 +56,14 @@ public class AIMain {
                 current = nextTurn(m, current, goal);
                 //LOG.trace("Currently in round {}", i);
             }
-            m.fitness += current.equals(goal) ? 200 - i: 0;
+            m.fitness -= level.avgDistanceToGoal(current);
         }
 
         population.sort(null);
-        LOG.info("Fitnesses: {}", population.get(size-1));
+        LOG.info("Fitnesses: {}", population);
 
         for (int i = 0; i < size/2; i++){
-            List<Double> m = population.get(i + size/2).getWeights();
-            List<Double> f = population.get(i + size/2 - 1 ).getWeights();
-            List<Double> c = new ArrayList<Double>();
-
-            for (int o = 0; o < m.size(); o++){
-                if (r.nextDouble() > 0.5){
-                    c.add(m.get(o));
-                }else{
-                    c.add(f.get(o));
-                }
-            }
-
-            Model n = new Model(c);
+            Model n = new Model(population.get(i + size/2).getWeights());
             n.mutateWeights();
             population.set(i, n);
         }

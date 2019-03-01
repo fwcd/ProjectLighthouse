@@ -49,8 +49,8 @@ public class Model implements WeightIterator, Comparable<Model> {
             if (arg[0] == -1){
                 double[][] nin = new double[in.length* 2][];
                 for (int i = 0; i < in.length; i++){
-                    nin[i] = new double[0];
-                    nin[i+1] = new double[0];
+                    nin[i] = new double[1];
+                    nin[i+1] = new double[1];
                     nin[i][0] = in[i][0];
                     nin[i+1][0] = goal[i][0];
                 }
@@ -82,7 +82,7 @@ public class Model implements WeightIterator, Comparable<Model> {
 
     public void mutateWeights(){
         for (int i = 0; i < weights.size(); i++){
-            weights.set(i, weights.get(i) + 5 * r.nextGaussian());
+            weights.set(i, weights.get(i) +  r.nextGaussian());
         }
     }
 
