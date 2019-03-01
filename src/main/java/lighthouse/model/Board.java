@@ -128,6 +128,12 @@ public class Board implements Serializable, ColorGrid {
 		replace(move.getOldBrick(), move.getNewBrick());
 	}
 	
+	public Board childBoard(Move move) {
+		Board child = copy();
+		child.perform(move);
+		return child;
+	}
+	
 	/** Encodes this board as an array of columns * rows item.. */
 	public double[] encode1D() {
 		return IntStream.range(0, columns * rows)

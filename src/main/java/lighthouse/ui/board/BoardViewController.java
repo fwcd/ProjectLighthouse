@@ -1,6 +1,7 @@
 package lighthouse.ui.board;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -95,6 +96,20 @@ public class BoardViewController implements ViewController {
 				viewModel.removeOverlay(player);
 				gameUpdater.update();
 				
+				((Timer) e.getSource()).stop();
+			}
+		});
+		
+		timer.setRepeats(true);
+		timer.start();
+	}
+	
+	public void play(List<? extends Board> boards, int delayMs) {
+		Iterator<? extends Board> iterator = boards.iterator();
+		Timer timer = new Timer(delayMs, e -> {
+			if (iterator.hasNext()) {
+				// TODO
+			} else {
 				((Timer) e.getSource()).stop();
 			}
 		});
