@@ -13,16 +13,14 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Level;
-import lighthouse.ui.board.controller.BoardPlayController;
 
 public class AIMain {
     private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);
     
-    ArrayList<Model> population;
-    BoardPlayController controller;
-    int size;
-    Random r = new Random();
-    ArrayList<Board> forbidden = new ArrayList<>();
+    private List<Model> population;
+    private int size;
+    private Random r = new Random();
+    private List<Board> forbidden = new ArrayList<>();
 
     public AIMain(int pop){
         size = pop;
