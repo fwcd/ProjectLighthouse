@@ -28,12 +28,12 @@ public class ArrayColorGrid implements WritableColorGrid {
 	
 	@Override
 	public Color getColorAt(IntVec pos) {
-		return getColorAt(pos.getY(), pos.getX());
+		return getColorAt(pos.getX(), pos.getY());
 	}
 	
 	@Override
 	public Color getColorAt(int x, int y) {
-		if (outOfBoundsDrawingEnabled) {
+		if (outOfBoundsDrawingEnabled && (x < 0 || x >= width || y < 0 || y >= height)) {
 			return Color.BLACK;
 		} else {
 			return colors[y][x];

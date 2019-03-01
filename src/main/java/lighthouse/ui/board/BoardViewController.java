@@ -7,7 +7,6 @@ import javax.swing.JComponent;
 import javax.swing.Timer;
 
 import lighthouse.model.Board;
-import lighthouse.model.grid.WritableColorGrid;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
@@ -74,18 +73,16 @@ public class BoardViewController implements ViewController {
 	public void play(Animation animation) {
 		AnimationState state = new AnimationState(animation);
 		localView.addOverlay(state);
-
+		lhModel.addOverlay(state);
+		
 		Timer timer = new Timer(1000 / animationFPS, e -> {
 			if (state.hasNextFrame()) {
 				state.advance();
-				
-				WritableColorGrid lowResGrid = lhModel.getOverlayGrid();
-				lowResGrid.clear();
-				state.drawLowRes(lowResGrid);
-				
 				gameUpdater.update();
 			} else {
 				localView.removeOverlay(state);
+				lhModel.removeOverlay(state);
+				gameUpdater.update();
 				((Timer) e.getSource()).stop();
 			}
 		});
@@ -104,6 +101,7 @@ public class BoardViewController implements ViewController {
 		for (BoardView view : boardViews) {
 			view.draw(model);
 		}
+		lhModel.renderOverlays();
 		for (LighthouseGridView lhView : lhGridViews) {
 			lhView.draw(lhModel);
 		}

@@ -41,8 +41,6 @@ public class LighthouseGrid implements ColorGrid {
 	/** Fetches the Lighthouse grid's rows. */
 	public int getRows() { return rows; }
 	
-	public WritableColorGrid getOverlayGrid() { return overlayGrid; }
-	
 	public void renderOverlays() {
 		overlayGrid.clear();
 		for (Overlay overlay : overlays) {
