@@ -57,14 +57,20 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 		case FILLED:
 			for (int y = 0; y < size.getY(); y++) {
 				for (int x = 0; x < size.getX(); x++) {
-					if ((MathUtils.square((double) (x - radius.getX())) / squaredRadius.getX()) + (MathUtils.square((double) (y - radius.getY())) / squaredRadius.getY()) <= 1.0) {
+					if (((double) MathUtils.square(x - radius.getX()) / squaredRadius.getX()) + ((double) MathUtils.square(y - radius.getY()) / squaredRadius.getY()) <= 1.0) {
 						grid.setColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
 					}
 				}
 			}
 			break;
 		case OUTLINED:
-			// TODO
+			double radiusRatio = radius.getY() / (double) radius.getX();
+			
+			for (int x = 0; x < size.getX(); x++) {
+				double absY = radiusRatio * Math.sqrt(squaredRadius.getX() - MathUtils.square(x - radius.getX()));
+				grid.setColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color);
+				grid.setColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color);
+			}
 			break;
 		default:
 			throw invalidShading(shading);
