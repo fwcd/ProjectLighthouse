@@ -7,6 +7,9 @@ import lighthouse.model.grid.ColorGrid;
 import lighthouse.model.grid.WritableColorGrid;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
+import lighthouse.util.transform.DoubleVecBijection;
+import lighthouse.util.transform.Scaling;
+import lighthouse.util.transform.Translation;
 
 /**
  * A class that wraps the board preparing it for
@@ -18,6 +21,7 @@ public class LighthouseViewModel implements ColorGrid {
 	private final int rows;
 	private final BoardViewModel board;
 	private final WritableColorGrid overlayGrid;
+	private final DoubleVecBijection lighthouseToGrid = new Translation(-4, -1).andThen(new Scaling(0.2, 0.5));
 	
 	public LighthouseViewModel(BoardViewModel board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
@@ -40,7 +44,7 @@ public class LighthouseViewModel implements ColorGrid {
 	public Color getColorAt(IntVec lhGridPos) {
 		Color overlayColor = overlayGrid.getColorAt(lhGridPos);
 		return (overlayColor == null)
-			? board.getColorAt(lhGridPos.sub(4, 1).scale(0.2, 0.5).floor())
+			? board.getColorAt(lighthouseToGrid.apply(lhGridPos).floor())
 			: overlayColor;
 	}
 }
