@@ -16,9 +16,9 @@ import lighthouse.util.transform.Bijection;
  */
 public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	private final List<BoardResponder> responders = new ArrayList<>();
-	private final Bijection<IntVec> gridToPixels;
+	private final Bijection<IntVec, IntVec> gridToPixels;
 	
-	public BoardMouseInput(Bijection<IntVec> gridToPixels) {
+	public BoardMouseInput(Bijection<IntVec, IntVec> gridToPixels) {
 		this.gridToPixels = gridToPixels;
 	}
 	

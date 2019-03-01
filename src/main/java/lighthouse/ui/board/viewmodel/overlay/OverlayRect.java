@@ -1,24 +1,28 @@
 package lighthouse.ui.board.viewmodel.overlay;
 
-import lighthouse.util.IntVec;
+import java.awt.Color;
+
+import lighthouse.util.DoubleVec;
 
 public class OverlayRect implements OverlayShape {
-	private final IntVec topLeft;
-	private final int width;
-	private final int height;
+	private final DoubleVec topLeft;
+	private final DoubleVec size;
+	private final Color color;
+	private final OverlayShading shading;
 	
-	public OverlayRect(int x, int y, int width, int height) {
-		this(new IntVec(x, y), width, height);
+	public OverlayRect(double x, double y, double width, double height, Color color, OverlayShading shading) {
+		this(new DoubleVec(x, y), width, height, color, shading);
 	}
 	
-	public OverlayRect(IntVec topLeft, IntVec size) {
-		this(topLeft, size.getX(), size.getY());
+	public OverlayRect(DoubleVec topLeft, double width, double height, Color color, OverlayShading shading) {
+		this(topLeft, new DoubleVec(width, height), color, shading);
 	}
 	
-	public OverlayRect(IntVec topLeft, int width, int height) {
+	public OverlayRect(DoubleVec topLeft, DoubleVec size, Color color, OverlayShading shading) {
 		this.topLeft = topLeft;
-		this.width = width;
-		this.height = height;
+		this.size = size;
+		this.color = color;
+		this.shading = shading;
 	}
 	
 	@Override
@@ -26,11 +30,15 @@ public class OverlayRect implements OverlayShape {
 		visitor.visitRect(this);
 	}
 	
-	public IntVec getTopLeft() { return topLeft; }
+	public DoubleVec getTopLeft() { return topLeft; }
 	
-	public int getWidth() { return width; }
+	public OverlayShading getShading() { return shading; }
 	
-	public int getHeight() { return height; }
+	public Color getColor() { return color; }
 	
-	public IntVec getSize() { return new IntVec(width, height); }
+	public double getWidth() { return size.getX(); }
+	
+	public double getHeight() { return size.getY(); }
+	
+	public DoubleVec getSize() { return size; }
 }

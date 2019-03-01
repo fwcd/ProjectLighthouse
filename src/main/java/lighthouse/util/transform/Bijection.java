@@ -1,25 +1,25 @@
 package lighthouse.util.transform;
 
+import java.util.function.Function;
+
 /**
  * Represents an invertible transformation.
  */
-public interface Bijection<T> {
-	T apply(T value);
+public interface Bijection<X, Y> extends Function<X, Y> {
+	X inverse(Y value);
 	
-	T inverse(T value);
-	
-	default Bijection<T> compose(Bijection<T> inner) {
-		Bijection<T> outer = this;
-		return new Bijection<T>() {
+	default <A> Bijection<A, Y> compose(Bijection<A, X> inner) {
+		Bijection<X, Y> outer = this;
+		return new Bijection<A, Y>() {
 			@Override
-			public T apply(T value) { return outer.apply(inner.apply(value)); }
+			public Y apply(A value) { return outer.apply(inner.apply(value)); }
 			
 			@Override
-			public T inverse(T value) { return inner.inverse(outer.inverse(value)); }
+			public A inverse(Y value) { return inner.inverse(outer.inverse(value)); }
 		};
 	}
 	
-	default Bijection<T> then(Bijection<T> outer) {
+	default <B> Bijection<X, B> andThen(Bijection<Y, B> outer) {
 		return outer.compose(this);
 	}
 }

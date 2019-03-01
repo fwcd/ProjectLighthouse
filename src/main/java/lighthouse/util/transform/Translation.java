@@ -5,7 +5,7 @@ import lighthouse.util.IntVec;
 /**
  * Represents an IntVec-translation.
  */
-public class Translation implements Bijection<IntVec> {
+public class Translation implements Bijection<IntVec, IntVec> {
 	private int dx;
 	private int dy;
 	

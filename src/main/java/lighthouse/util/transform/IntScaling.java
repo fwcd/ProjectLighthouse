@@ -3,26 +3,18 @@ package lighthouse.util.transform;
 import lighthouse.util.IntVec;
 
 /**
- * Represents a proportionally scaling IntVec-transformation.
+ * Represents a proportionally scaling DoubleVec-transformation.
  */
-public class Scaling implements Bijection<IntVec> {
+public class IntScaling implements Bijection<IntVec, IntVec> {
 	private double xFactor;
 	private double yFactor;
 	private double inverseXFactor;
 	private double inverseYFactor;
 	
-	public Scaling(double xFactor, double yFactor) {
-		setXFactor(xFactor);
-		setYFactor(yFactor);
-	}
-	
-	public void setXFactor(double xFactor) {
+	public IntScaling(double xFactor, double yFactor) {
 		this.xFactor = xFactor;
-		inverseXFactor = 1.0 / xFactor;
-	}
-	
-	public void setYFactor(double yFactor) {
 		this.yFactor = yFactor;
+		inverseXFactor = 1.0 / xFactor;
 		inverseYFactor = 1.0 / yFactor;
 	}
 	
@@ -35,4 +27,6 @@ public class Scaling implements Bijection<IntVec> {
 	public IntVec apply(IntVec gridPos) {
 		return gridPos.scale(xFactor, yFactor).ceil();
 	}
+	
+	public DoubleScaling toDoubleScaling() { return new DoubleScaling(xFactor, yFactor); }
 }

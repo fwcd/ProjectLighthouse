@@ -1,20 +1,28 @@
 package lighthouse.ui.board.viewmodel.overlay;
 
-import lighthouse.util.IntVec;
+import java.awt.Color;
+
+import lighthouse.util.DoubleVec;
 
 public class OverlayOval implements OverlayShape {
-	private final IntVec center;
-	private final int xRadius;
-	private final int yRadius;
+	private final DoubleVec center;
+	private final DoubleVec radius;
+	private final Color color;
+	private final OverlayShading shading;
 	
-	public OverlayOval(IntVec center, int radius) {
-		this(center, radius, radius);
+	public OverlayOval(DoubleVec center, double radius, Color color, OverlayShading shading) {
+		this(center, radius, radius, color, shading);
 	}
 	
-	public OverlayOval(IntVec center, int xRadius, int yRadius) {
+	public OverlayOval(DoubleVec center, double xRadius, double yRadius, Color color, OverlayShading shading) {
+		this(center, new DoubleVec(xRadius, yRadius), color, shading);
+	}
+	
+	public OverlayOval(DoubleVec center, DoubleVec radius, Color color, OverlayShading shading) {
 		this.center = center;
-		this.xRadius = xRadius;
-		this.yRadius = yRadius;
+		this.radius = radius;
+		this.color = color;
+		this.shading = shading;
 	}
 	
 	@Override
@@ -22,9 +30,19 @@ public class OverlayOval implements OverlayShape {
 		visitor.visitOval(this);
 	}
 	
-	public IntVec getCenter() { return center; }
+	public OverlayShading getShading() { return shading; }
 	
-	public int getXRadius() { return xRadius; }
+	public Color getColor() { return color; }
 	
-	public int getYRadius() { return yRadius; }
+	public DoubleVec getCenter() { return center; }
+	
+	public double getXRadius() { return radius.getX(); }
+	
+	public double getYRadius() { return radius.getY(); }
+	
+	public DoubleVec getRadius() { return radius; }
+	
+	public DoubleVec getTopLeft() { return center.sub(radius); }
+	
+	public DoubleVec getSize() { return radius.scale(2); }
 }

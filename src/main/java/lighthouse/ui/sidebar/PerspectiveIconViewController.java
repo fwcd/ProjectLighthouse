@@ -15,7 +15,7 @@ import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.util.CenterPanel;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.Bijection;
-import lighthouse.util.transform.Scaling;
+import lighthouse.util.transform.IntScaling;
 
 public class PerspectiveIconViewController implements ViewController {
 	private final JComponent component;
@@ -24,7 +24,7 @@ public class PerspectiveIconViewController implements ViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		Bijection<IntVec> gridToPixels = new Scaling(4, 4);
+		Bijection<IntVec, IntVec> gridToPixels = new IntScaling(4, 4);
 		LocalBoardView boardView = new LocalBoardView(gridToPixels);
 		boardView.setActiveBrickScale(1.0);
 		boardView.setPlacedBrickScale(1.0);

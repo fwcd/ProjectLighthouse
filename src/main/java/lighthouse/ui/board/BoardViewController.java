@@ -15,13 +15,13 @@ import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.input.BoardXboxControllerInput;
-import lighthouse.ui.board.overlay.Animation;
-import lighthouse.ui.board.overlay.AnimationState;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
+import lighthouse.ui.board.viewmodel.overlay.Animation;
+import lighthouse.ui.board.viewmodel.overlay.AnimationPlayer;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.Bijection;
@@ -44,7 +44,7 @@ public class BoardViewController implements ViewController {
 
 	private final DelegateResponder responder;
 
-	public BoardViewController(Board model, Bijection<IntVec> gridToPixels, Updatable gameUpdater) {
+	public BoardViewController(Board model, Bijection<IntVec, IntVec> gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
 
 		viewModel = new BoardViewModel(model);
@@ -74,17 +74,15 @@ public class BoardViewController implements ViewController {
 
 	/** Plays an animation in high and low resolution on the board views. */
 	public void play(Animation animation) {
-		AnimationState state = new AnimationState(animation);
-		localView.addOverlay(state);
-		lighthouseViewModel.addOverlay(state);
+		AnimationPlayer player = new AnimationPlayer(animation);
+		viewModel.addOverlay(player);
 		
 		Timer timer = new Timer(1000 / animationFPS, e -> {
-			if (state.hasNextFrame()) {
-				state.advance();
+			if (player.hasNextFrame()) {
+				player.nextFrame();
 				gameUpdater.update();
 			} else {
-				localView.removeOverlay(state);
-				lighthouseViewModel.removeOverlay(state);
+				viewModel.removeOverlay(player);
 				gameUpdater.update();
 				((Timer) e.getSource()).stop();
 			}
@@ -104,7 +102,6 @@ public class BoardViewController implements ViewController {
 		for (BoardView view : boardViews) {
 			view.draw(viewModel);
 		}
-		lighthouseViewModel.renderOverlays();
 		for (LighthouseView lhView : lhViews) {
 			lhView.draw(lighthouseViewModel);
 		}

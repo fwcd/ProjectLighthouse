@@ -21,7 +21,7 @@ import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.Bijection;
-import lighthouse.util.transform.Scaling;
+import lighthouse.util.transform.IntScaling;
 
 /**
  * Manages the game board view, the current
@@ -32,7 +32,7 @@ public class GameViewController implements ViewController {
 
 	private final GameState model;
 	private final GameContext context = new GameContext();
-	private final Bijection<IntVec> gridToPixels = new Scaling(70, 70);
+	private final Bijection<IntVec, IntVec> gridToPixels = new IntScaling(70, 70);
 	private final BoardViewController board;
 
 	private GameMode mode;

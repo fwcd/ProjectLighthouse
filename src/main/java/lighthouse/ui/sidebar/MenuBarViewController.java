@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.overlay.DemoAnimation;
+import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
 import lighthouse.ui.debug.ListenerGraphViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceIcon;

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -20,9 +19,9 @@ import lighthouse.model.Edge;
 import lighthouse.model.GameBlock;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
-import lighthouse.ui.board.overlay.Overlay;
 import lighthouse.ui.board.viewmodel.BoardEditState;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.board.viewmodel.overlay.Overlay;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.Bijection;
@@ -43,11 +42,10 @@ public class LocalBoardView implements BoardView {
 	private double placedBrickScale = 0.8;
 	
 	private final JComponent component;
-	private final Bijection<IntVec> gridToPixels;
-	private final List<Overlay> overlays = new ArrayList<>();
+	private final Bijection<IntVec, IntVec> gridToPixels;
 	private BoardViewModel viewModel = null;
 	
-	public LocalBoardView(Bijection<IntVec> gridToPixels) {
+	public LocalBoardView(Bijection<IntVec, IntVec> gridToPixels) {
 		this.gridToPixels = gridToPixels;
 		
 		component = new JPanel() {
@@ -133,8 +131,8 @@ public class LocalBoardView implements BoardView {
 			}
 			
 			// Draw the overlays
-			for (Overlay overlay : overlays) {
-				overlay.drawHighRes(g2d);
+			for (Overlay overlay : viewModel.getOverlays()) {
+				
 			}
 		}
 	}
@@ -272,14 +270,6 @@ public class LocalBoardView implements BoardView {
 	
 	public void addKeyInput(BoardKeyInput listener) {
 		component.addKeyListener(listener);
-	}
-	
-	public void addOverlay(Overlay overlay) {
-		overlays.add(overlay);
-	}
-	
-	public void removeOverlay(Overlay overlay) {
-		overlays.remove(overlay);
 	}
 	
 	public JComponent getComponent() {
