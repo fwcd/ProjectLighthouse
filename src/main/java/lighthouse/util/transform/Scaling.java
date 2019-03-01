@@ -28,11 +28,11 @@ public class Scaling implements Bijection<IntVec> {
 	
 	@Override
 	public IntVec inverse(IntVec pixelCoordinate) {
-		return pixelCoordinate.scale(inverseXFactor, inverseYFactor).castToInt();
+		return pixelCoordinate.scale(inverseXFactor, inverseYFactor).floor();
 	}
 	
 	@Override
 	public IntVec apply(IntVec gridPos) {
-		return gridPos.scale(xFactor, yFactor).castToInt();
+		return gridPos.scale(xFactor, yFactor).ceil();
 	}
 }
