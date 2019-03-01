@@ -11,6 +11,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
+import lighthouse.ui.board.debug.AnimationTracker;
 import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
@@ -35,13 +36,14 @@ public class BoardViewController implements ViewController {
 	private final Updatable gameUpdater;
 	private BoardViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
-	private int animationFPS = 60;
-
+	
 	private final List<LighthouseView> lhViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	private final LocalBoardView localView;
-
 	private final DelegateResponder responder;
+	
+	private final AnimationTracker animationTracker = new AnimationTracker();
+	private int animationFPS = 60;
 
 	public BoardViewController(Board model, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
@@ -73,16 +75,26 @@ public class BoardViewController implements ViewController {
 
 	/** Plays an animation in high and low resolution on the board views. */
 	public void play(Animation animation) {
+		String name = animation.getName();
+		int totalFrames = animation.getTotalFrames();
 		AnimationPlayer player = new AnimationPlayer(animation);
+		
 		viewModel.addOverlay(player);
+		animationTracker.setRunningAnimationProgress(name, 0.0);
 		
 		Timer timer = new Timer(1000 / animationFPS, e -> {
 			if (player.hasNextFrame()) {
 				player.nextFrame();
 				gameUpdater.update();
+				
+				if (animationTracker.isEnabled()) {
+					animationTracker.setRunningAnimationProgress(name, player.getCurrentFrame() / (double) totalFrames);
+				}
 			} else {
+				animationTracker.removeRunningAnimation(name);
 				viewModel.removeOverlay(player);
 				gameUpdater.update();
+				
 				((Timer) e.getSource()).stop();
 			}
 		});
@@ -106,28 +118,18 @@ public class BoardViewController implements ViewController {
 		}
 	}
 	
-	public void setResponder(BoardResponder responder) {
-		this.responder.setDelegate(responder);
-	}
+	public void setResponder(BoardResponder responder) { this.responder.setDelegate(responder); }
 	
-	public void reset() {
-		responder.reset();
-	}
+	public void reset() { responder.reset(); }
 	
-	public void addLighthouseView(LighthouseView view) {
-		lhViews.add(view);
-	}
+	public void addLighthouseView(LighthouseView view) { lhViews.add(view); }
 	
-	public void addBoardView(BoardView view) {
-		boardViews.add(view);
-	}
+	public void addBoardView(BoardView view) { boardViews.add(view); }
 	
-	public BoardViewModel getViewModel() {
-		return viewModel;
-	}
+	public BoardViewModel getViewModel() { return viewModel; }
+	
+	public AnimationTracker getAnimationTracker() { return animationTracker; }
 	
 	@Override
-	public JComponent getComponent() {
-		return component;
-	}
+	public JComponent getComponent() { return component; }
 }

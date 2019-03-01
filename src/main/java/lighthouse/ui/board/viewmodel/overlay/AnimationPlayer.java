@@ -19,6 +19,10 @@ public class AnimationPlayer implements Overlay {
 		return frame < (animation.getTotalFrames() - 1);
 	}
 	
+	public int getCurrentFrame() {
+		return frame;
+	}
+	
 	public void nextFrame() {
 		frame++;
 	}

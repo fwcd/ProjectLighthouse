@@ -6,6 +6,9 @@ import java.util.List;
 
 public class DemoAnimation implements Animation {
 	@Override
+	public String getName() { return "Demo animation"; }
+	
+	@Override
 	public int getTotalFrames() { return 500; }
 	
 	@Override
