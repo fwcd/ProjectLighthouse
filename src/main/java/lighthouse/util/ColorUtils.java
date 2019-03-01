@@ -12,15 +12,17 @@ public class ColorUtils {
 	
 	private ColorUtils() {}
 	
-	// public static Color blend(Color a, Color b) {
-	// 	// Source: http://www.java2s.com/Code/Java/2D-Graphics-GUI/Blendtwocolors.htm
-	// 	double totalAlpha = a.getAlpha() + b.getAlpha();
-	// 	double weightA = a.getAlpha() / totalAlpha;
-	// 	double weightB = b.getAlpha() / totalAlpha;
-	// 	return new Color(
-	// 		(int) ()
-	// 	);
-	// }
+	public static Color blend(Color a, Color b) {
+		// Source: http://www.java2s.com/Code/Java/2D-Graphics-GUI/Blendtwocolors.htm
+		double totalAlpha = a.getAlpha() + b.getAlpha();
+		double weightA = a.getAlpha() / totalAlpha;
+		double weightB = b.getAlpha() / totalAlpha;
+		return new Color(
+			(int) (weightA * a.getRed() + weightB * b.getRed()),
+			(int) (weightA * a.getGreen() + weightB * b.getGreen()),
+			(int) (weightA * a.getBlue() + weightB * b.getBlue())
+		);
+	}
 	
 	public static Color randomColor() {
 		Random r = ThreadLocalRandom.current();
