@@ -1,17 +1,17 @@
-package lighthouse.ui.board.transform;
+package lighthouse.util.transform;
 
 import lighthouse.util.IntVec;
 
 /**
- * Represents a proportionally scaling transformation.
+ * Represents a proportionally scaling IntVec-transformation.
  */
-public class ScaleTransform implements CoordinateMapper {
+public class Scaling implements Bijection<IntVec> {
 	private double xFactor;
 	private double yFactor;
 	private double inverseXFactor;
 	private double inverseYFactor;
 	
-	public ScaleTransform(double xFactor, double yFactor) {
+	public Scaling(double xFactor, double yFactor) {
 		setXFactor(xFactor);
 		setYFactor(yFactor);
 	}
@@ -27,12 +27,12 @@ public class ScaleTransform implements CoordinateMapper {
 	}
 	
 	@Override
-	public IntVec toGridPos(IntVec pixelCoordinate) {
+	public IntVec inverse(IntVec pixelCoordinate) {
 		return pixelCoordinate.scale(inverseXFactor, inverseYFactor).castToInt();
 	}
 	
 	@Override
-	public IntVec toPixelPos(IntVec gridPos) {
+	public IntVec apply(IntVec gridPos) {
 		return gridPos.scale(xFactor, yFactor).castToInt();
 	}
 }

@@ -17,13 +17,14 @@ import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.overlay.Animation;
 import lighthouse.ui.board.overlay.AnimationState;
-import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
+import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
+import lighthouse.util.transform.Bijection;
 
 /**
  * Manages the different board views. It assembles the necessary inputs and
@@ -43,7 +44,7 @@ public class BoardViewController implements ViewController {
 
 	private final DelegateResponder responder;
 
-	public BoardViewController(Board model, CoordinateMapper coordinateMapper, Updatable gameUpdater) {
+	public BoardViewController(Board model, Bijection<IntVec> gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
 
 		viewModel = new BoardViewModel(model);
@@ -51,13 +52,13 @@ public class BoardViewController implements ViewController {
 		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater));
 
 		// Creates a local view and hooks up the Swing component
-		localView = new LocalBoardView(coordinateMapper);
+		localView = new LocalBoardView(gridToPixels);
 		localView.relayout(model.getColumns(), model.getRows());
 		component = localView.getComponent();
 		addBoardView(localView);
 
 		// Adds mouse input
-		BoardMouseInput mouseInput = new BoardMouseInput(coordinateMapper);
+		BoardMouseInput mouseInput = new BoardMouseInput(gridToPixels);
 		mouseInput.addResponder(responder);
 		localView.addMouseInput(mouseInput);
 

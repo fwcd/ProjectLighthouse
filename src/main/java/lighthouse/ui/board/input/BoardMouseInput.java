@@ -8,18 +8,18 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import lighthouse.ui.board.controller.BoardResponder;
-import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.util.IntVec;
+import lighthouse.util.transform.Bijection;
 
 /**
  * A mouse-based grid input.
  */
 public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	private final List<BoardResponder> responders = new ArrayList<>();
-	private final CoordinateMapper mapper;
+	private final Bijection<IntVec> gridToPixels;
 	
-	public BoardMouseInput(CoordinateMapper mapper) {
-		this.mapper = mapper;
+	public BoardMouseInput(Bijection<IntVec> gridToPixels) {
+		this.gridToPixels = gridToPixels;
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		IntVec pixelPos = pixelPosOf(e);
-		IntVec gridPos = mapper.toGridPos(pixelPos);
+		IntVec gridPos = gridToPixels.inverse(pixelPos);
 		if (SwingUtilities.isRightMouseButton(e)) {
 			responders.forEach(r -> r.rightPress(gridPos));
 		} else {
@@ -42,7 +42,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	public void mouseDragged(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pixelPos = pixelPosOf(e);
-			IntVec gridPos = mapper.toGridPos(pixelPos);
+			IntVec gridPos = gridToPixels.inverse(pixelPos);
 			responders.forEach(r -> r.dragTo(gridPos));
 		}
 	}
@@ -51,7 +51,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	public void mouseReleased(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pixelPos = pixelPosOf(e);
-			IntVec gridPos = mapper.toGridPos(pixelPos);
+			IntVec gridPos = gridToPixels.inverse(pixelPos);
 			responders.forEach(r -> r.release(gridPos));
 		}
 	}

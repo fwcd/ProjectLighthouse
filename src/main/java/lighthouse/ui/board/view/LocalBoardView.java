@@ -21,11 +21,11 @@ import lighthouse.model.GameBlock;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.overlay.Overlay;
-import lighthouse.ui.board.transform.CoordinateMapper;
 import lighthouse.ui.board.viewmodel.BoardEditState;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
+import lighthouse.util.transform.Bijection;
 
 /**
  * A local high-resolution (Swing-based) view of the GameBoard.
@@ -43,12 +43,12 @@ public class LocalBoardView implements BoardView {
 	private double placedBrickScale = 0.8;
 	
 	private final JComponent component;
-	private final CoordinateMapper coordinateMapper;
+	private final Bijection<IntVec> gridToPixels;
 	private final List<Overlay> overlays = new ArrayList<>();
 	private BoardViewModel viewModel = null;
 	
-	public LocalBoardView(CoordinateMapper coordinateMapper) {
-		this.coordinateMapper = coordinateMapper;
+	public LocalBoardView(Bijection<IntVec> gridToPixels) {
+		this.gridToPixels = gridToPixels;
 		
 		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -77,7 +77,7 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	public void relayout(int columns, int rows) {
-		IntVec cellSize = coordinateMapper.toPixelPos(IntVec.ONE_ONE);
+		IntVec cellSize = gridToPixels.apply(IntVec.ONE_ONE);
 		int width = cellSize.getX() * columns;
 		int height = cellSize.getY() * rows;
 		// Add one to render the right and bottom grid borders
@@ -120,7 +120,7 @@ public class LocalBoardView implements BoardView {
 				LOG.debug("Rendering {}", brick);
 				renderBlock(g2d, brick, placedBrickScale);
 				if (edgeDrawMode != EdgeDrawMode.NONE) {
-					renderEdges(g2d, coordinateMapper.toPixelPos(brick.getPos()), brick.getEdges(), placedBrickScale);
+					renderEdges(g2d, gridToPixels.apply(brick.getPos()), brick.getEdges(), placedBrickScale);
 				}
 			}
 			
@@ -158,7 +158,7 @@ public class LocalBoardView implements BoardView {
 		IntVec cellSize = getCellSize();
 		IntVec scaledCellSize = cellSize.scale(scale).castToInt();
 		IntVec cornerOffset = cellSize.sub(scaledCellSize).scale(0.5).castToInt();
-		IntVec innerTopLeft = pixelPos.add(coordinateMapper.toPixelPos(edge.getOff())).add(cornerOffset);
+		IntVec innerTopLeft = pixelPos.add(gridToPixels.apply(edge.getOff())).add(cornerOffset);
 		IntVec innerBottomRight = innerTopLeft.add(scaledCellSize);
 		
 		switch (edge.getDir()) {
@@ -179,7 +179,7 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
-		renderBlock(g2d, coordinateMapper.toPixelPos(block.getPos()), block, blockScale, block.getColor());
+		renderBlock(g2d, gridToPixels.apply(block.getPos()), block, blockScale, block.getColor());
 	}
 	
 	private void renderBlock(Graphics2D g2d, IntVec pixelPos, GameBlock block, double blockScale, Color color) {
@@ -191,7 +191,7 @@ public class LocalBoardView implements BoardView {
 		for (int y = 0; y < fragments.length; y++) {
 			for (int x = 0; x < fragments[y].length; x++) {
 				if (fragments[y][x] != null) {
-					renderCell(g2d, coordinateMapper.toPixelPos(fragments[y][x]).add(pixelPos), fragments, new IntVec(x, y), cellSize, blockScale);
+					renderCell(g2d, gridToPixels.apply(fragments[y][x]).add(pixelPos), fragments, new IntVec(x, y), cellSize, blockScale);
 				}
 			}
 		}
@@ -263,7 +263,7 @@ public class LocalBoardView implements BoardView {
 	
 	public void setDrawBackground(boolean drawBackground) { this.drawBackground = drawBackground; }
 	
-	private IntVec getCellSize() { return coordinateMapper.toPixelPos(IntVec.ONE_ONE); }
+	private IntVec getCellSize() { return gridToPixels.apply(IntVec.ONE_ONE); }
 	
 	public void addMouseInput(BoardMouseInput listener) {
 		component.addMouseListener(listener);

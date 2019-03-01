@@ -12,15 +12,16 @@ import lighthouse.model.GameState;
 import lighthouse.model.GameStatistics;
 import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.transform.CoordinateMapper;
-import lighthouse.ui.board.transform.ScaleTransform;
 import lighthouse.ui.modes.GameMode;
 import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
+import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
+import lighthouse.util.transform.Bijection;
+import lighthouse.util.transform.Scaling;
 
 /**
  * Manages the game board view, the current
@@ -31,7 +32,7 @@ public class GameViewController implements ViewController {
 
 	private final GameState model;
 	private final GameContext context = new GameContext();
-	private final CoordinateMapper coordinateMapper = new ScaleTransform(70, 70);
+	private final Bijection<IntVec> gridToPixels = new Scaling(70, 70);
 	private final BoardViewController board;
 
 	private GameMode mode;
@@ -50,7 +51,7 @@ public class GameViewController implements ViewController {
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
-		board = new BoardViewController(model.getBoard(), coordinateMapper, this::update);
+		board = new BoardViewController(model.getBoard(), gridToPixels, this::update);
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
