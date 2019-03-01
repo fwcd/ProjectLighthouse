@@ -1,5 +1,6 @@
 package lighthouse.ui.board.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +20,8 @@ import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 public class LocalLighthouseView implements LighthouseView {
 	private final JComponent component;
 	private LighthouseViewModel viewModel = null;
+	private Color gridLineColor = Color.DARK_GRAY;
+	private boolean drawGrid = true;
 	
 	public LocalLighthouseView() {
 		component = new JPanel() {
@@ -56,6 +59,10 @@ public class LocalLighthouseView implements LighthouseView {
 				for (int x = 0; x < cols; x++) {
 					g2d.setColor(viewModel.getColorAt(x, y));
 					g2d.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+					if (drawGrid) {
+						g2d.setColor(gridLineColor);
+						g2d.drawRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+					}
 				}
 			}
 		}
