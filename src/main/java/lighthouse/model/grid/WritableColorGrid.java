@@ -12,8 +12,12 @@ public interface WritableColorGrid extends ColorGrid {
 	 * Draws the color on top of the existing one.
 	 * Only useful if the color is translucent.
 	 */
-	default void addColorAt(int x, int y, Color color) {
-		setColorAt(x, y, color /** TODO */);
+	default void blendColorAt(int x, int y, Color color) {
+		setColorAt(x, y, ColorUtils.blend(color, getColorAt(x, y)));
+	}
+	
+	default void blendColorAt(IntVec pos, Color color) {
+		blendColorAt(pos.getX(), pos.getY(), color);
 	}
 	
 	default void setColorAt(IntVec pos, Color color) {
