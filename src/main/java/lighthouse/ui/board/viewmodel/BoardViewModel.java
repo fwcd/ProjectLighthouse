@@ -36,6 +36,7 @@ public class BoardViewModel implements ColorGrid {
 		
 		return (color == null) ? Color.BLACK : color;
 	}
+	
 	/** Fetches the current editing state of the board. */
 	public BoardEditState getEditState() { return editState; }
 	
