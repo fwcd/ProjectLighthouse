@@ -1,4 +1,4 @@
-package lighthouse.ui.debug;
+package lighthouse.ui.debug.listeners;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

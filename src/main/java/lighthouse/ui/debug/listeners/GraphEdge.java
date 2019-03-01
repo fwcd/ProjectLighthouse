@@ -1,4 +1,4 @@
-package lighthouse.ui.debug;
+package lighthouse.ui.debug.listeners;
 
 /**
  * An edge in a directed graph.

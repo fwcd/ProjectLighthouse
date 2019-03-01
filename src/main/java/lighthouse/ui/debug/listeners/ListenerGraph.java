@@ -1,4 +1,4 @@
-package lighthouse.ui.debug;
+package lighthouse.ui.debug.listeners;
 
 import java.util.ArrayList;
 import java.util.List;

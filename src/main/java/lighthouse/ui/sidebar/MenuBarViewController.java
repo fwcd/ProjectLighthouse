@@ -22,7 +22,7 @@ import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
-import lighthouse.ui.debug.ListenerGraphViewController;
+import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceIcon;
 
@@ -49,8 +49,8 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
 			),
 			LayoutUtils.menuOf("Debug", new ResourceIcon("/icons/debug.png").get(),
-				LayoutUtils.itemOf("Show Listener graph", this::showListenerGraph),
-				LayoutUtils.itemOf("Play Demo animation", this::playDemoAnimation)
+				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
+				LayoutUtils.itemOf("Play demo animation", this::playDemoAnimation)
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -110,18 +110,18 @@ public class MenuBarViewController implements ViewController {
 		JOptionPane.showMessageDialog(component, e.getMessage(), e.getClass().getSimpleName() + " while saving/loading a file", JOptionPane.WARNING_MESSAGE);
 	}
 	
-	private void showListenerGraph() {
-		ListenerGraphViewController graph = new ListenerGraphViewController(model, game);
-		WebFrame popup = new WebFrame("Listener graph");
+	private void openDebugTools() {
+		DebugToolsViewController debugTools = new DebugToolsViewController(model, game);
+		WebFrame popup = new WebFrame("Debug tools");
 		popup.setDefaultCloseOperation(WebFrame.DO_NOTHING_ON_CLOSE);
 		popup.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				graph.removeUpdateHooks();
+				debugTools.close();
 				e.getWindow().dispose();
 			}
 		});
-		popup.add(graph.getComponent());
+		popup.add(debugTools.getComponent());
 		popup.setSize(640, 480);
 		popup.setVisible(true);
 	}

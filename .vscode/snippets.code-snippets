@@ -1,0 +1,25 @@
+{
+	"Create new view controller": {
+		"scope": "java",
+		"prefix": "viewcontroller",
+		"body": [
+			"import javax.swing.JComponent;",
+			"import javax.swing.${2:JPanel};",
+			"",
+			"import lighthouse.ui.ViewController;",
+			"",
+			"public class $1ViewController implements ViewController {",
+			"\tprivate final $2 component;",
+			"\t",
+			"\tpublic $1ViewController() {",
+			"\t\tcomponent = new $2();",
+			"\t\t$0",
+			"\t}",
+			"\t",
+			"\t@Override",
+			"\tpublic JComponent getComponent() { return component; }",
+			"}"
+		],
+		"description": "Creates a new view controller using a template"
+	}
+}
