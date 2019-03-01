@@ -46,7 +46,8 @@ public class BoardViewController implements ViewController {
 	public BoardViewController(Board model, CoordinateMapper coordinateMapper, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
 
-		updateModel(model);
+		viewModel = new BoardViewModel(model);
+		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater));
 
 		// Creates a local view and hooks up the Swing component
