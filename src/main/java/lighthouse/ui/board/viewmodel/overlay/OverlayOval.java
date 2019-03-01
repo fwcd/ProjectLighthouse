@@ -45,4 +45,9 @@ public class OverlayOval implements OverlayShape {
 	public DoubleVec getTopLeft() { return center.sub(radius); }
 	
 	public DoubleVec getSize() { return radius.scale(2); }
+	
+	@Override
+	public String toString() {
+		return "OverlayOval [center=" + center + ", radius=" + radius + ", color=" + color + ", shading=" + shading + "]";
+	}
 }

@@ -20,7 +20,7 @@ public class Translation implements DoubleVecBijection {
 	}
 	
 	@Override
-	public DoubleVec inverse(DoubleVec value) {
+	public DoubleVec inverseApply(DoubleVec value) {
 		return value.sub(dx, dy);
 	}
 }

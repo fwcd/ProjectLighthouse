@@ -6,7 +6,18 @@ import java.util.function.Function;
  * Represents an invertible transformation.
  */
 public interface Bijection<X, Y> extends Function<X, Y> {
-	X inverse(Y value);
+	X inverseApply(Y value);
+	
+	default Bijection<Y, X> inverse() {
+		Bijection<X, Y> outer = this;
+		return new Bijection<Y, X>() {
+			@Override
+			public X apply(Y value) { return outer.inverseApply(value); }
+			
+			@Override
+			public Y inverseApply(X value) { return outer.apply(value); }
+		};
+	}
 	
 	default <A> Bijection<A, Y> compose(Bijection<A, X> inner) {
 		Bijection<X, Y> outer = this;
@@ -15,7 +26,7 @@ public interface Bijection<X, Y> extends Function<X, Y> {
 			public Y apply(A value) { return outer.apply(inner.apply(value)); }
 			
 			@Override
-			public A inverse(Y value) { return inner.inverse(outer.inverse(value)); }
+			public A inverseApply(Y value) { return inner.inverseApply(outer.inverseApply(value)); }
 		};
 	}
 	

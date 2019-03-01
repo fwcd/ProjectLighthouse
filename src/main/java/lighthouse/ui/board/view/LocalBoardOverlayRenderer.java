@@ -22,40 +22,44 @@ public class LocalBoardOverlayRenderer implements OverlayShapeVisitor {
 	@Override
 	public void visitRect(OverlayRect rect) {
 		g2d.setColor(rect.getColor());
-		
+
 		OverlayShading shading = rect.getShading();
 		IntVec topLeft = gridToPixels.apply(rect.getTopLeft());
 		IntVec size = gridToPixels.apply(rect.getSize());
-		
+
 		switch (shading) {
-			case FILLED:
-				g2d.fillRect(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
-				break;
-			case OUTLINED:
-				g2d.drawRect(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid shading: " + shading);
+		case FILLED:
+			g2d.fillRect(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
+			break;
+		case OUTLINED:
+			g2d.drawRect(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
+			break;
+		default:
+			throw invalidShading(shading);
 		}
 	}
-	
+
 	@Override
 	public void visitOval(OverlayOval oval) {
 		g2d.setColor(oval.getColor());
-		
+
 		OverlayShading shading = oval.getShading();
 		IntVec topLeft = gridToPixels.apply(oval.getTopLeft());
 		IntVec size = gridToPixels.apply(oval.getSize());
-		
+
 		switch (shading) {
-			case FILLED:
-				g2d.fillOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
-				break;
-			case OUTLINED:
-				g2d.drawOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid shading: " + shading);
+		case FILLED:
+			g2d.fillOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
+			break;
+		case OUTLINED:
+			g2d.drawOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
+			break;
+		default:
+			throw invalidShading(shading);
 		}
+	}
+
+	private RuntimeException invalidShading(OverlayShading shading) {
+		return new IllegalArgumentException("Invalid shading: " + shading);
 	}
 }

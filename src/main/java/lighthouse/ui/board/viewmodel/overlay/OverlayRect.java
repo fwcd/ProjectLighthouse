@@ -41,4 +41,9 @@ public class OverlayRect implements OverlayShape {
 	public double getHeight() { return size.getY(); }
 	
 	public DoubleVec getSize() { return size; }
+	
+	@Override
+	public String toString() {
+		return "OverlayRect [topLeft=" + topLeft + ", size=" + size + ", color=" + color + ", shading=" + shading + "]";
+	}
 }

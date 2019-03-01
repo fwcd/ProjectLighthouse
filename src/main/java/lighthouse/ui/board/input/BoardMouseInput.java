@@ -30,7 +30,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		IntVec pixelPos = pixelPosOf(e);
-		IntVec gridPos = gridToPixels.inverse(pixelPos).floor();
+		IntVec gridPos = gridToPixels.inverseApply(pixelPos).floor();
 		if (SwingUtilities.isRightMouseButton(e)) {
 			responders.forEach(r -> r.rightPress(gridPos));
 		} else {
@@ -42,7 +42,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	public void mouseDragged(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pixelPos = pixelPosOf(e);
-			IntVec gridPos = gridToPixels.inverse(pixelPos).floor();
+			IntVec gridPos = gridToPixels.inverseApply(pixelPos).floor();
 			responders.forEach(r -> r.dragTo(gridPos));
 		}
 	}
@@ -51,7 +51,7 @@ public class BoardMouseInput extends MouseAdapter implements BoardInput {
 	public void mouseReleased(MouseEvent e) {
 		if (!SwingUtilities.isRightMouseButton(e)) {
 			IntVec pixelPos = pixelPosOf(e);
-			IntVec gridPos = gridToPixels.inverse(pixelPos).floor();
+			IntVec gridPos = gridToPixels.inverseApply(pixelPos).floor();
 			responders.forEach(r -> r.release(gridPos));
 		}
 	}

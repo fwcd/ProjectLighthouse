@@ -6,12 +6,23 @@ import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 public interface DoubleVecBijection extends Bijection<DoubleVec, DoubleVec> {
+	default DoubleVecBijection inverse() {
+		DoubleVecBijection outer = this;
+		return new DoubleVecBijection() {
+			@Override
+			public DoubleVec apply(DoubleVec value) { return outer.inverseApply(value); }
+			
+			@Override
+			public DoubleVec inverseApply(DoubleVec value) { return outer.apply(value); }
+		};
+	}
+	
 	default DoubleVec apply(IntVec intVec) {
 		return apply(intVec.toDouble());
 	}
 	
-	default DoubleVec inverse(IntVec intVec) {
-		return inverse(intVec.toDouble());
+	default DoubleVec inverseApply(IntVec intVec) {
+		return inverseApply(intVec.toDouble());
 	}
 	
 	default Function<DoubleVec, IntVec> floor() { return andThen(DoubleVec::floor); }
@@ -29,7 +40,7 @@ public interface DoubleVecBijection extends Bijection<DoubleVec, DoubleVec> {
 			public DoubleVec apply(DoubleVec value) { return outer.apply(inner.apply(value)); }
 			
 			@Override
-			public DoubleVec inverse(DoubleVec value) { return inner.inverse(outer.inverse(value)); }
+			public DoubleVec inverseApply(DoubleVec value) { return inner.inverseApply(outer.inverseApply(value)); }
 		};
 	}
 	

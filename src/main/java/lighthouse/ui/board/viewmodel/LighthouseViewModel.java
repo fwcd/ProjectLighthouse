@@ -5,6 +5,9 @@ import java.awt.Color;
 import lighthouse.model.grid.ArrayColorGrid;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.model.grid.WritableColorGrid;
+import lighthouse.ui.board.viewmodel.overlay.GridOverlayRenderer;
+import lighthouse.ui.board.viewmodel.overlay.Overlay;
+import lighthouse.ui.board.viewmodel.overlay.OverlayShapeVisitor;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -21,7 +24,8 @@ public class LighthouseViewModel implements ColorGrid {
 	private final int rows;
 	private final BoardViewModel board;
 	private final WritableColorGrid overlayGrid;
-	private final DoubleVecBijection lighthouseToGrid = new Translation(-4, -1).andThen(new Scaling(0.2, 0.5));
+	private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
+	private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
 	
 	public LighthouseViewModel(BoardViewModel board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
@@ -40,11 +44,25 @@ public class LighthouseViewModel implements ColorGrid {
 	/** Fetches the Lighthouse grid's rows. */
 	public int getRows() { return rows; }
 	
+	private void renderOverlays() {
+		OverlayShapeVisitor renderer = new GridOverlayRenderer(
+			overlayGrid,
+			lighthousePosToGrid.inverse().floor(),
+			lighthouseSizeToGrid.inverse().ceil()
+		);
+		overlayGrid.clear();
+		
+		for (Overlay overlay : board.getOverlays()) {
+			overlay.acceptForAllShapes(renderer);
+		}
+	}
+	
 	@Override
 	public Color getColorAt(IntVec lhGridPos) {
+		renderOverlays();
 		Color overlayColor = overlayGrid.getColorAt(lhGridPos);
 		return (overlayColor == null)
-			? board.getColorAt(lighthouseToGrid.apply(lhGridPos).floor())
+			? board.getColorAt(lighthousePosToGrid.apply(lhGridPos).floor())
 			: overlayColor;
 	}
 }

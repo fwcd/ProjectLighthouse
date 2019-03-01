@@ -19,7 +19,7 @@ public class Scaling implements DoubleVecBijection {
 	}
 	
 	@Override
-	public DoubleVec inverse(DoubleVec pixelCoordinate) {
+	public DoubleVec inverseApply(DoubleVec pixelCoordinate) {
 		return pixelCoordinate.scale(inverseXFactor, inverseYFactor);
 	}
 	

@@ -11,7 +11,7 @@ public class DemoAnimation implements Animation {
 	@Override
 	public List<OverlayShape> getShape(int frame) {
 		return Collections.singletonList(
-			new OverlayRect(1, frame, 1, 1, Color.CYAN, OverlayShading.FILLED)
+			new OverlayRect(1, frame / 40.0, 1, 1, Color.CYAN, OverlayShading.FILLED)
 		);
 	}
 }
