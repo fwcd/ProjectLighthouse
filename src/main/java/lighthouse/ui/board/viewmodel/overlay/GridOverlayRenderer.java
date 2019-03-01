@@ -17,6 +17,7 @@ import lighthouse.util.MathUtils;
  */
 public class GridOverlayRenderer implements OverlayShapeVisitor {
 	private static final Logger LOG = LoggerFactory.getLogger(GridOverlayRenderer.class);
+	private static final double EPSILON = 0.0001;
 	private final WritableColorGrid grid;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;
@@ -57,7 +58,7 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 		case FILLED:
 			for (int y = 0; y < size.getY(); y++) {
 				for (int x = 0; x < size.getX(); x++) {
-					if (((double) MathUtils.square(x - radius.getX()) / squaredRadius.getX()) + ((double) MathUtils.square(y - radius.getY()) / squaredRadius.getY()) <= 1.0) {
+					if (((double) MathUtils.square(x - radius.getX()) / squaredRadius.getX()) + ((double) MathUtils.square(y - radius.getY()) / squaredRadius.getY()) < 1) {
 						grid.setColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
 					}
 				}
@@ -67,7 +68,7 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			double radiusRatio = radius.getY() / (double) radius.getX();
 			
 			for (int x = 0; x < size.getX(); x++) {
-				double absY = radiusRatio * Math.sqrt(squaredRadius.getX() - MathUtils.square(x - radius.getX()));
+				double absY = radiusRatio * Math.sqrt(squaredRadius.getX() - MathUtils.square(x - radius.getX())) - EPSILON;
 				grid.setColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color);
 				grid.setColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color);
 			}
