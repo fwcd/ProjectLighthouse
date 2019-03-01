@@ -66,6 +66,8 @@ public class IntVec implements Serializable {
 	
 	public IntVec max(IntVec other) { return new IntVec(Math.max(x, other.x), Math.max(y, other.y)); }
 	
+	public IntVec square() { return new IntVec(x * x, y * y); }
+	
 	public IntVec withX(int newX) { return new IntVec(newX, y); }
 	
 	public IntVec withY(int newY) { return new IntVec(x, newY); }
@@ -83,6 +85,10 @@ public class IntVec implements Serializable {
 	public boolean xIn(int startInclusive, int endExclusive) { return x >= startInclusive && x < endExclusive; }
 	
 	public boolean yIn(int startInclusive, int endExclusive) { return y >= startInclusive && y < endExclusive; }
+	
+	public IntVec onlyXs() { return new IntVec(x, x); }
+	
+	public IntVec onlyYs() { return new IntVec(y, y); }
 	
 	/** Efficiently determines whether this IntVec has length 0. */
 	public boolean isZero() { return x == 0 && y == 0; }

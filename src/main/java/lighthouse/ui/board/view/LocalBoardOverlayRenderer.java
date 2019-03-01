@@ -3,6 +3,7 @@ package lighthouse.ui.board.view;
 import java.awt.Graphics2D;
 import java.util.function.Function;
 
+import lighthouse.ui.board.viewmodel.overlay.OverlayFixedCircle;
 import lighthouse.ui.board.viewmodel.overlay.OverlayOval;
 import lighthouse.ui.board.viewmodel.overlay.OverlayRect;
 import lighthouse.ui.board.viewmodel.overlay.OverlayShading;
@@ -38,6 +39,18 @@ public class LocalBoardOverlayRenderer implements OverlayShapeVisitor {
 			throw invalidShading(shading);
 		}
 	}
+	
+	@Override
+	public void visitFixedCircle(OverlayFixedCircle circle) {
+		g2d.setColor(circle.getColor());
+
+		OverlayShading shading = circle.getShading();
+		IntVec topLeft = gridToPixels.apply(circle.getTopLeft());
+		IntVec radius = gridToPixels.apply(new DoubleVec(circle.getRadius(), 0)).onlyXs()
+			.min(gridToPixels.apply(new DoubleVec(0, circle.getRadius())).onlyYs());
+		
+		drawOval(topLeft, radius.scale(2), shading);
+	}
 
 	@Override
 	public void visitOval(OverlayOval oval) {
@@ -47,6 +60,10 @@ public class LocalBoardOverlayRenderer implements OverlayShapeVisitor {
 		IntVec topLeft = gridToPixels.apply(oval.getTopLeft());
 		IntVec size = gridToPixels.apply(oval.getSize());
 
+		drawOval(topLeft, size, shading);
+	}
+
+	private void drawOval(IntVec topLeft, IntVec size, OverlayShading shading) {
 		switch (shading) {
 		case FILLED:
 			g2d.fillOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());

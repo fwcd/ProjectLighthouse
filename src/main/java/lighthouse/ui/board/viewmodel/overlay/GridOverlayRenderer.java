@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.grid.WritableColorGrid;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
+import lighthouse.util.MathUtils;
 
 /**
  * A reference implementation of an {@link OverlayShapeVisitor}
@@ -27,8 +28,47 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 	}
 	
 	@Override
+	public void visitFixedCircle(OverlayFixedCircle circle) {
+		OverlayShading shading = circle.getShading();
+		Color color = circle.getColor();
+		IntVec center = gridPosToPixels.apply(circle.getCenter());
+		IntVec radius = gridSizeToPixels.apply(new DoubleVec(circle.getRadius(), 0)).onlyXs()
+			.min(gridSizeToPixels.apply(new DoubleVec(0, circle.getRadius())).onlyYs());
+		
+		drawOval(center.sub(radius), radius, shading, color);
+	}
+	
+	@Override
 	public void visitOval(OverlayOval oval) {
-		// TODO
+		OverlayShading shading = oval.getShading();
+		Color color = oval.getColor();
+		IntVec topLeft = gridPosToPixels.apply(oval.getTopLeft());
+		IntVec radius = gridSizeToPixels.apply(oval.getRadius());
+		
+		LOG.trace("Mapped oval pos {} to rendered pos {}", oval.getTopLeft(), topLeft);
+		drawOval(topLeft, radius, shading, color);
+	}
+
+	private void drawOval(IntVec topLeft, IntVec radius, OverlayShading shading, Color color) {
+		IntVec size = radius.scale(2);
+		IntVec squaredRadius = radius.square();
+		
+		switch (shading) {
+		case FILLED:
+			for (int y = 0; y < size.getY(); y++) {
+				for (int x = 0; x < size.getX(); x++) {
+					if ((MathUtils.square((double) (x - radius.getX())) / squaredRadius.getX()) + (MathUtils.square((double) (y - radius.getY())) / squaredRadius.getY()) <= 1.0) {
+						grid.setColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
+					}
+				}
+			}
+			break;
+		case OUTLINED:
+			// TODO
+			break;
+		default:
+			throw invalidShading(shading);
+		}
 	}
 	
 	@Override
@@ -45,7 +85,6 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 				LOG.trace("Drawing filled rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offY = 0; offY < size.getY(); offY++) {
 					for (int offX = 0; offX < size.getX(); offX++) {
-						LOG.trace("Rasterizing filled rect {} at [{}, {}]", topLeft, offX, offY);
 						grid.setColorAt(offX + topLeft.getX(), offY + topLeft.getY(), color);
 					}
 				}
@@ -53,12 +92,10 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			case OUTLINED:
 				LOG.trace("Drawing outlined rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offX = 0; offX < size.getX(); offX++) {
-					LOG.trace("Rasterizing horizontal rect outline {} at x = {}", topLeft, offX);
 					grid.setColorAt(topLeft.getX() + offX, topLeft.getY(), color);
 					grid.setColorAt(topLeft.getX() + offX, topLeft.getY() + size.getY(), color);
 				}
 				for (int offY = 0; offY < size.getX(); offY++) {
-					LOG.trace("Rasterizing vertical rect outline {} at y = {}", topLeft, offY);
 					grid.setColorAt(topLeft.getX(), topLeft.getY() + offY, color);
 					grid.setColorAt(topLeft.getX() + size.getX(), topLeft.getY() + offY, color);
 				}

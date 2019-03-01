@@ -62,6 +62,8 @@ public class DoubleVec implements Serializable {
 	
 	public IntVec signum() { return new IntVec((int) Math.signum(x), (int) Math.signum(y)); }
 	
+	public DoubleVec square() { return new DoubleVec(x * x, y * y); }
+	
 	public DoubleVec min(DoubleVec other) { return new DoubleVec(Math.min(x, other.x), Math.min(y, other.y)); }
 	
 	public DoubleVec max(DoubleVec other) { return new DoubleVec(Math.max(x, other.x), Math.max(y, other.y)); }
