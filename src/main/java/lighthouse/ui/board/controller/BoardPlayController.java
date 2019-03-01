@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
@@ -86,26 +85,5 @@ public class BoardPlayController implements BoardResponder {
 	@Override
 	public void updateViewModel(BoardViewModel viewModel) {
 		this.viewModel = viewModel;
-	}
-	
-	@Deprecated
-	public Brick getCurrentBrick(){
-		return brick;
-	}
-	
-	@Deprecated
-	public void setCurrentBrick(Brick brick){
-		this.brick = brick;
-		computeLimits();
-	}
-	
-	@Deprecated
-	public void setCurrentBoard(Board board){
-		this.viewModel = new BoardViewModel(board);
-	}
-	
-	@Deprecated
-	public Map<Direction, Integer> getCurrentLimits(){
-		return limits;
 	}
 }

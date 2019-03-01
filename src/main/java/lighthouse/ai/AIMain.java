@@ -2,6 +2,7 @@ package lighthouse.ai;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -12,15 +13,13 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Level;
-import lighthouse.ui.board.controller.BoardPlayController;
 
 public class AIMain {
     private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);
     
-    ArrayList<Model> population;
-    BoardPlayController controller;
-    int size;
-    Random r = new Random();
+    private List<Model> population;
+    private int size;
+    private Random r = new Random();
 
     public AIMain(int pop){
         size = pop;
@@ -41,8 +40,6 @@ public class AIMain {
         Board start = level.getStart();
         Board goal = level.getGoal();
 
-        controller = new BoardPlayController(start, () -> {});
-
         for (Model m : population){
             Board current = start.copy();
             int i = 0;
@@ -58,9 +55,9 @@ public class AIMain {
         LOG.info("Fitnesses: {}", population);
 
         for (int i = 0; i < size/2; i++){
-            ArrayList<Double> m = population.get(i + size/2).getWeights();
-            ArrayList<Double> f = population.get(i + size/2 - 1 ).getWeights();
-            ArrayList<Double> c = new ArrayList<Double>();
+            List<Double> m = population.get(i + size/2).getWeights();
+            List<Double> f = population.get(i + size/2 - 1 ).getWeights();
+            List<Double> c = new ArrayList<Double>();
 
             for (int o = 0; o < m.size(); o++){
                 if (r.nextDouble() > 0.5){
@@ -77,13 +74,11 @@ public class AIMain {
     }
 
     private Board nextTurn(Model m, Board b){
-        controller.setCurrentBoard(b);
         Collection<Brick> bricks =  b.getBricks();
         double max = -1;
         Board best = null;
         for (Brick brick : bricks){
-            controller.setCurrentBrick(brick);
-            Map<Direction, Integer> limits = controller.getCurrentLimits();
+            Map<Direction, Integer> limits = b.getLimitsFor(brick);
             for (Direction dir : Direction.values()){
                 if(limits.get(dir) > 0){
                     Board c = b.copy();

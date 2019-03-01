@@ -1,6 +1,7 @@
 package lighthouse.ai;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import lighthouse.ai.layers.Conv2d;
@@ -9,10 +10,10 @@ import lighthouse.ai.layers.Dense;
 public class Model implements WeightIterator, Comparable<Model> {
 
     private Random r = new Random();
-    private ArrayList<Double> weights = new ArrayList<>();
+    private List<Double> weights = new ArrayList<>();
     private int weightCounter = 0;
     public double fitness = 0d;
-    private ArrayList<int[]> args = new ArrayList<>();
+    private List<int[]> args = new ArrayList<>();
     private Dense dense;
     private Conv2d conv;
 
@@ -21,7 +22,7 @@ public class Model implements WeightIterator, Comparable<Model> {
         this.conv = new Conv2d(this);
     }
 
-    public Model(ArrayList<Double> weights){
+    public Model(List<Double> weights){
         this.weights = weights;
     }
 
@@ -60,11 +61,11 @@ public class Model implements WeightIterator, Comparable<Model> {
         return in[0][0];
     }
 
-    public ArrayList<Double> getWeights(){
+    public List<Double> getWeights(){
         return weights;
     }
 
-    public void setWeights(ArrayList<Double> weights){
+    public void setWeights(List<Double> weights){
         this.weights = weights;
     }
 
