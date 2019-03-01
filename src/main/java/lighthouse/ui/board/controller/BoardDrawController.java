@@ -36,6 +36,7 @@ public class BoardDrawController implements BoardResponder {
 	@Override
 	public void rightPress(IntVec gridPos) {
 		viewModel.removeBrickAt(gridPos);
+		updater.update();
 	}
 	
 	@Override
