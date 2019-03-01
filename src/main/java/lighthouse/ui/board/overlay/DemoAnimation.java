@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import lighthouse.model.grid.WritableColorGrid;
 
+@Deprecated
 public class DemoAnimation implements Animation {
 	@Override
 	public int getTotalFrames() { return 300; }

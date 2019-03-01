@@ -8,6 +8,7 @@ import lighthouse.model.grid.WritableColorGrid;
  * An overlay that can be drawn in both high and low
  * resolution.
  */
+@Deprecated
 public interface Overlay {
 	void drawHighRes(Graphics2D g2d);
 	

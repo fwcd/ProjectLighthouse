@@ -8,6 +8,7 @@ import lighthouse.model.grid.WritableColorGrid;
  * A state wrapper that iterates through the
  * frames of an animation.
  */
+@Deprecated
 public class AnimationState implements Overlay {
 	private final Animation animation;
 	private int frame = 0;

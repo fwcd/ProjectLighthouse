@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import lighthouse.model.grid.WritableColorGrid;
 
+@Deprecated
 public interface Animation {
 	int getTotalFrames();
 	
