@@ -96,6 +96,7 @@ public class GameViewController implements ViewController {
 			board.reset();
 		}
 		context.setStatus(mode.getBaseStatus());
+		update();
 	}
 	
 	/** Enters a game mode such as "editing" or "playing". */
