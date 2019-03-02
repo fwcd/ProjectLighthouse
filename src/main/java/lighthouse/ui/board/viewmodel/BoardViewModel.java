@@ -80,4 +80,6 @@ public class BoardViewModel implements ColorGrid {
 	public Collection<? extends Brick> getBricks() { return model.getBricks(); }
 	
 	public Stream<Move> streamPossibleMoves() { return model.streamPossibleMoves(); }
+	
+	public Stream<Move> streamPossibleMovesFor(Brick brick) { return model.streamPossibleMovesFor(brick); }
 }

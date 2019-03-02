@@ -54,7 +54,7 @@ public class BoardPlayController implements BoardResponder {
 		computeLimits();
 		updater.update();
 		
-		LOG.info("Possible moves: {}", viewModel.streamPossibleMoves().collect(Collectors.toList()));
+		LOG.info("Possible moves: {}", viewModel.streamPossibleMovesFor(brick).collect(Collectors.toList()));
 	}
 	
 	@Override
