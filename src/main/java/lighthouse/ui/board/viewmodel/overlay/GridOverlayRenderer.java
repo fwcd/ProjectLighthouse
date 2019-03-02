@@ -6,7 +6,6 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.grid.ColorGrid;
 import lighthouse.model.grid.WritableColorGrid;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
@@ -20,18 +19,16 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 	private static final Logger LOG = LoggerFactory.getLogger(GridOverlayRenderer.class);
 	private static final double EPSILON = 0.0001;
 	private final WritableColorGrid grid;
-	private final ColorGrid background;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;
+	private boolean alphaEnabled = false;
 	
 	public GridOverlayRenderer(
 		WritableColorGrid grid,
-		ColorGrid background,
 		Function<DoubleVec, IntVec> gridPosToPixels,
 		Function<DoubleVec, IntVec> gridSizeToPixels
 	) {
 		this.grid = grid;
-		this.background = background;
 		this.gridPosToPixels = gridPosToPixels;
 		this.gridSizeToPixels = gridSizeToPixels;
 	}
@@ -67,7 +64,7 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			for (int y = 0; y < size.getY(); y++) {
 				for (int x = 0; x < size.getX(); x++) {
 					if (((double) MathUtils.square(x - radius.getX()) / squaredRadius.getX()) + ((double) MathUtils.square(y - radius.getY()) / squaredRadius.getY()) < 1) {
-						grid.drawColorAt(x + topLeft.getX(), y + topLeft.getY(), color, background);
+						drawColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
 					}
 				}
 			}
@@ -77,8 +74,8 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			
 			for (int x = 0; x < size.getX(); x++) {
 				double absY = radiusRatio * Math.sqrt(squaredRadius.getX() - MathUtils.square(x - radius.getX())) - EPSILON;
-				grid.drawColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color, background);
-				grid.drawColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color, background);
+				drawColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color);
+				drawColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color);
 			}
 			break;
 		default:
@@ -100,26 +97,34 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 				LOG.trace("Drawing filled rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offY = 0; offY < size.getY(); offY++) {
 					for (int offX = 0; offX < size.getX(); offX++) {
-						grid.drawColorAt(offX + topLeft.getX(), offY + topLeft.getY(), color, background);
+						drawColorAt(offX + topLeft.getX(), offY + topLeft.getY(), color);
 					}
 				}
 				break;
 			case OUTLINED:
 				LOG.trace("Drawing outlined rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offX = 0; offX < size.getX(); offX++) {
-					grid.drawColorAt(topLeft.getX() + offX, topLeft.getY(), color, background);
-					grid.drawColorAt(topLeft.getX() + offX, topLeft.getY() + size.getY(), color, background);
+					drawColorAt(topLeft.getX() + offX, topLeft.getY(), color);
+					drawColorAt(topLeft.getX() + offX, topLeft.getY() + size.getY(), color);
 				}
 				for (int offY = 0; offY < size.getX(); offY++) {
-					grid.drawColorAt(topLeft.getX(), topLeft.getY() + offY, color, background);
-					grid.drawColorAt(topLeft.getX() + size.getX(), topLeft.getY() + offY, color, background);
+					drawColorAt(topLeft.getX(), topLeft.getY() + offY, color);
+					drawColorAt(topLeft.getX() + size.getX(), topLeft.getY() + offY, color);
 				}
 				break;
 			default:
 				throw invalidShading(shading);
 		}
 	}
-
+	
+	private void drawColorAt(int x, int y, Color color) {
+		if (alphaEnabled) {
+			grid.drawColorAt(x, y, color);
+		} else {
+			grid.setColorAt(x, y, color);
+		}
+	}
+	
 	private RuntimeException invalidShading(OverlayShading shading) {
 		return new IllegalArgumentException("Invalid shading: " + shading);
 	}
