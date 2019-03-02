@@ -20,6 +20,14 @@ public interface WritableColorGrid extends ColorGrid {
 		drawColorAt(pos.getX(), pos.getY(), color);
 	}
 	
+	default void drawColorAt(int x, int y, Color color, Color defaultBackground) {
+		setColorAt(x, y, ColorUtils.overlay(getColorOr(defaultBackground, x, y), color));
+	}
+	
+	default void drawColorAt(IntVec pos, Color color, Color defaultBackground) {
+		drawColorAt(pos.getX(), pos.getY(), color, defaultBackground);
+	}
+	
 	default void setColorAt(IntVec pos, Color color) {
 		setColorAt(pos.getX(), pos.getY(), color);
 	}
