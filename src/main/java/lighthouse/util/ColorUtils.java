@@ -1,6 +1,8 @@
 package lighthouse.util;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -9,6 +11,27 @@ public class ColorUtils {
 	public static final Color LIGHT_CYAN = new Color(140, 255, 247);
 	public static final Color LIGHT_ORANGE = new Color(255, 219, 137);
 	public static final Color LIGHT_VIOLET = new Color(223, 173, 255);
+	private static final Map<Color, String> KNOWN_NAMES = new HashMap<>();
+	
+	static {
+		KNOWN_NAMES.put(Color.WHITE, "WHITE");
+		KNOWN_NAMES.put(Color.LIGHT_GRAY, "LIGHT_GRAY");
+		KNOWN_NAMES.put(Color.GRAY, "GRAY");
+		KNOWN_NAMES.put(Color.DARK_GRAY, "DARK_GRAY");
+		KNOWN_NAMES.put(Color.BLACK, "BLACK");
+		KNOWN_NAMES.put(Color.RED, "RED");
+		KNOWN_NAMES.put(Color.PINK, "PINK");
+		KNOWN_NAMES.put(Color.ORANGE, "ORANGE");
+		KNOWN_NAMES.put(Color.YELLOW, "YELLOW");
+		KNOWN_NAMES.put(Color.GREEN, "GREEN");
+		KNOWN_NAMES.put(Color.MAGENTA, "MAGENTA");
+		KNOWN_NAMES.put(Color.CYAN, "CYAN");
+		KNOWN_NAMES.put(Color.BLUE, "BLUE");
+		KNOWN_NAMES.put(LIGHT_GREEN, "LIGHT_GREEN");
+		KNOWN_NAMES.put(LIGHT_CYAN, "LIGHT_CYAN");
+		KNOWN_NAMES.put(LIGHT_ORANGE, "LIGHT_ORANGE");
+		KNOWN_NAMES.put(LIGHT_VIOLET, "LIGHT_VIOLET");
+	}
 	
 	private ColorUtils() {}
 	
@@ -49,5 +72,28 @@ public class ColorUtils {
 	
 	public static double getBrightnessPercent(Color color) {
 		return getBrightness(color) / 255.0;
+	}
+	
+	public static String describe(Color color) {
+		String closestName = "Unknown color";
+		int closestDistance = Integer.MAX_VALUE;
+		
+		for (Color knownColor : KNOWN_NAMES.keySet()) {
+			int distance = distance(color, knownColor);
+			if (distance == 0) {
+				return KNOWN_NAMES.get(knownColor);
+			} else if (distance < closestDistance) {
+				closestName = KNOWN_NAMES.get(knownColor) + "-ish";
+				closestDistance = distance;
+			}
+		}
+		
+		return closestName;
+	}
+	
+	private static int distance(Color a, Color b) {
+		return Math.abs(a.getRed() - b.getRed())
+			 + Math.abs(a.getGreen() - b.getGreen())
+			 + Math.abs(a.getBlue() - b.getBlue());
 	}
 }
