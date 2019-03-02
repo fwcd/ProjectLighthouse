@@ -2,6 +2,7 @@ package lighthouse.ui.board.viewmodel;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -26,7 +27,8 @@ public class LighthouseViewModel implements ColorGrid {
 	private final BufferedImage image;
 	private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
 	private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
-
+	private boolean antialiasingEnabled = false;
+	
 	public LighthouseViewModel(BoardViewModel board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
 	}
@@ -58,6 +60,8 @@ public class LighthouseViewModel implements ColorGrid {
 		}
 		
 		Graphics2D g2d = image.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasingEnabled ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+		
 		OverlayShapeVisitor renderer = new Graphics2DOverlayRenderer(g2d,
 			lighthousePosToGrid.inverse().floor(),
 			lighthouseSizeToGrid.inverse().ceil()

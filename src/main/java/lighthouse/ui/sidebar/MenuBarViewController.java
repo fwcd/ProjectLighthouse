@@ -24,7 +24,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
-import lighthouse.ui.util.ResourceIcon;
+import lighthouse.ui.util.ResourceImageLoader;
 
 public class MenuBarViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
@@ -38,17 +38,19 @@ public class MenuBarViewController implements ViewController {
 		this.model = model;
 		this.game = game;
 		
+		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
+		
 		component = LayoutUtils.menuBarOf(
-			LayoutUtils.menuOf("File", new ResourceIcon("/icons/file.png").get(),
+			LayoutUtils.menuOf("File", resourceLoader.getAsIcon("/icons/file.png"),
 				LayoutUtils.itemOf("Save", this::save),
 				LayoutUtils.itemOf("Save As", this::saveAs),
 				LayoutUtils.itemOf("Open", this::open)
 			),
-			LayoutUtils.menuOf("UI", new ResourceIcon("/icons/ui.png").get(),
+			LayoutUtils.menuOf("UI", resourceLoader.getAsIcon("/icons/ui.png"),
 				LayoutUtils.itemOf("Light theme", this::switchToLightTheme),
 				LayoutUtils.itemOf("Dark theme", this::switchToDarkTheme)
 			),
-			LayoutUtils.menuOf("Debug", new ResourceIcon("/icons/debug.png").get(),
+			LayoutUtils.menuOf("Debug", resourceLoader.getAsIcon("/icons/debug.png"),
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
 				LayoutUtils.itemOf("Play demo animation", this::playDemoAnimation)
 			)

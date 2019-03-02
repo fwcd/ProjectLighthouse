@@ -36,24 +36,22 @@ public class ActiveAnimationsView implements AutoCloseable {
 	}
 	
 	private void update() {
-		synchronized (tracker) {
-			Set<String> remaining = new HashSet<>(visibleAnimations.keySet());
-			
-			for (String name : tracker.getRunningAnimationNames()) {
-				if (visibleAnimations.containsKey(name)) {
-					visibleAnimations.get(name).setProgress(tracker.getRunningAnimationProgress(name));
-				} else {
-					AnimationView animationView = new AnimationView(name);
-					animationView.setProgress(0.0);
-					component.add(animationView.getComponent());
-					visibleAnimations.put(name, animationView);
-				}
-				remaining.remove(name);
+		Set<String> remaining = new HashSet<>(visibleAnimations.keySet());
+		
+		for (String name : tracker.getRunningAnimationNames()) {
+			if (visibleAnimations.containsKey(name)) {
+				visibleAnimations.get(name).setProgress(tracker.getRunningAnimationProgress(name));
+			} else {
+				AnimationView animationView = new AnimationView(name);
+				animationView.setProgress(0.0);
+				component.add(animationView.getComponent());
+				visibleAnimations.put(name, animationView);
 			}
-			
-			for (String name : remaining) {
-				component.remove(visibleAnimations.remove(name).getComponent());
-			}
+			remaining.remove(name);
+		}
+		
+		for (String name : remaining) {
+			component.remove(visibleAnimations.remove(name).getComponent());
 		}
 		SwingUtilities.invokeLater(() -> {
 			component.revalidate();
