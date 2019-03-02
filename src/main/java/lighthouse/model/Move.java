@@ -1,5 +1,9 @@
 package lighthouse.model;
 
+import java.awt.Color;
+
+import lighthouse.util.ColorUtils;
+
 /**
  * A move that can be performed on a board.
  */
@@ -18,6 +22,12 @@ public class Move {
 	
 	@Override
 	public String toString() {
-		return oldBrick + " -> " + newBrick;
+		Color oldColor = oldBrick.getColor();
+		Color newColor = newBrick.getColor();
+		if (oldColor.equals(newColor)) {
+			return "(" + ColorUtils.describe(oldColor) + ") " + oldBrick.getPos() + " -> " + newBrick.getPos();
+		} else {
+			return ColorUtils.describe(oldColor) + ", " + oldBrick.getPos() + " -> " + ColorUtils.describe(oldColor) + ", " + newBrick.getPos();
+		}
 	}
 }

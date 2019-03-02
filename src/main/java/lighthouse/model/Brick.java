@@ -87,5 +87,5 @@ public class Brick implements GameBlock, Serializable {
 	public Color getColor() { return color; }
 	
 	@Override
-	public String toString() { return "Brick [pos=" + pos + ", color=#" + Integer.toHexString(color.getRGB()) + ", structure=" + structure + ", edges=" + edges + "]"; }
+	public String toString() { return "Brick [pos=" + pos + ", color=" + ColorUtils.describe(color) + ", structure=" + structure + ", edges=" + edges + "]"; }
 }
