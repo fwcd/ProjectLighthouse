@@ -81,7 +81,6 @@ public class GameViewController implements ViewController {
 		}
 		
 		BoardStatistics stats = board.getViewModel().getStatistics();
-		stats.incrementMoveCount();
 		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}
 	

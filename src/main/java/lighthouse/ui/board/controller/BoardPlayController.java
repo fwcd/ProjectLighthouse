@@ -24,6 +24,7 @@ public class BoardPlayController implements BoardResponder {
 	private Updatable updater;
 	private BoardViewModel viewModel;
 	private boolean dragEvent;
+	private Direction lastDir;
 	
 	private IntVec startGridPos;
 	private Brick brick;
@@ -67,8 +68,16 @@ public class BoardPlayController implements BoardResponder {
 			atDirs.forEach(atDir -> {
 				if (limits.get(atDir) > 0) {
 					limits.put(atDir, limits.get(atDir) - 1);
+					
 					Brick newBrick = brick.movedInto(atDir);
 					viewModel.replace(brick, newBrick);
+					
+					if (lastDir == null || !atDir.equals(lastDir)) {
+						// Only track moves into different directions
+						viewModel.getStatistics().incrementMoveCount();
+						lastDir = atDir;
+					}
+					
 					brick = newBrick;
 					startGridPos = startGridPos.add(atDir);
 					computeLimits();
