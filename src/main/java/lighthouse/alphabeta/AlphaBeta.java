@@ -12,7 +12,7 @@ public class AlphaBeta {
 
     public static List<Board> solve(Level toSolve) {
         List<Board> moves = new ArrayList<>();
-        Board current = toSolve.getStart();
+        Board current = toSolve.getStart().copy();
         Board goal = toSolve.getGoal();
         List<Board> forbidden = new ArrayList<>();
         while (!current.equals(goal)) {
