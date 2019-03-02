@@ -13,7 +13,7 @@ public interface WritableColorGrid extends ColorGrid {
 	 * Only useful if the color is translucent.
 	 */
 	default void drawColorAt(int x, int y, Color color) {
-		setColorAt(x, y, ColorUtils.overlay(getColorAt(x, y), color));
+		setColorAt(x, y, ColorUtils.overlay(getColorOrBlackAt(x, y), color));
 	}
 	
 	default void drawColorAt(IntVec pos, Color color) {

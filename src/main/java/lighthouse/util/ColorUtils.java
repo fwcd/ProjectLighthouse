@@ -25,12 +25,12 @@ public class ColorUtils {
 	}
 	
 	public static Color overlay(Color bg, Color fg) {
-		double fgAlpha = fg.getAlpha();
+		double fgAlpha = fg.getAlpha() / 255.0;
 		double bgAlpha = 1.0 - fgAlpha;
 		return new Color(
-			(int) (fg.getRed() * fgAlpha + bg.getRed() * bgAlpha),
-			(int) (fg.getGreen() * fgAlpha + bg.getGreen() * bgAlpha),
-			(int) (fg.getBlue() * fgAlpha + bg.getBlue() * bgAlpha)
+			Math.max(0, Math.min(255, (int) (fg.getRed() * fgAlpha + bg.getRed() * bgAlpha))),
+			Math.max(0, Math.min(255, (int) (fg.getGreen() * fgAlpha + bg.getGreen() * bgAlpha))),
+			Math.max(0, Math.min(255, (int) (fg.getBlue() * fgAlpha + bg.getBlue() * bgAlpha)))
 		);
 	}
 	
