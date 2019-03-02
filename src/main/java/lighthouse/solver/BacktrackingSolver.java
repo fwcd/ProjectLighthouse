@@ -36,11 +36,10 @@ public class BacktrackingSolver implements Solver {
                 current = moves.get(moves.size()-1);
                 continue;
             }
-
             current.perform(nextMove.orElse(null));
             moves.add(current.copy());
         }
-
+        System.out.println("Starting optimization with: " + moves.size() + " moves");
         while (true){
             
             int skips = 0;
@@ -52,21 +51,21 @@ public class BacktrackingSolver implements Solver {
                     Move move = iter.next();
                     int distance = moves.indexOf(startBoard.childBoard(move)) - start;
                     if(distance > skips){
-                        begin = start;
-                        skips = distance;
+                        begin = start + 1;
+                        skips = distance - 1;
                     }
                 }
             }
             System.out.println("skipping: ," + skips + " from " + begin);
-            for(int i = 0; i < skips-1; i++){
-                moves.remove(begin + 1);
+            for(int i = 0; i < skips; i++){
+                moves.remove(begin);
             }
             if(skips <= 1 || begin >= moves.size()){
                 break;
             }
             
         }
-
+        System.out.println("Finished Optimization with " + moves.size() + "moves");
         LOG.info("Done");
         return moves;
     }
