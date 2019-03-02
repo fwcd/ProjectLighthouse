@@ -67,6 +67,8 @@ public class BoardViewModel implements ColorGrid {
 		editState.reset();
 	}
 	
+	public Brick getSelected() { return selected; }
+	
 	public void select(Brick brick) { selected = brick; }
 	
 	public void deselect() { selected = null; }
