@@ -109,7 +109,9 @@ public class BoardViewController implements ViewController {
 		Iterator<? extends Board> iterator = boards.iterator();
 		Timer timer = new Timer(delayMs, e -> {
 			if (iterator.hasNext()) {
-				// TODO
+				System.out.println("Updating");
+				updateModel(iterator.next());
+				gameUpdater.update();
 			} else {
 				((Timer) e.getSource()).stop();
 			}

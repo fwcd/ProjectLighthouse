@@ -21,28 +21,20 @@ public class BacktrackingSolver implements Solver {
         Board current = toSolve.getStart().copy();
         Board goal = toSolve.getGoal();
         List<Board> forbidden = new ArrayList<>();
-        forbidden.add(current.copy());
         moves.add(current.copy());
         while (!current.equals(goal)) {
+            forbidden.add(current.copy());
             Board tmpCurrent = current.copy();
             Optional<Move> nextMove = current.streamPossibleMoves()
                     .filter(move -> !forbidden.contains(tmpCurrent.childBoard(move))).findFirst();
-            Iterator<Move> iter = current.streamPossibleMoves().iterator();
-
-            while(iter.hasNext()){
-                LOG.info("Next: {}", iter.next());
-            }
             
             if (!nextMove.isPresent()){
-                LOG.info("Reverting");
                 moves.remove(moves.size()-1);
                 current = moves.get(moves.size()-1);
                 continue;
             }
-            LOG.info("Moving {}", nextMove.orElse(null));
             current.perform(nextMove.orElse(null));
             moves.add(current.copy());
-            forbidden.add(current.copy());
         }
         LOG.info("Done");
         return moves;
