@@ -24,6 +24,16 @@ public class ColorUtils {
 		);
 	}
 	
+	public static Color overlay(Color bg, Color fg) {
+		double fgAlpha = fg.getAlpha();
+		double bgAlpha = 1.0 - fgAlpha;
+		return new Color(
+			(int) (fg.getRed() * fgAlpha + bg.getRed() * bgAlpha),
+			(int) (fg.getGreen() * fgAlpha + bg.getGreen() * bgAlpha),
+			(int) (fg.getBlue() * fgAlpha + bg.getBlue() * bgAlpha)
+		);
+	}
+	
 	public static Color randomColor() {
 		Random r = ThreadLocalRandom.current();
 		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));

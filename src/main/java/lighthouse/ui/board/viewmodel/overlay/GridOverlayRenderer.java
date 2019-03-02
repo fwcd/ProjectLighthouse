@@ -59,7 +59,7 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			for (int y = 0; y < size.getY(); y++) {
 				for (int x = 0; x < size.getX(); x++) {
 					if (((double) MathUtils.square(x - radius.getX()) / squaredRadius.getX()) + ((double) MathUtils.square(y - radius.getY()) / squaredRadius.getY()) < 1) {
-						grid.setColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
+						grid.blendColorAt(x + topLeft.getX(), y + topLeft.getY(), color);
 					}
 				}
 			}
@@ -69,8 +69,8 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 			
 			for (int x = 0; x < size.getX(); x++) {
 				double absY = radiusRatio * Math.sqrt(squaredRadius.getX() - MathUtils.square(x - radius.getX())) - EPSILON;
-				grid.setColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color);
-				grid.setColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color);
+				grid.blendColorAt(x + topLeft.getX(), (int) absY + radius.getY() + topLeft.getY(), color);
+				grid.blendColorAt(x + topLeft.getX(), (int) -absY + radius.getY() + topLeft.getY(), color);
 			}
 			break;
 		default:
@@ -92,19 +92,19 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 				LOG.trace("Drawing filled rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offY = 0; offY < size.getY(); offY++) {
 					for (int offX = 0; offX < size.getX(); offX++) {
-						grid.setColorAt(offX + topLeft.getX(), offY + topLeft.getY(), color);
+						grid.blendColorAt(offX + topLeft.getX(), offY + topLeft.getY(), color);
 					}
 				}
 				break;
 			case OUTLINED:
 				LOG.trace("Drawing outlined rect at {} of size {} onto the grid...", topLeft, size);
 				for (int offX = 0; offX < size.getX(); offX++) {
-					grid.setColorAt(topLeft.getX() + offX, topLeft.getY(), color);
-					grid.setColorAt(topLeft.getX() + offX, topLeft.getY() + size.getY(), color);
+					grid.blendColorAt(topLeft.getX() + offX, topLeft.getY(), color);
+					grid.blendColorAt(topLeft.getX() + offX, topLeft.getY() + size.getY(), color);
 				}
 				for (int offY = 0; offY < size.getX(); offY++) {
-					grid.setColorAt(topLeft.getX(), topLeft.getY() + offY, color);
-					grid.setColorAt(topLeft.getX() + size.getX(), topLeft.getY() + offY, color);
+					grid.blendColorAt(topLeft.getX(), topLeft.getY() + offY, color);
+					grid.blendColorAt(topLeft.getX() + size.getX(), topLeft.getY() + offY, color);
 				}
 				break;
 			default:
