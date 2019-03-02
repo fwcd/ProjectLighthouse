@@ -5,6 +5,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Board;
 import lighthouse.model.GameState;
 import lighthouse.model.Level;
@@ -15,6 +18,7 @@ import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.util.LayoutUtils;
 
 public class SolverViewController implements ViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
 	private final BoardViewController board;
 	private final GameState gameState;
@@ -33,8 +37,12 @@ public class SolverViewController implements ViewController {
 		new Thread(() -> {
 			Solver solver = new BacktrackingSolver();
 			Level level = gameState.getLevel();
-			List<Board> solution = solver.solve(level);
-			board.play(solution, 100);
+			try {
+				List<Board> solution = solver.solve(level);
+				board.play(solution, 100);
+			} catch (Exception e) {
+				LOG.error("An error occurred while solving:", e);
+			}
 		}, "Solver").start();
 	}
 	
