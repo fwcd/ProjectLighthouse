@@ -57,6 +57,8 @@ public class RemoteLighthouseView implements LighthouseView {
 		byte[] data = new byte[LIGHTHOUSE_BYTES];
 		int i = 0;
 		
+		viewModel.renderOverlays();
+		
 		for (int y = 0; y < LhConstants.LIGHTHOUSE_ROWS; y++) {
 			for (int x = 0; x < LhConstants.LIGHTHOUSE_COLS; x++) {
 				Color cell = viewModel.getColorAt(x, y);

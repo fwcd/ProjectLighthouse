@@ -15,7 +15,7 @@ import lighthouse.util.transform.Scaling;
 import lighthouse.util.transform.Translation;
 
 /**
- * A class that wraps the board preparing it for the big screen (the Lighthouse)
+ * A class that wraps the grid preparing it for the big screen (the Lighthouse)
  * by scaling and translating the grid positions.
  */
 public class LighthouseViewModel implements ColorGrid {
@@ -47,7 +47,7 @@ public class LighthouseViewModel implements ColorGrid {
 		return rows;
 	}
 
-	private void renderOverlays() {
+	public void renderOverlays() {
 		Graphics2D g2d = overlay.createGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, columns, rows);
@@ -66,7 +66,6 @@ public class LighthouseViewModel implements ColorGrid {
 	
 	@Override
 	public Color getColorAt(IntVec gridPos) {
-		renderOverlays();
 		Color overlayColor = new Color(overlay.getRGB(gridPos.getX(), gridPos.getY()));
 		return ((overlayColor.getRGB() & 0xFFFFFF) == 0)
 			? board.getColorAt(lighthousePosToGrid.apply(gridPos).floor())
