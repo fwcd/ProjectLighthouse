@@ -3,6 +3,7 @@ package lighthouse.ui.board.viewmodel;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Graphics2DOverlayRenderer;
@@ -22,7 +23,7 @@ public class LighthouseViewModel implements ColorGrid {
 	private final int columns;
 	private final int rows;
 	private final BoardViewModel board;
-	private final BufferedImage overlay;
+	private final BufferedImage image;
 	private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
 	private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
 
@@ -34,7 +35,7 @@ public class LighthouseViewModel implements ColorGrid {
 		this.board = board;
 		this.columns = columns;
 		this.rows = rows;
-		overlay = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_RGB);
 	}
 
 	/** Fetches the Lighthouse grid's columns. */
@@ -47,18 +48,23 @@ public class LighthouseViewModel implements ColorGrid {
 		return rows;
 	}
 
-	public void renderOverlays() {
-		Graphics2D g2d = overlay.createGraphics();
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(0, 0, columns, rows);
+	public void render() {
+		int[] imgBuffer = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
+				imgBuffer[(y * columns) + x] = board.getColorOrBlackAt(lighthousePosToGrid.apply(new IntVec(x, y)).floor()).getRGB();
+			}
+		}
+		
+		Graphics2D g2d = image.createGraphics();
 		OverlayShapeVisitor renderer = new Graphics2DOverlayRenderer(g2d,
 			lighthousePosToGrid.inverse().floor(),
 			lighthouseSizeToGrid.inverse().ceil()
 		);
 		
-		for (Overlay overlay : board.getOverlays()) {
-			overlay.acceptForAllShapes(renderer);
+		for (Overlay rendered : board.getOverlays()) {
+			rendered.acceptForAllShapes(renderer);
 		}
 		
 		g2d.dispose();
@@ -66,10 +72,7 @@ public class LighthouseViewModel implements ColorGrid {
 	
 	@Override
 	public Color getColorAt(IntVec gridPos) {
-		Color overlayColor = new Color(overlay.getRGB(gridPos.getX(), gridPos.getY()));
-		return ((overlayColor.getRGB() & 0xFFFFFF) == 0)
-			? board.getColorAt(lighthousePosToGrid.apply(gridPos).floor())
-			: overlayColor;
+		return new Color(image.getRGB(gridPos.getX(), gridPos.getY()));
 	}
 	
 	@Override

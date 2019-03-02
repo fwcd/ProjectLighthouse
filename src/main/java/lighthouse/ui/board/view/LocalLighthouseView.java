@@ -48,7 +48,7 @@ public class LocalLighthouseView implements LighthouseView {
 			g2d.setFont(g2d.getFont().deriveFont(18F)); // Make font larger
 			g2d.drawString("No Board model drawn", 30, 30);
 		} else {
-			viewModel.renderOverlays();
+			viewModel.render();
 			
 			int cols = viewModel.getColumns();
 			int rows = viewModel.getRows();
