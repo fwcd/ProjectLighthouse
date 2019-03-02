@@ -7,6 +7,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Board;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardPlayController;
@@ -33,6 +36,7 @@ import lighthouse.util.transform.DoubleVecBijection;
  * views, while still allowing the user of this class to hook custom views.
  */
 public class BoardViewController implements ViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardViewController.class);
 	private final JComponent component;
 
 	private final Updatable gameUpdater;
@@ -109,7 +113,7 @@ public class BoardViewController implements ViewController {
 		Iterator<? extends Board> iterator = boards.iterator();
 		Timer timer = new Timer(delayMs, e -> {
 			if (iterator.hasNext()) {
-				System.out.println("Updating");
+				LOG.trace("Updating");
 				updateModel(iterator.next());
 				gameUpdater.update();
 			} else {
