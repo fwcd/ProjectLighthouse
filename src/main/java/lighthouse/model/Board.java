@@ -101,16 +101,6 @@ public class Board implements Serializable, ColorGrid {
 		return getColorAt(new IntVec(x, y));
 	}
 	
-	public Color getColorOrBlackAt(IntVec gridPos) {
-		Color color = getColorAt(gridPos);
-		return (color == null) ? Color.BLACK : color;
-	}
-	
-	public Color getColorOrBlackAt(int x, int y) {
-		Color color = getColorAt(x, y);
-		return (color == null) ? Color.BLACK : color;
-	}
-	
 	public boolean hasBrickAt(IntVec gridPos) {
 		return bricks.stream().anyMatch(brick -> brick.contains(gridPos));
 	}
