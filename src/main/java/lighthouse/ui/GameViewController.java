@@ -54,7 +54,7 @@ public class GameViewController implements ViewController {
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
-		winChecker = new GameWinChecker(board.getComponent(), model, context);
+		winChecker = new GameWinChecker(board.getComponent(), model, context, board.getViewModel().getStatistics());
 
 		// Add hooks
 		model.getBoardListeners().add(boardModel -> {

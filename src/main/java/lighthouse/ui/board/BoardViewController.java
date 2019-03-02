@@ -120,6 +120,7 @@ public class BoardViewController implements ViewController {
 	}
 	
 	public void updateModel(Board model) {
+		// Preserve the statistics instance across viewmodel changes
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
 		viewModel = new BoardViewModel(model, statistics);
