@@ -39,21 +39,26 @@ public class BoardViewModel implements ColorGrid {
 	
 	@Override
 	public Color getColorAt(IntVec gridPos) {
-		Color color = model.getColorAt(gridPos);
-		
-		if (color == null) {
-			GameBlock bip = editState.getBrickInProgress();
-			if (bip != null && bip.contains(gridPos)) {
-				color = bip.getColor();
-			}
-		}
-		
-		return (color == null) ? Color.BLACK : color;
+		GameBlock block = locateBlock(gridPos);
+		return (block == null) ? Color.BLACK : block.getColor();
 	}
 	
 	@Override
 	public Color getColorAt(int x, int y) {
 		return getColorAt(new IntVec(x, y));
+	}
+	
+	public GameBlock locateBlock(IntVec gridPos) {
+		GameBlock block = model.locateBrick(gridPos);
+		
+		if (block == null) {
+			GameBlock bip = editState.getBrickInProgress();
+			if (bip != null && bip.contains(gridPos)) {
+				block = bip;
+			}
+		}
+		
+		return block;
 	}
 	
 	/** Fetches the current editing state of the board. */
@@ -66,6 +71,8 @@ public class BoardViewModel implements ColorGrid {
 		model.clear();
 		editState.reset();
 	}
+	
+	public boolean isSelected(Brick brick) { return selected.equals(brick); }
 	
 	public Brick getSelected() { return selected; }
 	

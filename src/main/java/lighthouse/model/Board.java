@@ -92,8 +92,8 @@ public class Board implements Serializable, ColorGrid {
 	/** Fetches the cell's color at the specified position. */
 	@Override
 	public Color getColorAt(IntVec gridPos) {
-		GameBlock block = locateBrick(gridPos);
-		return (block == null) ? null : block.getColor();
+		Brick brick = locateBrick(gridPos);
+		return (brick == null) ? null : brick.getColor();
 	}
 	
 	@Override
