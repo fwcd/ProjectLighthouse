@@ -99,6 +99,18 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	@Override
+	public void select(IntVec gridPos) {
+		viewModel.selectAt(gridPos);
+		updater.update();
+	}
+	
+	@Override
+	public void deselect(IntVec gridPos) {
+		viewModel.deselect();
+		updater.update();
+	}
+	
+	@Override
 	public void updateViewModel(BoardViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
