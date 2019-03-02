@@ -26,6 +26,7 @@ public class BoardViewModel implements ColorGrid {
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
+	private Brick selected = null;
 	
 	public BoardViewModel(Board model) {
 		this(model, new BoardStatistics());
@@ -65,6 +66,10 @@ public class BoardViewModel implements ColorGrid {
 		model.clear();
 		editState.reset();
 	}
+	
+	public void select(Brick brick) { selected = brick; }
+	
+	public void deselect() { selected = null; }
 	
 	public List<? extends Overlay> getOverlays() { return overlays; }
 	

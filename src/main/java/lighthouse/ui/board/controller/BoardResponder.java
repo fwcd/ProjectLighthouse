@@ -23,5 +23,9 @@ public interface BoardResponder {
 	
 	default void release(IntVec gridPos) {}
 	
+	default void select(IntVec gridPos) {}
+	
+	default void deselect(IntVec gridPos) {}
+	
 	default void reset() {}
 }
