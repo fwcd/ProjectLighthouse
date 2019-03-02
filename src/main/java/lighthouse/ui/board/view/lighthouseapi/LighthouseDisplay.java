@@ -45,25 +45,15 @@ public class LighthouseDisplay implements AutoCloseable {
 	private String token;
 	private LighthouseDisplayHandler handler;
 	private WebSocketClient client;
-	private int debugOutput;
 	private Set<ILighthouseInputListener> observer = new HashSet<>();
 
 	/**
 	 * Creates a new LighthouseDisplay with given user-name and access token
 	 */
 	public LighthouseDisplay(String username, String token) {
-		this(username, token, 0);
-	}
-
-	/**
-	 * Creates a new LighthouseDisplay with given user-name and access token and
-	 * sets weather connect and disconnect messages should be printed in stdOut
-	 */
-	public LighthouseDisplay(String username, String token, int debugOutput) {
-		handler = new LighthouseDisplayHandler(this, debugOutput);
+		handler = new LighthouseDisplayHandler(this);
 		this.username = username;
 		this.token = token;
-		this.debugOutput = debugOutput;
 	}
 
 	/**
@@ -125,9 +115,7 @@ public class LighthouseDisplay implements AutoCloseable {
 
 		client.start();
 		client.connect(handler, targetUri, upgrade);
-		if (debugOutput > 0) {
-			System.out.printf("LighthouseDisplay, Connecting to: %s\n", targetUri);
-		}
+		LOG.info("Connecting to: {}", targetUri);
 	}
 
 	/**
@@ -195,16 +183,13 @@ public class LighthouseDisplay implements AutoCloseable {
 	 */
 	@WebSocket(maxTextMessageSize = 64 * 1024, maxBinaryMessageSize = 64 * 1024)
 	public class LighthouseDisplayHandler {
-
 		private LighthouseDisplay parent;
 		private Session session;
 		private boolean connected = false;
-		private int debug;
 		private RemoteEndpoint endpoint = null;
 
-		private LighthouseDisplayHandler(LighthouseDisplay parent, int debug) {
+		private LighthouseDisplayHandler(LighthouseDisplay parent) {
 			this.parent = parent;
-			this.debug = debug;
 		}
 
 		/**
@@ -266,7 +251,7 @@ public class LighthouseDisplay implements AutoCloseable {
 					public void writeSuccess() {}
 					@Override
 					public void writeFailed(Throwable err) {
-						System.err.println("LighthouseDisplay, ERROR: sending image failed");
+						LOG.error("Sending image failed: ", err);
 					}
 				});
 				endpoint.flush();
@@ -298,9 +283,7 @@ public class LighthouseDisplay implements AutoCloseable {
 		@OnWebSocketClose
 		public void onClose(int statusCode, String reason) {
 			connected = false;
-			if (debug > 0) {
-				System.out.printf("LighthouseDisplay, Connection closed [%d]: %s%n", statusCode, reason);
-			}
+			LOG.info("Connection closed [{}]: {}", statusCode, reason);
 		}
 
 		/**
@@ -311,9 +294,7 @@ public class LighthouseDisplay implements AutoCloseable {
 			// save session for usage in communication
 			this.session = session;
 			connected = true;
-			if (debug > 0) {
-				System.out.printf("LighthouseDisplay, Got connection: %s%n", session);
-			}
+			LOG.debug("Got connection: {}", session);
 			
 			// request stream for controller input
 			MessageBufferPacker packer2 = MessagePack.newDefaultBufferPacker();
@@ -355,26 +336,23 @@ public class LighthouseDisplay implements AutoCloseable {
 				endpoint.sendBytes(ByteBuffer.wrap(packer2.toByteArray()));
 				endpoint.flush();
 			} catch (IOException e) {
-				System.err.println("LighthouseDisplay, ERROR: requesting controller input stream:");
-				e.printStackTrace();
+				LOG.error("Error requesting controller input stream:", e);
 			}
 		}
 
 		@OnWebSocketMessage
 		public void onMessage(String msg) {
-			if (debug > 1) {
-				System.out.printf("LighthouseDisplay, got text Message: %s\n", msg);
-			}
+			LOG.trace("Got text Message: {}", msg);
 		}
 
 		@OnWebSocketMessage
 		public void onMessage(byte buf[], int offset, int length) {
-			if (debug > 1) {
-				System.out.printf("LighthouseDisplay, got binary Message: ");
+			if (LOG.isTraceEnabled()) {
+				StringBuilder builder = new StringBuilder("got binary Message: ");
 				for (int i = 0; i < length; i++) {
-					System.out.printf("%02X ", buf[offset + i] & 0xFF);
+					builder.append(Integer.toHexString(buf[offset + i] & 0xFF));
 				}
-				System.out.printf("%n");
+				LOG.trace(builder.toString());
 			}
 			MessageUnpacker unp = MessagePack.newDefaultUnpacker(buf, offset, length);
 			try {
@@ -414,8 +392,7 @@ public class LighthouseDisplay implements AutoCloseable {
 										listener.controllerEvent(src, button, pressed);
 									}
 								} catch (Exception e) {
-									System.err.println(e.getLocalizedMessage());
-									e.printStackTrace();
+									LOG.error("Error while delegating ILighthouseInputListener event:", e);
 								}
 							}
 						}
@@ -428,13 +405,15 @@ public class LighthouseDisplay implements AutoCloseable {
 							response = responseValue.asStringValue().asString();
 						} catch (MessageStringCodingException ignored) {}
 					}
-					System.err.println("LighthouseDisplay, API Error: ("+rnum+") "+response);
+					LOG.error("API Error: ({}) {}", rnum, response);
 				}
 			} catch (IOException e) {
-				System.err.println(e.getLocalizedMessage());
-				e.printStackTrace();
+				LOG.error("IOException while receiving message", e);
 			} catch (NullPointerException ignored) { // in case of malformed message
-			} catch (MessageTypeCastException ignored) {} // in case of malformed message
+				LOG.debug("Got malformed message (though this exception is ignored):", ignored);
+			} catch (MessageTypeCastException ignored) { // in case of malformed message
+				LOG.debug("Got malformed message (though this exception is ignored):", ignored);
+			}
 		}
 
 		/**
@@ -442,10 +421,7 @@ public class LighthouseDisplay implements AutoCloseable {
 		 */
 		@OnWebSocketError
 		public void onError(Session session, Throwable error) {
-			System.err.println("LighthouseDisplay, WebSocket-Error:");
-			System.err.println(error);
-			error.printStackTrace(System.err);
-			System.err.println(session);
+			LOG.error("WebSocket-Error", error);
 		}
 	}
 }
