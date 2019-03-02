@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.GameBlock;
+import lighthouse.model.Move;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Overlay;
 import lighthouse.util.IntVec;
@@ -76,4 +78,6 @@ public class BoardViewModel implements ColorGrid {
 	public void replace(Brick oldBrick, Brick newBrick) { model.replace(oldBrick, newBrick); }
 	
 	public Collection<? extends Brick> getBricks() { return model.getBricks(); }
+	
+	public Stream<Move> streamPossibleMoves() { return model.streamPossibleMoves(); }
 }

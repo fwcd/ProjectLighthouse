@@ -3,6 +3,10 @@ package lighthouse.ui.board.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
@@ -15,6 +19,7 @@ import lighthouse.util.Updatable;
  * The primary responder implementation for playing.
  */
 public class BoardPlayController implements BoardResponder {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	private Map<Direction, Integer> limits;
 	private Updatable updater;
 	private BoardViewModel viewModel;
@@ -48,6 +53,8 @@ public class BoardPlayController implements BoardResponder {
 		startGridPos = gridPos;
 		computeLimits();
 		updater.update();
+		
+		LOG.info("Possible moves: {}", viewModel.streamPossibleMoves().collect(Collectors.toList()));
 	}
 	
 	@Override
