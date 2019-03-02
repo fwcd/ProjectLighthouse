@@ -57,7 +57,7 @@ public class BacktrackingSolver implements Solver {
                     }
                 }
             }
-            System.out.println("skipping: ," + skips + " from " + begin);
+            LOG.info("skipping: {} from {}", skips, begin);
             for(int i = 0; i < skips-1; i++){
                 moves.remove(begin + 1);
             }
