@@ -1,4 +1,4 @@
-package lighthouse.ui.board.view;
+package lighthouse.ui.board.viewmodel.overlay;
 
 import java.awt.Graphics2D;
 import java.util.function.Function;
@@ -11,11 +11,11 @@ import lighthouse.ui.board.viewmodel.overlay.OverlayShapeVisitor;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
-public class LocalBoardOverlayRenderer implements OverlayShapeVisitor {
+public class Graphics2DOverlayRenderer implements OverlayShapeVisitor {
 	private final Graphics2D g2d;
 	private final Function<DoubleVec, IntVec> gridToPixels;
 
-	public LocalBoardOverlayRenderer(Graphics2D g2d, Function<DoubleVec, IntVec> gridToPixels) {
+	public Graphics2DOverlayRenderer(Graphics2D g2d, Function<DoubleVec, IntVec> gridToPixels) {
 		this.g2d = g2d;
 		this.gridToPixels = gridToPixels;
 	}
