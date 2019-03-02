@@ -22,6 +22,7 @@ public class BacktrackingSolver implements Solver {
         Board goal = toSolve.getGoal();
         List<Board> forbidden = new ArrayList<>();
         forbidden.add(current.copy());
+        moves.add(current.copy());
         while (!current.equals(goal)) {
             Board tmpCurrent = current.copy();
             Optional<Move> nextMove = current.streamPossibleMoves()
