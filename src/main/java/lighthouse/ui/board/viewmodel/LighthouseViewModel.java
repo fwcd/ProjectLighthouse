@@ -47,6 +47,7 @@ public class LighthouseViewModel implements ColorGrid {
 	private void renderOverlays() {
 		OverlayShapeVisitor renderer = new GridOverlayRenderer(
 			overlayGrid,
+			this::getColorAt,
 			lighthousePosToGrid.inverse().floor(),
 			lighthouseSizeToGrid.inverse().ceil()
 		);

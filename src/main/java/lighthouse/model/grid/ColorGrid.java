@@ -21,6 +21,16 @@ public interface ColorGrid {
 		return (color == null) ? defaultColor : color;
 	}
 	
+	default Color getColorOrUsing(ColorGrid background, IntVec gridPos) {
+		Color color = getColorAt(gridPos);
+		return (color == null) ? background.getColorAt(gridPos) : color;
+	}
+	
+	default Color getColorOrUsing(ColorGrid background, int x, int y) {
+		Color color = getColorAt(x, y);
+		return (color == null) ? background.getColorAt(x, y) : color;
+	}
+	
 	default Color getColorOrBlackAt(IntVec gridPos) { return getColorOr(Color.BLACK, gridPos); }
 	
 	default Color getColorOrBlackAt(int x, int y) { return getColorOr(Color.BLACK, x, y); }
