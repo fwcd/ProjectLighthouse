@@ -77,16 +77,4 @@ public class BoardDrawController implements BoardResponder {
 	public void updateViewModel(BoardViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
-	
-	@Override
-	public void select(IntVec gridPos) {
-		viewModel.selectAt(gridPos);
-		updater.update();
-	}
-	
-	@Override
-	public void deselect(IntVec gridPos) {
-		viewModel.deselect();
-		updater.update();
-	}
 }

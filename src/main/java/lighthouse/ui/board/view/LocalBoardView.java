@@ -118,7 +118,14 @@ public class LocalBoardView implements BoardView {
 			// Draw the board's bricks
 			for (Brick brick : viewModel.getBricks()) {
 				LOG.debug("Rendering {}", brick);
-				renderBlock(g2d, brick, placedBrickScale);
+				Color color = brick.getColor();
+				
+				if (viewModel.isSelected(brick)) {
+					color = color.brighter().brighter();
+				}
+				
+				renderBlock(g2d, brick, placedBrickScale, color);
+				
 				if (edgeDrawMode != EdgeDrawMode.NONE) {
 					renderEdges(g2d, gridToPixels.apply(brick.getPos()).floor(), brick.getEdges(), placedBrickScale);
 				}
@@ -182,7 +189,11 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale) {
-		renderBlock(g2d, gridToPixels.apply(block.getPos()).floor(), block, blockScale, block.getColor());
+		renderBlock(g2d, block, blockScale, block.getColor());
+	}
+	
+	private void renderBlock(Graphics2D g2d, GameBlock block, double blockScale, Color color) {
+		renderBlock(g2d, gridToPixels.apply(block.getPos()).floor(), block, blockScale, color);
 	}
 	
 	private void renderBlock(Graphics2D g2d, IntVec pixelPos, GameBlock block, double blockScale, Color color) {

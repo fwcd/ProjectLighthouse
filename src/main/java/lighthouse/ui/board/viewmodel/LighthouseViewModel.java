@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import lighthouse.model.GameBlock;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Graphics2DOverlayRenderer;
 import lighthouse.ui.board.viewmodel.overlay.Overlay;
@@ -55,7 +56,17 @@ public class LighthouseViewModel implements ColorGrid {
 		
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				imgBuffer[(y * columns) + x] = board.getColorOrBlackAt(lighthousePosToGrid.apply(new IntVec(x, y)).floor()).getRGB();
+				GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)).floor());
+				Color color = Color.BLACK;
+				
+				if (block != null) {
+					color = block.getColor();
+					if (board.isSelected(block)) {
+						color = color.brighter().brighter();
+					}
+				}
+				
+				imgBuffer[(y * columns) + x] = color.getRGB();
 			}
 		}
 		

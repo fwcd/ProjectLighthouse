@@ -72,7 +72,7 @@ public class BoardViewModel implements ColorGrid {
 		editState.reset();
 	}
 	
-	public boolean isSelected(Brick brick) { return selected.equals(brick); }
+	public boolean isSelected(GameBlock block) { return (selected != null) && (block != null) && selected.equals(block); }
 	
 	public Brick getSelected() { return selected; }
 	
