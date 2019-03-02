@@ -160,7 +160,7 @@ public class Board implements Serializable, ColorGrid {
 	/** Computes the possible moves of a brick into a certain direction. */
 	private Stream<Move> movesIntoDirection(Brick brick, Direction dir, int limit) {
 		return IntStream.range(0, limit)
-			.mapToObj(i -> new Move(brick, brick.movedBy(new IntVec(dir.getDx(), dir.getDy()).scale(limit))));
+			.mapToObj(i -> new Move(brick, brick.movedBy(new IntVec(dir.getDx(), dir.getDy()).scale(i))));
 	}
 	
     /** Fetches the limits into each direction for a brick. */
