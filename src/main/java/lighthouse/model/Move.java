@@ -15,4 +15,9 @@ public class Move {
 	public Brick getOldBrick() { return oldBrick; }
 	
 	public Brick getNewBrick() { return newBrick; }
+	
+	@Override
+	public String toString() {
+		return oldBrick + " -> " + newBrick;
+	}
 }
