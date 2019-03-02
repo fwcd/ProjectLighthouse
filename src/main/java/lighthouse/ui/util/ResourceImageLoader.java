@@ -18,11 +18,14 @@ import org.slf4j.LoggerFactory;
 public class ResourceImageLoader {
 	private static final Logger LOG = LoggerFactory.getLogger(ResourceImageLoader.class);
 	private static final ResourceImageLoader INSTANCE = new ResourceImageLoader();
+	
+	private final AnimatedGIFLoader gifLoader = new AnimatedGIFLoader();
 	private final Map<String, BufferedImage> loadedBufferedImages = new ConcurrentHashMap<>();
+	private final Map<String, BufferedAnimatedImage> loadedAnimatedImages = new ConcurrentHashMap<>();
 	
 	public static ResourceImageLoader getInstance() { return INSTANCE; }
 	
-	private BufferedImage loadFrom(String resourcePath) {
+	private BufferedImage loadBufferedImageFrom(String resourcePath) {
 		try (InputStream stream = ResourceImageLoader.class.getResourceAsStream(resourcePath)) {
 			return ImageIO.read(stream);
 		} catch (IOException e) {
@@ -31,10 +34,19 @@ public class ResourceImageLoader {
 		}
 	}
 	
+	private BufferedAnimatedImage loadAnimatedGIFFrom(String resourcePath) {
+		try (InputStream stream = ResourceImageLoader.class.getResourceAsStream(resourcePath)) {
+			return gifLoader.loadGIFFrom(stream);
+		} catch (IOException e) {
+			LOG.error("Error while loading animated GIF resource:", e);
+			return null;
+		}
+	}
+	
 	public BufferedImage get(String resourcePath) {
 		BufferedImage loaded = loadedBufferedImages.get(resourcePath);
 		if (loaded == null) {
-			loaded = loadFrom(resourcePath);
+			loaded = loadBufferedImageFrom(resourcePath);
 			if (loaded != null) {
 				loadedBufferedImages.put(resourcePath, loaded);
 			}
@@ -44,5 +56,16 @@ public class ResourceImageLoader {
 	
 	public ImageIcon getAsIcon(String resourcePath) {
 		return new ImageIcon(get(resourcePath));
+	}
+	
+	public BufferedAnimatedImage getAsAnimatedGIF(String resourcePath) {
+		BufferedAnimatedImage loaded = loadedAnimatedImages.get(resourcePath);
+		if (loaded == null) {
+			loaded = loadAnimatedGIFFrom(resourcePath);
+			if (loaded != null) {
+				loadedAnimatedImages.put(resourcePath, loaded);
+			}
+		}
+		return loaded;
 	}
 }
