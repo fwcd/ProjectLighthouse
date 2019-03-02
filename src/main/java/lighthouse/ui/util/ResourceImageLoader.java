@@ -43,6 +43,6 @@ public class ResourceImageLoader {
 	}
 	
 	public ImageIcon getAsIcon(String resourcePath) {
-		return new ImageIcon(resourcePath);
+		return new ImageIcon(get(resourcePath));
 	}
 }
