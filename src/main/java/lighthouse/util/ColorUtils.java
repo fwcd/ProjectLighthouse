@@ -91,9 +91,10 @@ public class ColorUtils {
 		return closestName;
 	}
 	
+	/** Computes the squared euclidean distance between a and b in RGB space. */
 	private static int distance(Color a, Color b) {
-		return Math.abs(a.getRed() - b.getRed())
-			 + Math.abs(a.getGreen() - b.getGreen())
-			 + Math.abs(a.getBlue() - b.getBlue());
+		return MathUtils.square(a.getRed() - b.getRed())
+			 + MathUtils.square(a.getGreen() - b.getGreen())
+			 + MathUtils.square(a.getBlue() - b.getBlue());
 	}
 }
