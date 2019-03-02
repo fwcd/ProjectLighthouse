@@ -40,8 +40,8 @@ public class SideBarViewController implements ViewController {
 		AIViewController aiControls = new AIViewController(model);
 		accordion.addPane("AI Controls", aiControls.getComponent()).collapse();
 		
-		AlphaBetaViewController abControls = new AlphaBetaViewController(model.getGameState(), game.getBoard());
-		accordion.addPane("AlphaBeta Controls", abControls.getComponent());
+		SolverViewController solverControls = new SolverViewController(model.getGameState(), game.getBoard());
+		accordion.addPane("Solver", solverControls.getComponent());
 		
 		BoardStatisticsViewController statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
 		accordion.addPane("Game Statistics", statistics.getComponent()).collapse();

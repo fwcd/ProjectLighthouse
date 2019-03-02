@@ -1,18 +1,22 @@
-package lighthouse.alphabeta;
+package lighthouse.solver;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
 import lighthouse.model.Level;
 import lighthouse.model.Move;
 
-public class AlphaBeta {
-
-    public static List<Board> solve(Level toSolve) {
+public class BacktrackingSolver implements Solver {
+    private static final Logger LOG = LoggerFactory.getLogger(BacktrackingSolver.class);
+    
+    @Override
+    public List<Board> solve(Level toSolve) {
         List<Board> moves = new ArrayList<>();
         Board current = toSolve.getStart().copy();
         Board goal = toSolve.getGoal();
@@ -25,22 +29,21 @@ public class AlphaBeta {
             Iterator<Move> iter = current.streamPossibleMoves().iterator();
 
             while(iter.hasNext()){
-                System.out.println(iter.next());
+                LOG.info("Next: {}", iter.next());
             }
             
             if (!nextMove.isPresent()){
-                System.out.println("Reverting");
+                LOG.info("Reverting");
                 moves.remove(moves.size()-1);
                 current = moves.get(moves.size()-1);
                 continue;
             }
-            System.out.println("Moving " + nextMove.orElse(null));
+            LOG.info("Moving {}", nextMove.orElse(null));
             current.perform(nextMove.orElse(null));
             moves.add(current.copy());
             forbidden.add(current.copy());
         }
-        System.out.println("Done");
+        LOG.info("Done");
         return moves;
     }
-
 }
