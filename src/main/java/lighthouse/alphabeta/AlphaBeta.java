@@ -8,7 +8,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Level;
 import lighthouse.model.Move;
 
-public abstract class ABMain {
+public class AlphaBeta {
 
     public static List<Board> solve(Level toSolve) {
         List<Board> moves = new ArrayList<>();
