@@ -1,16 +1,16 @@
-package lighthouse.model;
+package lighthouse.ui.board.viewmodel;
 
 import lighthouse.util.ListenerList;
 
 /**
- * POJO containing some statistics about the game.
+ * POJO containing some statistics about the board.
  */
-public class GameStatistics {
+public class BoardStatistics {
 	private int moveCount = 0;
 	private double avgDistanceToGoal = 0;
 	
-	private final ListenerList<Integer> moveCountListeners = new ListenerList<>("GameStatistics.moveCountListeners");
-	private final ListenerList<Double> distanceToGoalListeners = new ListenerList<>("GameStatistics.distanceToGoalListeners");
+	private final ListenerList<Integer> moveCountListeners = new ListenerList<>("BoardStatistics.moveCountListeners");
+	private final ListenerList<Double> distanceToGoalListeners = new ListenerList<>("BoardStatistics.distanceToGoalListeners");
 	
 	public int getMoveCount() { return moveCount; }
 	

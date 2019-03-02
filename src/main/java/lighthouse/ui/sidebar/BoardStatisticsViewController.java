@@ -3,14 +3,14 @@ package lighthouse.ui.sidebar;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import lighthouse.model.GameStatistics;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.util.LayoutUtils;
 
-public class GameStatisticsViewController implements ViewController {
+public class BoardStatisticsViewController implements ViewController {
 	private final JComponent component;
 	
-	public GameStatisticsViewController(GameStatistics model) {
+	public BoardStatisticsViewController(BoardStatistics model) {
 		component = LayoutUtils.vboxOf(
 			LayoutUtils.compoundOf(
 				new JLabel("Move count:"),

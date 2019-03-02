@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 
 import lighthouse.model.Board;
 import lighthouse.model.GameState;
-import lighthouse.model.GameStatistics;
 import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.modes.GameMode;
 import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
@@ -59,7 +59,7 @@ public class GameViewController implements ViewController {
 		// Add hooks
 		model.getBoardListeners().add(boardModel -> {
 			board.updateModel(boardModel);
-			context.getStatistics().reset();
+			board.getViewModel().getStatistics().reset();
 		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
@@ -80,7 +80,7 @@ public class GameViewController implements ViewController {
 			updater.update();
 		}
 		
-		GameStatistics stats = context.getStatistics();
+		BoardStatistics stats = board.getViewModel().getStatistics();
 		stats.incrementMoveCount();
 		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}

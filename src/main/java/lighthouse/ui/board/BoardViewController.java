@@ -20,6 +20,7 @@ import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
+import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
@@ -119,7 +120,9 @@ public class BoardViewController implements ViewController {
 	}
 	
 	public void updateModel(Board model) {
-		viewModel = new BoardViewModel(model);
+		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
+		statistics.reset();
+		viewModel = new BoardViewModel(model, statistics);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		responder.updateViewModel(viewModel);
 	}

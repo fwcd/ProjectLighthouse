@@ -24,10 +24,16 @@ import lighthouse.util.IntVec;
 public class BoardViewModel implements ColorGrid {
 	private final Board model;
 	private final BoardEditState editState = new BoardEditState();
+	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
 	
 	public BoardViewModel(Board model) {
+		this(model, new BoardStatistics());
+	}
+	
+	public BoardViewModel(Board model, BoardStatistics statistics) {
 		this.model = model;
+		this.statistics = statistics;
 	}
 	
 	@Override
@@ -51,6 +57,9 @@ public class BoardViewModel implements ColorGrid {
 	
 	/** Fetches the current editing state of the board. */
 	public BoardEditState getEditState() { return editState; }
+	
+	/** Fetches statistics about the board state. */
+	public BoardStatistics getStatistics() { return statistics; }
 	
 	public void clear() {
 		model.clear();

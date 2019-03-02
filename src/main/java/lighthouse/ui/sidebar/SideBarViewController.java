@@ -43,7 +43,7 @@ public class SideBarViewController implements ViewController {
 		AlphaBetaViewController abControls = new AlphaBetaViewController(model.getGameState(), game.getBoard());
 		accordion.addPane("AlphaBeta Controls", abControls.getComponent());
 		
-		GameStatisticsViewController statistics = new GameStatisticsViewController(game.getContext().getStatistics());
+		BoardStatisticsViewController statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
 		accordion.addPane("Game Statistics", statistics.getComponent()).collapse();
 		
 		// Add the connector panel which allows the user
