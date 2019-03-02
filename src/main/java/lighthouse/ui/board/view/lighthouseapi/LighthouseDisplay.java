@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 
@@ -11,6 +16,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.StatusCode;
+import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
@@ -20,6 +26,11 @@ import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.msgpack.core.MessageBufferPacker;
 import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessageStringCodingException;
+import org.msgpack.core.MessageTypeCastException;
+import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.Value;
+import org.msgpack.value.impl.ImmutableStringValueImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +45,25 @@ public class LighthouseDisplay implements AutoCloseable {
 	private String token;
 	private LighthouseDisplayHandler handler;
 	private WebSocketClient client;
+	private int debugOutput;
+	private Set<ILighthouseInputListener> observer = new HashSet<>();
+
+	/**
+	 * Creates a new LighthouseDisplay with given user-name and access token
+	 */
+	public LighthouseDisplay(String username, String token) {
+		this(username, token, 0);
+	}
 
 	/**
 	 * Creates a new LighthouseDisplay with given user-name and access token and
 	 * sets weather connect and disconnect messages should be printed in stdOut
 	 */
-	public LighthouseDisplay(String username, String token) {
-		handler = new LighthouseDisplayHandler(this);
+	public LighthouseDisplay(String username, String token, int debugOutput) {
+		handler = new LighthouseDisplayHandler(this, debugOutput);
 		this.username = username;
 		this.token = token;
+		this.debugOutput = debugOutput;
 	}
 
 	/**
@@ -104,7 +125,9 @@ public class LighthouseDisplay implements AutoCloseable {
 
 		client.start();
 		client.connect(handler, targetUri, upgrade);
-		LOG.info("Connecting to: {}", targetUri);
+		if (debugOutput > 0) {
+			System.out.printf("LighthouseDisplay, Connecting to: %s\n", targetUri);
+		}
 	}
 
 	/**
@@ -150,16 +173,21 @@ public class LighthouseDisplay implements AutoCloseable {
 		return handler.isConnected();
 	}
 
-	@Override
 	public void close() {
 		handler.close();
 		try {
-			if (client != null) {
-				client.stop();
-			}
+			client.stop();
 		} catch (Exception e) {
-			LOG.error("An exception occurred while closing the LighthouseDisplay: ", e);
+			e.printStackTrace();
 		}
+	}
+
+	public void addButtonListener(ILighthouseInputListener listener) {
+		observer.add(listener);
+	}
+
+	public void removeButtonListener(ILighthouseInputListener listener) {
+		observer.remove(listener);
 	}
 
 	/**
@@ -167,12 +195,16 @@ public class LighthouseDisplay implements AutoCloseable {
 	 */
 	@WebSocket(maxTextMessageSize = 64 * 1024, maxBinaryMessageSize = 64 * 1024)
 	public class LighthouseDisplayHandler {
+
 		private LighthouseDisplay parent;
 		private Session session;
 		private boolean connected = false;
+		private int debug;
+		private RemoteEndpoint endpoint = null;
 
-		private LighthouseDisplayHandler(LighthouseDisplay parent) {
+		private LighthouseDisplayHandler(LighthouseDisplay parent, int debug) {
 			this.parent = parent;
+			this.debug = debug;
 		}
 
 		/**
@@ -228,10 +260,16 @@ public class LighthouseDisplay implements AutoCloseable {
 					packer.packBinaryHeader(length);
 					packer.addPayload(data, offset, length);
 				}
-				RemoteEndpoint endpoint = session.getRemote();
-				endpoint.sendBytes(ByteBuffer.wrap(packer.toByteArray()));
+
+				endpoint.sendBytes(ByteBuffer.wrap(packer.toByteArray()), new WriteCallback() {
+					@Override
+					public void writeSuccess() {}
+					@Override
+					public void writeFailed(Throwable err) {
+						System.err.println("LighthouseDisplay, ERROR: sending image failed");
+					}
+				});
 				endpoint.flush();
-				LOG.debug("Sent {} bytes", length);
 			}
 		}
 
@@ -260,7 +298,9 @@ public class LighthouseDisplay implements AutoCloseable {
 		@OnWebSocketClose
 		public void onClose(int statusCode, String reason) {
 			connected = false;
-			LOG.info("Connection closed [{}]: {}", statusCode, reason);
+			if (debug > 0) {
+				System.out.printf("LighthouseDisplay, Connection closed [%d]: %s%n", statusCode, reason);
+			}
 		}
 
 		/**
@@ -271,27 +311,130 @@ public class LighthouseDisplay implements AutoCloseable {
 			// save session for usage in communication
 			this.session = session;
 			connected = true;
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Got connection: {}", session);
-			} else {
-				LOG.info("Connected");
+			if (debug > 0) {
+				System.out.printf("LighthouseDisplay, Got connection: %s%n", session);
+			}
+			
+			// request stream for controller input
+			MessageBufferPacker packer2 = MessagePack.newDefaultBufferPacker();
+			try {
+				endpoint = session.getRemote();
+				packer2.packMapHeader(6);
+				{
+					packer2.packString("REID");
+					packer2.packInt(-1);
+	
+					packer2.packString("VERB");
+					packer2.packString("STREAM");
+	
+					packer2.packString("PATH");
+					packer2.packArrayHeader(3);
+					{
+						packer2.packString("user");
+						packer2.packString(parent.getUsername());
+						packer2.packString("model");
+					}
+	
+					packer2.packString("AUTH");
+					packer2.packMapHeader(2);
+					{
+						packer2.packString("USER");
+						packer2.packString(parent.getUsername());
+	
+						packer2.packString("TOKEN");
+						packer2.packString(parent.getToken());
+					}
+	
+					packer2.packString("META");
+					packer2.packMapHeader(0);
+	
+					packer2.packString("PAYL");
+					packer2.packNil();
+				}
+	
+				endpoint.sendBytes(ByteBuffer.wrap(packer2.toByteArray()));
+				endpoint.flush();
+			} catch (IOException e) {
+				System.err.println("LighthouseDisplay, ERROR: requesting controller input stream:");
+				e.printStackTrace();
 			}
 		}
 
 		@OnWebSocketMessage
 		public void onMessage(String msg) {
-			LOG.debug("Got text Message: {}", msg);
+			if (debug > 1) {
+				System.out.printf("LighthouseDisplay, got text Message: %s\n", msg);
+			}
 		}
 
 		@OnWebSocketMessage
-		public void methodName(byte buf[], int offset, int length) {
-			if (LOG.isDebugEnabled()) {
-				StringBuilder str = new StringBuilder("Got binary Message: ");
+		public void onMessage(byte buf[], int offset, int length) {
+			if (debug > 1) {
+				System.out.printf("LighthouseDisplay, got binary Message: ");
 				for (int i = 0; i < length; i++) {
-					str.append(String.format("%02X", buf[offset + i] & 0xFF));
+					System.out.printf("%02X ", buf[offset + i] & 0xFF);
 				}
-				LOG.debug(str.toString());
+				System.out.printf("%n");
 			}
+			MessageUnpacker unp = MessagePack.newDefaultUnpacker(buf, offset, length);
+			try {
+				Value v = unp.unpackValue();
+				Map<Value,Value> vmap = v.asMapValue().map();
+				int rnum = vmap.get(new ImmutableStringValueImpl("RNUM")).asIntegerValue().toInt();
+				if (rnum == 200) {
+					int reid = vmap.get(new ImmutableStringValueImpl("REID")).asIntegerValue().toInt();
+					if (reid == -1) {
+						Value payload = vmap.get(new ImmutableStringValueImpl("PAYL"));
+						List<Value> entries; // list of event entries
+						if (payload.isArrayValue()) {
+							entries = payload.asArrayValue().list();
+						} else {
+							entries = new ArrayList<Value>(1);
+							entries.add(payload);
+						}
+						for (Value entry : entries) {
+							Map<Value,Value> payl = entry.asMapValue().map();
+							
+							boolean isKeyboard = true;
+							Value btn = payl.get(new ImmutableStringValueImpl("key"));
+							if (btn == null) {
+								btn = payl.get(new ImmutableStringValueImpl("btn"));
+								isKeyboard = false;
+							}
+							
+							boolean pressed = payl.get(new ImmutableStringValueImpl("dwn")).asBooleanValue().getBoolean();
+							int src = payl.get(new ImmutableStringValueImpl("src")).asIntegerValue().toInt();
+							int button = btn.asIntegerValue().toInt();
+							
+							for (ILighthouseInputListener listener : observer) {
+								try {
+									if (isKeyboard) {
+										listener.keyboardEvent(src, button, pressed);
+									} else {
+										listener.controllerEvent(src, button, pressed);
+									}
+								} catch (Exception e) {
+									System.err.println(e.getLocalizedMessage());
+									e.printStackTrace();
+								}
+							}
+						}
+					}
+				} else {
+					Value responseValue = vmap.get(new ImmutableStringValueImpl("RESPONSE"));
+					String response = "";
+					if (responseValue.isStringValue()) {
+						try {
+							response = responseValue.asStringValue().asString();
+						} catch (MessageStringCodingException ignored) {}
+					}
+					System.err.println("LighthouseDisplay, API Error: ("+rnum+") "+response);
+				}
+			} catch (IOException e) {
+				System.err.println(e.getLocalizedMessage());
+				e.printStackTrace();
+			} catch (NullPointerException ignored) { // in case of malformed message
+			} catch (MessageTypeCastException ignored) {} // in case of malformed message
 		}
 
 		/**
@@ -299,8 +442,10 @@ public class LighthouseDisplay implements AutoCloseable {
 		 */
 		@OnWebSocketError
 		public void onError(Session session, Throwable error) {
-			LOG.error("Session: ", session);
-			LOG.error("Lighthouse web-socket error: ", error);
+			System.err.println("LighthouseDisplay, WebSocket-Error:");
+			System.err.println(error);
+			error.printStackTrace(System.err);
+			System.err.println(session);
 		}
 	}
 }
