@@ -10,7 +10,10 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
+import com.alee.extended.button.WebSplitButton;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
@@ -66,8 +69,12 @@ public class LayoutUtils {
 	}
 	
 	public static JButton buttonOf(String label, Runnable action) {
-		JButton button = new JButton(label);
-		button.addActionListener(l -> action.run());
+		return new WebButton(label, e -> action.run());
+	}
+	
+	public static WebSplitButton splitButtonOf(String label, Runnable action, WebMenuItem... items) {
+		WebSplitButton button = new WebSplitButton(label, e -> action.run());
+		button.setPopupMenu(popupMenuOf(label, items));
 		return button;
 	}
 	
@@ -77,6 +84,14 @@ public class LayoutUtils {
 			menuBar.add(menu);
 		}
 		return menuBar;
+	}
+	
+	public static JPopupMenu popupMenuOf(String name, WebMenuItem... items) {
+		JPopupMenu menu = new JPopupMenu(name);
+		for (WebMenuItem item : items) {
+			menu.add(item);
+		}
+		return menu;
 	}
 	
 	public static WebMenu menuOf(String name, WebMenuItem... items) {
