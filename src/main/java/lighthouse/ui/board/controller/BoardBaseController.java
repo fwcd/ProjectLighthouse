@@ -54,7 +54,12 @@ public abstract class BoardBaseController implements BoardResponder {
 	
 	@Override
 	public IntVec select(IntVec gridPos) {
-		return viewModel.selectAt(gridPos) ? gridPos : null;
+		if (viewModel.selectAt(gridPos)) {
+			update();
+			return gridPos;
+		} else {
+			return null;
+		}
 	}
 	
 	@Override
@@ -65,6 +70,7 @@ public abstract class BoardBaseController implements BoardResponder {
 		} else {
 			Brick brick = bricks.iterator().next();
 			viewModel.select(brick);
+			update();
 			return brick.getPos();
 		}
 	}
@@ -91,6 +97,11 @@ public abstract class BoardBaseController implements BoardResponder {
 	
 	public IntVec selectInto(Direction dir, IntVec gridPos) {
 		Brick selectedBrick = viewModel.locateBrick(gridPos);
+		
+		if (selectedBrick == null) {
+			return gridPos;
+		}
+		
 		IntVec selectedMax = selectedBrick.getMaxPos();
 		IntVec selectedMin = selectedBrick.getMinPos();
 		IntVec nextPos = gridPos;

@@ -39,8 +39,10 @@ import lighthouse.util.transform.DoubleVecBijection;
  */
 public class LocalBoardView implements BoardView {
 	private static final Logger LOG = LoggerFactory.getLogger(LocalBoardView.class);
+	
 	private final Color background = Color.WHITE;
 	private final Color gridLineColor = Color.LIGHT_GRAY;
+	private final Color selectionColor = Color.LIGHT_GRAY;
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
 	private boolean drawGrid = true;
@@ -48,6 +50,7 @@ public class LocalBoardView implements BoardView {
 	private EdgeDrawMode edgeDrawMode = EdgeDrawMode.NONE;
 	private double activeBrickScale = 0.6;
 	private double placedBrickScale = 0.8;
+	private double selectedBrickScale = 0.95;
 	
 	private final JComponent component;
 	private final DoubleVecBijection gridToPixels;
@@ -127,7 +130,7 @@ public class LocalBoardView implements BoardView {
 				Color color = brick.getColor();
 				
 				if (viewModel.isSelected(brick)) {
-					color = color.brighter().brighter();
+					renderBlock(g2d, brick, selectedBrickScale, selectionColor);
 				}
 				
 				renderBlock(g2d, brick, placedBrickScale, color);
