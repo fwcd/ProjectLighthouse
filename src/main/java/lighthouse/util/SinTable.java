@@ -29,11 +29,11 @@ public class SinTable {
 	    		: -table[-i % mod];
 	}
 	
-	public float sinDeg(float angDeg) {
-		return lookup((int) (angDeg * precision + 0.5F));
+	public float sinDeg(float degrees) {
+		return lookup((int) (degrees * precision + 0.5F));
 	}
 	
-	public float cosDeg(float angDeg) {
-		return lookup((int) ((angDeg + 90.0) * precision + 0.5F));
+	public float cosDeg(float degrees) {
+		return lookup((int) ((degrees + 90.0) * precision + 0.5F));
 	}
 }
