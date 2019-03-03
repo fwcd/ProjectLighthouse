@@ -49,6 +49,11 @@ public class ResourceConfigFile implements ConfigFile {
 	}
 	
 	@Override
+	public String getOrDefault(String key, String defaultValue) {
+		return dict.getOrDefault(key, defaultValue);
+	}
+	
+	@Override
 	public void set(String key, String value) {
 		throw new UnsupportedOperationException("Resource configuration files are read-only");
 	}

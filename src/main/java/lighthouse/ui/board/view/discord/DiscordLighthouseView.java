@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 /**
@@ -21,9 +22,14 @@ import net.dv8tion.jda.api.hooks.EventListener;
  */
 public class DiscordLighthouseView implements LighthouseView {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordLighthouseView.class);
-	private JDA jda;
-	
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
+	
+	private JDA jda;
+	private String prefix;
+	
+	public DiscordLighthouseView(String prefix) {
+		this.prefix = prefix;
+	}
 	
 	public void connect(String token) {
 		try {
@@ -38,6 +44,8 @@ public class DiscordLighthouseView implements LighthouseView {
 	private void onEvent(GenericEvent event) {
 		if (event instanceof ReadyEvent) {
 			readyListeners.fire();
+		} else if (event instanceof MessageReceivedEvent) {
+			// TODO
 		}
 	}
 	

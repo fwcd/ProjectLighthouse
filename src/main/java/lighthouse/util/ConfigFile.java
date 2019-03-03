@@ -14,4 +14,8 @@ public interface ConfigFile {
 	boolean has(String key);
 	
 	void set(String key, String value);
+	
+	default String getOrDefault(String key, String defaultValue) {
+		return has(key) ? get(key) : defaultValue;
+	}
 }
