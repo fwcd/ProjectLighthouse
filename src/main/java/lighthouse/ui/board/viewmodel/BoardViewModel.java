@@ -94,6 +94,8 @@ public class BoardViewModel implements ColorGrid {
 	
 	public void removeOverlay(Overlay overlay) { overlays.remove(overlay); }
 	
+	public Board getModel() { return model; }
+	
 	// === Delegated methods ===
 	
 	public boolean hasBrickAt(IntVec gridPos) { return model.hasBrickAt(gridPos); }

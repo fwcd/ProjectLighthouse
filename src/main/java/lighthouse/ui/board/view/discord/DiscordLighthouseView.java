@@ -1,19 +1,21 @@
 package lighthouse.ui.board.view.discord;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Board;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Listener;
@@ -23,7 +25,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.Invite.Channel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -39,6 +40,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Map<String, DiscordCommand> commands = new HashMap<>();
 	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
+	private Board lastBoard = null;
 	
 	private final Pattern commandPattern;
 	private JDA jda;
@@ -116,6 +118,22 @@ public class DiscordLighthouseView implements LighthouseView {
 	
 	@Override
 	public void draw(LighthouseViewModel viewModel) {
-		// TODO
+		if (isConnected()) {
+			Board board = viewModel.getBoard().getModel();
+			
+			if (lastBoard == null || !board.equals(lastBoard)) {
+				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+					ImageIO.write(viewModel.getImage(), "png", baos);
+					byte[] imgBytes = baos.toByteArray();
+					
+					for (MessageChannel channel : activeChannels) {
+						channel.sendFile(imgBytes, "lighthouse.png").queue();
+					}
+				} catch (IOException e) {
+					LOG.error("Error while sending image to Discord:", e);
+				}
+				lastBoard = board.copy();
+			}
+		}
 	}
 }

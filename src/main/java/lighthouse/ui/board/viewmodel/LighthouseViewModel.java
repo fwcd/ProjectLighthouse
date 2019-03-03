@@ -94,4 +94,12 @@ public class LighthouseViewModel implements ColorGrid {
 	public Color getColorAt(int x, int y) {
 		return getColorAt(new IntVec(x, y));
 	}
+	
+	public BufferedImage getImage() {
+		return image;
+	}
+	
+	public BoardViewModel getBoard() {
+		return board;
+	}
 }
