@@ -3,7 +3,9 @@ package lighthouse.ui.board.input;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import lighthouse.ui.board.controller.BoardResponder;
@@ -13,8 +15,16 @@ import lighthouse.util.IntVec;
  * A keyboard grid input implementation.
  */
 public class BoardKeyInput extends KeyAdapter implements BoardInput {
+	private final Map<Integer, Runnable> bindings = new HashMap<>();
 	private final List<BoardResponder> responders = new ArrayList<>();
 	private IntVec selectionPos = null;
+	
+	public BoardKeyInput() {
+		bindings.put(KeyEvent.VK_UP, this::arrowUpPressed);
+		bindings.put(KeyEvent.VK_DOWN, this::arrowDownPressed);
+		bindings.put(KeyEvent.VK_LEFT, this::arrowLeftPressed);
+		bindings.put(KeyEvent.VK_RIGHT, this::arrowRightPressed);
+	}
 	
 	@Override
 	public void addResponder(BoardResponder responder) {
@@ -22,21 +32,9 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	}
 	
 	public void keyPressed(int keyCode) {
-		switch (keyCode) {
-			case KeyEvent.VK_UP:
-				arrowUpPressed();
-				break;
-			case KeyEvent.VK_DOWN:
-				arrowDownPressed();
-				break;
-			case KeyEvent.VK_LEFT:
-				arrowLeftPressed();
-				break;
-			case KeyEvent.VK_RIGHT:
-				arrowRightPressed();
-				break;
-			default:
-				break;
+		Runnable action = bindings.get(keyCode);
+		if (action != null) {
+			action.run();
 		}
 	}
 	
@@ -82,6 +80,10 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	
 	public void keyReleased(int keyCode) {
 		responders.forEach(r -> r.deselect());
+	}
+	
+	public Map<Integer, Runnable> getBindings() {
+		return bindings;
 	}
 	
 	@Override
