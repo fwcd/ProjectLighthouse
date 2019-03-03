@@ -61,6 +61,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	}
 	
 	private void registerCommands(BoardKeyInput input) {
+		commands.put("help", this::showHelp);
 		commands.put("ping", new PingCommand());
 		commands.put("summon", new SummonCommand(activeChannels));
 		commands.put("unsummon", new UnsummonCommand(activeChannels));
@@ -68,8 +69,13 @@ public class DiscordLighthouseView implements LighthouseView {
 		commands.put("right", new KeyCommand(KeyEvent.VK_RIGHT, input));
 		commands.put("up", new KeyCommand(KeyEvent.VK_UP, input));
 		commands.put("down", new KeyCommand(KeyEvent.VK_DOWN, input));
-		commands.put("enter", new KeyCommand(KeyEvent.VK_ENTER, input));
-		commands.put("help", this::showHelp);
+		commands.put("enter", new KeyCommand(KeyEvent.VK_ENTER, input).then((args, author, ch) -> {
+			if (input.isDragging()) {
+				ch.sendMessage(":point_down: Pressed virtual key").queue();
+			} else {
+				ch.sendMessage(":point_up: Released virtual key").queue();
+			}
+		}));
 	}
 	
 	public void connect(String token) {

@@ -134,6 +134,10 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		return bindings.keySet();
 	}
 	
+	public boolean isDragging() {
+		return dragging;
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keyPressed(e.getKeyCode());
