@@ -1,4 +1,4 @@
-package lighthouse.discordrpc;
+package lighthouse.ui.discordrpc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,10 @@ import lighthouse.util.ResourceConfigFile;
 public class DiscordRPCRunner {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordRPCRunner.class);
 	private final DiscordRPC lib = DiscordRPC.INSTANCE;
+	private String details = "Lighthouse";
+	private String largeImageKey = "lighthouseicon";
+	private String state = "";
+	private boolean updateSoon = false;
 	
 	public void start() {
 		ConfigFile config = new ResourceConfigFile("/discordToken.txt");
@@ -29,21 +33,38 @@ public class DiscordRPCRunner {
 			handlers.disconnected = (err, msg) -> LOG.info("Discord RPC disconnected with code {}: {}", err, msg);
 			lib.Discord_Initialize(appID, handlers, true, steamID);
 			
-			DiscordRichPresence presence = new DiscordRichPresence();
-			presence.startTimestamp = System.currentTimeMillis() / 1000; // Epoch second
-			presence.details = "Lighthouse";
-			lib.Discord_UpdatePresence(presence);
-			
 			new Thread(this::runWorker, "Discord RPC").start();
 		} else {
 			LOG.warn("Could not start Discord RPC since the config file did not contain a 'clientID'");
 		}
 	}
 	
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	public void updatePresenceSoon() {
+		updateSoon = true;
+	}
+	
+	public void updatePresenceNow() {
+		DiscordRichPresence presence = new DiscordRichPresence();
+		presence.details = details;
+		presence.largeImageKey = largeImageKey;
+		presence.state = state;
+		lib.Discord_UpdatePresence(presence);
+	}
+	
 	private void runWorker() {
 		while (!Thread.currentThread().isInterrupted()) {
+			if (updateSoon) {
+				updatePresenceNow();
+				updateSoon = false;
+			}
+			
 			LOG.trace("Running Discord RPC callbacks");
 			lib.Discord_RunCallbacks();
+			
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException ignored) {}

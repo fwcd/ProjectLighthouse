@@ -12,6 +12,7 @@ import lighthouse.model.GameState;
 import lighthouse.model.Level;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.viewmodel.BoardStatistics;
+import lighthouse.ui.discordrpc.DiscordRPCRunner;
 import lighthouse.ui.modes.GameMode;
 import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
@@ -31,6 +32,7 @@ public class GameViewController implements ViewController {
 
 	private final GameState model;
 	private final GameContext context = new GameContext();
+	private final DiscordRPCRunner discordRPC;
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
 	private final BoardViewController board;
 
@@ -66,10 +68,21 @@ public class GameViewController implements ViewController {
 		});
 		Level initialLevel = model.getLevel();
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
-
+		
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
 		update();
+
+		// Setup RPC
+		discordRPC = new DiscordRPCRunner();
+		discordRPC.setState(context.getStatus().getMessage());
+		discordRPC.updatePresenceSoon();
+		discordRPC.start();
+		
+		context.getStatusListeners().add(newStatus -> {
+			discordRPC.setState(newStatus.getMessage());
+			discordRPC.updatePresenceSoon();
+		});
 	}
 	
 	private void update() {

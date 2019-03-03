@@ -9,7 +9,6 @@ import com.alee.laf.WebLookAndFeel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.discordrpc.DiscordRPCRunner;
 import lighthouse.model.AppModel;
 import lighthouse.ui.AppFrame;
 import lighthouse.util.SLF4JExceptionHandler;
@@ -46,9 +45,6 @@ public class LighthouseMain {
 			AppFrame frame = new AppFrame(model, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 			frame.show();
 		});
-		
-		// Run Discord RPC
-		new DiscordRPCRunner().start();
 		
 		LOG.info("Launched application in {} ms", System.currentTimeMillis() - startTime);
 	}
