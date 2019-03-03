@@ -11,6 +11,7 @@ mainClassName = 'lighthouse.LighthouseMain'
 repositories {
     mavenCentral()
     maven { url 'https://dl.bintray.com/dv8fromtheworld/maven' }
+    jcenter()
 }
 
 dependencies {
@@ -32,4 +33,5 @@ dependencies {
     implementation('net.dv8tion:JDA:4.ALPHA.0_56') {
         exclude module: 'opus-java'
     }
+    implementation 'club.minnced:java-discord-rpc:2.0.1'
 }
