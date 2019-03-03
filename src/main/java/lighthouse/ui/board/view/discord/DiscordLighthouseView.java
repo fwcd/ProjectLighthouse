@@ -2,6 +2,7 @@ package lighthouse.ui.board.view.discord;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
+import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Listener;
@@ -49,16 +51,22 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Pattern commandPattern;
 	private JDA jda;
 	
-	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight) {
+	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight, BoardKeyInput input) {
 		commandPattern = Pattern.compile(Pattern.quote(prefix) + "(\\w+)(?:\\s+(.+))?");
 		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-		registerCommands();
+		
+		registerCommands(input);
 	}
 	
-	private void registerCommands() {
+	private void registerCommands(BoardKeyInput input) {
 		commands.put("ping", new PingCommand());
 		commands.put("summon", new SummonCommand(activeChannels));
 		commands.put("unsummon", new UnsummonCommand(activeChannels));
+		commands.put("left", new KeyCommand(KeyEvent.VK_LEFT, input));
+		commands.put("right", new KeyCommand(KeyEvent.VK_RIGHT, input));
+		commands.put("up", new KeyCommand(KeyEvent.VK_UP, input));
+		commands.put("down", new KeyCommand(KeyEvent.VK_DOWN, input));
+		commands.put("enter", new KeyCommand(KeyEvent.VK_ENTER, input));
 		commands.put("help", this::showHelp);
 	}
 	
