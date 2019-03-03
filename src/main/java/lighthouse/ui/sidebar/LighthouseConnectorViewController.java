@@ -24,11 +24,11 @@ import lighthouse.util.ResourceConfigFile;
 public class LighthouseConnectorViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
-	private final BoardViewController grid; // The aliased grid
+	private final BoardViewController board; // The aliased grid
 	private boolean connected = false;
 	
 	public LighthouseConnectorViewController(BoardViewController grid) {
-		this.grid = grid;
+		this.board = grid;
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
@@ -58,7 +58,8 @@ public class LighthouseConnectorViewController implements ViewController {
 		} else {
 			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
 			remoteView.connect();
-			grid.addLighthouseView(remoteView);
+			board.addLighthouseView(remoteView);
+			board.render();
 			connected = true;
 		}
 	}
