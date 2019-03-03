@@ -47,6 +47,8 @@ public class GameControlsViewController implements ViewController {
 				WebPopup popup = new WebPopup();
 				popup.setFollowInvoker(true);
 				popup.setSize(200, 200);
+				popup.setLayout(new BorderLayout());
+				popup.add(new BlockedStatesEditorViewController().getComponent(), BorderLayout.CENTER);
 				popup.showPopup(editButton, 10, 10);
 			})
 		));
