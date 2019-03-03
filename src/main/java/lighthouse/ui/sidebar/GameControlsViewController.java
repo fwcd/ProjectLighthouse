@@ -3,7 +3,11 @@ package lighthouse.ui.sidebar;
 import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.alee.extended.button.WebSplitButton;
+import com.alee.extended.window.WebPopup;
 
 import lighthouse.model.AppModel;
 import lighthouse.model.GameState;
@@ -38,15 +42,23 @@ public class GameControlsViewController implements ViewController {
 			context.getStatusListeners().add(statusBar::display);
 		});
 		
+		WebSplitButton editButton = LayoutUtils.splitButtonOf("Edit", () -> game.enter(EditingMode.INSTANCE));
+		editButton.setPopupMenu(LayoutUtils.popupMenuOf("",
+			LayoutUtils.itemOf("Edit blocked states", () -> {
+				WebPopup popup = new WebPopup();
+				popup.setFollowInvoker(true);
+				popup.setSize(200, 200);
+				popup.showPopup(editButton, 10, 10);
+			})
+		));
+		
 		// Setup control panel
 		component.add(LayoutUtils.vboxOf(
 			statusBar.getComponent(),
 			LayoutUtils.panelOf(
 				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				LayoutUtils.buttonOf("Reset", game::reset),
-				LayoutUtils.splitButtonOf("Edit", () -> game.enter(EditingMode.INSTANCE),
-					LayoutUtils.itemOf("Test", () -> {})
-				)
+				editButton
 			),
 			new LevelNavigatorViewController(game).getComponent()
 		), BorderLayout.CENTER);

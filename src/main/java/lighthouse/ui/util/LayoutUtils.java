@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.swing.BoxLayout;
@@ -74,12 +75,17 @@ public class LayoutUtils {
 		return new WebButton(label, e -> action.run());
 	}
 	
-	public static WebSplitButton splitButtonOf(String label, Runnable action, WebMenuItem... items) {
+	public static WebSplitButton splitButtonOf(String label, Runnable action) {
 		WebSplitButton button = new WebSplitButton(label);
 		button.addSplitButtonListener(new SplitButtonAdapter() {
 			@Override
 			public void buttonClicked(ActionEvent e) { action.run(); }
 		});
+		return button;
+	}
+	
+	public static WebSplitButton splitButtonWithItemsOf(String label, Runnable action, WebMenuItem... items) {
+		WebSplitButton button = splitButtonOf(label, action);
 		button.setPopupMenu(popupMenuOf(label, items));
 		return button;
 	}
