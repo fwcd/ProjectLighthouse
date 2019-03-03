@@ -1,5 +1,10 @@
 package lighthouse.ui.board.view.discord;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.security.auth.login.LoginException;
 
 import org.slf4j.Logger;
@@ -11,6 +16,7 @@ import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -22,13 +28,20 @@ import net.dv8tion.jda.api.hooks.EventListener;
  */
 public class DiscordLighthouseView implements LighthouseView {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordLighthouseView.class);
+	
+	private final Map<String, DiscordCommand> commands = new HashMap<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
 	
+	private final Pattern commandPattern;
 	private JDA jda;
-	private String prefix;
 	
 	public DiscordLighthouseView(String prefix) {
-		this.prefix = prefix;
+		commandPattern = Pattern.compile(Pattern.quote(prefix) + "(\\w+)(?:\\s+(.+))?");
+		registerCommands();
+	}
+	
+	private void registerCommands() {
+		commands.put("ping", new PingCommand());
 	}
 	
 	public void connect(String token) {
@@ -45,7 +58,26 @@ public class DiscordLighthouseView implements LighthouseView {
 		if (event instanceof ReadyEvent) {
 			readyListeners.fire();
 		} else if (event instanceof MessageReceivedEvent) {
-			// TODO
+			onMessage((MessageReceivedEvent) event);
+		}
+	}
+	
+	private void onMessage(MessageReceivedEvent event) {
+		Message msg = event.getMessage();
+		String text = msg.getContentStripped();
+		Matcher matcher = commandPattern.matcher(text);
+		
+		if (matcher.find()) {
+			String command = matcher.group(1);
+			String args = matcher.group(2);
+			
+			if (commands.containsKey(command)) {
+				commands.get(command).invoke(args, msg.getAuthor(), msg.getChannel());
+			} else {
+				msg.getChannel().sendMessage("Sorry, I did not recognize the command `" + command + "`");
+			}
+		} else {
+			LOG.debug("Received non-command message for Discord: {}", msg);
 		}
 	}
 	
