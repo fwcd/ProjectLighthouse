@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -298,10 +297,7 @@ public class LocalBoardView implements BoardView {
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = component.getActionMap();
 		
-		for (Map.Entry<Integer, Runnable> binding : listener.getBindings().entrySet()) {
-			Integer keyCode = binding.getKey();
-			Runnable action = binding.getValue();
-			
+		for (int keyCode : listener.getBoundKeys()) {
 			inputMap.put(KeyStroke.getKeyStroke(keyCode, 0), keyCode);
 			actionMap.put(keyCode, new AbstractAction() {
 				private static final long serialVersionUID = 1L;
@@ -309,7 +305,7 @@ public class LocalBoardView implements BoardView {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					component.requestFocus();
-					action.run();
+					listener.keyPressed(keyCode);
 				}
 			});
 		}

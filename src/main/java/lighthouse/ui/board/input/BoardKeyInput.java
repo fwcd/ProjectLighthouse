@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -129,8 +130,8 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		responders.forEach(r -> r.deselect());
 	}
 	
-	public Map<Integer, Runnable> getBindings() {
-		return bindings;
+	public Set<Integer> getBoundKeys() {
+		return bindings.keySet();
 	}
 	
 	@Override

@@ -100,9 +100,6 @@ public class GameViewController implements ViewController {
 	
 	/** Enters a game mode such as "editing" or "playing". */
 	public void enter(GameMode mode) {
-		this.mode = mode;
-		context.setStatus(mode.getBaseStatus());
-
 		if (mode.isPlaying()) {
 			tickers.add(winChecker);
 			winChecker.reset();
@@ -110,6 +107,9 @@ public class GameViewController implements ViewController {
 		} else {
 			tickers.remove(winChecker);
 		}
+		
+		this.mode = mode;
+		context.setStatus(mode.getBaseStatus());
 
 		show(mode.getInitialPerspective());
 		update();
