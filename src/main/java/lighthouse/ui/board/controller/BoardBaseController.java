@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
+import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
@@ -92,16 +93,26 @@ public abstract class BoardBaseController implements BoardResponder {
 		Brick selectedBrick = viewModel.locateBrick(gridPos);
 		IntVec selectedMax = selectedBrick.getMaxPos();
 		IntVec selectedMin = selectedBrick.getMinPos();
+		IntVec nextPos = gridPos;
+		
+		LOG.info("Selecting {} from ({}, {})", dir, selectedMin, selectedMax);
 		
 		if (selectedBrick != null) {
 			Brick match = viewModel.getBricks()
 				.stream()
 				.filter(brick -> {
+					IntVec minPos = brick.getMinPos();
+					IntVec maxPos = brick.getMaxPos();
+					
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("For {} brick at {}: brickMin = {}, brickMax = {}", ColorUtils.describe(brick.getColor()), brick.getPos(), minPos, maxPos);
+					}
+					
 					switch (dir) {
-						case LEFT: return selectedMax.getX() < brick.getMinPos().getX();
-						case UP: return selectedMax.getY() < brick.getMinPos().getY();
-						case RIGHT: return brick.getMaxPos().getX() < selectedMin.getX();
-						case DOWN: return brick.getMaxPos().getY() < selectedMin.getY();
+						case LEFT: return selectedMax.getX() < minPos.getX();
+						case UP: return selectedMax.getY() < minPos.getY();
+						case RIGHT: return maxPos.getX() < selectedMin.getX();
+						case DOWN: return maxPos.getY() < selectedMin.getY();
 						default: throw new IllegalStateException("Invalid direction " + dir);
 					}
 				})
@@ -111,10 +122,12 @@ public abstract class BoardBaseController implements BoardResponder {
 			if (match != null) {
 				viewModel.select(match);
 				update();
-				return match.getPos();
+				nextPos = match.getPos();
 			}
 		}
 		
-		return null;
+		LOG.debug(" -> {}", nextPos);
+		
+		return nextPos;
 	}
 }
