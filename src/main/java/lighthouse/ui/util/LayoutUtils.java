@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.swing.BoxLayout;

@@ -3,7 +3,6 @@ package lighthouse.ui.sidebar;
 import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.alee.extended.button.WebSplitButton;
