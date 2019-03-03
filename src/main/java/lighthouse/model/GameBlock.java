@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 /**
@@ -94,6 +95,16 @@ public interface GameBlock {
 		}
 		
 		return maxPos;
+	}
+	
+	default DoubleVec getCenterPos() {
+		return streamAllPositions()
+			.reduce(IntVec.ZERO, IntVec::add)
+			.divide(getPositionCount());
+	}
+	
+	default int getPositionCount() {
+		return getStructure().size() + 1;
 	}
 	
 	/** Converts this brick into a set of occupied positions. */

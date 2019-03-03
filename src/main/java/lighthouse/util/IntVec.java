@@ -48,6 +48,12 @@ public class IntVec implements Serializable {
 	
 	public DoubleVec scale(double xFactor, double yFactor) { return new DoubleVec(x * xFactor, y * yFactor); }
 	
+	public DoubleVec divide(double factor) { return new DoubleVec(x / factor, y / factor); }
+	
+	public DoubleVec divide(double xFactor, double yFactor) { return new DoubleVec(x / xFactor, y / yFactor); }
+	
+	public DoubleVec divide(DoubleVec other) { return new DoubleVec(x / other.getX(), y / other.getY()); }
+	
 	public IntVec scale(int factor) { return new IntVec(x * factor, y * factor); }
 	
 	public IntVec scale(int xFactor, int yFactor) { return new IntVec(x * xFactor, y * yFactor); }

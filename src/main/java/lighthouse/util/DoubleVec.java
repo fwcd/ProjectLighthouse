@@ -42,6 +42,12 @@ public class DoubleVec implements Serializable {
 	
 	public DoubleVec sub(Direction dir) { return new DoubleVec(x - dir.getDx(), y - dir.getDy()); }
 	
+	public DoubleVec divide(double factor) { return new DoubleVec(x / factor, y / factor); }
+	
+	public DoubleVec divide(double xFactor, double yFactor) { return new DoubleVec(x / xFactor, y / yFactor); }
+	
+	public DoubleVec divide(DoubleVec other) { return new DoubleVec(x / other.getX(), y / other.getY()); }
+	
 	public DoubleVec scale(double factor) { return new DoubleVec(x * factor, y * factor); }
 	
 	public DoubleVec scale(double xFactor, double yFactor) { return new DoubleVec(x * xFactor, y * yFactor); }
@@ -72,7 +78,7 @@ public class DoubleVec implements Serializable {
 	
 	public DoubleVec withY(double newY) { return new DoubleVec(x, newY); }
 	
-	public DoubleVec normalize() { return scale(1.0 / length()); }
+	public DoubleVec normalize() { return divide(length()); }
 	
 	public double dot(DoubleVec other) { return (x * other.x) + (y * other.y); }
 	
