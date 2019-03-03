@@ -32,7 +32,7 @@ public class GameViewController implements ViewController {
 
 	private final GameState model;
 	private final GameContext context = new GameContext();
-	private final DiscordRPCRunner discordRPC;
+	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
 	private final BoardViewController board;
 
@@ -74,7 +74,6 @@ public class GameViewController implements ViewController {
 		update();
 
 		// Setup RPC
-		discordRPC = new DiscordRPCRunner();
 		discordRPC.setState(context.getStatus().getMessage());
 		discordRPC.updatePresenceSoon();
 		discordRPC.start();
@@ -135,6 +134,9 @@ public class GameViewController implements ViewController {
 		Board activeBoard = perspective.getActiveBoard(model);
 		board.updateModel(activeBoard);
 		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update));
+		
+		discordRPC.setDetails(perspective.getName());
+		discordRPC.updatePresenceSoon();
 		
 		perspectiveListeners.fire(perspective);
 		update();

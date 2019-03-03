@@ -25,7 +25,7 @@ public class DiscordRPCRunner {
 			String appID = config.get("clientID");
 			String steamID = "";
 			
-			LOG.info("Starting Discord RPC with application ID {}", appID);
+			LOG.info("Starting Discord RPC");
 			
 			DiscordEventHandlers handlers = new DiscordEventHandlers();
 			handlers.ready = user -> LOG.info("Discord RPC is ready");
@@ -35,7 +35,7 @@ public class DiscordRPCRunner {
 			
 			new Thread(this::runWorker, "Discord RPC").start();
 		} else {
-			LOG.warn("Could not start Discord RPC since the config file did not contain a 'clientID'");
+			LOG.info("Did not start Discord RPC since the config file did not contain a 'clientID'");
 		}
 	}
 	
@@ -43,11 +43,15 @@ public class DiscordRPCRunner {
 		this.state = state;
 	}
 	
+	public void setDetails(String details) {
+		this.details = details;
+	}
+	
 	public void updatePresenceSoon() {
 		updateSoon = true;
 	}
 	
-	public void updatePresenceNow() {
+	private void updatePresenceNow() {
 		DiscordRichPresence presence = new DiscordRichPresence();
 		presence.details = details;
 		presence.largeImageKey = largeImageKey;
