@@ -48,7 +48,7 @@ public class Brick implements GameBlock, Serializable {
 	
 	/** Tests whether two bricks intersect. */
 	public boolean intersects(GameBlock other) {
-		return !Collections.disjoint(getOccupiedPositions(), other.getOccupiedPositions());
+		return !Collections.disjoint(getAllPositions(), other.getAllPositions());
 	}
 	
 	@Override

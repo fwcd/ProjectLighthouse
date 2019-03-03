@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,7 @@ public interface GameBlock {
 	}
 	
 	/** Converts this brick into a set of occupied positions. */
-	default Set<IntVec> getOccupiedPositions() {
+	default Set<IntVec> getAllPositions() {
 		Set<IntVec> positions = new HashSet<>();
 		IntVec current = getPos();
 		positions.add(current);
@@ -107,10 +108,22 @@ public interface GameBlock {
 		return positions;
 	}
 	
+	/** Converts this brick into a stream of occupied positions. */
+	default Stream<IntVec> streamAllPositions() {
+		Stream.Builder<IntVec> positions = Stream.builder();
+		IntVec current = getPos();
+		positions.accept(current);
+		for (Direction dir : getStructure()) {
+			current = current.add(dir);
+			positions.accept(current);
+		}
+		return positions.build();
+	}
+	
 	/** Converts the brick into a 2D-array of offset positions. */
 	default IntVec[][] to2DArray() {
 		IntVec blockPos = getPos();
-		Set<IntVec> positions = getOccupiedPositions();
+		Set<IntVec> positions = getAllPositions();
 		IntVec min = positions.stream().reduce(IntVec::min).orElse(IntVec.ZERO);
 		IntVec max = positions.stream().reduce(IntVec::max).orElse(IntVec.ZERO);
 		IntVec diff = max.sub(min);
