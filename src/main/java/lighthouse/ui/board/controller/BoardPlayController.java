@@ -63,8 +63,9 @@ public class BoardPlayController extends BoardBaseController {
 		if (!gridPos.equals(startGridPos)) {
 			IntVec at = gridPos.sub(startGridPos);
 			List<Direction> atDirs = at.nearestDirections();
-
-			atDirs.forEach(atDir -> {
+			boolean updated = false;
+			
+			for (Direction atDir : atDirs) {
 				if (limits.get(atDir) > 0) {
 					limits.put(atDir, limits.get(atDir) - 1);
 					
@@ -80,10 +81,11 @@ public class BoardPlayController extends BoardBaseController {
 					brick = newBrick;
 					startGridPos = startGridPos.add(atDir);
 					computeLimits();
+					updated = true;
 				}
-			});
+			}
 			update();
-			return true;
+			return updated;
 		} else {
 			return false;
 		}

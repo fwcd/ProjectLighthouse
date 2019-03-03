@@ -42,7 +42,7 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	public void keyPressed(int keyCode) {
 		Runnable action = bindings.get(keyCode);
 		if (action != null) {
-			LOG.info("Pressed {}", KeyEvent.getKeyText(keyCode));
+			LOG.info("Pressed {} at {} - dragging: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging);
 			action.run();
 		}
 	}
