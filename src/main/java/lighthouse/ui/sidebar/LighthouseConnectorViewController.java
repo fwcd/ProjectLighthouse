@@ -34,9 +34,11 @@ public class LighthouseConnectorViewController implements ViewController {
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
 		JTextField usernameField = new JTextField();
+		usernameField.setColumns(15);
 		component.add(labelled("Username", usernameField));
 		
 		JTextField tokenField = new JTextField();
+		tokenField.setColumns(15);
 		component.add(labelled("Token", tokenField));
 		
 		JButton connectButton = new JButton("Connect");

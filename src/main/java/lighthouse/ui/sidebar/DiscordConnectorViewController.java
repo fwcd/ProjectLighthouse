@@ -24,7 +24,9 @@ public class DiscordConnectorViewController implements ViewController {
 	
 	public DiscordConnectorViewController(BoardViewController board) {
 		this.board = board;
+		
 		JTextField tokenField = new JTextField();
+		tokenField.setColumns(15);
 		
 		component = LayoutUtils.vboxOf(
 			LayoutUtils.compoundOf(
