@@ -5,10 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
@@ -285,7 +291,22 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	public void addKeyInput(BoardKeyInput listener) {
-		component.addKeyListener(listener);
+		// component.addKeyListener(listener);
+		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = component.getActionMap();
+		
+		for (Map.Entry<Integer, Runnable> binding : listener.getBindings().entrySet()) {
+			Integer keyCode = binding.getKey();
+			Runnable action = binding.getValue();
+			
+			inputMap.put(KeyStroke.getKeyStroke(keyCode, 0), keyCode);
+			actionMap.put(keyCode, new AbstractAction() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) { action.run(); }
+			});
+		}
 	}
 	
 	public JComponent getComponent() {
