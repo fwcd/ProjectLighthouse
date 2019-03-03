@@ -15,27 +15,39 @@ import lighthouse.util.IntVec;
 public interface BoardResponder {
 	void updateViewModel(BoardViewModel viewModel);
 	
-	default void press(IntVec gridPos) {}
+	/** Presses at the specified position on the board. Returns whether this was successful. */
+	default boolean press(IntVec gridPos) { return false; }
 	
-	default void rightPress(IntVec gridPos) {}
+	/** Right-presses at the specified position on the board. Returns whether this was successful. */
+	default boolean rightPress(IntVec gridPos) { return false; }
 	
-	default void dragTo(IntVec gridPos) {}
+	/** Drags to the specified position on the board. Returns whether this was successful. */
+	default boolean dragTo(IntVec gridPos) { return false; }
 	
-	default void release(IntVec gridPos) {}
-		
+	/** Releases at the specified position on the board. Returns whether this was successful. */
+	default boolean release(IntVec gridPos) { return false; }
+	
+	/** Creates a new selection on the board. Returns the associated position if successful, otherwise returns null. */
 	default IntVec selectAny() { return null; }
 
+	/** Creates a selection at the specified position. Returns the position again if successful, otherwise returns null. */
 	default IntVec select(IntVec gridPos) { return null; }
 	
+	/** Moves the selection up. Returns the next position if successful, otherwise null. */
 	default IntVec selectUp(IntVec gridPos) { return null; }
 	
+	/** Moves the selection to the left. Returns the next position if successful, otherwise null. */
 	default IntVec selectLeft(IntVec gridPos) { return null; }
 	
+	/** Moves the selection down. Returns the next position if successful, otherwise null. */
 	default IntVec selectDown(IntVec gridPos) { return null; }
 	
+	/** Moves the selection to the right. Returns the next position if successful, otherwise null. */
 	default IntVec selectRight(IntVec gridPos) { return null; }
 	
-	default void deselect() {}
+	/** Removes the selection. Returns whether this was successful. */
+	default boolean deselect() { return false; }
 	
-	default void reset() {}
+	/** "Resets" the board in some sense. Returns whether this was successful. */
+	default boolean reset() { return false; }
 }

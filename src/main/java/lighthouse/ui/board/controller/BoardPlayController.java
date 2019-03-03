@@ -45,20 +45,21 @@ public class BoardPlayController extends BoardBaseController {
 	}
 	
 	@Override
-	public void press(IntVec gridPos) {
+	public boolean press(IntVec gridPos) {
 		brick = getViewModel().locateBrick(gridPos);
-		if (brick == null) return;
+		if (brick == null) return false;
 		dragEvent = true;
 		startGridPos = gridPos;
 		computeLimits();
 		update();
 		
 		LOG.info("Possible moves: {}", getViewModel().streamPossibleMovesFor(brick).collect(Collectors.toList()));
+		return true;
 	}
 	
 	@Override
-	public void dragTo(IntVec gridPos) {
-		if (!dragEvent) return;
+	public boolean dragTo(IntVec gridPos) {
+		if (!dragEvent) return false;
 		if (!gridPos.equals(startGridPos)) {
 			IntVec at = gridPos.sub(startGridPos);
 			List<Direction> atDirs = at.nearestDirections();
@@ -82,17 +83,21 @@ public class BoardPlayController extends BoardBaseController {
 				}
 			});
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	@Override
-	public void release(IntVec gridPos) {
-		if (dragEvent != true) return;
+	public boolean release(IntVec gridPos) {
+		if (dragEvent != true) return false;
 		resetLimits();
 		for (Edge edge : brick.getEdges()) {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
 		update();
+		return true;
 	}
 }

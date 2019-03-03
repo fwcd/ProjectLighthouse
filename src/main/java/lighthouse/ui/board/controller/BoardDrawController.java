@@ -3,6 +3,7 @@ package lighthouse.ui.board.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Brick;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
@@ -21,7 +22,7 @@ public class BoardDrawController extends BoardBaseController {
 	}
 	
 	@Override
-	public void press(IntVec gridPos) {
+	public boolean press(IntVec gridPos) {
 		BoardViewModel viewModel = getViewModel();
 		
 		if (!viewModel.hasBrickAt(gridPos)) {
@@ -30,17 +31,27 @@ public class BoardDrawController extends BoardBaseController {
 			last = gridPos;
 			dragging = true;
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	@Override
-	public void rightPress(IntVec gridPos) {
-		getViewModel().removeBrickAt(gridPos);
-		update();
+	public boolean rightPress(IntVec gridPos) {
+		Brick removed = getViewModel().removeBrickAt(gridPos);
+		if (removed != null) {
+			update();
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override
-	public void dragTo(IntVec gridPos) {
+	public boolean dragTo(IntVec gridPos) {
+		boolean updated = false;
+		
 		if (dragging) {
 			IntVec delta = gridPos.sub(last);
 			
@@ -51,15 +62,18 @@ public class BoardDrawController extends BoardBaseController {
 					viewModel.getEditState().appendToEdit(delta.nearestDirection());
 					LOG.debug("Moving {} (delta: {}, last: {}, gridPos: {})", delta.nearestDirection(), delta, last, gridPos);
 					update();
+					updated = true;
 				}
 				
 				last = gridPos;
 			}
 		}
+		
+		return updated;
 	}
 	
 	@Override
-	public void release(IntVec gridPos) {
+	public boolean release(IntVec gridPos) {
 		if (dragging) {
 			LOG.debug("Released at {}", gridPos);
 			
@@ -69,6 +83,9 @@ public class BoardDrawController extends BoardBaseController {
 			last = null;
 			dragging = false;
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

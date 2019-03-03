@@ -45,11 +45,14 @@ public abstract class BoardBaseController implements BoardResponder {
 	}
 	
 	@Override
-	public void reset() {
+	public boolean reset() {
 		if (resetEnabled) {
 			LOG.debug("Resetting");
 			getViewModel().clear();
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

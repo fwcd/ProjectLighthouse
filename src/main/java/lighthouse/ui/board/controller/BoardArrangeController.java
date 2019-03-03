@@ -21,7 +21,7 @@ public class BoardArrangeController extends BoardBaseController {
 	}
 	
 	@Override
-	public void press(IntVec gridPos) {
+	public boolean press(IntVec gridPos) {
 		BoardViewModel viewModel = getViewModel();
 		
 		if (viewModel.hasBrickAt(gridPos)) {
@@ -30,21 +30,27 @@ public class BoardArrangeController extends BoardBaseController {
 			last = gridPos;
 			dragging = true;
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	@Override
-	public void dragTo(IntVec gridPos) {
+	public boolean dragTo(IntVec gridPos) {
 		if (dragging) {
 			IntVec delta = gridPos.sub(last);
 			getViewModel().getEditState().moveBy(delta);
 			last = gridPos;
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
 	@Override
-	public void release(IntVec gridPos) {
+	public boolean release(IntVec gridPos) {
 		if (dragging) {
 			LOG.debug("Released at {}", gridPos);
 			
@@ -54,6 +60,9 @@ public class BoardArrangeController extends BoardBaseController {
 			last = null;
 			dragging = false;
 			update();
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

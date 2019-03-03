@@ -13,25 +13,21 @@ public class DelegateResponder implements BoardResponder {
 		this.delegate = delegate;
 	}
 	
-	public BoardResponder getDelegate() {
-		return delegate;
-	}
+	public BoardResponder getDelegate() { return delegate; }
 	
-	public void setDelegate(BoardResponder delegate) {
-		this.delegate = delegate;
-	}
+	public void setDelegate(BoardResponder delegate) { this.delegate = delegate; }
 	
 	@Override
-	public void press(IntVec gridPos) { delegate.press(gridPos); }
+	public boolean press(IntVec gridPos) { return delegate.press(gridPos); }
 	
 	@Override
-	public void rightPress(IntVec gridPos) { delegate.rightPress(gridPos); }
+	public boolean rightPress(IntVec gridPos) { return delegate.rightPress(gridPos); }
 	
 	@Override
-	public void dragTo(IntVec gridPos) { delegate.dragTo(gridPos); }
+	public boolean dragTo(IntVec gridPos) { return delegate.dragTo(gridPos); }
 	
 	@Override
-	public void release(IntVec gridPos) { delegate.release(gridPos); }
+	public boolean release(IntVec gridPos) { return delegate.release(gridPos); }
 			
 	@Override
 	public IntVec selectAny() { return delegate.selectAny(); }
@@ -52,10 +48,10 @@ public class DelegateResponder implements BoardResponder {
 	public IntVec selectRight(IntVec gridPos) { return delegate.selectRight(gridPos); }
 	
 	@Override
-	public void deselect() { delegate.deselect(); }
+	public boolean deselect() { return delegate.deselect(); }
 	
 	@Override
-	public void reset() { delegate.reset(); }
+	public boolean reset() { return delegate.reset(); }
 	
 	@Override
 	public void updateViewModel(BoardViewModel viewModel) { delegate.updateViewModel(viewModel); }
