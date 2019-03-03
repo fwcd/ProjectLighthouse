@@ -89,9 +89,15 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	}
 	
 	private void drag(Direction dir) {
-		gridPos = gridPos.add(dir);
+		IntVec nextPos = gridPos.add(dir);
+		boolean success = false;
+		
 		for (BoardResponder responder : responders) {
-			responder.dragTo(gridPos);
+			success |= responder.dragTo(nextPos);
+		}
+		
+		if (success) {
+			gridPos = nextPos;
 		}
 	}
 	
