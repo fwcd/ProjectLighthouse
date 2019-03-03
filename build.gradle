@@ -10,6 +10,7 @@ mainClassName = 'lighthouse.LighthouseMain'
 
 repositories {
     mavenCentral()
+    maven { url 'https://dl.bintray.com/dv8fromtheworld/maven' }
 }
 
 dependencies {
@@ -27,5 +28,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation('de.sciss:weblaf:2.1.4') {
         exclude group: 'org.slf4j'
+    }
+    implementation('net.dv8tion:JDA:4.ALPHA.0_56') {
+        exclude module: 'opus-java'
     }
 }
