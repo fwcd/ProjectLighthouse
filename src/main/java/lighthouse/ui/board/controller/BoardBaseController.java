@@ -2,6 +2,7 @@ package lighthouse.ui.board.controller;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,9 @@ public abstract class BoardBaseController implements BoardResponder {
 		if (bricks.isEmpty()) {
 			return null;
 		} else {
-			Brick brick = bricks.iterator().next();
+			Brick brick = bricks.stream()
+				.max(Comparator.comparingDouble(it -> it.getMaxPos().length()))
+				.orElseThrow(NoSuchElementException::new);
 			viewModel.select(brick);
 			update();
 			return brick.getPos();
