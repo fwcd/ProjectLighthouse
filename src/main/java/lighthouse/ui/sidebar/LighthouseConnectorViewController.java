@@ -28,8 +28,8 @@ public class LighthouseConnectorViewController implements ViewController {
 	private final BoardViewController board; // The aliased grid
 	private boolean connected = false;
 	
-	public LighthouseConnectorViewController(BoardViewController grid) {
-		this.board = grid;
+	public LighthouseConnectorViewController(BoardViewController board) {
+		this.board = board;
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		

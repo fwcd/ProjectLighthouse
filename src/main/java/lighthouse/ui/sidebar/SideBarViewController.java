@@ -47,9 +47,9 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("Game Statistics", statistics.getComponent()).collapse();
 		
 		// Add the connector panel which allows the user
-		// to connect to the Lighthouse.
-		LighthouseConnectorViewController connector = new LighthouseConnectorViewController(game.getBoard());
-		accordion.addPane("Lighthouse Connector", connector.getComponent());
+		// to connect a remote Lighthouse view.
+		ConnectorsViewController connector = new ConnectorsViewController(game.getBoard());
+		accordion.addPane("Connectors", connector.getComponent());
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseView preview = new LocalLighthouseView();
