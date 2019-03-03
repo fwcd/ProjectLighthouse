@@ -11,6 +11,7 @@ import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ColorUtils;
+import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
@@ -110,6 +111,7 @@ public abstract class BoardBaseController implements BoardResponder {
 		
 		IntVec selectedMax = selectedBrick.getMaxPos();
 		IntVec selectedMin = selectedBrick.getMinPos();
+		DoubleVec selectedCenter = selectedBrick.getCenterPos();
 		IntVec nextPos = gridPos;
 		
 		LOG.info("Selecting {} from ({}, {})", dir, selectedMin, selectedMax);
@@ -133,7 +135,7 @@ public abstract class BoardBaseController implements BoardResponder {
 						default: throw new IllegalStateException("Invalid direction " + dir);
 					}
 				})
-				.min(Comparator.comparingDouble(brick -> gridPos.sub(brick.getPos()).length()))
+				.min(Comparator.comparingDouble(brick -> selectedCenter.sub(brick.getCenterPos()).length()))
 				.orElse(null);
 			
 			if (match != null) {
