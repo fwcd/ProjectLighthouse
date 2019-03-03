@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.model.Direction;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
@@ -16,6 +19,7 @@ import lighthouse.util.IntVec;
  * A keyboard grid input implementation.
  */
 public class BoardKeyInput extends KeyAdapter implements BoardInput {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardKeyInput.class);
 	private final Map<Integer, Runnable> bindings = new HashMap<>();
 	private final List<BoardResponder> responders = new ArrayList<>();
 	private IntVec gridPos = null;
@@ -37,6 +41,7 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	public void keyPressed(int keyCode) {
 		Runnable action = bindings.get(keyCode);
 		if (action != null) {
+			LOG.info("Pressed {}", KeyEvent.getKeyText(keyCode));
 			action.run();
 		}
 	}
