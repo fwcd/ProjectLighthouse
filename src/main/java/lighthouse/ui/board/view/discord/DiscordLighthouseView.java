@@ -74,7 +74,7 @@ public class DiscordLighthouseView implements LighthouseView {
 			if (commands.containsKey(command)) {
 				commands.get(command).invoke(args, msg.getAuthor(), msg.getChannel());
 			} else {
-				msg.getChannel().sendMessage("Sorry, I did not recognize the command `" + command + "`");
+				msg.getChannel().sendMessage("Sorry, I did not recognize the command `" + command + "`").queue();
 			}
 		} else {
 			LOG.debug("Received non-command message for Discord: {}", msg);
