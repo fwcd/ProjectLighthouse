@@ -43,7 +43,7 @@ public class LighthouseConnectorViewController implements ViewController {
 		connectButton.addActionListener(l -> connect(usernameField.getText(), tokenField.getText()));
 		component.add(connectButton);
 		
-		// Creates a remote Lighthouse view if the required login information is present
+		// Initialize login fields with config file data
 		ConfigFile auth = new ResourceConfigFile("/authentication.txt");
 		if (auth.has("username") && auth.has("token")) {
 			usernameField.setText(auth.get("username"));

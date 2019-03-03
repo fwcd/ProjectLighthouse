@@ -7,7 +7,9 @@
 bin
 build
 target
+
 authentication.txt
+discordToken.txt
 
 .vscode/**/*
 !.vscode/snippets.code-snippets
