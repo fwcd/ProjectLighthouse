@@ -15,6 +15,10 @@ public interface ConfigFile {
 	
 	void set(String key, String value);
 	
+	default int getInt(String key) {
+		return Integer.parseInt(get(key));
+	}
+	
 	default String getOrDefault(String key, String defaultValue) {
 		return has(key) ? get(key) : defaultValue;
 	}

@@ -1,5 +1,6 @@
 package lighthouse.ui.board.view.discord;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,13 +41,15 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Map<String, DiscordCommand> commands = new HashMap<>();
 	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
+	private final BufferedImage boardImage;
 	private Board lastBoard = null;
 	
 	private final Pattern commandPattern;
 	private JDA jda;
 	
-	public DiscordLighthouseView(String prefix) {
+	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight) {
 		commandPattern = Pattern.compile(Pattern.quote(prefix) + "(\\w+)(?:\\s+(.+))?");
+		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		registerCommands();
 	}
 	

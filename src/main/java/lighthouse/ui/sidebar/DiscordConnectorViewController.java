@@ -51,7 +51,7 @@ public class DiscordConnectorViewController implements ViewController {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
 			ConfigFile config = new ResourceConfigFile("/discordConfig.txt");
-			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"));
+			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"), config.getInt("imageWidth"), config.getInt("imageHeight"));
 			
 			board.addLighthouseView(discordView);
 			
