@@ -49,7 +49,7 @@ public class LighthouseConnectorViewController implements ViewController {
 			usernameField.setText(auth.get("username"));
 			tokenField.setText(auth.get("token"));
 		} else {
-			LOG.warn("Warning: Authentication did not contain 'username' and/or 'token'");
+			LOG.warn("Authentication did not contain 'username' and/or 'token'");
 		}
 	}
 	
