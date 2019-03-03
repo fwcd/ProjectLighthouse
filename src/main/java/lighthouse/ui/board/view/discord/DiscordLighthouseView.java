@@ -1,10 +1,11 @@
-package lighthouse.ui.board.view;
+package lighthouse.ui.board.view.discord;
 
 import javax.security.auth.login.LoginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
@@ -54,6 +55,6 @@ public class DiscordLighthouseView implements LighthouseView {
 	
 	@Override
 	public void draw(LighthouseViewModel viewModel) {
-		
+		// TODO
 	}
 }
