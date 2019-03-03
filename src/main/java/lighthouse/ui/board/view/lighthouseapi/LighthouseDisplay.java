@@ -34,6 +34,9 @@ import org.msgpack.value.impl.ImmutableStringValueImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.util.Listener;
+import lighthouse.util.ListenerList;
+
 /**
  * This class wraps the network communication with the lighthouse in a simple
  * interface. The network connection is configured upon object creation but
@@ -41,12 +44,14 @@ import org.slf4j.LoggerFactory;
  */
 public class LighthouseDisplay implements AutoCloseable {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseDisplay.class);
-	private String username;
-	private String token;
+	private final String username;
+	private final String token;
 	private LighthouseDisplayHandler handler;
 	private WebSocketClient client;
-	private Set<ILighthouseInputListener> observer = new HashSet<>();
-
+	
+	private final Set<ILighthouseInputListener> observers = new HashSet<>();
+	private final ListenerList<Void> connectListeners = new ListenerList<>("LighthouseDisplay.connectListeners");
+	
 	/**
 	 * Creates a new LighthouseDisplay with given user-name and access token
 	 */
@@ -171,18 +176,26 @@ public class LighthouseDisplay implements AutoCloseable {
 	}
 
 	public void addButtonListener(ILighthouseInputListener listener) {
-		observer.add(listener);
+		observers.add(listener);
 	}
 
 	public void removeButtonListener(ILighthouseInputListener listener) {
-		observer.remove(listener);
+		observers.remove(listener);
+	}
+	
+	public void addConnectListener(Listener<Void> listener) {
+		connectListeners.add(listener);
+	}
+	
+	public void removeConnectListener(Listener<Void> listener) {
+		connectListeners.remove(listener);
 	}
 
 	/**
 	 * private class for handling the web-socket
 	 */
 	@WebSocket(maxTextMessageSize = 64 * 1024, maxBinaryMessageSize = 64 * 1024)
-	public class LighthouseDisplayHandler {
+	public static class LighthouseDisplayHandler {
 		private LighthouseDisplay parent;
 		private Session session;
 		private boolean connected = false;
@@ -335,6 +348,8 @@ public class LighthouseDisplay implements AutoCloseable {
 	
 				endpoint.sendBytes(ByteBuffer.wrap(packer2.toByteArray()));
 				endpoint.flush();
+				
+				parent.connectListeners.fire();
 			} catch (IOException e) {
 				LOG.error("Error requesting controller input stream:", e);
 			}
@@ -384,7 +399,7 @@ public class LighthouseDisplay implements AutoCloseable {
 							int src = payl.get(new ImmutableStringValueImpl("src")).asIntegerValue().toInt();
 							int button = btn.asIntegerValue().toInt();
 							
-							for (ILighthouseInputListener listener : observer) {
+							for (ILighthouseInputListener listener : parent.observers) {
 								try {
 									if (isKeyboard) {
 										listener.keyboardEvent(src, button, pressed);
