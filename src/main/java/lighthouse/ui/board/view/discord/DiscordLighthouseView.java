@@ -1,5 +1,7 @@
 package lighthouse.ui.board.view.discord;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -122,11 +124,19 @@ public class DiscordLighthouseView implements LighthouseView {
 	@Override
 	public void draw(LighthouseViewModel viewModel) {
 		if (isConnected()) {
+			viewModel.render();
 			Board board = viewModel.getBoard().getModel();
 			
 			if (lastBoard == null || !board.equals(lastBoard)) {
+				// Only draw if the board has changed
+				
+				Graphics2D g2d = boardImage.createGraphics();
+				g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+				g2d.drawImage(viewModel.getImage(), 0, 0, boardImage.getWidth(), boardImage.getHeight(), null);
+				g2d.dispose();
+				
 				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					ImageIO.write(viewModel.getImage(), "png", baos);
+					ImageIO.write(boardImage, "png", baos);
 					byte[] imgBytes = baos.toByteArray();
 					
 					for (MessageChannel channel : activeChannels) {
@@ -135,6 +145,7 @@ public class DiscordLighthouseView implements LighthouseView {
 				} catch (IOException e) {
 					LOG.error("Error while sending image to Discord:", e);
 				}
+				
 				lastBoard = board.copy();
 			}
 		}
