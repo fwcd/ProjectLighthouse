@@ -3,6 +3,7 @@ package lighthouse.ui.util;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
 import java.util.function.Function;
 
 import javax.swing.BoxLayout;
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import com.alee.extended.button.SplitButtonAdapter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebMenu;
@@ -73,7 +75,11 @@ public class LayoutUtils {
 	}
 	
 	public static WebSplitButton splitButtonOf(String label, Runnable action, WebMenuItem... items) {
-		WebSplitButton button = new WebSplitButton(label, e -> action.run());
+		WebSplitButton button = new WebSplitButton(label);
+		button.addSplitButtonListener(new SplitButtonAdapter() {
+			@Override
+			public void buttonClicked(ActionEvent e) { action.run(); }
+		});
 		button.setPopupMenu(popupMenuOf(label, items));
 		return button;
 	}

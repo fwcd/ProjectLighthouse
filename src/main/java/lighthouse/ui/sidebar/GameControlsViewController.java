@@ -44,7 +44,9 @@ public class GameControlsViewController implements ViewController {
 			LayoutUtils.panelOf(
 				LayoutUtils.buttonOf("Play", () -> game.enter(PlayingMode.INSTANCE)),
 				LayoutUtils.buttonOf("Reset", game::reset),
-				LayoutUtils.buttonOf("Edit", () -> game.enter(EditingMode.INSTANCE))
+				LayoutUtils.splitButtonOf("Edit", () -> game.enter(EditingMode.INSTANCE),
+					LayoutUtils.itemOf("Test", () -> {})
+				)
 			),
 			new LevelNavigatorViewController(game).getComponent()
 		), BorderLayout.CENTER);
