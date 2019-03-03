@@ -61,10 +61,11 @@ public class LighthouseConnectorViewController implements ViewController {
 			BoardLighthouseInput lhInput = new BoardLighthouseInput();
 			
 			lhInput.addResponder(board.getResponder());
-			remoteView.addButtonInput(lhInput);
-			remoteView.connect();
 			board.addLighthouseView(remoteView);
-			board.render();
+			
+			remoteView.addButtonInput(lhInput);
+			remoteView.addConnectListener(v -> board.render());
+			remoteView.connect();
 			
 			connected = true;
 		}

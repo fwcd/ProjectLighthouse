@@ -10,6 +10,7 @@ import lighthouse.ui.board.input.BoardLighthouseInput;
 import lighthouse.ui.board.view.lighthouseapi.LighthouseDisplay;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.LhConstants;
+import lighthouse.util.Listener;
 
 /**
  * The remote Lighthouse view that uses the API to draw a
@@ -41,6 +42,18 @@ public class RemoteLighthouseView implements LighthouseView {
 
 	public void addButtonInput(BoardLighthouseInput input) {
 		api.addButtonListener(input);
+	}
+	
+	public void removeButtonInput(BoardLighthouseInput input) {
+		api.removeButtonListener(input);
+	}
+	
+	public void addConnectListener(Listener<Void> listener) {
+		api.addConnectListener(listener);
+	}
+	
+	public void removeConnectListener(Listener<Void> listener) {
+		api.removeConnectListener(listener);
 	}
 	
 	@Override
