@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import lighthouse.model.Direction;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
 
@@ -17,13 +18,15 @@ import lighthouse.util.IntVec;
 public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	private final Map<Integer, Runnable> bindings = new HashMap<>();
 	private final List<BoardResponder> responders = new ArrayList<>();
-	private IntVec selectionPos = null;
+	private IntVec gridPos = null;
+	private boolean dragging = false;
 	
 	public BoardKeyInput() {
 		bindings.put(KeyEvent.VK_UP, this::arrowUpPressed);
 		bindings.put(KeyEvent.VK_DOWN, this::arrowDownPressed);
 		bindings.put(KeyEvent.VK_LEFT, this::arrowLeftPressed);
 		bindings.put(KeyEvent.VK_RIGHT, this::arrowRightPressed);
+		bindings.put(KeyEvent.VK_ENTER, this::enterPressed);
 	}
 	
 	@Override
@@ -38,23 +41,56 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		}
 	}
 	
-	public void arrowUpPressed() {
-		arrowKeyPressed(r -> r.selectUp(selectionPos));
+	private void arrowUpPressed() {
+		if (dragging) {
+			drag(Direction.UP);
+		} else {
+			arrowSelect(r -> r.selectUp(gridPos));
+		}
 	}
 	
-	public void arrowDownPressed() {
-		arrowKeyPressed(r -> r.selectDown(selectionPos));
+	private void arrowDownPressed() {
+		if (dragging) {
+			drag(Direction.DOWN);
+		} else {
+			arrowSelect(r -> r.selectDown(gridPos));
+		}
 	}
 	
-	public void arrowLeftPressed() {
-		arrowKeyPressed(r -> r.selectLeft(selectionPos));
+	private void arrowLeftPressed() {
+		if (dragging) {
+			drag(Direction.LEFT);
+		} else {
+			arrowSelect(r -> r.selectLeft(gridPos));
+		}
 	}
 	
-	public void arrowRightPressed() {
-		arrowKeyPressed(r -> r.selectRight(selectionPos));
+	private void arrowRightPressed() {
+		if (dragging) {
+			drag(Direction.RIGHT);
+		} else {
+			arrowSelect(r -> r.selectRight(gridPos));
+		}
 	}
 	
-	private void arrowKeyPressed(Function<BoardResponder, IntVec> directionedSelectAction) {
+	private void enterPressed() {
+		if (dragging) {
+			responders.forEach(r -> r.release(gridPos));
+			dragging = false;
+		} else {
+			responders.forEach(r -> r.press(gridPos));
+			dragging = true;
+		}
+	}
+	
+	private void drag(Direction dir) {
+		gridPos = gridPos.add(dir);
+		for (BoardResponder responder : responders) {
+			responder.dragTo(gridPos);
+		}
+	}
+	
+	private void arrowSelect(Function<BoardResponder, IntVec> directionedSelectAction) {
 		if (hasSelection()) {
 			updateSelection(directionedSelectAction);
 		} else {
@@ -68,14 +104,14 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 			IntVec result = action.apply(responder);
 			
 			if (!updatedSelection) {
-				selectionPos = result;
+				gridPos = result;
 				updatedSelection = true;
 			}
 		}
 	}
 	
 	private boolean hasSelection() {
-		return selectionPos != null;
+		return gridPos != null;
 	}
 	
 	public void keyReleased(int keyCode) {
