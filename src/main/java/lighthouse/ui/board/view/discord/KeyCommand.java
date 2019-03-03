@@ -21,7 +21,7 @@ public class KeyCommand implements DiscordCommand {
 	public void invoke(String args, User author, MessageChannel channel) {
 		int times = 1;
 		
-		if (args.length() > 1) {
+		if (args != null && !args.isEmpty()) {
 			try {
 				times = Integer.parseInt(args);
 			} catch (NumberFormatException e) {
