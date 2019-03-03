@@ -26,6 +26,8 @@ public enum Direction {
 	
 	public boolean isRightOrDown() { return this == RIGHT || this == DOWN; }
 	
+	public boolean isLeftOrRight() { return this == LEFT || this == RIGHT; }
+	
 	public Direction getOpposite() { return rotateLeft().rotateLeft(); }
 	
 	public Direction rotateLeft() { return values()[Math.floorMod(index - 1, 4)]; }

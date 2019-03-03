@@ -1,9 +1,15 @@
 package lighthouse.ui.board.controller;
 
+import java.util.Collection;
+import java.util.Comparator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Brick;
+import lighthouse.model.Direction;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
+import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
 
 /**
@@ -45,5 +51,69 @@ public abstract class BoardBaseController implements BoardResponder {
 		}
 	}
 	
-	// TODO: Selection handling
+	@Override
+	public IntVec select(IntVec gridPos) {
+		return viewModel.selectAt(gridPos) ? gridPos : null;
+	}
+	
+	@Override
+	public IntVec selectAny() {
+		Collection<? extends Brick> bricks = viewModel.getBricks();
+		if (bricks.isEmpty()) {
+			return null;
+		} else {
+			Brick brick = bricks.iterator().next();
+			viewModel.select(brick);
+			return brick.getPos();
+		}
+	}
+	
+	@Override
+	public IntVec selectUp(IntVec gridPos) {
+		return selectInto(Direction.UP, gridPos);
+	}
+	
+	@Override
+	public IntVec selectLeft(IntVec gridPos) {
+		return selectInto(Direction.LEFT, gridPos);
+	}
+	
+	@Override
+	public IntVec selectDown(IntVec gridPos) {
+		return selectInto(Direction.DOWN, gridPos);
+	}
+	
+	@Override
+	public IntVec selectRight(IntVec gridPos) {
+		return selectInto(Direction.RIGHT, gridPos);
+	}
+	
+	public IntVec selectInto(Direction dir, IntVec gridPos) {
+		Brick selectedBrick = viewModel.locateBrick(gridPos);
+		
+		if (selectedBrick != null) {
+			Brick match = viewModel.getBricks()
+				.stream()
+				.filter(brick -> !brick.equals(selectedBrick))
+				.filter(brick -> {
+					switch (dir) {
+						case LEFT: return gridPos.getX() < brick.getMinPos().getX();
+						case UP: return gridPos.getY() < brick.getMinPos().getY();
+						case RIGHT: return gridPos.getX() > brick.getMaxPos().getX();
+						case DOWN: return gridPos.getY() > brick.getMaxPos().getY();
+						default: throw new IllegalStateException("Invalid direction " + dir);
+					}
+				})
+				.min(Comparator.comparingInt(brick -> Math.abs(dir.isLeftOrRight() ? (gridPos.getX() - brick.getPos().getX()) : (gridPos.getY() - brick.getPos().getY()))))
+				.orElse(null);
+			
+			if (match != null) {
+				viewModel.select(match);
+				update();
+				return match.getPos();
+			}
+		}
+		
+		return null;
+	}
 }

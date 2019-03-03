@@ -71,6 +71,30 @@ public interface GameBlock {
 		return edges;
 	}
 	
+	default IntVec getMinPos() {
+		IntVec pos = getPos();
+		IntVec minPos = pos;
+		
+		for (Direction dir : getStructure()) {
+			pos = pos.add(dir);
+			minPos = pos.min(minPos);
+		}
+		
+		return minPos;
+	}
+	
+	default IntVec getMaxPos() {
+		IntVec pos = getPos();
+		IntVec maxPos = pos;
+		
+		for (Direction dir : getStructure()) {
+			pos = pos.add(dir);
+			maxPos = pos.max(maxPos);
+		}
+		
+		return maxPos;
+	}
+	
 	/** Converts this brick into a set of occupied positions. */
 	default Set<IntVec> getOccupiedPositions() {
 		Set<IntVec> positions = new HashSet<>();

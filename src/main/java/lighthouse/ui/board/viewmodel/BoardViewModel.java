@@ -76,10 +76,13 @@ public class BoardViewModel implements ColorGrid {
 	
 	public Brick getSelected() { return selected; }
 	
-	public void selectAt(IntVec gridPos) {
+	public boolean selectAt(IntVec gridPos) {
 		Brick brick = locateBrick(gridPos);
 		if (brick != null) {
 			select(brick);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
