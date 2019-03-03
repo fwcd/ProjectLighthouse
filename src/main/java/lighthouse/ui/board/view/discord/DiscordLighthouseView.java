@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.Board;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.view.LighthouseView;
+import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
@@ -46,6 +47,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
 	private final BufferedImage boardImage;
+	private Integer lastSelectedID = null;
 	private Board lastBoard = null;
 	
 	private final Pattern commandPattern;
@@ -133,9 +135,11 @@ public class DiscordLighthouseView implements LighthouseView {
 	public void draw(LighthouseViewModel viewModel) {
 		if (isConnected()) {
 			viewModel.render();
-			Board board = viewModel.getBoard().getModel();
+			BoardViewModel boardViewModel = viewModel.getBoard();
+			Board board = boardViewModel.getModel();
+			Integer selectedID = boardViewModel.getSelectedID();
 			
-			if (lastBoard == null || !board.equals(lastBoard)) {
+			if (lastBoard == null || !board.equals(lastBoard) || selectedID != lastSelectedID) {
 				// Only draw if the board has changed
 				
 				Graphics2D g2d = boardImage.createGraphics();
@@ -144,11 +148,11 @@ public class DiscordLighthouseView implements LighthouseView {
 				g2d.dispose();
 				
 				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					ImageIO.write(boardImage, "png", baos);
+					ImageIO.write(boardImage, "jpg", baos);
 					byte[] imgBytes = baos.toByteArray();
 					
 					for (MessageChannel channel : activeChannels) {
-						channel.sendFile(imgBytes, "lighthouse.png").queue();
+						channel.sendFile(imgBytes, "lighthouse.jpg").queue();
 					}
 				} catch (IOException e) {
 					LOG.error("Error while sending image to Discord:", e);
@@ -156,6 +160,8 @@ public class DiscordLighthouseView implements LighthouseView {
 				
 				lastBoard = board.copy();
 			}
+			
+			lastSelectedID = selectedID;
 		}
 	}
 }

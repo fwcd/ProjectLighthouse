@@ -74,6 +74,8 @@ public class BoardViewModel implements ColorGrid {
 	
 	public boolean isSelected(GameBlock block) { return (selectedID != null) && (block != null) && block.getID() == selectedID; }
 	
+	public Integer getSelectedID() { return selectedID; }
+	
 	public boolean selectAt(IntVec gridPos) {
 		Brick brick = locateBrick(gridPos);
 		if (brick != null) {
