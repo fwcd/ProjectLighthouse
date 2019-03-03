@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.view.discord.DiscordLighthouseView;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.ConfigFile;
@@ -51,9 +52,11 @@ public class DiscordConnectorViewController implements ViewController {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
 			ConfigFile config = new ResourceConfigFile("/discordConfig.txt");
-			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"), config.getInt("imageWidth"), config.getInt("imageHeight"));
+			BoardKeyInput input = new BoardKeyInput();
+			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"), config.getInt("imageWidth"), config.getInt("imageHeight"), input);
 			
 			board.addLighthouseView(discordView);
+			input.addResponder(board.getResponder());
 			
 			discordView.connect(token);
 			discordView.addReadyListener(v -> board.render());
