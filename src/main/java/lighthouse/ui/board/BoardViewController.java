@@ -139,6 +139,8 @@ public class BoardViewController implements ViewController {
 	
 	public void setResponder(BoardResponder responder) { this.responder.setDelegate(responder); }
 	
+	public BoardResponder getResponder() { return responder; }
+	
 	public void reset() { responder.reset(); }
 	
 	public void addLighthouseView(LighthouseView view) { lhViews.add(view); }

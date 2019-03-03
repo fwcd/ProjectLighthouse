@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ui.board.input.BoardLighthouseInput;
 import lighthouse.ui.board.view.lighthouseapi.LighthouseDisplay;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.util.LhConstants;
@@ -38,6 +39,10 @@ public class RemoteLighthouseView implements LighthouseView {
 		return api.isConnected();
 	}
 
+	public void addButtonInput(BoardLighthouseInput input) {
+		api.addButtonListener(input);
+	}
+	
 	@Override
 	public void draw(LighthouseViewModel viewModel) {
 		try {

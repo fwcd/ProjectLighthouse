@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.input.BoardLighthouseInput;
 import lighthouse.ui.board.view.RemoteLighthouseView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
@@ -57,9 +58,14 @@ public class LighthouseConnectorViewController implements ViewController {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
 			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
+			BoardLighthouseInput lhInput = new BoardLighthouseInput();
+			
+			lhInput.addResponder(board.getResponder());
+			remoteView.addButtonInput(lhInput);
 			remoteView.connect();
 			board.addLighthouseView(remoteView);
 			board.render();
+			
 			connected = true;
 		}
 	}

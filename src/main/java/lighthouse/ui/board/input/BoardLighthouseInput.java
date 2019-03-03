@@ -8,6 +8,7 @@ import lighthouse.ui.board.view.lighthouseapi.ILighthouseInputListener;
  */
 public class BoardLighthouseInput implements ILighthouseInputListener, BoardInput {
 	private final BoardKeyInput keyDelegate = new BoardKeyInput();
+	private final KeyCodeConverter converter = new JavaScriptToSwingKeyCode();
 	
 	@Override
 	public void addResponder(BoardResponder responder) {
@@ -21,10 +22,11 @@ public class BoardLighthouseInput implements ILighthouseInputListener, BoardInpu
 	
 	@Override
 	public void keyboardEvent(int source, int button, boolean down) {
+		int keyCode = converter.convert(button);
 		if (down) {
-			keyDelegate.keyPressed(button);
+			keyDelegate.keyPressed(keyCode);
 		} else {
-			keyDelegate.keyReleased(button);
+			keyDelegate.keyReleased(keyCode);
 		}
 	}
 }
