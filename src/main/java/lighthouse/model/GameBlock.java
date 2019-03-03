@@ -142,4 +142,10 @@ public interface GameBlock {
 		
 		return false;
 	}
+	
+	default int getID() { return Integer.MIN_VALUE; }
+	
+	default boolean matchesIDOf(GameBlock brick) {
+		return getID() == brick.getID();
+	}
 }

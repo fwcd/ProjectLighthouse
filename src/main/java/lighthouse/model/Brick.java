@@ -63,11 +63,8 @@ public class Brick implements GameBlock, Serializable {
 		return structure.equals(brick.structure) && pos.equals(brick.pos);
 	}
 	
-	public boolean matchesIDOf(Brick brick) {
-		return id == brick.id;
-	}
-	
 	/** Fetches the brick id. */
+	@Override
 	public int getID() { return id; }
 	
 	public Brick movedBy(IntVec delta) { return new Brick(pos.add(delta), structure, color, id); }

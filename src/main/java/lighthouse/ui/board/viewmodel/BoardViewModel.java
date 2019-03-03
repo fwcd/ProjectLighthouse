@@ -26,7 +26,7 @@ public class BoardViewModel implements ColorGrid {
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
-	private Brick selected = null;
+	private Integer selectedID = null;
 	
 	public BoardViewModel(Board model) {
 		this(model, new BoardStatistics());
@@ -72,9 +72,7 @@ public class BoardViewModel implements ColorGrid {
 		editState.reset();
 	}
 	
-	public boolean isSelected(GameBlock block) { return (selected != null) && (block != null) && selected.equals(block); }
-	
-	public Brick getSelected() { return selected; }
+	public boolean isSelected(GameBlock block) { return (selectedID != null) && (block != null) && block.getID() == selectedID; }
 	
 	public boolean selectAt(IntVec gridPos) {
 		Brick brick = locateBrick(gridPos);
@@ -86,9 +84,9 @@ public class BoardViewModel implements ColorGrid {
 		}
 	}
 	
-	public void select(Brick brick) { selected = brick; }
+	public void select(Brick brick) { selectedID = brick.getID(); }
 	
-	public void deselect() { selected = null; }
+	public void deselect() { selectedID = null; }
 	
 	public List<? extends Overlay> getOverlays() { return overlays; }
 	

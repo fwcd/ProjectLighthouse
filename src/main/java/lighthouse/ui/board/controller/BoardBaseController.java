@@ -90,17 +90,18 @@ public abstract class BoardBaseController implements BoardResponder {
 	
 	public IntVec selectInto(Direction dir, IntVec gridPos) {
 		Brick selectedBrick = viewModel.locateBrick(gridPos);
+		IntVec selectedMax = selectedBrick.getMaxPos();
+		IntVec selectedMin = selectedBrick.getMinPos();
 		
 		if (selectedBrick != null) {
 			Brick match = viewModel.getBricks()
 				.stream()
-				.filter(brick -> !brick.equals(selectedBrick))
 				.filter(brick -> {
 					switch (dir) {
-						case LEFT: return gridPos.getX() < brick.getMinPos().getX();
-						case UP: return gridPos.getY() < brick.getMinPos().getY();
-						case RIGHT: return gridPos.getX() > brick.getMaxPos().getX();
-						case DOWN: return gridPos.getY() > brick.getMaxPos().getY();
+						case LEFT: return selectedMax.getX() < brick.getMinPos().getX();
+						case UP: return selectedMax.getY() < brick.getMinPos().getY();
+						case RIGHT: return brick.getMaxPos().getX() < selectedMin.getX();
+						case DOWN: return brick.getMaxPos().getY() < selectedMin.getY();
 						default: throw new IllegalStateException("Invalid direction " + dir);
 					}
 				})
