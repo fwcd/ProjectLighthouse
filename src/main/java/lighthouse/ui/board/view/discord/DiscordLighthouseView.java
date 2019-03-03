@@ -1,7 +1,11 @@
 package lighthouse.ui.board.view.discord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +21,9 @@ import lighthouse.util.ListenerList;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.Invite.Channel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -30,6 +37,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordLighthouseView.class);
 	
 	private final Map<String, DiscordCommand> commands = new HashMap<>();
+	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
 	
 	private final Pattern commandPattern;
@@ -42,6 +50,9 @@ public class DiscordLighthouseView implements LighthouseView {
 	
 	private void registerCommands() {
 		commands.put("ping", new PingCommand());
+		commands.put("summon", new SummonCommand(activeChannels));
+		commands.put("unsummon", new UnsummonCommand(activeChannels));
+		commands.put("help", this::showHelp);
 	}
 	
 	public void connect(String token) {
@@ -79,6 +90,16 @@ public class DiscordLighthouseView implements LighthouseView {
 		} else {
 			LOG.debug("Received non-command message for Discord: {}", msg);
 		}
+	}
+	
+	private void showHelp(String args, User author, MessageChannel channel) {
+		StringBuilder text = new StringBuilder("Available commands:\n```\n");
+		
+		for (String command : commands.keySet()) {
+			text.append(command).append('\n');
+		}
+		
+		channel.sendMessage(text.append("```")).queue();
 	}
 	
 	public boolean isConnected() {
