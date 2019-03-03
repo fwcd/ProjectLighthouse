@@ -1,8 +1,6 @@
 package lighthouse.ui.sidebar;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -10,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import lighthouse.model.Board;
+import lighthouse.model.Level;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.controller.BoardDrawController;
 import lighthouse.ui.board.controller.BoardResponder;
@@ -21,21 +20,27 @@ import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
 
 public class BlockedStatesEditorViewController implements ViewController {
+	private final int padding = 15;
 	private final JPanel component;
 	private final JLabel countLabel;
-	private final int padding = 15;
-	private List<Board> blockedStates = new ArrayList<>();
+	private final Level level;
 	
-	public BlockedStatesEditorViewController() {
+	private final LocalBoardView view;
+	private final BoardResponder controller;
+	private BoardViewModel boardViewModel;
+	
+	public BlockedStatesEditorViewController(Level level) {
+		this.level = level;
+		
 		component = new JPanel();
 		component.setBorder(new EmptyBorder(padding, padding, padding, padding));
 		component.setLayout(new BorderLayout());
 		
 		Board board = new Board();
-		BoardViewModel boardViewModel = new BoardViewModel(board);
-		DoubleVecBijection gridToPixels = new Scaling(20, 20);
-		LocalBoardView view = new LocalBoardView(gridToPixels);
-		BoardResponder controller = new BoardDrawController(boardViewModel, () -> view.draw(boardViewModel));
+		DoubleVecBijection gridToPixels = new Scaling(30, 30);
+		boardViewModel = new BoardViewModel(board);
+		view = new LocalBoardView(gridToPixels);
+		controller = new BoardDrawController(boardViewModel, () -> view.draw(boardViewModel));
 		BoardMouseInput input = new BoardMouseInput(gridToPixels);
 		
 		view.relayout(board.getColumns(), board.getRows());
@@ -50,13 +55,31 @@ public class BlockedStatesEditorViewController implements ViewController {
 		
 		component.add(LayoutUtils.vboxOf(
 			countLabel,
-			LayoutUtils.buttonOf("Add", () -> {}),
-			LayoutUtils.buttonOf("Remove All", () -> {})
+			LayoutUtils.buttonOf("Add", () -> add(board.copy())),
+			LayoutUtils.buttonOf("Remove All", () -> removeAll())
 		), BorderLayout.EAST);
 	}
 	
+	private void add(Board board) {
+		level.getBlockedStates().add(board);
+		clearBoard();
+		updateCountLabel();
+	}
+	
+	private void removeAll() {
+		level.getBlockedStates().clear();
+		clearBoard();
+		updateCountLabel();
+	}
+	
+	private void clearBoard() {
+		boardViewModel = new BoardViewModel(new Board());
+		view.draw(boardViewModel);
+		controller.updateViewModel(boardViewModel);
+	}
+	
 	private void updateCountLabel() {
-		countLabel.setText(blockedStates.size() + " blocked states");
+		countLabel.setText(level.getBlockedStates().size() + " blocked states");
 	}
 	
 	@Override

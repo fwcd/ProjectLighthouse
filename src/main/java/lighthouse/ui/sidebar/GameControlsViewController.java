@@ -48,7 +48,7 @@ public class GameControlsViewController implements ViewController {
 				popup.setFollowInvoker(true);
 				popup.setSize(200, 200);
 				popup.setLayout(new BorderLayout());
-				popup.add(new BlockedStatesEditorViewController().getComponent(), BorderLayout.CENTER);
+				popup.add(new BlockedStatesEditorViewController(model.getGameState().getLevel()).getComponent(), BorderLayout.CENTER);
 				popup.showPopup(editButton, 10, 10);
 			})
 		));

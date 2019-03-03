@@ -1,6 +1,8 @@
 package lighthouse.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,6 +13,7 @@ public class Level implements Serializable {
 	private static final long serialVersionUID = -4247084042893031489L;
 	private Board start;
 	private Board goal;
+	private List<Board> blockedStates = new ArrayList<>();
 	
 	/** Creates a new level with empty start/goal boards. */
 	public Level() {
@@ -28,6 +31,8 @@ public class Level implements Serializable {
 	public Board getStart() { return start; }
 	
 	public Board getGoal() { return goal; }
+	
+	public List<Board> getBlockedStates() { return blockedStates; }
 	
 	public boolean isCompleted(Board tested) { return tested.equals(goal); }
 	
