@@ -22,10 +22,20 @@ public interface BoardResponder {
 	default void dragTo(IntVec gridPos) {}
 	
 	default void release(IntVec gridPos) {}
+		
+	default IntVec selectAny() { return null; }
+
+	default IntVec select(IntVec gridPos) { return null; }
 	
-	default void select(IntVec gridPos) {}
+	default IntVec selectUp(IntVec gridPos) { return null; }
 	
-	default void deselect(IntVec gridPos) {}
+	default IntVec selectLeft(IntVec gridPos) { return null; }
+	
+	default IntVec selectDown(IntVec gridPos) { return null; }
+	
+	default IntVec selectRight(IntVec gridPos) { return null; }
+	
+	default void deselect() {}
 	
 	default void reset() {}
 }

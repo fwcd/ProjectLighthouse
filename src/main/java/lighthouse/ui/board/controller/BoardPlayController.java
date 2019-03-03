@@ -18,11 +18,9 @@ import lighthouse.util.Updatable;
 /**
  * The primary responder implementation for playing.
  */
-public class BoardPlayController implements BoardResponder {
+public class BoardPlayController extends BoardBaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
 	private Map<Direction, Integer> limits;
-	private Updatable updater;
-	private BoardViewModel viewModel;
 	private boolean dragEvent;
 	private Direction lastDir;
 	
@@ -30,9 +28,9 @@ public class BoardPlayController implements BoardResponder {
 	private Brick brick;
 
 	public BoardPlayController(BoardViewModel viewModel, Updatable updater) {
-		this.updater = updater;
-		this.viewModel = viewModel;
+		super(viewModel, updater);
 		resetLimits();
+		setResetEnabled(true);
 	}
 	
 	private void resetLimits() {
@@ -43,19 +41,19 @@ public class BoardPlayController implements BoardResponder {
 	}
 	
 	private void computeLimits() {
-		limits = viewModel.getLimitsFor(brick);
+		limits = getViewModel().getLimitsFor(brick);
 	}
 	
 	@Override
 	public void press(IntVec gridPos) {
-		brick = viewModel.locateBrick(gridPos);
+		brick = getViewModel().locateBrick(gridPos);
 		if (brick == null) return;
 		dragEvent = true;
 		startGridPos = gridPos;
 		computeLimits();
-		updater.update();
+		update();
 		
-		LOG.info("Possible moves: {}", viewModel.streamPossibleMovesFor(brick).collect(Collectors.toList()));
+		LOG.info("Possible moves: {}", getViewModel().streamPossibleMovesFor(brick).collect(Collectors.toList()));
 	}
 	
 	@Override
@@ -70,11 +68,11 @@ public class BoardPlayController implements BoardResponder {
 					limits.put(atDir, limits.get(atDir) - 1);
 					
 					Brick newBrick = brick.movedInto(atDir);
-					viewModel.replace(brick, newBrick);
+					getViewModel().replace(brick, newBrick);
 					
 					if (lastDir == null || !atDir.equals(lastDir)) {
 						// Only track moves into different directions
-						viewModel.getStatistics().incrementMoveCount();
+						getViewModel().getStatistics().incrementMoveCount();
 						lastDir = atDir;
 					}
 					
@@ -83,7 +81,7 @@ public class BoardPlayController implements BoardResponder {
 					computeLimits();
 				}
 			});
-			updater.update();
+			update();
 		}
 	}
 	
@@ -95,23 +93,6 @@ public class BoardPlayController implements BoardResponder {
 			edge.setHighlighted(false);
 		}
 		dragEvent = false;
-		updater.update();
-	}
-	
-	@Override
-	public void select(IntVec gridPos) {
-		viewModel.selectAt(gridPos);
-		updater.update();
-	}
-	
-	@Override
-	public void deselect(IntVec gridPos) {
-		viewModel.deselect();
-		updater.update();
-	}
-	
-	@Override
-	public void updateViewModel(BoardViewModel viewModel) {
-		this.viewModel = viewModel;
+		update();
 	}
 }

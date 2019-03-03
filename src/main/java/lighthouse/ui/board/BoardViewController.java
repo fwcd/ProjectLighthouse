@@ -16,10 +16,8 @@ import lighthouse.ui.board.controller.BoardPlayController;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.controller.DelegateResponder;
 import lighthouse.ui.board.debug.AnimationTracker;
-import lighthouse.ui.board.input.BoardInput;
 import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
-import lighthouse.ui.board.input.BoardXboxControllerInput;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
@@ -73,10 +71,6 @@ public class BoardViewController implements ViewController {
 		BoardKeyInput keyInput = new BoardKeyInput();
 		keyInput.addResponder(responder);
 		localView.addKeyInput(keyInput);
-
-		// Adds controller input
-		BoardInput xboxInput = new BoardXboxControllerInput();
-		xboxInput.addResponder(responder);
 	}
 
 	/** Plays an animation in high and low resolution on the board views. */

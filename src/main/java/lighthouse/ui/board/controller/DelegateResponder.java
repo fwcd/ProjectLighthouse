@@ -32,12 +32,27 @@ public class DelegateResponder implements BoardResponder {
 	
 	@Override
 	public void release(IntVec gridPos) { delegate.release(gridPos); }
+			
+	@Override
+	public IntVec selectAny() { return delegate.selectAny(); }
 	
 	@Override
-	public void select(IntVec gridPos) { delegate.select(gridPos); }
+	public IntVec select(IntVec gridPos) { return delegate.select(gridPos); }
 	
 	@Override
-	public void deselect(IntVec gridPos) { delegate.deselect(gridPos); }
+	public IntVec selectUp(IntVec gridPos) { return delegate.selectUp(gridPos); }
+	
+	@Override
+	public IntVec selectLeft(IntVec gridPos) { return delegate.selectLeft(gridPos); }
+	
+	@Override
+	public IntVec selectDown(IntVec gridPos) { return delegate.selectDown(gridPos); }
+	
+	@Override
+	public IntVec selectRight(IntVec gridPos) { return delegate.selectRight(gridPos); }
+	
+	@Override
+	public void deselect() { delegate.deselect(); }
 	
 	@Override
 	public void reset() { delegate.reset(); }

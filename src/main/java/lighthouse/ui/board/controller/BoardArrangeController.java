@@ -11,26 +11,25 @@ import lighthouse.util.Updatable;
  * A responder implementation that allows
  * the user to freely arrange bricks.
  */
-public class BoardArrangeController implements BoardResponder {
+public class BoardArrangeController extends BoardBaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardArrangeController.class);
-	private final Updatable updater;
-	private BoardViewModel viewModel;
 	private IntVec last;
 	private boolean dragging = false;
 	
 	public BoardArrangeController(BoardViewModel viewModel, Updatable updater) {
-		this.updater = updater;
-		this.viewModel = viewModel;
+		super(viewModel, updater);
 	}
 	
 	@Override
 	public void press(IntVec gridPos) {
+		BoardViewModel viewModel = getViewModel();
+		
 		if (viewModel.hasBrickAt(gridPos)) {
 			viewModel.getEditState().beginEdit(viewModel.removeBrickAt(gridPos));
 			LOG.debug("Pressed at {}", gridPos);
 			last = gridPos;
 			dragging = true;
-			updater.update();
+			update();
 		}
 	}
 	
@@ -38,9 +37,9 @@ public class BoardArrangeController implements BoardResponder {
 	public void dragTo(IntVec gridPos) {
 		if (dragging) {
 			IntVec delta = gridPos.sub(last);
-			viewModel.getEditState().moveBy(delta);
+			getViewModel().getEditState().moveBy(delta);
 			last = gridPos;
-			updater.update();
+			update();
 		}
 	}
 	
@@ -48,22 +47,13 @@ public class BoardArrangeController implements BoardResponder {
 	public void release(IntVec gridPos) {
 		if (dragging) {
 			LOG.debug("Released at {}", gridPos);
+			
+			BoardViewModel viewModel = getViewModel();
 			viewModel.add(viewModel.getEditState().finishEdit(gridPos));
+			
 			last = null;
 			dragging = false;
-			updater.update();
+			update();
 		}
-	}
-	
-	@Override
-	public void reset() {
-		LOG.debug("Resetting");
-		viewModel.clear();
-		updater.update();
-	}
-	
-	@Override
-	public void updateViewModel(BoardViewModel viewModel) {
-		this.viewModel = viewModel;
 	}
 }
