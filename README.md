@@ -16,6 +16,7 @@ To connect to the Discord API, create a new file named `discordToken.txt` inside
 
 ```properties
 token=YOUR_AUTHENTICATION_TOKEN
+clientID=OPTIONAL_CLIENT_ID
 ```
 
 ## UI Architecture
