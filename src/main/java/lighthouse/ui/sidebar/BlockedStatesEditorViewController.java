@@ -61,9 +61,11 @@ public class BlockedStatesEditorViewController implements ViewController {
 	}
 	
 	private void add(Board board) {
-		level.getBlockedStates().add(board);
-		clearBoard();
-		updateCountLabel();
+		if (!board.isEmpty()) {
+			level.getBlockedStates().add(board);
+			clearBoard();
+			updateCountLabel();
+		}
 	}
 	
 	private void removeAll() {

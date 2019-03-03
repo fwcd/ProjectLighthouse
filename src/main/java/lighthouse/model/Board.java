@@ -124,12 +124,82 @@ public class Board implements Serializable, ColorGrid {
 		return child;
 	}
 	
+	public boolean containsPattern(Board pattern) {
+		if (pattern.isEmpty()) {
+			return true;
+		}
+		
+		Color[][] baseColors = to2DColorArray();
+		Color[][] patternColors = pattern.to2DColorArray();
+		IntVec patternMin = pattern.getMinPos();
+		IntVec patternMax = pattern.getMaxPos();
+		IntVec patternSize = patternMax.sub(patternMin);
+		int searchColumns = (columns - patternSize.getX()) - 1;
+		int searchRows = (rows - patternSize.getY()) - 1;
+		Map<Color, Color> mappings = new HashMap<>();
+		
+		for (int x0 = 0; x0 < searchColumns; x0++) {
+			for (int y0 = 0; y0 < searchRows; y0++) {
+				// Reset mappings to [BLACK -> BLACK]
+				mappings.clear();
+				mappings.put(Color.BLACK, Color.BLACK);
+				
+				// Test for match
+				boolean matches = true;
+				
+				patternloop:
+				for (int x1 = 0; x1 < patternSize.getX(); x1++) {
+					for (int y1 = 0; y1 < patternSize.getY(); y1++) {
+						Color baseColor = baseColors[y0 + y1][x0 + x1];
+						Color actualPatternColor = patternColors[y0 + patternMin.getX()][y1 + patternMin.getY()];
+						Color expectedPatternColor = mappings.get(baseColor);
+						
+						if (expectedPatternColor == null) {
+							mappings.put(baseColor, actualPatternColor);
+						} else if (!expectedPatternColor.equals(actualPatternColor)) {
+							matches = false;
+							break patternloop;
+						}
+					}
+				}
+				
+				if (matches) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public IntVec getMinPos() {
+		return streamBricks()
+			.map(GameBlock::getMinPos)
+			.reduce(IntVec::min)
+			.orElse(IntVec.ZERO);
+	}
+	
+	public IntVec getMaxPos() {
+		return streamBricks()
+			.map(GameBlock::getMaxPos)
+			.reduce(IntVec::max)
+			.orElseGet(() -> new IntVec(columns - 1, rows - 1));
+	}
+	
 	/** Encodes this board as an array of columns * rows item.. */
 	public double[] encode1D() {
 		return IntStream.range(0, columns * rows)
 			.mapToObj(i -> getColorOrBlackAt(i % columns, i / columns))
 			.mapToDouble(ColorUtils::getBrightnessPercent)
 			.toArray();
+	}
+	
+	public Color[][] to2DColorArray() {
+		return IntStream.range(0, columns)
+			.mapToObj(x -> IntStream.range(0, rows)
+				.mapToObj(y -> getColorOrBlackAt(x, y))
+				.toArray(Color[]::new))
+			.toArray(Color[][]::new);
 	}
 	
 	/** Encodes this board as a 2D array of columns * rows item.. */
