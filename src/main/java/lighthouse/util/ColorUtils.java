@@ -92,7 +92,7 @@ public class ColorUtils {
 	}
 	
 	/** Computes the squared euclidean distance between a and b in RGB space. */
-	private static int distance(Color a, Color b) {
+	public static int distance(Color a, Color b) {
 		return MathUtils.square(a.getRed() - b.getRed())
 			 + MathUtils.square(a.getGreen() - b.getGreen())
 			 + MathUtils.square(a.getBlue() - b.getBlue());

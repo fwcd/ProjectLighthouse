@@ -119,18 +119,18 @@ public abstract class BoardBaseController implements BoardResponder {
 					IntVec maxPos = brick.getMaxPos();
 					
 					if (LOG.isDebugEnabled()) {
-						LOG.debug("For {} brick at {}: brickMin = {}, brickMax = {}", ColorUtils.describe(brick.getColor()), brick.getPos(), minPos, maxPos);
+						LOG.debug("For {} brick at ({}, {})", ColorUtils.describe(brick.getColor()), minPos, maxPos);
 					}
 					
 					switch (dir) {
-						case LEFT: return selectedMax.getX() < minPos.getX();
-						case UP: return selectedMax.getY() < minPos.getY();
-						case RIGHT: return maxPos.getX() < selectedMin.getX();
-						case DOWN: return maxPos.getY() < selectedMin.getY();
+						case LEFT: return maxPos.getX() < selectedMin.getX();
+						case UP: return maxPos.getY() < selectedMin.getY();
+						case RIGHT: return selectedMax.getX() < minPos.getX();
+						case DOWN: return selectedMax.getY() < minPos.getY();
 						default: throw new IllegalStateException("Invalid direction " + dir);
 					}
 				})
-				.min(Comparator.comparingInt(brick -> Math.abs(dir.isLeftOrRight() ? (gridPos.getX() - brick.getPos().getX()) : (gridPos.getY() - brick.getPos().getY()))))
+				.min(Comparator.comparingDouble(brick -> gridPos.sub(brick.getPos()).length()))
 				.orElse(null);
 			
 			if (match != null) {
