@@ -1,5 +1,7 @@
 package lighthouse;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
@@ -36,7 +38,15 @@ public class LighthouseMain {
 			Thread.currentThread().setUncaughtExceptionHandler(new SLF4JExceptionHandler());
 		});
 		
+		// Setup model
 		AppModel model = new AppModel();
+		try (InputStream stream = LighthouseMain.class.getResourceAsStream("/levels/default.json")) {
+			// Load default level
+			model.getGameState().loadLevelFrom(stream);
+		} catch (IOException e) {
+			LOG.warn("Exception while loading default level:", e);
+		}
+		
 		SwingUtilities.invokeAndWait(() -> {
 			// Setup look and feel
 			WebLookAndFeel.install();

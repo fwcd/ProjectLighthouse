@@ -3,6 +3,8 @@ package lighthouse.model;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -69,6 +71,14 @@ public class GameState {
 	public void loadLevelFrom(Path path) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
             LOG.info("Loading level from {}...", path);
+            setLevel(GSON.fromJson(reader, Level.class));
+		}
+    }
+    
+    /** Loads a level from an input stream. */
+    public void loadLevelFrom(InputStream stream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            LOG.info("Loading level from stream...");
             setLevel(GSON.fromJson(reader, Level.class));
 		}
     }
