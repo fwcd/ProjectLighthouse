@@ -12,6 +12,7 @@ public class TransitionableBoard {
 	private final Queue<Board> queuedBoards = new ArrayDeque<>();
 	private final int framesPerTransition;
 	private Board currentBoard;
+	private Board visibleBoard;
 	private BoardTransition activeTransition = null;
 	private int frame = 0;
 	
@@ -21,7 +22,14 @@ public class TransitionableBoard {
 	}
 	
 	public void enqueueTransition(Board board) {
+		currentBoard = board;
+		
+		if (visibleBoard == null) {
+			visibleBoard = currentBoard;
+		}
+		
 		queuedBoards.offer(board);
+		
 		if (activeTransition == null) {
 			nextTransition();
 		}
@@ -58,8 +66,8 @@ public class TransitionableBoard {
 			activeTransition = null;
 		} else {
 			Board nextBoard = queuedBoards.poll();
-			activeTransition = new BoardTransition(currentBoard, nextBoard, framesPerTransition);
-			currentBoard = nextBoard;
+			activeTransition = new BoardTransition(visibleBoard, nextBoard, framesPerTransition);
+			visibleBoard = nextBoard;
 		}
 	}
 	
