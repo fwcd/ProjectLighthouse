@@ -1,7 +1,5 @@
 package lighthouse.ui.board.viewmodel;
 
-import java.util.NoSuchElementException;
-
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.util.DoubleVec;
