@@ -38,7 +38,6 @@ public class BoardViewController implements ViewController {
 	private final JComponent component;
 
 	private final Updatable gameUpdater;
-	private final List<Board> blockedStates;
 	
 	private BoardViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
@@ -50,10 +49,10 @@ public class BoardViewController implements ViewController {
 	
 	private final AnimationTracker animationTracker = new AnimationTracker();
 	private int animationFPS = 60;
+	private boolean hasRunningTransitionTimer = false;
 
 	public BoardViewController(Board model, List<Board> blockedStates, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
-		this.blockedStates = blockedStates;
 
 		viewModel = new BoardViewModel(model, blockedStates);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
@@ -127,6 +126,22 @@ public class BoardViewController implements ViewController {
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
 		viewModel.transitionTo(model);
+		
+		if (!hasRunningTransitionTimer) {
+			hasRunningTransitionTimer = true;
+			
+			Timer timer = new Timer(1000 / animationFPS, e -> {
+				if (viewModel.hasNextTransitionFrame()) {
+					LOG.trace("Rendering next transition frame");
+					viewModel.nextTransitionFrame();
+				} else {
+					((Timer) e.getSource()).stop();
+					hasRunningTransitionTimer = false;
+				}
+			});
+			timer.setRepeats(true);
+			timer.start();
+		}
 	}
 	
 	public void render() {

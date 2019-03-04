@@ -113,7 +113,9 @@ public class BoardViewModel implements ColorGrid {
 	
 	// TODO: Being able to pass different kinds of interpolations and total frame counts here
 	public void transitionTo(Board next) { transitionableModel.enqueueTransition(next); }
-
+	
+	public boolean hasNextTransitionFrame() { return transitionableModel.hasNextFrame(); }
+	
 	public void nextTransitionFrame() { transitionableModel.nextFrame(); }
 	
 	public DoubleVec transitionedGridPosForBrick(Brick brick) { 
