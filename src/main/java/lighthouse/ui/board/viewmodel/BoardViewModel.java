@@ -24,7 +24,7 @@ import lighthouse.util.IntVec;
  * artifacts (such as overlays and animations).
  */
 public class BoardViewModel implements ColorGrid {
-	private static final int FRAMES_PER_BOARD_TRANSITION = 30;
+	private static final int FRAMES_PER_BOARD_TRANSITION = 10;
 	private final TransitionableBoard transitionableModel;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
@@ -58,14 +58,21 @@ public class BoardViewModel implements ColorGrid {
 	}
 	
 	public GameBlock locateBlock(IntVec gridPos) {
-		DoubleVec doubleGridPos = gridPos.toDouble();
+		return locateBlock(gridPos.toDouble());
+	}
+	
+	public GameBlock locateBlock(DoubleVec gridPos) {
 		GameBlock block = getModel().streamBricks()
 			.filter(brick -> {
 				DoubleVec brickOffset = transitionedGridPosForBrick(brick).sub(brick.getPos().toDouble());
+				
 				return brick.getAllPositions().stream()
 					.map(IntVec::toDouble)
 					.map(brickOffset::add)
-					.anyMatch(it -> it.sub(doubleGridPos).length() < 1);
+					.anyMatch(brickPos -> {
+						DoubleVec diff = gridPos.sub(brickPos);
+						return diff.xIn(0, 1) && diff.yIn(0, 1);
+					});
 			})
 			.findAny()
 			.orElse(null);
@@ -73,7 +80,7 @@ public class BoardViewModel implements ColorGrid {
 		
 		if (block == null) {
 			GameBlock bip = editState.getBrickInProgress();
-			if (bip != null && bip.contains(gridPos)) {
+			if (bip != null && bip.contains(gridPos.floor())) {
 				block = bip;
 			}
 		}

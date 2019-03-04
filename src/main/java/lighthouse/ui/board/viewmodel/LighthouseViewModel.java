@@ -56,7 +56,7 @@ public class LighthouseViewModel implements ColorGrid {
 		
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)).floor());
+				GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)));
 				Color color = Color.BLACK;
 				
 				if (block != null) {
