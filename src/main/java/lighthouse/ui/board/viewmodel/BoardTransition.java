@@ -22,9 +22,14 @@ public class BoardTransition {
 	}
 	
 	public DoubleVec gridPosForBrick(Brick brick, int frame) {
-		IntVec startPos = start.getBrickById(brick.getID()).orElseThrow(NoSuchElementException::new).getPos();
-		IntVec endPos = end.getBrickById(brick.getID()).orElseThrow(NoSuchElementException::new).getPos();
-		return interpolation.interpolateBetween(startPos, endPos, frame / (double) totalFrames);
+		Brick startBrick = start.getBrickById(brick.getID()).orElse(null);
+		Brick endBrick = end.getBrickById(brick.getID()).orElse(null);
+		
+		if (startBrick == null || endBrick == null) {
+			return brick.getPos().toDouble();
+		} else {
+			return interpolation.interpolateBetween(startBrick.getPos(), endBrick.getPos(), frame / (double) totalFrames);
+		}
 	}
 	
 	public int getTotalFrames() { return totalFrames; }

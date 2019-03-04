@@ -134,6 +134,7 @@ public class BoardViewController implements ViewController {
 				if (viewModel.hasNextTransitionFrame()) {
 					LOG.trace("Rendering next transition frame");
 					viewModel.nextTransitionFrame();
+					render();
 				} else {
 					((Timer) e.getSource()).stop();
 					hasRunningTransitionTimer = false;
