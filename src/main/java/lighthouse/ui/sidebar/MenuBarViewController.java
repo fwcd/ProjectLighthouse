@@ -26,7 +26,7 @@ import lighthouse.ui.board.viewmodel.overlay.AnimatedResourceGIFAnimation;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
 import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
-import lighthouse.ui.board.viewmodel.overlay.MovingImage;
+import lighthouse.ui.board.viewmodel.overlay.MovingImageAnimation;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceImageLoader;
@@ -62,7 +62,7 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
 				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
 				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation())),
-				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImage(ResourceImageLoader.getInstance().get("/images/board.png"), new IntVec(-4, 0), new IntVec(4, 0))))
+				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-4, 0), new IntVec(4, 0), new DoubleVec(4, 6))))
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -110,7 +110,7 @@ public class MenuBarViewController implements ViewController {
 	private void explode() {
 		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, new DoubleVec(4, 6));
 		animation.setSpeed(0.2);
-		animation.setLoopCount(10);
+		animation.setLoopCount(2);
 		playAnimation(animation);
 	}
 	

@@ -9,17 +9,19 @@ import lighthouse.util.IntVec;
 import lighthouse.util.interpolate.Interpolation;
 import lighthouse.util.interpolate.LinearInterpolation;
 
-public class MovingImage implements Animation {
+public class MovingImageAnimation implements Animation {
 	private final BufferedImage image;
 	private final int totalFrames = 300;
 	private final IntVec start;
 	private final IntVec end;
+	private final DoubleVec size;
 	private final Interpolation<IntVec, DoubleVec> interpolation = new LinearInterpolation();
 	
-	public MovingImage(BufferedImage image, IntVec start, IntVec end) {
+	public MovingImageAnimation(BufferedImage image, IntVec start, IntVec end, DoubleVec size) {
 		this.image = image;
 		this.start = start;
 		this.end = end;
+		this.size = size;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class MovingImage implements Animation {
 	public List<OverlayShape> getShape(int frame) {
 		double percent = frame / (double) totalFrames;
 		return Collections.singletonList(
-			new OverlayImage(interpolation.interpolateBetween(start, end, percent), image)
+			new OverlayImage(interpolation.interpolateBetween(start, end, percent), image, size)
 		);
 	}
 }
