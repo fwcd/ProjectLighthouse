@@ -125,7 +125,7 @@ public class BoardViewController implements ViewController {
 		// Preserve the statistics instance across viewmodel changes
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
-		viewModel.transitionTo(model);
+		viewModel.transitionTo(model.copy());
 		
 		if (!hasRunningTransitionTimer) {
 			hasRunningTransitionTimer = true;

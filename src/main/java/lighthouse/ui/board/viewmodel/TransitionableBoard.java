@@ -22,10 +22,13 @@ public class TransitionableBoard {
 	
 	public void enqueueTransition(Board board) {
 		queuedBoards.offer(board);
+		if (activeTransition == null) {
+			nextTransition();
+		}
 	}
 	
 	public boolean hasNextFrame() {
-		return frame < (activeTransition.getTotalFrames() + 1);
+		return activeTransition != null && frame < (activeTransition.getTotalFrames() + 1);
 	}
 	
 	public BoardTransition getActiveTransition() {

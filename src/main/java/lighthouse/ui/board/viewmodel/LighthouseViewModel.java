@@ -28,7 +28,7 @@ public class LighthouseViewModel implements ColorGrid {
 	private final BufferedImage image;
 	private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
 	private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
-	private boolean antialiasingEnabled = false;
+	private boolean antialiasingEnabled = true;
 	
 	public LighthouseViewModel(BoardViewModel board) {
 		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
