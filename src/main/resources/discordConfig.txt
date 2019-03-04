@@ -1,3 +1,4 @@
 prefix=%
 imageWidth=150
 imageHeight=200
+streamAllStates=false

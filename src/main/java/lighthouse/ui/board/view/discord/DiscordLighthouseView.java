@@ -46,14 +46,17 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Map<String, DiscordCommand> commands = new HashMap<>();
 	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
+
 	private final BufferedImage boardImage;
 	private Integer lastSelectedID = null;
 	private Board lastBoard = null;
 	
+	private final boolean streamAllStates;
 	private final Pattern commandPattern;
 	private JDA jda;
 	
-	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight, BoardKeyInput input) {
+	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight, boolean streamAllStates, BoardKeyInput input) {
+		this.streamAllStates = streamAllStates;
 		commandPattern = Pattern.compile(Pattern.quote(prefix) + "(\\w+)(?:\\s+(.+))?");
 		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		
@@ -145,7 +148,7 @@ public class DiscordLighthouseView implements LighthouseView {
 			Board board = boardViewModel.getModel();
 			Integer selectedID = boardViewModel.getSelectedID();
 			
-			if (lastBoard == null || !board.equals(lastBoard) || selectedID != lastSelectedID) {
+			if (streamAllStates || lastBoard == null || !board.equals(lastBoard) || selectedID != lastSelectedID) {
 				// Only draw if the board has changed
 				
 				Graphics2D g2d = boardImage.createGraphics();

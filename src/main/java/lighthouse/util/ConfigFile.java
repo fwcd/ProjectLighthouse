@@ -15,6 +15,10 @@ public interface ConfigFile {
 	
 	void set(String key, String value);
 	
+	default boolean getBoolean(String key) {
+		return Boolean.parseBoolean(get(key));
+	}
+	
 	default int getInt(String key) {
 		return Integer.parseInt(get(key));
 	}

@@ -53,7 +53,7 @@ public class DiscordConnectorViewController implements ViewController {
 		} else {
 			ConfigFile config = new ResourceConfigFile("/discordConfig.txt");
 			BoardKeyInput input = new BoardKeyInput();
-			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"), config.getInt("imageWidth"), config.getInt("imageHeight"), input);
+			DiscordLighthouseView discordView = new DiscordLighthouseView(config.get("prefix"), config.getInt("imageWidth"), config.getInt("imageHeight"), config.getBoolean("streamAllStates"), input);
 			
 			board.addLighthouseView(discordView);
 			input.addResponder(board.getResponder());
