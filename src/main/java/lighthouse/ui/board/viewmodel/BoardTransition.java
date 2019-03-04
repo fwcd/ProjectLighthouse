@@ -27,6 +27,8 @@ public class BoardTransition {
 		return interpolation.interpolateBetween(startPos, endPos, frame / (double) totalFrames);
 	}
 	
+	public int getTotalFrames() { return totalFrames; }
+	
 	public Board getStart() { return start; }
 	
 	public Board getEnd() { return end; }

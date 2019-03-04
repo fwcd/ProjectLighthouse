@@ -25,8 +25,9 @@ import lighthouse.util.IntVec;
  * artifacts (such as overlays and animations).
  */
 public class BoardViewModel implements ColorGrid {
+	private static final int FRAMES_PER_BOARD_TRANSITION = 30;
 	private final Board model;
-	private final Queue<Board> transitionQueue = new ArrayDeque<>();
+	private final BoardTransitionPlayer transitionPlayer;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
@@ -45,6 +46,7 @@ public class BoardViewModel implements ColorGrid {
 		this.model = model;
 		this.blockedStates = blockedStates;
 		this.statistics = statistics;
+		transitionPlayer = new BoardTransitionPlayer(model, FRAMES_PER_BOARD_TRANSITION);
 	}
 	
 	@Override
