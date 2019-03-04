@@ -10,7 +10,7 @@ public class OverlayImage implements OverlayShape {
 	private final DoubleVec imageSize;
 	
 	public OverlayImage(DoubleVec topLeft, BufferedImage image) {
-		this(topLeft, image, new DoubleVec(image.getWidth(), image.getHeight()));
+		this(topLeft, image, DoubleVec.ZERO);
 	}
 	
 	public OverlayImage(DoubleVec topLeft, BufferedImage image, DoubleVec imageSize) {

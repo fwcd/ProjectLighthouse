@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.board.viewmodel.overlay.AnimatedResourceGIFAnimation;
+import lighthouse.ui.board.viewmodel.overlay.Animation;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
@@ -52,7 +54,8 @@ public class MenuBarViewController implements ViewController {
 			),
 			LayoutUtils.menuOf("Debug", resourceLoader.getAsIcon("/icons/debug.png"),
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
-				LayoutUtils.itemOf("Play demo animation", this::playDemoAnimation)
+				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
+				LayoutUtils.itemOf("Play demo animated GIF", () -> playAnimation(new AnimatedResourceGIFAnimation("/gifs/explosion.gif")))
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -93,8 +96,8 @@ public class MenuBarViewController implements ViewController {
 		});
 	}
 	
-	private void playDemoAnimation() {
-		game.getBoard().play(new DemoAnimation());
+	private void playAnimation(Animation animation) {
+		game.getBoard().play(animation);
 	}
 	
 	private void switchToLightTheme() { applySkin(new WebSkin()); }

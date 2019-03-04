@@ -11,6 +11,14 @@ public class AnimatedImageAnimation implements Animation {
 	private final DoubleVec topLeft;
 	private final DoubleVec size;
 	
+	public AnimatedImageAnimation(BufferedAnimatedImage image) {
+		this(image, DoubleVec.ZERO);
+	}
+	
+	public AnimatedImageAnimation(BufferedAnimatedImage image, DoubleVec topLeft) {
+		this(image, topLeft, new DoubleVec(1, 1));
+	}
+	
 	public AnimatedImageAnimation(BufferedAnimatedImage image, DoubleVec topLeft, DoubleVec size) {
 		this.image = image;
 		this.topLeft = topLeft;
