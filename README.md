@@ -1,7 +1,7 @@
 # ProjectLighthouse
-A game running on the University of Kiel's highriser.
+A game running on the University of Kiel's high-rise building.
 
-![Screenshot](screenshot.png)
+![Photo](photo.jpg) ![Screenshot](screenshot.png)
 
 ## Lighthouse API
 To use the Lighthouse API, create a new file named `authentication.txt` inside `src/main/resources` with the following contents:

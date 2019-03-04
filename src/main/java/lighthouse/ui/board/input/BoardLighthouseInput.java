@@ -1,5 +1,8 @@
 package lighthouse.ui.board.input;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.view.lighthouseapi.ILighthouseInputListener;
 
@@ -7,8 +10,10 @@ import lighthouse.ui.board.view.lighthouseapi.ILighthouseInputListener;
  * A remote lighthouse input listener.
  */
 public class BoardLighthouseInput implements ILighthouseInputListener, BoardInput {
+	private static final Logger LOG = LoggerFactory.getLogger(BoardLighthouseInput.class);
 	private final BoardKeyInput keyDelegate = new BoardKeyInput();
-	private final KeyCodeConverter converter = new JavaScriptToSwingKeyCode();
+	private final KeyCodeConverter keyboardConverter = new JSKeyToSwingKeyCode();
+	private final KeyCodeConverter controllerConverter = new JSGamepadToSwingKeyCode();
 	
 	@Override
 	public void addResponder(BoardResponder responder) {
@@ -17,12 +22,18 @@ public class BoardLighthouseInput implements ILighthouseInputListener, BoardInpu
 	
 	@Override
 	public void controllerEvent(int source, int button, boolean down) {
-		// TODO
+		LOG.debug("Got controller event: source = {}, button = {}, down = {}", source, button, down);
+		handleEvent(button, down, controllerConverter);
 	}
 	
 	@Override
 	public void keyboardEvent(int source, int button, boolean down) {
-		int keyCode = converter.convert(button);
+		LOG.debug("Got keyboard event: source = {}, button = {}, down = {}", source, button, down);
+		handleEvent(button, down, keyboardConverter);
+	}
+	
+	private void handleEvent(int button, boolean down, KeyCodeConverter converter) {
+		int keyCode = keyboardConverter.convert(button);
 		if (down) {
 			keyDelegate.keyPressed(keyCode);
 		} else {
