@@ -75,7 +75,7 @@ public class BoardPlayController extends BoardBaseController {
 					nextBoard.replace(brick, newBrick);
 					
 					if (isAllowed(nextBoard)) {
-						getViewModel().replace(brick, newBrick);
+						getViewModel().transitionTo(nextBoard);
 					
 						if (lastDir == null || !atDir.equals(lastDir)) {
 							// Only track moves into different directions
