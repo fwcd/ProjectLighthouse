@@ -30,9 +30,9 @@ public class MovingImage implements Animation {
 	
 	@Override
 	public List<OverlayShape> getShape(int frame) {
-		double percent = frame / (double) totalFrames;
-		return Collections.singletonList(
-			new OverlayImage(interpolation.interpolateBetween(start, end, percent), image)
-		);
+		double percent = (double) frame / (double) totalFrames;
+		DoubleVec pos = interpolation.interpolateBetween(start, end, percent);
+		System.out.println(pos);
+		return Collections.singletonList(new OverlayImage(pos, image));
 	}
 }
