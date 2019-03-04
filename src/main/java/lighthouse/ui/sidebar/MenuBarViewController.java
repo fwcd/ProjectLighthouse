@@ -46,6 +46,7 @@ public class MenuBarViewController implements ViewController {
 		this.game = game;
 		
 		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
+		IntVec boardSize = getBoardSize();
 		
 		component = LayoutUtils.menuBarOf(
 			LayoutUtils.menuOf("File", resourceLoader.getAsIcon("/icons/file.png"),
@@ -62,10 +63,12 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
 				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
 				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation())),
-				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-4, 0), new IntVec(4, 0), new DoubleVec(4, 6))))
-			)
-		);
+				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-boardSize.getX(), 0), new IntVec(boardSize.getX(), 0), getBoardSize().toDouble())))));
 		pathChooser = new PathChooser(component, ".json");
+	}
+
+	private IntVec getBoardSize() {
+		return model.getGameState().getBoard().getSize();
 	}
 	
 	private void save() {
@@ -108,7 +111,7 @@ public class MenuBarViewController implements ViewController {
 	}
 	
 	private void explode() {
-		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, new DoubleVec(4, 6));
+		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, getBoardSize().toDouble());
 		animation.setSpeed(0.2);
 		animation.setLoopCount(2);
 		playAnimation(animation);

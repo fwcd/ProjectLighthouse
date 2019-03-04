@@ -317,4 +317,8 @@ public class Board implements Serializable, ColorGrid {
 		}
 		return str.deleteCharAt(str.length() - 1).toString();
 	}
+	
+	public IntVec getSize() {
+		return new IntVec(columns, rows);
+	}
 }
