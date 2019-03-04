@@ -1,13 +1,11 @@
 package lighthouse.ui.board.viewmodel;
 
 import java.awt.Color;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.stream.Stream;
 
 import lighthouse.model.Board;
@@ -17,6 +15,7 @@ import lighthouse.model.GameBlock;
 import lighthouse.model.Move;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Overlay;
+import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 /**
@@ -98,10 +97,6 @@ public class BoardViewModel implements ColorGrid {
 		}
 	}
 	
-	public void transitionTo(Board next) {
-		
-	}
-	
 	public void select(Brick brick) { selectedID = brick.getID(); }
 	
 	public void deselect() { selectedID = null; }
@@ -117,6 +112,15 @@ public class BoardViewModel implements ColorGrid {
 	public List<? extends Board> getBlockedStates() { return blockedStates; }
 	
 	public void setBlockedStates(List<Board> blockedStates) { this.blockedStates = blockedStates; }
+	
+	public void transitionTo(Board next) { transitionPlayer.enqueueTransition(next); }
+	
+	public void nextTransitionFrame() { transitionPlayer.nextFrame(); }
+	
+	public DoubleVec transitionedGridPosForBrick(Brick brick) { 
+		return transitionPlayer.gridPosForBrick(brick)
+			.orElseGet(() -> brick.getPos().toDouble());
+	}
 	
 	// === Delegated methods ===
 	

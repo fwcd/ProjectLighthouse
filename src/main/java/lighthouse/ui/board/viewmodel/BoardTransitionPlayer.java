@@ -1,9 +1,12 @@
 package lighthouse.ui.board.viewmodel;
 
 import java.util.ArrayDeque;
+import java.util.Optional;
 import java.util.Queue;
 
 import lighthouse.model.Board;
+import lighthouse.model.Brick;
+import lighthouse.util.DoubleVec;
 
 public class BoardTransitionPlayer {
 	private final Queue<Board> queuedBoards = new ArrayDeque<>();
@@ -25,10 +28,24 @@ public class BoardTransitionPlayer {
 		return frame < (activeTransition.getTotalFrames() + 1);
 	}
 	
+	public BoardTransition getActiveTransition() {
+		return activeTransition;
+	}
+	
+	public Optional<DoubleVec> gridPosForBrick(Brick brick) {
+		if (activeTransition == null) {
+			return Optional.empty();
+		} else {
+			return Optional.of(activeTransition.gridPosForBrick(brick, frame));
+		}
+	}
+	
 	public void nextFrame() {
-		frame++;
-		if (frame >= activeTransition.getTotalFrames()) {
-			nextTransition();
+		if (activeTransition != null) {
+			frame++;
+			if (frame >= activeTransition.getTotalFrames()) {
+				nextTransition();
+			}
 		}
 	}
 	
