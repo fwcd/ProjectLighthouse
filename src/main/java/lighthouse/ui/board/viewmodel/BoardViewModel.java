@@ -24,10 +24,10 @@ import lighthouse.util.IntVec;
  */
 public class BoardViewModel implements ColorGrid {
 	private final Board model;
-	private final List<Board> blockedStates;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
+	private List<Board> blockedStates;
 	private Integer selectedID = null;
 	
 	public BoardViewModel(Board model) {
@@ -106,6 +106,8 @@ public class BoardViewModel implements ColorGrid {
 	public Board getModel() { return model; }
 	
 	public List<? extends Board> getBlockedStates() { return blockedStates; }
+	
+	public void setBlockedStates(List<Board> blockedStates) { this.blockedStates = blockedStates; }
 	
 	// === Delegated methods ===
 	

@@ -65,6 +65,7 @@ public class GameViewController implements ViewController {
 		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
+			updateBoard();
 			update();
 		});
 		Level initialLevel = model.getLevel();
@@ -72,7 +73,6 @@ public class GameViewController implements ViewController {
 		
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
-		update();
 
 		// Setup RPC
 		discordRPC.setState(context.getStatus().getMessage());
@@ -131,16 +131,20 @@ public class GameViewController implements ViewController {
 	/** Presents a perspective of the game to the user. */
 	public void show(GamePerspective perspective) {
 		this.perspective = perspective;
-		
-		Board activeBoard = perspective.getActiveBoard(model);
-		board.updateModel(activeBoard);
-		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update));
+		updateBoard();
 		
 		discordRPC.setDetails(perspective.getName());
 		discordRPC.updatePresenceSoon();
 		
 		perspectiveListeners.fire(perspective);
 		update();
+	}
+	
+	private void updateBoard() {
+		Board activeBoard = perspective.getActiveBoard(model);
+		board.updateModel(activeBoard);
+		board.getViewModel().setBlockedStates(model.getLevel().getBlockedStates());
+		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update));
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
