@@ -65,6 +65,7 @@ public class GameViewController implements ViewController {
 		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
+			update();
 		});
 		Level initialLevel = model.getLevel();
 		initialLevel.getGoal().bindToUpdates(initialLevel.getStart());
