@@ -21,12 +21,14 @@ import org.slf4j.LoggerFactory;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
+import lighthouse.ui.board.viewmodel.overlay.AnimatedImageAnimation;
 import lighthouse.ui.board.viewmodel.overlay.AnimatedResourceGIFAnimation;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceImageLoader;
+import lighthouse.util.DoubleVec;
 
 public class MenuBarViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
@@ -55,7 +57,7 @@ public class MenuBarViewController implements ViewController {
 			LayoutUtils.menuOf("Debug", resourceLoader.getAsIcon("/icons/debug.png"),
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
-				LayoutUtils.itemOf("Play demo animated GIF", () -> playAnimation(new AnimatedResourceGIFAnimation("/gifs/explosion.gif")))
+				LayoutUtils.itemOf("Make it 'splode", () -> explode())
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
@@ -98,6 +100,13 @@ public class MenuBarViewController implements ViewController {
 	
 	private void playAnimation(Animation animation) {
 		game.getBoard().play(animation);
+	}
+	
+	private void explode() {
+		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, new DoubleVec(4, 6));
+		animation.setSpeed(0.2);
+		animation.setLoopCount(10);
+		playAnimation(animation);
 	}
 	
 	private void switchToLightTheme() { applySkin(new WebSkin()); }

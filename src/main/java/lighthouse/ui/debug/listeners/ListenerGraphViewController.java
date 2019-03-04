@@ -92,7 +92,7 @@ public class ListenerGraphViewController implements ViewController {
 						if (!visited.contains(field)) {
 							visited.add(field);
 						
-							if (!field.isAccessible()) {
+							if (!field.canAccess(obj)) {
 								field.setAccessible(true);
 							}
 							try {

@@ -12,11 +12,11 @@ public class AnimationPlayer implements Overlay {
 	
 	@Override
 	public List<OverlayShape> getShapes() {
-		return animation.getShape(frame);
+		return animation.getShape(frame % animation.getTotalFrames());
 	}
 	
 	public boolean hasNextFrame() {
-		return frame < (animation.getTotalFrames() - 1);
+		return frame < (animation.getTotalLoopedFrames() - 1);
 	}
 	
 	public int getCurrentFrame() {
@@ -24,6 +24,6 @@ public class AnimationPlayer implements Overlay {
 	}
 	
 	public void nextFrame() {
-		frame++;
+		frame = (frame + 1);
 	}
 }
