@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -170,6 +171,13 @@ public class Board implements Serializable, ColorGrid {
 		}
 		
 		return false;
+	}
+	
+	/** Finds a brick by ID. */
+	public Optional<Brick> getBrickById(int id) {
+		return streamBricks()
+			.filter(it -> it.getID() == id)
+			.findAny();
 	}
 	
 	public IntVec getMinPos() {

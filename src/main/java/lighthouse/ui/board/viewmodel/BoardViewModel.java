@@ -15,6 +15,7 @@ import lighthouse.model.GameBlock;
 import lighthouse.model.Move;
 import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Overlay;
+import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 /**
@@ -23,7 +24,9 @@ import lighthouse.util.IntVec;
  * artifacts (such as overlays and animations).
  */
 public class BoardViewModel implements ColorGrid {
+	private static final int FRAMES_PER_BOARD_TRANSITION = 30;
 	private final Board model;
+	private final BoardTransitionPlayer transitionPlayer;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
@@ -42,6 +45,7 @@ public class BoardViewModel implements ColorGrid {
 		this.model = model;
 		this.blockedStates = blockedStates;
 		this.statistics = statistics;
+		transitionPlayer = new BoardTransitionPlayer(model, FRAMES_PER_BOARD_TRANSITION);
 	}
 	
 	@Override
@@ -108,6 +112,15 @@ public class BoardViewModel implements ColorGrid {
 	public List<? extends Board> getBlockedStates() { return blockedStates; }
 	
 	public void setBlockedStates(List<Board> blockedStates) { this.blockedStates = blockedStates; }
+	
+	public void transitionTo(Board next) { transitionPlayer.enqueueTransition(next); }
+	
+	public void nextTransitionFrame() { transitionPlayer.nextFrame(); }
+	
+	public DoubleVec transitionedGridPosForBrick(Brick brick) { 
+		return transitionPlayer.gridPosForBrick(brick)
+			.orElseGet(() -> brick.getPos().toDouble());
+	}
 	
 	// === Delegated methods ===
 	
