@@ -27,6 +27,7 @@ public class BlockedStatesEditorViewController implements ViewController {
 	
 	private final LocalBoardView view;
 	private final BoardResponder controller;
+	private Board board;
 	private BoardViewModel boardViewModel;
 	
 	public BlockedStatesEditorViewController(Level level) {
@@ -36,7 +37,7 @@ public class BlockedStatesEditorViewController implements ViewController {
 		component.setBorder(new EmptyBorder(padding, padding, padding, padding));
 		component.setLayout(new BorderLayout());
 		
-		Board board = new Board();
+		board = new Board();
 		DoubleVecBijection gridToPixels = new Scaling(30, 30);
 		boardViewModel = new BoardViewModel(board);
 		view = new LocalBoardView(gridToPixels);
@@ -55,14 +56,14 @@ public class BlockedStatesEditorViewController implements ViewController {
 		
 		component.add(LayoutUtils.vboxOf(
 			countLabel,
-			LayoutUtils.buttonOf("Add", () -> add(board.copy())),
+			LayoutUtils.buttonOf("Add", () -> add(board)),
 			LayoutUtils.buttonOf("Remove All", () -> removeAll())
 		), BorderLayout.EAST);
 	}
 	
 	private void add(Board board) {
 		if (!board.isEmpty()) {
-			level.getBlockedStates().add(board);
+			level.getBlockedStates().add(board.copy());
 			clearBoard();
 			updateCountLabel();
 		}
@@ -75,7 +76,8 @@ public class BlockedStatesEditorViewController implements ViewController {
 	}
 	
 	private void clearBoard() {
-		boardViewModel = new BoardViewModel(new Board());
+		board = new Board();
+		boardViewModel = new BoardViewModel(board);
 		view.draw(boardViewModel);
 		controller.updateViewModel(boardViewModel);
 	}

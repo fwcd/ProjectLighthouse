@@ -299,6 +299,14 @@ public class Board implements Serializable, ColorGrid {
 	
 	@Override
 	public String toString() {
-		return bricks.toString();
+		StringBuilder str = new StringBuilder();
+		for (Color[] row : to2DColorArray()) {
+			for (Color cell : row) {
+				char c = ((cell.getRGB() & 0xFFFFFF) == 0) ? ' ' : (char) ((Math.abs(cell.hashCode()) % 26) + 'A');
+				str.append(c);
+			}
+			str.append('\n');
+		}
+		return str.deleteCharAt(str.length() - 1).toString();
 	}
 }
