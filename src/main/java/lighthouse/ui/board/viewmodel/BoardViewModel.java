@@ -58,7 +58,18 @@ public class BoardViewModel implements ColorGrid {
 	}
 	
 	public GameBlock locateBlock(IntVec gridPos) {
-		GameBlock block = getModel().locateBrick(gridPos);
+		DoubleVec doubleGridPos = gridPos.toDouble();
+		GameBlock block = getModel().streamBricks()
+			.filter(brick -> {
+				DoubleVec brickOffset = transitionedGridPosForBrick(brick).sub(brick.getPos().toDouble());
+				return brick.getAllPositions().stream()
+					.map(IntVec::toDouble)
+					.map(brickOffset::add)
+					.anyMatch(it -> it.sub(doubleGridPos).length() < 1);
+			})
+			.findAny()
+			.orElse(null);
+			
 		
 		if (block == null) {
 			GameBlock bip = editState.getBrickInProgress();
