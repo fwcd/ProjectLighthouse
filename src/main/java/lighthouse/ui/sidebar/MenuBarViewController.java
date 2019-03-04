@@ -24,6 +24,7 @@ import lighthouse.ui.ViewController;
 import lighthouse.ui.board.viewmodel.overlay.AnimatedImageAnimation;
 import lighthouse.ui.board.viewmodel.overlay.AnimatedResourceGIFAnimation;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
+import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
@@ -57,7 +58,8 @@ public class MenuBarViewController implements ViewController {
 			LayoutUtils.menuOf("Debug", resourceLoader.getAsIcon("/icons/debug.png"),
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
-				LayoutUtils.itemOf("Make it 'splode", () -> explode())
+				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
+				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation()))
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
