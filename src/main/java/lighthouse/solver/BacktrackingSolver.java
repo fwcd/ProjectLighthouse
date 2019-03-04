@@ -29,7 +29,10 @@ public class BacktrackingSolver implements Solver {
             Board tmpCurrent = current.copy();
 
             Optional<Move> nextMove = current.streamPossibleMoves()
-                    .filter(move -> !forbidden.contains(tmpCurrent.childBoard(move))).findFirst();
+                    .filter(move -> {
+                        Board child = tmpCurrent.childBoard(move);
+                        return !forbidden.contains(child) && toSolve.isAllowed(child);
+                    }).findFirst();
             
             if (!nextMove.isPresent()){
                 moves.remove(moves.size()-1);
