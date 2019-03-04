@@ -1,6 +1,8 @@
 # ProjectLighthouse
 A game running on the University of Kiel's highriser.
 
+![Screenshot](screenshot.png)
+
 ## Lighthouse API
 To use the Lighthouse API, create a new file named `authentication.txt` inside `src/main/resources` with the following contents:
 
