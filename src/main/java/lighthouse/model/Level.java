@@ -36,6 +36,15 @@ public class Level implements Serializable {
 	
 	public boolean isCompleted(Board tested) { return tested.equals(goal); }
 	
+	public boolean isAllowed(Board board) {
+		for (Board blockedPattern : blockedStates) {
+			if (board.containsPattern(blockedPattern)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	/** Fetches the target brick for a brick. */
 	public Optional<Brick> goalBrickFor(Brick brick) {
 		return goal.streamBricks()
