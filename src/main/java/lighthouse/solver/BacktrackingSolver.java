@@ -39,7 +39,7 @@ public class BacktrackingSolver implements Solver {
             current.perform(nextMove.orElse(null));
             moves.add(current.copy());
         }
-        System.out.println("Starting optimization with: " + moves.size() + " moves");
+        LOG.info("Starting optimization with: {} moves", moves.size());
         while (true){
             
             int skips = 0;
