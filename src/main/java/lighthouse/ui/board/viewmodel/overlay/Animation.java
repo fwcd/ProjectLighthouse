@@ -9,5 +9,7 @@ public interface Animation {
 	
 	List<OverlayShape> getShape(int frame);
 	
-	default boolean doesLoop() { return false; }
+	default int getLoopCount() { return 1; }
+	
+	default int getTotalLoopedFrames() { return getTotalFrames() * getLoopCount(); }
 }

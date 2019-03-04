@@ -16,7 +16,7 @@ public class AnimationPlayer implements Overlay {
 	}
 	
 	public boolean hasNextFrame() {
-		return frame < (animation.getTotalFrames() - 1) || animation.doesLoop();
+		return frame < (animation.getTotalLoopedFrames() - 1);
 	}
 	
 	public int getCurrentFrame() {
