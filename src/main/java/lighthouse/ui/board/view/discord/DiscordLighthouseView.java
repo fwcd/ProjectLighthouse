@@ -24,6 +24,7 @@ import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
+import lighthouse.util.ConfigFile;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
 import net.dv8tion.jda.api.JDA;
@@ -55,10 +56,10 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Pattern commandPattern;
 	private JDA jda;
 	
-	public DiscordLighthouseView(String prefix, int imageWidth, int imageHeight, boolean streamAllStates, BoardKeyInput input) {
-		this.streamAllStates = streamAllStates;
-		commandPattern = Pattern.compile(Pattern.quote(prefix) + "(\\w+)(?:\\s+(.+))?");
-		boardImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+	public DiscordLighthouseView(ConfigFile config, BoardKeyInput input) {
+		streamAllStates = config.getBoolean("streamAllStates");
+		commandPattern = Pattern.compile(Pattern.quote(config.get("prefix")) + "(\\w+)(?:\\s+(.+))?");
+		boardImage = new BufferedImage(config.getInt("imageWidth"), config.getInt("imageHeight"), BufferedImage.TYPE_INT_RGB);
 		
 		registerCommands(input);
 	}
