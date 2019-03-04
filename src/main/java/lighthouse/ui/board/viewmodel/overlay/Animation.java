@@ -8,4 +8,6 @@ public interface Animation {
 	int getTotalFrames();
 	
 	List<OverlayShape> getShape(int frame);
+	
+	default boolean doesLoop() { return false; }
 }

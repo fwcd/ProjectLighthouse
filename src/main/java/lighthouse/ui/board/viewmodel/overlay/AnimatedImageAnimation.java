@@ -11,6 +11,7 @@ public class AnimatedImageAnimation implements Animation {
 	private final DoubleVec topLeft;
 	private final DoubleVec size;
 	private double speed = 1;
+	private boolean loops = false;
 	
 	public AnimatedImageAnimation(BufferedAnimatedImage image) {
 		this(image, DoubleVec.ZERO);
@@ -39,5 +40,14 @@ public class AnimatedImageAnimation implements Animation {
 	
 	public void setSpeed(double speed) {
 		this.speed = speed;
+	}
+	
+	public void setLoops(boolean loops) {
+		this.loops = loops;
+	}
+	
+	@Override
+	public boolean doesLoop() {
+		return loops;
 	}
 }
