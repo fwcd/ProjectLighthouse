@@ -104,7 +104,7 @@ public class MenuBarViewController implements ViewController {
 	
 	private void explode() {
 		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, new DoubleVec(4, 6));
-		animation.setSpeed(0.5);
+		animation.setSpeed(0.2);
 		playAnimation(animation);
 	}
 	
