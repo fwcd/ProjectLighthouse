@@ -26,10 +26,12 @@ import lighthouse.ui.board.viewmodel.overlay.AnimatedResourceGIFAnimation;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
 import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
 import lighthouse.ui.board.viewmodel.overlay.DemoAnimation;
+import lighthouse.ui.board.viewmodel.overlay.MovingImage;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceImageLoader;
 import lighthouse.util.DoubleVec;
+import lighthouse.util.IntVec;
 
 public class MenuBarViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
@@ -59,7 +61,8 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
 				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
-				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation()))
+				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation())),
+				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImage(ResourceImageLoader.getInstance().get("/images/board.png"), new IntVec(-4, 0), new IntVec(4, 0))))
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
