@@ -2,7 +2,7 @@ package lighthouse.ui.board.input;
 
 import java.awt.event.KeyEvent;
 
-public class JavaScriptToSwingKeyCode implements KeyCodeConverter {
+public class JSKeyToSwingKeyCode implements KeyCodeConverter {
 	@Override
 	public int convert(int keyCode) {
 		switch (keyCode) {
