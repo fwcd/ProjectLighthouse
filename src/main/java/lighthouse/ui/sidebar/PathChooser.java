@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * A lightweight abstraction over {@link JFileChooser}
@@ -20,7 +23,21 @@ public class PathChooser {
 	public PathChooser(JComponent parent, String suffix) {
 		this.parent = parent;
 		this.suffix = suffix;
-		fc = new JFileChooser();
+		
+		boolean isLinux = System.getProperty("os.name").toLowerCase().contains("linux");
+		
+		if (isLinux) {
+			try {
+				LookAndFeel laf = UIManager.getLookAndFeel();
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				fc = new JFileChooser();
+				UIManager.setLookAndFeel(laf);
+			} catch (UnsupportedLookAndFeelException | ReflectiveOperationException e) {
+				throw new RuntimeException("Error while swapping look and feel in PathChooser", e);
+			}
+		} else {
+			fc = new JFileChooser();
+		}
 	}
 	
 	public Optional<Path> showOpenDialog() {
