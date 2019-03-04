@@ -11,12 +11,8 @@ public class ConfettiAnimation implements Animation {
 
 	Random r = new Random();
 	
-	List<List<OverlayShape>> rows = new ArrayList<>();
-	{
-		for (int i = 0; i < 6; i++){
-			rows.add(new ArrayList<OverlayShape>());
-		}
-	}
+	List<List<Color>> rows = new ArrayList<>();
+	List<List<Integer>> rowsX = new ArrayList<>();
 
 	@Override
 	public String getName() { return "Confetti"; }
@@ -27,20 +23,33 @@ public class ConfettiAnimation implements Animation {
 	@Override
 	public List<OverlayShape> getShape(int frame) {
 		int depth = frame/30;
-		
+		List<OverlayShape> shapes = new ArrayList<>();
+
 		if (frame % 30 == 0){
-			
-			for (int i = 5; i > 0; i--){
-				rows.set(i, rows.get(i - 1));
-			}
-			rows.set(0, Arrays.asList(
-			new OverlayRect(r.nextInt(4), 0, 1, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()), OverlayShading.FILLED),
-			new OverlayRect(r.nextInt(4), 0, 1, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()), OverlayShading.FILLED),
-			new OverlayRect(r.nextInt(4), 0, 1, 1, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()), OverlayShading.FILLED)));
+			rows.add(0, new ArrayList<>());
+			rows.get(0).add(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+			rows.get(0).add(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+			rows.get(0).add(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+			rows.get(0).add(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+			rows.get(0).add(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+			rowsX.add(0, new ArrayList<>());
+			rowsX.get(0).add(r.nextInt(4));
+			rowsX.get(0).add(r.nextInt(4));
+			rowsX.get(0).add(r.nextInt(4));
+			rowsX.get(0).add(r.nextInt(4));
+			rowsX.get(0).add(r.nextInt(4));
+		}
+		double dFrame = (double) frame;
+		for (int i = 0; i < rows.size(); i++){
+			shapes.add(new OverlayRect(rowsX.get(i).get(0) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(0), OverlayShading.FILLED));
+			shapes.add(new OverlayRect(rowsX.get(i).get(1) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(1), OverlayShading.FILLED));
+			shapes.add(new OverlayRect(rowsX.get(i).get(2) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(2), OverlayShading.FILLED));
+			shapes.add(new OverlayRect(rowsX.get(i).get(3), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(3), OverlayShading.FILLED));
+			shapes.add(new OverlayRect(rowsX.get(i).get(4), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(4), OverlayShading.FILLED));
 		}
 		
 		
 		
-		return rows.stream().flatMap(x -> x.stream()).collect(Collectors.toList());
+		return shapes;
 	}
 }
