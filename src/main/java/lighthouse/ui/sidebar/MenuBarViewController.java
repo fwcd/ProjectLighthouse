@@ -55,7 +55,7 @@ public class MenuBarViewController implements ViewController {
 			LayoutUtils.menuOf("Debug", resourceLoader.getAsIcon("/icons/debug.png"),
 				LayoutUtils.itemOf("Open debug tools", this::openDebugTools),
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
-				LayoutUtils.itemOf("Play demo animated GIF", () -> playAnimation(new AnimatedResourceGIFAnimation("/gifs/explosion.gif")))
+				LayoutUtils.itemOf("Make it 'splode", () -> playAnimation(new AnimatedResourceGIFAnimation("/gifs/explosion.gif")))
 			)
 		);
 		pathChooser = new PathChooser(component, ".json");
