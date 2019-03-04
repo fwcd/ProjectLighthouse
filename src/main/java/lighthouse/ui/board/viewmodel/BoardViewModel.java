@@ -25,8 +25,7 @@ import lighthouse.util.IntVec;
  */
 public class BoardViewModel implements ColorGrid {
 	private static final int FRAMES_PER_BOARD_TRANSITION = 30;
-	private final Board model;
-	private final BoardTransitionPlayer transitionPlayer;
+	private final TransitionableBoard transitionableModel;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
@@ -42,10 +41,9 @@ public class BoardViewModel implements ColorGrid {
 	}
 	
 	public BoardViewModel(Board model, List<Board> blockedStates, BoardStatistics statistics) {
-		this.model = model;
 		this.blockedStates = blockedStates;
 		this.statistics = statistics;
-		transitionPlayer = new BoardTransitionPlayer(model, FRAMES_PER_BOARD_TRANSITION);
+		transitionableModel = new TransitionableBoard(model, FRAMES_PER_BOARD_TRANSITION);
 	}
 	
 	@Override
@@ -60,7 +58,7 @@ public class BoardViewModel implements ColorGrid {
 	}
 	
 	public GameBlock locateBlock(IntVec gridPos) {
-		GameBlock block = model.locateBrick(gridPos);
+		GameBlock block = getModel().locateBrick(gridPos);
 		
 		if (block == null) {
 			GameBlock bip = editState.getBrickInProgress();
@@ -79,7 +77,7 @@ public class BoardViewModel implements ColorGrid {
 	public BoardStatistics getStatistics() { return statistics; }
 	
 	public void clear() {
-		model.clear();
+		getModel().clear();
 		editState.reset();
 	}
 	
@@ -107,38 +105,38 @@ public class BoardViewModel implements ColorGrid {
 	
 	public void removeOverlay(Overlay overlay) { overlays.remove(overlay); }
 	
-	public Board getModel() { return model; }
+	public Board getModel() { return transitionableModel.getCurrentBoard(); }
 	
 	public List<? extends Board> getBlockedStates() { return blockedStates; }
 	
 	public void setBlockedStates(List<Board> blockedStates) { this.blockedStates = blockedStates; }
 	
-	public void transitionTo(Board next) { transitionPlayer.enqueueTransition(next); }
+	public void transitionTo(Board next) { transitionableModel.enqueueTransition(next); }
 	
-	public void nextTransitionFrame() { transitionPlayer.nextFrame(); }
+	public void nextTransitionFrame() { transitionableModel.nextFrame(); }
 	
 	public DoubleVec transitionedGridPosForBrick(Brick brick) { 
-		return transitionPlayer.gridPosForBrick(brick)
+		return transitionableModel.gridPosForBrick(brick)
 			.orElseGet(() -> brick.getPos().toDouble());
 	}
 	
 	// === Delegated methods ===
 	
-	public boolean hasBrickAt(IntVec gridPos) { return model.hasBrickAt(gridPos); }
+	public boolean hasBrickAt(IntVec gridPos) { return getModel().hasBrickAt(gridPos); }
 	
-	public Brick removeBrickAt(IntVec gridPos) { return model.removeBrickAt(gridPos); }
+	public Brick removeBrickAt(IntVec gridPos) { return getModel().removeBrickAt(gridPos); }
 	
-	public void add(Brick brick) { model.add(brick); }
+	public void add(Brick brick) { getModel().add(brick); }
 	
-	public Map<Direction, Integer> getLimitsFor(Brick brick) { return model.getLimitsFor(brick); }
+	public Map<Direction, Integer> getLimitsFor(Brick brick) { return getModel().getLimitsFor(brick); }
 	
-	public Brick locateBrick(IntVec gridPos) { return model.locateBrick(gridPos); }
+	public Brick locateBrick(IntVec gridPos) { return getModel().locateBrick(gridPos); }
 	
-	public void replace(Brick oldBrick, Brick newBrick) { model.replace(oldBrick, newBrick); }
+	public void replace(Brick oldBrick, Brick newBrick) { getModel().replace(oldBrick, newBrick); }
 	
-	public Collection<? extends Brick> getBricks() { return model.getBricks(); }
+	public Collection<? extends Brick> getBricks() { return getModel().getBricks(); }
 	
-	public Stream<Move> streamPossibleMoves() { return model.streamPossibleMoves(); }
+	public Stream<Move> streamPossibleMoves() { return getModel().streamPossibleMoves(); }
 	
-	public Stream<Move> streamPossibleMovesFor(Brick brick) { return model.streamPossibleMovesFor(brick); }
+	public Stream<Move> streamPossibleMovesFor(Brick brick) { return getModel().streamPossibleMovesFor(brick); }
 }

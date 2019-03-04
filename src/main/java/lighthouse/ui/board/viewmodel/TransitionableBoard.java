@@ -8,14 +8,14 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.util.DoubleVec;
 
-public class BoardTransitionPlayer {
+public class TransitionableBoard {
 	private final Queue<Board> queuedBoards = new ArrayDeque<>();
 	private final int framesPerTransition;
 	private Board currentBoard;
 	private BoardTransition activeTransition = null;
 	private int frame = 0;
 	
-	public BoardTransitionPlayer(Board currentBoard, int framesPerTransition) {
+	public TransitionableBoard(Board currentBoard, int framesPerTransition) {
 		this.currentBoard = currentBoard;
 		this.framesPerTransition = framesPerTransition;
 	}
@@ -58,5 +58,9 @@ public class BoardTransitionPlayer {
 			activeTransition = new BoardTransition(currentBoard, nextBoard, framesPerTransition);
 			currentBoard = nextBoard;
 		}
+	}
+	
+	public Board getCurrentBoard() {
+		return currentBoard;
 	}
 }
