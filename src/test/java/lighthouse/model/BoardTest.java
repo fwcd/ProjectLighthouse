@@ -2,6 +2,7 @@ package lighthouse.model;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -21,6 +22,9 @@ public class BoardTest {
 		// |  XX|
 		// |L X |
 		// |LL  |
+		// |    |
+		// |    |
+		// |    |
 		// +----+
 		Board board = boardOf(
 			brickOf(new IntVec(2, 1), Direction.UP, Direction.RIGHT),
@@ -30,6 +34,16 @@ public class BoardTest {
 			matchesBrick(new IntVec(2, 0), new IntVec(3, 0), new IntVec(2, 1)),
 			matchesBrick(new IntVec(0, 1), new IntVec(0, 2), new IntVec(1, 2))
 		));
+		
+		Board patternA = new Board(2, 2);
+		patternA.add(brickOf(new IntVec(0, 0), Direction.DOWN, Direction.RIGHT));
+		
+		assertTrue("Board should contain bottom-left pattern brick", board.containsPattern(patternA));
+		
+		Board patternB = new Board(2, 3);
+		patternB.add(brickOf(new IntVec(0, 1), Direction.UP, Direction.RIGHT));
+		
+		assertTrue("Board should contain top-right pattern brick", board.containsPattern(patternB));
 	}
 	
 	private Board boardOf(Brick... bricks) {

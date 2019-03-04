@@ -133,9 +133,9 @@ public class Board implements Serializable, ColorGrid {
 		Color[][] patternColors = pattern.to2DColorArray();
 		IntVec patternMin = pattern.getMinPos();
 		IntVec patternMax = pattern.getMaxPos();
-		IntVec patternSize = patternMax.sub(patternMin);
-		int searchColumns = (columns - patternSize.getX()) - 1;
-		int searchRows = (rows - patternSize.getY()) - 1;
+		IntVec patternSize = patternMax.sub(patternMin).add(IntVec.ONE_ONE);
+		int searchColumns = (columns - patternSize.getX()) + 1;
+		int searchRows = (rows - patternSize.getY()) + 1;
 		Map<Color, Color> mappings = new HashMap<>();
 		
 		for (int x0 = 0; x0 < searchColumns; x0++) {
@@ -151,7 +151,7 @@ public class Board implements Serializable, ColorGrid {
 				for (int x1 = 0; x1 < patternSize.getX(); x1++) {
 					for (int y1 = 0; y1 < patternSize.getY(); y1++) {
 						Color baseColor = baseColors[y0 + y1][x0 + x1];
-						Color actualPatternColor = patternColors[y0 + patternMin.getX()][y1 + patternMin.getY()];
+						Color actualPatternColor = patternColors[y1 + patternMin.getY()][x1 + patternMin.getX()];
 						Color expectedPatternColor = mappings.get(baseColor);
 						
 						if (expectedPatternColor == null) {
@@ -195,18 +195,18 @@ public class Board implements Serializable, ColorGrid {
 	}
 	
 	public Color[][] to2DColorArray() {
-		return IntStream.range(0, columns)
-			.mapToObj(x -> IntStream.range(0, rows)
-				.mapToObj(y -> getColorOrBlackAt(x, y))
+		return IntStream.range(0, rows)
+			.mapToObj(y -> IntStream.range(0, columns)
+				.mapToObj(x -> getColorOrBlackAt(x, y))
 				.toArray(Color[]::new))
 			.toArray(Color[][]::new);
 	}
 	
 	/** Encodes this board as a 2D array of columns * rows item.. */
 	public double[][] encode2D() {
-		return IntStream.range(0, columns)
-			.mapToObj(x -> IntStream.range(0, rows)
-				.mapToObj(y -> getColorOrBlackAt(x, y))
+		return IntStream.range(0, rows)
+			.mapToObj(y -> IntStream.range(0, columns)
+				.mapToObj(x -> getColorOrBlackAt(x, y))
 				.mapToDouble(ColorUtils::getBrightnessPercent)
 				.toArray())
 			.toArray(double[][]::new);
@@ -295,5 +295,10 @@ public class Board implements Serializable, ColorGrid {
 			lazyChangeListeners = new ListenerList<>("Board.changeListeners");
 		}
 		return lazyChangeListeners;
+	}
+	
+	@Override
+	public String toString() {
+		return bricks.toString();
 	}
 }
