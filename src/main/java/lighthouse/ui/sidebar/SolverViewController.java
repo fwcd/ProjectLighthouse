@@ -19,6 +19,7 @@ import lighthouse.solver.BacktrackingSolver;
 import lighthouse.solver.Solver;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
+import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 
@@ -60,7 +61,8 @@ public class SolverViewController implements ViewController {
 			Level level = gameState.getLevel();
 			try {
 				List<Board> solution = solver.solve(level);
-				board.play(solution, 1000 / boardsPerSecond);
+				board.play(solution, 1000 / boardsPerSecond)
+					.thenRun(() -> board.play(new ConfettiAnimation()));
 			} catch (Exception e) {
 				LOG.error("An error occurred while solving:", e);
 			}

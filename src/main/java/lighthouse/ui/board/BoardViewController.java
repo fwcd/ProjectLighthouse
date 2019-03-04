@@ -3,6 +3,8 @@ package lighthouse.ui.board;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import javax.swing.JComponent;
 import javax.swing.Timer;
@@ -105,8 +107,9 @@ public class BoardViewController implements ViewController {
 		timer.start();
 	}
 	
-	public void play(List<? extends Board> boards, int delayMs) {
+	public CompletableFuture<Void> play(List<? extends Board> boards, int delayMs) {
 		Iterator<? extends Board> iterator = boards.iterator();
+		CompletableFuture<Void> future = new CompletableFuture<>();
 		Timer timer = new Timer(delayMs, e -> {
 			if (iterator.hasNext()) {
 				LOG.trace("Updating");
@@ -114,11 +117,13 @@ public class BoardViewController implements ViewController {
 				gameUpdater.update();
 			} else {
 				((Timer) e.getSource()).stop();
+				future.complete(null);
 			}
 		});
 		
 		timer.setRepeats(true);
 		timer.start();
+		return future;
 	}
 	
 	public void updateModel(Board model) {
