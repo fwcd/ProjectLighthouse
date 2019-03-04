@@ -52,7 +52,7 @@ public class GameViewController implements ViewController {
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
-		board = new BoardViewController(model.getBoard(), gridToPixels, this::update);
+		board = new BoardViewController(model.getBoard(), model.getLevel().getBlockedStates(), gridToPixels, this::update);
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers

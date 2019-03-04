@@ -3,6 +3,7 @@ package lighthouse.ui.board.viewmodel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,17 +24,23 @@ import lighthouse.util.IntVec;
  */
 public class BoardViewModel implements ColorGrid {
 	private final Board model;
+	private final List<Board> blockedStates;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
 	private Integer selectedID = null;
 	
 	public BoardViewModel(Board model) {
-		this(model, new BoardStatistics());
+		this(model, Collections.emptyList());
 	}
 	
-	public BoardViewModel(Board model, BoardStatistics statistics) {
+	public BoardViewModel(Board model, List<Board> blockedStates) {
+		this(model, blockedStates, new BoardStatistics());
+	}
+	
+	public BoardViewModel(Board model, List<Board> blockedStates, BoardStatistics statistics) {
 		this.model = model;
+		this.blockedStates = blockedStates;
 		this.statistics = statistics;
 	}
 	
@@ -97,6 +104,8 @@ public class BoardViewModel implements ColorGrid {
 	public void removeOverlay(Overlay overlay) { overlays.remove(overlay); }
 	
 	public Board getModel() { return model; }
+	
+	public List<? extends Board> getBlockedStates() { return blockedStates; }
 	
 	// === Delegated methods ===
 	

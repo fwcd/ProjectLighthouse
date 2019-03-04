@@ -38,6 +38,8 @@ public class BoardViewController implements ViewController {
 	private final JComponent component;
 
 	private final Updatable gameUpdater;
+	private final List<Board> blockedStates;
+	
 	private BoardViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
 	
@@ -49,10 +51,11 @@ public class BoardViewController implements ViewController {
 	private final AnimationTracker animationTracker = new AnimationTracker();
 	private int animationFPS = 60;
 
-	public BoardViewController(Board model, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
+	public BoardViewController(Board model, List<Board> blockedStates, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
 		this.gameUpdater = gameUpdater;
+		this.blockedStates = blockedStates;
 
-		viewModel = new BoardViewModel(model);
+		viewModel = new BoardViewModel(model, blockedStates);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater));
 
@@ -123,7 +126,7 @@ public class BoardViewController implements ViewController {
 		// Preserve the statistics instance across viewmodel changes
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
-		viewModel = new BoardViewModel(model, statistics);
+		viewModel = new BoardViewModel(model, blockedStates, statistics);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		responder.updateViewModel(viewModel);
 	}
