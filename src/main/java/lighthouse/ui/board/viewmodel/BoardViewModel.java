@@ -1,11 +1,13 @@
 package lighthouse.ui.board.viewmodel;
 
 import java.awt.Color;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Stream;
 
 import lighthouse.model.Board;
@@ -24,6 +26,7 @@ import lighthouse.util.IntVec;
  */
 public class BoardViewModel implements ColorGrid {
 	private final Board model;
+	private final Queue<Board> transitionQueue = new ArrayDeque<>();
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
 	private final List<Overlay> overlays = new ArrayList<>();
@@ -91,6 +94,10 @@ public class BoardViewModel implements ColorGrid {
 		} else {
 			return false;
 		}
+	}
+	
+	public void transitionTo(Board next) {
+		
 	}
 	
 	public void select(Brick brick) { selectedID = brick.getID(); }
