@@ -20,12 +20,14 @@ import lighthouse.solver.Solver;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.util.LayoutUtils;
+import lighthouse.util.IDGenerator;
 
 public class SolverViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
 	private final BoardViewController board;
 	private final GameState gameState;
+	private Thread solverThread = null;
 	
 	public SolverViewController(GameState gameState, BoardViewController board) {
 		this.gameState = gameState;
@@ -39,13 +41,21 @@ public class SolverViewController implements ViewController {
 				playbackSpeed
 			),
 			LayoutUtils.panelOf(
-				LayoutUtils.buttonOf("Solve with Backtracking", () -> solveWithBacktracking((int) playbackSpeed.getValue()))
+				LayoutUtils.buttonOf("Solve with Backtracking", () -> solveWithBacktracking((int) playbackSpeed.getValue())),
+				LayoutUtils.buttonOf("Stop", this::stop)
 			)
 		);
 	}
 	
+	private void stop() {
+		if (solverThread != null) {
+			solverThread.interrupt();
+		}
+	}
+	
 	private void solveWithBacktracking(int boardsPerSecond) {
-		new Thread(() -> {
+		stop();
+		solverThread = new Thread(() -> {
 			Solver solver = new BacktrackingSolver();
 			Level level = gameState.getLevel();
 			try {
@@ -54,7 +64,8 @@ public class SolverViewController implements ViewController {
 			} catch (Exception e) {
 				LOG.error("An error occurred while solving:", e);
 			}
-		}, "Solver").start();
+		}, "Solver " + IDGenerator.INSTANCE.nextID());
+		solverThread.start();
 	}
 	
 	@Override

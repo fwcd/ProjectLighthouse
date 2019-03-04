@@ -1,6 +1,7 @@
 package lighthouse.solver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public class BacktrackingSolver implements Solver {
     
     @Override
     public List<Board> solve(Level toSolve) {
+        LOG.info("Starting solver");
+        
         List<Board> moves = new ArrayList<>();
         Board current = toSolve.getStart().copy();
         Board goal = toSolve.getGoal();
@@ -24,7 +27,12 @@ public class BacktrackingSolver implements Solver {
 
         moves.add(current.copy());
         while (!current.equals(goal)) {
-
+            // Stop the solver if the thread was interrupted
+            if (Thread.interrupted()) {
+                LOG.info("Stopped solver");
+                return Collections.emptyList();
+            }
+            
             forbidden.add(current.copy());
             Board tmpCurrent = current.copy();
 
@@ -44,6 +52,11 @@ public class BacktrackingSolver implements Solver {
         }
         LOG.info("Starting optimization with: {} moves", moves.size());
         while (true){
+            // Stop the solver if the thread was interrupted
+            if (Thread.interrupted()) {
+                LOG.info("Stopped solver while optimizing");
+                return Collections.emptyList();
+            }
             
             int skips = 0;
             int begin = 0;
