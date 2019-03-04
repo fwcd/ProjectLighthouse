@@ -24,7 +24,7 @@ import lighthouse.util.IntVec;
  * artifacts (such as overlays and animations).
  */
 public class BoardViewModel implements ColorGrid {
-	private static final int FRAMES_PER_BOARD_TRANSITION = 120;
+	private static final int FRAMES_PER_BOARD_TRANSITION = 30;
 	private final TransitionableBoard transitionableModel;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;

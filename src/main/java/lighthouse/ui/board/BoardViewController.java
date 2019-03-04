@@ -126,7 +126,20 @@ public class BoardViewController implements ViewController {
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
 		viewModel.transitionTo(model);
-		
+		updateTransitionTimer();
+	}
+	
+	public void render() {
+		updateTransitionTimer();
+		for (BoardView view : boardViews) {
+			view.draw(viewModel);
+		}
+		for (LighthouseView lhView : lhViews) {
+			lhView.draw(lighthouseViewModel);
+		}
+	}
+	
+	private void updateTransitionTimer() {
 		if (!hasRunningTransitionTimer) {
 			hasRunningTransitionTimer = true;
 			
@@ -142,15 +155,6 @@ public class BoardViewController implements ViewController {
 			});
 			timer.setRepeats(true);
 			timer.start();
-		}
-	}
-	
-	public void render() {
-		for (BoardView view : boardViews) {
-			view.draw(viewModel);
-		}
-		for (LighthouseView lhView : lhViews) {
-			lhView.draw(lighthouseViewModel);
 		}
 	}
 	
