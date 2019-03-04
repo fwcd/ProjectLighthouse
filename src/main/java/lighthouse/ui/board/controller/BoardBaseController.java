@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
@@ -38,6 +39,15 @@ public abstract class BoardBaseController implements BoardResponder {
 	
 	protected void update() {
 		updater.update();
+	}
+	
+	protected boolean isAllowed(Board board) {
+		for (Board blockedPattern : viewModel.getBlockedStates()) {
+			if (board.containsPattern(blockedPattern)) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override

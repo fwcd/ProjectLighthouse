@@ -3,6 +3,8 @@ package lighthouse.ui.board.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Board;
+import lighthouse.model.Brick;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
@@ -55,14 +57,20 @@ public class BoardArrangeController extends BoardBaseController {
 			LOG.debug("Released at {}", gridPos);
 			
 			BoardViewModel viewModel = getViewModel();
-			viewModel.add(viewModel.getEditState().finishEdit(gridPos));
+			Board nextBoard = viewModel.getModel().copy();
+			Brick assembledBrick = viewModel.getEditState().finishEdit(gridPos);
+			nextBoard.add(assembledBrick);
 			
-			last = null;
-			dragging = false;
+			boolean allowed = isAllowed(nextBoard);
+			if (allowed) {
+				viewModel.add(assembledBrick);
+				last = null;
+				dragging = false;
+			}
+			
 			update();
-			return true;
-		} else {
-			return false;
+			return allowed;
 		}
+		return false;
 	}
 }

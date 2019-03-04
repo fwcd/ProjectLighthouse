@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
@@ -70,18 +71,23 @@ public class BoardPlayController extends BoardBaseController {
 					limits.put(atDir, limits.get(atDir) - 1);
 					
 					Brick newBrick = brick.movedInto(atDir);
-					getViewModel().replace(brick, newBrick);
+					Board nextBoard = getViewModel().getModel().copy();
+					nextBoard.replace(brick, newBrick);
 					
-					if (lastDir == null || !atDir.equals(lastDir)) {
-						// Only track moves into different directions
-						getViewModel().getStatistics().incrementMoveCount();
-						lastDir = atDir;
+					if (isAllowed(nextBoard)) {
+						getViewModel().replace(brick, newBrick);
+					
+						if (lastDir == null || !atDir.equals(lastDir)) {
+							// Only track moves into different directions
+							getViewModel().getStatistics().incrementMoveCount();
+							lastDir = atDir;
+						}
+						
+						brick = newBrick;
+						startGridPos = startGridPos.add(atDir);
+						computeLimits();
+						updated = true;
 					}
-					
-					brick = newBrick;
-					startGridPos = startGridPos.add(atDir);
-					computeLimits();
-					updated = true;
 				}
 			}
 			update();
