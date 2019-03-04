@@ -17,6 +17,8 @@ public class BufferedAnimatedImage implements Iterable<BufferedImage> {
 	
 	public int getFrameCount() { return frames.size(); }
 	
+	public BufferedImage getFrame(int index) { return frames.get(index); }
+	
 	public Stream<BufferedImage> streamFrames() { return frames.stream(); }
 	
 	@Override

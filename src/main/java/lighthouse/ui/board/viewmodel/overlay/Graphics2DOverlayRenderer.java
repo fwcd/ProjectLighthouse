@@ -73,6 +73,14 @@ public class Graphics2DOverlayRenderer implements OverlayShapeVisitor {
 		drawOval(topLeft, size, shading);
 	}
 
+	@Override
+	public void visitImage(OverlayImage image) {
+		IntVec topLeft = gridPosToPixels.apply(image.getTopLeft());
+		IntVec size = gridSizeToPixels.apply(image.getImageSize());
+		
+		g2d.drawImage(image.getImage(), topLeft.getX(), topLeft.getY(), size.getX(), size.getY(), null);
+	}
+	
 	private void drawOval(IntVec topLeft, IntVec size, OverlayShading shading) {
 		switch (shading) {
 		case FILLED:

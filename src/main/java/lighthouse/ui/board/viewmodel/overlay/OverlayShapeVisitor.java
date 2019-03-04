@@ -6,4 +6,6 @@ public interface OverlayShapeVisitor {
 	void visitOval(OverlayOval oval);
 	
 	void visitFixedCircle(OverlayFixedCircle circle);
+	
+	void visitImage(OverlayImage image);
 }

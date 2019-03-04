@@ -117,6 +117,11 @@ public class GridOverlayRenderer implements OverlayShapeVisitor {
 		}
 	}
 	
+	@Override
+	public void visitImage(OverlayImage image) {
+		throw new UnsupportedOperationException("TODO"); // TODO
+	}
+	
 	private void drawColorAt(int x, int y, Color color) {
 		if (alphaEnabled) {
 			grid.drawColorAt(x, y, color);
