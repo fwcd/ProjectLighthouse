@@ -10,6 +10,7 @@ public class AnimatedImageAnimation implements Animation {
 	private final BufferedAnimatedImage image;
 	private final DoubleVec topLeft;
 	private final DoubleVec size;
+	private double speed = 1;
 	
 	public AnimatedImageAnimation(BufferedAnimatedImage image) {
 		this(image, DoubleVec.ZERO);
@@ -29,10 +30,14 @@ public class AnimatedImageAnimation implements Animation {
 	public String getName() { return "AnimatedImage"; }
 	
 	@Override
-	public int getTotalFrames() { return image.getFrameCount(); }
+	public int getTotalFrames() { return (int) (image.getFrameCount() / speed); }
 	
 	@Override
 	public List<OverlayShape> getShape(int frame) {
-		return Collections.singletonList(new OverlayImage(topLeft, image.getFrame(frame), size));
+		return Collections.singletonList(new OverlayImage(topLeft, image.getFrame((int) (frame * speed)), size));
+	}
+	
+	public void setSpeed(double speed) {
+		this.speed = speed;
 	}
 }
