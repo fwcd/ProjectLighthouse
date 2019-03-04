@@ -126,9 +126,7 @@ public class BoardViewController implements ViewController {
 		// Preserve the statistics instance across viewmodel changes
 		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
 		statistics.reset();
-		viewModel = new BoardViewModel(model, blockedStates, statistics);
-		lighthouseViewModel = new LighthouseViewModel(viewModel);
-		responder.updateViewModel(viewModel);
+		viewModel.transitionTo(model);
 	}
 	
 	public void render() {
