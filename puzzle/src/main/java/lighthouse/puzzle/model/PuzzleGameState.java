@@ -13,13 +13,14 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.model.GameState;
 import lighthouse.util.ListenerList;
 
 /**
  * Holds the current game state which includes the actively manipulated board,
  * the current level and more.
  */
-public class PuzzleGameState {
+public class PuzzleGameState implements GameState {
     private static final Logger LOG = LoggerFactory.getLogger(PuzzleGameState.class);
     private static final Gson GSON = new Gson();
     
@@ -42,6 +43,11 @@ public class PuzzleGameState {
         this.level = level;
     }
     
+    @Override
+    public String getName() {
+        return "Puzzle";
+    }
+    
     public boolean isWon() {
         return board.equals(level.getGoal());
     }
@@ -59,15 +65,15 @@ public class PuzzleGameState {
         board.getChangeListeners().add(changeListeners);
     }
     
-	/** Saves a level as JSON to a file. */
+    @Override
 	public void saveLevelTo(Path path) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             LOG.info("Saving level to {}...", path);
             GSON.toJson(level, writer);
 		}
 	}
-	
-	/** Loads a level from a JSON file. */
+    
+    @Override
 	public void loadLevelFrom(Path path) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path)) {
             LOG.info("Loading level from {}...", path);
@@ -75,7 +81,7 @@ public class PuzzleGameState {
 		}
     }
     
-    /** Loads a level from an input stream. */
+    @Override
     public void loadLevelFrom(InputStream stream) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             LOG.info("Loading level from stream...");

@@ -7,11 +7,15 @@ import lighthouse.puzzle.model.PuzzleGameState;
  * The application's model. Contains the game.
  */
 public class AppModel {
-	private final PuzzleGameState gameState = new PuzzleGameState();
+	private final PuzzleGameState legacyGameState = new PuzzleGameState();
 	private final FileSaveState saveState = new FileSaveState();
+	private final GameState activeGame = null;
 	private AIMain ai;
 	
-	public PuzzleGameState getGameState() { return gameState; }
+	@Deprecated
+	public PuzzleGameState getGameState() { return legacyGameState; }
+	
+	public GameState getActiveGame() { return activeGame; }
 	
 	public FileSaveState getSaveState() { return saveState; }
 	
