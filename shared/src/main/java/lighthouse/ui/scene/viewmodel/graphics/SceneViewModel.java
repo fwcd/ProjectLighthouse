@@ -21,6 +21,13 @@ public class SceneViewModel implements Iterable<SceneLayer> {
 		}
 	}
 	
+	public void setLayers(SceneLayer... layers) {
+		this.layers.clear();
+		for (SceneLayer layer : layers) {
+			this.layers.add(layer);
+		}
+	}
+	
 	@Override
 	public Iterator<SceneLayer> iterator() {
 		return layers.iterator();

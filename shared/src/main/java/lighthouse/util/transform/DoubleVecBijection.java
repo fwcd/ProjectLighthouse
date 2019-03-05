@@ -6,6 +6,14 @@ import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 public interface DoubleVecBijection extends Bijection<DoubleVec, DoubleVec> {
+	static DoubleVecBijection IDENTITY = new DoubleVecBijection() {
+		@Override
+		public DoubleVec apply(DoubleVec value) { return value; }
+		
+		@Override
+		public DoubleVec inverseApply(DoubleVec value) { return value; }
+	};
+	
 	default DoubleVecBijection inverse() {
 		DoubleVecBijection outer = this;
 		return new DoubleVecBijection() {

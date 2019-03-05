@@ -13,7 +13,9 @@ import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.scene.controller.NoResponder;
 import lighthouse.ui.scene.controller.SceneResponder;
+import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.view.LighthouseView;
+import lighthouse.ui.scene.view.LocalSceneView;
 import lighthouse.ui.scene.view.SceneView;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
@@ -30,6 +32,7 @@ public class SceneViewController implements SwingViewController {
 	private final SceneViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
 	
+	private final LocalSceneView localView;
 	private final List<SceneView> sceneViews = new ArrayList<>();
 	private final List<LighthouseView> lighthouseViews = new ArrayList<>();
 	private final DelegateResponder responder = new DelegateResponder(NoResponder.INSTANCE);
@@ -37,6 +40,13 @@ public class SceneViewController implements SwingViewController {
 	public SceneViewController() {
 		viewModel = new SceneViewModel();
 		component = new JPanel();
+		
+		localView = new LocalSceneView(DoubleVecBijection.IDENTITY.floor(), DoubleVecBijection.IDENTITY.floor());
+		sceneViews.add(localView);
+		
+		SceneKeyInput keyInput = new SceneKeyInput();
+		keyInput.addResponder(responder);
+		localView.addKeyInput(keyInput);
 	}
 	
 	public void render() {
@@ -69,6 +79,10 @@ public class SceneViewController implements SwingViewController {
 	public DelegateResponder getResponder() { return responder; }
 	
 	public AnimationRunner getAnimationRunner() { return animationRunner; }
+	
+	public LocalSceneView getLocalView() { return localView; }
+	
+	public SceneViewModel getViewModel() { return viewModel; }
 	
 	@Override
 	public JComponent getComponent() { return component; }

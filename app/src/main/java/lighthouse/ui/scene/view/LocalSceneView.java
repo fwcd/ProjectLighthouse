@@ -3,11 +3,18 @@ package lighthouse.ui.scene.view;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.util.function.Function;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
+import lighthouse.ui.scene.input.SceneKeyInput;
+import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
@@ -18,8 +25,8 @@ public class LocalSceneView implements SceneView {
 	private final JComponent component;
 	private SceneViewModel scene;
 	
-	private final Function<DoubleVec, IntVec> gridPosToPixels;
-	private final Function<DoubleVec, IntVec> gridSizeToPixels;
+	private Function<DoubleVec, IntVec> gridPosToPixels;
+	private Function<DoubleVec, IntVec> gridSizeToPixels;
 	
 	public LocalSceneView(Function<DoubleVec, IntVec> gridToPixels) {
 		this(gridToPixels, gridToPixels);
@@ -38,6 +45,37 @@ public class LocalSceneView implements SceneView {
 				render((Graphics2D) g, getSize());
 			}
 		};
+	}
+	
+	public void addKeyInput(SceneKeyInput keyInput) {
+		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = component.getActionMap();
+		
+		for (int keyCode : keyInput.getBoundKeys()) {
+			inputMap.put(KeyStroke.getKeyStroke(keyCode, 0), keyCode);
+			actionMap.put(keyCode, new AbstractAction() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					component.requestFocus();
+					keyInput.keyPressed(keyCode);
+				}
+			});
+		}
+	}
+	
+	public void addMouseInput(SceneMouseInput mouseInput) {
+		component.addMouseListener(mouseInput);
+		component.addMouseMotionListener(mouseInput);
+	}
+	
+	public void setGridPosToPixels(Function<DoubleVec, IntVec> gridPosToPixels) {
+		this.gridPosToPixels = gridPosToPixels;
+	}
+	
+	public void setGridSizeToPixels(Function<DoubleVec, IntVec> gridSizeToPixels) {
+		this.gridSizeToPixels = gridSizeToPixels;
 	}
 	
 	@Override

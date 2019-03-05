@@ -8,6 +8,16 @@ import java.util.function.Function;
 public interface Bijection<X, Y> extends Function<X, Y> {
 	X inverseApply(Y value);
 	
+	static <T> Bijection<T, T> identity() {
+		return new Bijection<T, T>() {
+			@Override
+			public T apply(T value) { return value; }
+			
+			@Override
+			public T inverseApply(T value) { return value; }
+		};
+	}
+	
 	default Bijection<Y, X> inverse() {
 		Bijection<X, Y> outer = this;
 		return new Bijection<Y, X>() {

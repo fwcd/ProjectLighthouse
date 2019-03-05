@@ -9,6 +9,7 @@ import lighthouse.ui.EmptyViewController;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.scene.controller.DelegateResponder;
+import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.transform.DoubleVecBijection;
 
 /**
@@ -19,13 +20,15 @@ public interface Game {
 	
 	GameState getModel();
 	
+	SceneLayer getGameLayer();
+	
 	DoubleVecBijection getGridPosToPixels();
 	
-	DoubleVecBijection getLighthousePosToGridPos();
+	DoubleVecBijection getLighthouseToGridPos();
 	
-	default DoubleVecBijection getGridSizeToSize() { return getGridPosToPixels(); }
+	default DoubleVecBijection getGridSizeToPixels() { return getGridPosToPixels(); }
 	
-	default DoubleVecBijection getLighthouseSizeToGridSize() { return getLighthousePosToGridPos(); }
+	default DoubleVecBijection getLighthouseToGridSize() { return getLighthouseToGridPos(); }
 	
 	default void initialize(GameInitializationContext context) {}
 	

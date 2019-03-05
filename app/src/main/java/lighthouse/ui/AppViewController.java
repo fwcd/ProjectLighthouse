@@ -84,16 +84,12 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	private void open(Game game) {
-		JComponent gameComponent;
+		scene.getViewModel().setLayers(game.getGameLayer());
 		
-		// FIXME: Register game view
-		if (game.hasCustomGameViewController()) {
-			gameComponent = game.getGameViewController().getComponent();
-		} else {
-			LocalSceneView sceneView = new LocalSceneView(game.getGridPosToPixels().floor(), game.getGridSizeToSize().floor());
-			scene.addSceneView(sceneView);
-			gameComponent = sceneView.getComponent();
-		}
+		LocalSceneView localView = scene.getLocalView();
+		localView.setGridPosToPixels(game.getGridPosToPixels().floor());
+		localView.setGridSizeToPixels(game.getGridSizeToPixels().floor());
+		scene.setLighthouseTransforms(game.getLighthouseToGridSize(), game.getLighthouseToGridPos());
 		
 		sideBar.setGameControls(game.getControlsViewController().getComponent());
 		sideBar.setGameStatistics(game.getStatisticsViewController().getComponent());
