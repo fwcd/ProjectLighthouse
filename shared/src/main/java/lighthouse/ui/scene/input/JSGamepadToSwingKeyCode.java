@@ -1,4 +1,4 @@
-package lighthouse.puzzle.ui.board.input;
+package lighthouse.ui.scene.input;
 
 import java.awt.event.KeyEvent;
 
