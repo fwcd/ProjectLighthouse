@@ -56,10 +56,10 @@ public class DiscordConnectorViewController implements SwingViewController {
 			DiscordLighthouseView discordView = new DiscordLighthouseView(config, input);
 			
 			scene.addLighthouseView(discordView);
-			input.addResponder(board.getResponder());
+			input.addResponder(scene.getResponder());
 			
 			discordView.connect(token);
-			discordView.addReadyListener(v -> board.render());
+			discordView.addReadyListener(v -> scene.render());
 			
 			connected = true;
 		}

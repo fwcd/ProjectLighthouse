@@ -19,9 +19,7 @@ import javax.security.auth.login.LoginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.puzzle.model.Board;
-import lighthouse.puzzle.ui.board.input.BoardKeyInput;
-import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.view.LighthouseView;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.util.ConfigFile;
@@ -47,10 +45,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Map<String, DiscordCommand> commands = new HashMap<>();
 	private final Set<MessageChannel> activeChannels = new HashSet<>();
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
-
 	private final BufferedImage boardImage;
-	private Integer lastSelectedID = null;
-	private Board lastBoard = null;
 	
 	private final boolean streamAllStates;
 	private final Pattern commandPattern;
@@ -145,33 +140,23 @@ public class DiscordLighthouseView implements LighthouseView {
 	public void draw(LighthouseViewModel viewModel) {
 		if (isConnected()) {
 			viewModel.render();
-			BoardViewModel boardViewModel = viewModel.getBoard();
-			Board board = boardViewModel.getModel();
-			Integer selectedID = boardViewModel.getSelectedID();
+			// TODO: Only draw if the state has changed or if 'streamAllStates' is set
 			
-			if (streamAllStates || lastBoard == null || !board.equals(lastBoard) || selectedID != lastSelectedID) {
-				// Only draw if the board has changed
+			Graphics2D g2d = boardImage.createGraphics();
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			g2d.drawImage(viewModel.getImage(), 0, 0, boardImage.getWidth(), boardImage.getHeight(), null);
+			g2d.dispose();
+			
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+				ImageIO.write(boardImage, "jpg", baos);
+				byte[] imgBytes = baos.toByteArray();
 				
-				Graphics2D g2d = boardImage.createGraphics();
-				g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-				g2d.drawImage(viewModel.getImage(), 0, 0, boardImage.getWidth(), boardImage.getHeight(), null);
-				g2d.dispose();
-				
-				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					ImageIO.write(boardImage, "jpg", baos);
-					byte[] imgBytes = baos.toByteArray();
-					
-					for (MessageChannel channel : activeChannels) {
-						channel.sendFile(imgBytes, "lighthouse.jpg").queue();
-					}
-				} catch (IOException e) {
-					LOG.error("Error while sending image to Discord:", e);
+				for (MessageChannel channel : activeChannels) {
+					channel.sendFile(imgBytes, "lighthouse.jpg").queue();
 				}
-				
-				lastBoard = board.copy();
+			} catch (IOException e) {
+				LOG.error("Error while sending image to Discord:", e);
 			}
-			
-			lastSelectedID = selectedID;
 		}
 	}
 }

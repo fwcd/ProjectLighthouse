@@ -28,6 +28,10 @@ public class SceneViewController implements SwingViewController {
 		component = new JPanel();
 	}
 	
+	public void render() {
+		// TODO
+	}
+	
 	public void addSceneView(SceneView view) {
 		sceneViews.add(view);
 	}

@@ -62,11 +62,11 @@ public class LighthouseConnectorViewController implements SwingViewController {
 			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
 			SceneLighthouseInput lhInput = new SceneLighthouseInput();
 			
-			lhInput.addResponder(board.getResponder());
-			board.addLighthouseView(remoteView);
+			lhInput.addResponder(scene.getResponder());
+			scene.addLighthouseView(remoteView);
 			
 			remoteView.addButtonInput(lhInput);
-			remoteView.addConnectListener(v -> board.render());
+			remoteView.addConnectListener(v -> scene.render());
 			remoteView.connect();
 			
 			connected = true;

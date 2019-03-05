@@ -3,7 +3,7 @@ package lighthouse.ui.scene.view.discord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.puzzle.ui.board.input.BoardKeyInput;
+import lighthouse.ui.scene.input.SceneKeyInput;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
