@@ -1,6 +1,5 @@
 package lighthouse.ui.tickers;
 
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import lighthouse.model.GameState;
