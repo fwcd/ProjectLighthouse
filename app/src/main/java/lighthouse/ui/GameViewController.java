@@ -7,16 +7,16 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import lighthouse.model.Board;
-import lighthouse.model.GameState;
-import lighthouse.model.Level;
-import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.viewmodel.BoardStatistics;
+import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.model.Level;
+import lighthouse.puzzle.model.PuzzleGameState;
+import lighthouse.puzzle.ui.board.BoardViewController;
+import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
+import lighthouse.puzzle.ui.modes.GameMode;
+import lighthouse.puzzle.ui.modes.PlayingMode;
+import lighthouse.puzzle.ui.perspectives.GamePerspective;
+import lighthouse.puzzle.ui.tickers.GameWinChecker;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
-import lighthouse.ui.modes.GameMode;
-import lighthouse.ui.modes.PlayingMode;
-import lighthouse.ui.perspectives.GamePerspective;
-import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
@@ -31,7 +31,7 @@ import lighthouse.util.transform.Scaling;
 public class GameViewController implements ViewController {
 	private final JComponent component;
 
-	private final GameState model;
+	private final PuzzleGameState model;
 	private final GameContext context = new GameContext();
 	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
@@ -47,7 +47,7 @@ public class GameViewController implements ViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public GameViewController(GameState model) {
+	public GameViewController(PuzzleGameState model) {
 		this.model = model;
 
 		component = new JPanel(new BorderLayout());
@@ -57,7 +57,7 @@ public class GameViewController implements ViewController {
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
-		winChecker = new GameWinChecker(board, model, context, board.getViewModel().getStatistics());
+		winChecker = new GameWinChecker(component, board.getAnimationRunner(), model, context, board.getViewModel().getStatistics());
 
 		// Add hooks
 		Flag updatingBoard = new Flag(false);
@@ -171,7 +171,7 @@ public class GameViewController implements ViewController {
 	
 	public BoardViewController getBoard() { return board; }
 	
-	public GameState getModel() { return model; }
+	public PuzzleGameState getModel() { return model; }
 	
 	public GameContext getContext() { return context; }
 	

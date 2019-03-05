@@ -4,14 +4,15 @@ A game running on the University of Kiel's high-rise building.
 ![Photo](photo.jpg) ![Screenshot](screenshot.png)
 
 ## Project Structure
-Core framework:
+
+### Core application framework
 
 | Module | MVC Components | Contents |
 | ------ | -------------- | -------- |
 | app | View, ViewController | The main Lighthouse application. |
-| shared | ViewModel | The graphics and animation API. |
+| shared | ViewModel, (ViewController) | The graphics and animation API. |
 
-Game modules:
+### Game modules
 
 | Module | MVC Components | Contents |
 | ------ | -------------- | -------- |

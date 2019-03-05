@@ -11,10 +11,10 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.puzzle.ui.board.BoardViewController;
+import lighthouse.puzzle.ui.board.input.BoardLighthouseInput;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.input.BoardLighthouseInput;
-import lighthouse.ui.board.view.RemoteLighthouseView;
+import lighthouse.ui.scene.view.RemoteLighthouseView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 

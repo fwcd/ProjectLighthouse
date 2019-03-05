@@ -9,12 +9,12 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.window.WebPopup;
 
 import lighthouse.model.AppModel;
-import lighthouse.model.GameState;
+import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.ui.GameContext;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.modes.EditingMode;
-import lighthouse.ui.modes.PlayingMode;
+import lighthouse.puzzle.ui.modes.EditingMode;
+import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.ui.util.LayoutUtils;
 
 /**
@@ -30,7 +30,7 @@ public class GameControlsViewController implements ViewController {
 		component.setLayout(new BorderLayout());
 
 		GameContext context = game.getContext();
-		GameState gameState = model.getGameState();
+		PuzzleGameState gameState = model.getGameState();
 		
 		// Setup status bar
 		statusBar = new StatusBar();

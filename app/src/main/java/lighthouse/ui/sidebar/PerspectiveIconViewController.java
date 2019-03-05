@@ -6,12 +6,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import lighthouse.model.Board;
+import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.view.LocalBoardView;
-import lighthouse.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.perspectives.GamePerspective;
+import lighthouse.ui.scene.view.LocalBoardView;
 import lighthouse.ui.util.CenterPanel;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;

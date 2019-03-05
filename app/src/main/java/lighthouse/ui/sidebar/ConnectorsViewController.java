@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
+import lighthouse.puzzle.ui.board.BoardViewController;
 
 public class ConnectorsViewController implements ViewController {
 	private final WebTabbedPane component;

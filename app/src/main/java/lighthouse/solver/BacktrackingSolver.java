@@ -9,9 +9,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
-import lighthouse.model.Level;
-import lighthouse.model.Move;
+import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.model.Level;
+import lighthouse.puzzle.model.Move;
 
 public class BacktrackingSolver implements Solver {
     private static final Logger LOG = LoggerFactory.getLogger(BacktrackingSolver.class);

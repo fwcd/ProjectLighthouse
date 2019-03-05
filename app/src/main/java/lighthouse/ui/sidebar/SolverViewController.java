@@ -12,13 +12,13 @@ import com.alee.laf.spinner.WebSpinner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
-import lighthouse.model.GameState;
-import lighthouse.model.Level;
+import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.model.Level;
+import lighthouse.puzzle.model.PuzzleGameState;
+import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.solver.BacktrackingSolver;
 import lighthouse.solver.Solver;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
@@ -27,10 +27,10 @@ public class SolverViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
 	private final BoardViewController board;
-	private final GameState gameState;
+	private final PuzzleGameState gameState;
 	private Thread solverThread = null;
 	
-	public SolverViewController(GameState gameState, BoardViewController board) {
+	public SolverViewController(PuzzleGameState gameState, BoardViewController board) {
 		this.gameState = gameState;
 		this.board = board;
 		

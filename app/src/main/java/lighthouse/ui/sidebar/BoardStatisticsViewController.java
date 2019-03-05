@@ -4,7 +4,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.viewmodel.BoardStatistics;
+import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.util.LayoutUtils;
 
 public class BoardStatisticsViewController implements ViewController {

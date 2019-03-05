@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.input.BoardKeyInput;
-import lighthouse.ui.board.view.discord.DiscordLighthouseView;
+import lighthouse.puzzle.ui.board.BoardViewController;
+import lighthouse.puzzle.ui.board.input.BoardKeyInput;
+import lighthouse.ui.scene.view.discord.DiscordLighthouseView;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;

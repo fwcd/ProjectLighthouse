@@ -11,7 +11,7 @@ import com.alee.extended.panel.WebAccordion;
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.view.LocalLighthouseView;
+import lighthouse.ui.scene.view.LocalLighthouseView;
 
 /**
  * Manages the sidebar view which in turn deals

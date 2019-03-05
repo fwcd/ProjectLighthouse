@@ -8,10 +8,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Board;
-import lighthouse.model.Brick;
+import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.model.Brick;
 import lighthouse.util.Direction;
-import lighthouse.model.Level;
+import lighthouse.puzzle.model.Level;
 
 public class AIMain {
     private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);

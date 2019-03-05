@@ -7,8 +7,8 @@
 	</appender>
 	
 	<logger name="lighthouse.ai.AIMain" level="DEBUG"></logger>
-	<logger name="lighthouse.ui.board.controller.BoardPlayController" level="INFO"></logger>
-	<logger name="lighthouse.ui.board.controller.BoardBaseController" level="INFO"></logger>
+	<logger name="lighthouse.puzzle.ui.board.controller.BoardPlayController" level="INFO"></logger>
+	<logger name="lighthouse.puzzle.ui.board.controller.BoardBaseController" level="INFO"></logger>
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>

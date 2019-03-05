@@ -6,7 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.ui.ViewController;
-import lighthouse.ui.board.debug.AnimationTracker;
+import lighthouse.puzzle.ui.board.debug.AnimationTracker;
 import lighthouse.ui.util.LayoutUtils;
 
 public class ActiveAnimationsViewController implements ViewController, AutoCloseable {

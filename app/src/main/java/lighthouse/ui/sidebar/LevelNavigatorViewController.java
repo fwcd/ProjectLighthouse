@@ -10,8 +10,8 @@ import com.alee.extended.progress.WebStepProgress;
 
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.perspectives.CommonPerspective;
-import lighthouse.ui.perspectives.InGamePerspective;
+import lighthouse.puzzle.ui.perspectives.CommonPerspective;
+import lighthouse.puzzle.ui.perspectives.InGamePerspective;
 
 /**
  * Manages the level navigation that allows the
