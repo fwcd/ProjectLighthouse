@@ -25,8 +25,6 @@ public class LighthouseViewModel implements ColorGrid {
 	private final SceneViewModel scene;
 	private final BufferedImage image;
 	// TODO: Move these to the puzzle module:
-	// private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
-	// private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
 	private final DoubleVecBijection lighthouseSizeToGrid;
 	private final DoubleVecBijection lighthousePosToGrid;
 	private boolean antialiasingEnabled = true;

@@ -11,10 +11,10 @@ import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.ui.board.controller.BoardDrawController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
-import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
@@ -42,7 +42,7 @@ public class BlockedStatesEditorViewController implements SwingViewController {
 		boardViewModel = new BoardViewModel(board);
 		view = new LocalBoardView(gridToPixels);
 		controller = new BoardDrawController(boardViewModel, () -> view.draw(boardViewModel));
-		BoardMouseInput input = new BoardMouseInput(gridToPixels);
+		SceneMouseInput input = new SceneMouseInput(gridToPixels);
 		
 		view.relayout(board.getColumns(), board.getRows());
 		view.draw(boardViewModel);

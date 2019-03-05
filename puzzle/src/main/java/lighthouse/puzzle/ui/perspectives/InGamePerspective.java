@@ -2,7 +2,6 @@ package lighthouse.puzzle.ui.perspectives;
 
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.controller.BoardPlayController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.NoBoardResponder;

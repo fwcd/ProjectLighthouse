@@ -60,6 +60,8 @@ public class PuzzleGameManager {
 		winChecker = new GameWinChecker(null, context.getAnimationRunner(), model, context.getStatus(), boardViewModel.getStatistics());
 
 		// Add hooks
+		externalUpdaters.add(context.getUpdater());
+		
 		Flag updatingBoard = new Flag(false);
 		
 		boardViewModel.getBoardListeners().add(boardModel -> {

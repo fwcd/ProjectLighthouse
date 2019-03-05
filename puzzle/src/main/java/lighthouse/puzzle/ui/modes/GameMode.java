@@ -1,6 +1,5 @@
 package lighthouse.puzzle.ui.modes;
 
-import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;

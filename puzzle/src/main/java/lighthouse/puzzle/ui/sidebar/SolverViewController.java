@@ -17,22 +17,21 @@ import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.solver.BacktrackingSolver;
 import lighthouse.puzzle.solver.Solver;
-import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 
 public class SolverViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
-	private final BoardViewController board;
+	private final AnimationRunner animationRunner;
 	private final PuzzleGameState gameState;
 	private Thread solverThread = null;
 	
-	public SolverViewController(PuzzleGameState gameState, BoardViewController board) {
+	public SolverViewController(PuzzleGameState gameState, AnimationRunner animationRunner) {
 		this.gameState = gameState;
-		this.board = board;
+		this.animationRunner = animationRunner;
 		
 		WebSpinner playbackSpeed = new WebSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 		
@@ -65,8 +64,10 @@ public class SolverViewController implements SwingViewController {
 			Level level = gameState.getLevel();
 			try {
 				List<Board> solution = solver.solve(level);
-				board.play(solution, 1000 / boardsPerSecond)
-					.thenRun(() -> board.play(new ConfettiAnimation()));
+				// FIXME: Fix player
+				// animationRunner
+				// 	.play(solution, 1000 / boardsPerSecond)
+				// 	.thenRun(() -> board.play(new ConfettiAnimation()));
 			} catch (Exception e) {
 				LOG.error("An error occurred while solving:", e);
 			}

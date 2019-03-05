@@ -22,10 +22,10 @@ import org.slf4j.LoggerFactory;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.Edge;
 import lighthouse.puzzle.model.GameBlock;
-import lighthouse.puzzle.ui.board.input.BoardKeyInput;
-import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.viewmodel.BoardEditState;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.scene.input.SceneKeyInput;
+import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -280,12 +280,12 @@ public class LocalBoardView implements BoardView {
 	
 	private IntVec getCellSize() { return gridToPixels.apply(IntVec.ONE_ONE).floor(); }
 	
-	public void addMouseInput(BoardMouseInput listener) {
+	public void addMouseInput(SceneMouseInput listener) {
 		component.addMouseListener(listener);
 		component.addMouseMotionListener(listener);
 	}
 	
-	public void addKeyInput(BoardKeyInput listener) {
+	public void addKeyInput(SceneKeyInput listener) {
 		// component.addKeyListener(listener);
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = component.getActionMap();

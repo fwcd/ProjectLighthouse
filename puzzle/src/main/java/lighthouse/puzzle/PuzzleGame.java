@@ -14,8 +14,11 @@ import lighthouse.puzzle.ui.PuzzleGameManager;
 import lighthouse.puzzle.ui.sidebar.BoardStatisticsViewController;
 import lighthouse.puzzle.ui.sidebar.GameControlsViewController;
 import lighthouse.puzzle.ui.sidebar.SolverViewController;
-import lighthouse.ui.AppContext;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
+import lighthouse.util.transform.DoubleVecBijection;
+import lighthouse.util.transform.Scaling;
+import lighthouse.util.transform.Translation;
 
 /**
  * The original puzzle game.
@@ -28,13 +31,17 @@ public class PuzzleGame implements Game {
 	private SwingViewController solver;
 	private SwingViewController statistics;
 	
+	private final DoubleVecBijection gridPosToPixels = new Scaling(70, 70);
+	private final DoubleVecBijection lighthouseToGridSize = new Scaling(0.2, 0.5);
+	private final DoubleVecBijection lighthouseToGridPos = new Translation(-4, -1).andThen(lighthouseToGridSize);
+	
 	@Override
 	public void initialize(GameInitializationContext context) {
 		loadDefaultLevel();
 		game = new PuzzleGameManager(model, context);
 		controls = new GameControlsViewController(game, model);
-		solver = new SolverViewController(model, game.getBoard());
-		statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
+		solver = new SolverViewController(model, context.getAnimationRunner());
+		statistics = new BoardStatisticsViewController(game.getBoardViewModel().getStatistics());
 	}
 	
 	private void loadDefaultLevel() {
@@ -45,6 +52,18 @@ public class PuzzleGame implements Game {
 			LOG.warn("Exception while loading default level:", e);
 		}
 	}
+	
+	@Override
+	public DoubleVecBijection getGridPosToPixels() { return gridPosToPixels; }
+	
+	@Override
+	public DoubleVecBijection getLighthouseToGridPos() { return lighthouseToGridPos; }
+	
+	@Override
+	public DoubleVecBijection getLighthouseToGridSize() { return lighthouseToGridSize; }
+	
+	@Override
+	public SceneLayer getGameLayer() { return game.getBoardViewModel(); }
 	
 	@Override
 	public String getName() { return "Puzzle"; }

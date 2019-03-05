@@ -68,8 +68,12 @@ public class AppViewController implements SwingViewController {
 		registerGame(new PuzzleGame());
 	}
 	
+	private void update() {
+		scene.render();
+	}
+	
 	public void registerGame(Game game) {
-		game.initialize(new GameInitializationContext(context.getObservableStatus(), scene.getAnimationRunner(), scene.getResponder()));
+		game.initialize(new GameInitializationContext(context.getObservableStatus(), scene.getAnimationRunner(), scene.getResponder(), this::update));
 		
 		// TODO: Toggle buttons to indicate the active tab
 		JButton tab = new JButton(game.getName());
