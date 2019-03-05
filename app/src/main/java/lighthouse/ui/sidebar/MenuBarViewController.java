@@ -42,7 +42,6 @@ public class MenuBarViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
 	private final WebMenuBar component;
 	private final PathChooser pathChooser;
-	private final WebMenu gameMenu;
 
 	private final AppModel model;
 	private final AnimationRunner animationRunner;
@@ -54,7 +53,6 @@ public class MenuBarViewController implements SwingViewController {
 		
 		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
 		
-		gameMenu = LayoutUtils.menuOf("Game", resourceLoader.getAsIcon("/icons/game.png"));
 		component = LayoutUtils.menuBarOf(
 			LayoutUtils.menuOf("File", resourceLoader.getAsIcon("/icons/file.png"),
 				LayoutUtils.itemOf("Save", this::save),
@@ -74,19 +72,18 @@ public class MenuBarViewController implements SwingViewController {
 					IntVec gameGridSize = getGameGridSize();
 					playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-gameGridSize.getX(), 0), new IntVec(gameGridSize.getX(), 0), gameGridSize.toDouble()));
 				})
-			),
-			gameMenu
+			)
 		);
 		pathChooser = new PathChooser(component, ".json");
 	}
 	
 	public void onOpen(Game game) {
-		JPopupMenu gamePopupMenu = gameMenu.getPopupMenu();
-		gamePopupMenu.removeAll();
+		// JPopupMenu gamePopupMenu = gameMenu.getPopupMenu();
+		// gamePopupMenu.removeAll();
 		
-		for (GameMenuEntry entry : game.getGameMenuEntries()) {
-			gamePopupMenu.add(LayoutUtils.itemOf(entry.getLabel(), entry.getAction()));
-		}
+		// for (GameMenuEntry entry : game.getGameMenuEntries()) {
+		// 	gamePopupMenu.add(LayoutUtils.itemOf(entry.getLabel(), entry.getAction()));
+		// }
 	}
 	
 	private void save() {
