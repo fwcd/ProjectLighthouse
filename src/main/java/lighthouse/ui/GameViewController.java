@@ -18,6 +18,7 @@ import lighthouse.ui.modes.PlayingMode;
 import lighthouse.ui.perspectives.GamePerspective;
 import lighthouse.ui.tickers.GameWinChecker;
 import lighthouse.ui.tickers.TickerList;
+import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -59,9 +60,22 @@ public class GameViewController implements ViewController {
 		winChecker = new GameWinChecker(board, model, context, board.getViewModel().getStatistics());
 
 		// Add hooks
+		Flag updatingBoard = new Flag(false);
+		
+		board.getViewModel().getBoardListeners().add(boardModel -> {
+			if (updatingBoard.isFalse()) {
+				updatingBoard.set(true);
+				model.setBoard(boardModel);
+				updatingBoard.set(false);
+			}
+		});
 		model.getBoardListeners().add(boardModel -> {
-			board.updateModel(boardModel);
-			board.getViewModel().getStatistics().reset();
+			if (updatingBoard.isFalse()) {
+				updatingBoard.set(true);
+				board.transitionTo(boardModel);
+				board.getViewModel().getStatistics().reset();
+				updatingBoard.set(false);
+			}
 		});
 		model.getLevelListeners().add(level -> {
 			level.getGoal().bindToUpdates(level.getStart());
@@ -142,7 +156,7 @@ public class GameViewController implements ViewController {
 	
 	private void updateBoard() {
 		Board activeBoard = perspective.getActiveBoard(model);
-		board.updateModel(activeBoard);
+		board.transitionTo(activeBoard);
 		board.getViewModel().setBlockedStates(model.getLevel().getBlockedStates());
 		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update, board.getAnimationRunner()));
 	}

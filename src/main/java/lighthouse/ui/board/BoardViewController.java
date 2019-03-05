@@ -87,7 +87,7 @@ public class BoardViewController implements ViewController {
 		Timer timer = new Timer(delayMs, e -> {
 			if (iterator.hasNext()) {
 				LOG.trace("Updating");
-				updateModel(iterator.next());
+				transitionTo(iterator.next());
 				gameUpdater.update();
 			} else {
 				((Timer) e.getSource()).stop();
@@ -100,10 +100,7 @@ public class BoardViewController implements ViewController {
 		return future;
 	}
 	
-	public void updateModel(Board model) {
-		// Preserve the statistics instance across viewmodel changes
-		BoardStatistics statistics = (viewModel == null) ? new BoardStatistics() : viewModel.getStatistics();
-		statistics.reset();
+	public void transitionTo(Board model) {
 		viewModel.transitionTo(model);
 		updateTransitionTimer();
 	}

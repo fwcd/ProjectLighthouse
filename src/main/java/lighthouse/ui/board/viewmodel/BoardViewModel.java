@@ -17,6 +17,7 @@ import lighthouse.model.grid.ColorGrid;
 import lighthouse.ui.board.viewmodel.overlay.Overlay;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
+import lighthouse.util.ListenerList;
 
 /**
  * A UI-independent representation of the
@@ -31,6 +32,8 @@ public class BoardViewModel implements ColorGrid {
 	private final List<Overlay> overlays = new ArrayList<>();
 	private List<Board> blockedStates;
 	private Integer selectedID = null;
+	
+	private final ListenerList<Board> boardListeners = new ListenerList<>("BoardViewModel.boardListeners");
 	
 	public BoardViewModel(Board model) {
 		this(model, Collections.emptyList());
@@ -130,7 +133,10 @@ public class BoardViewModel implements ColorGrid {
 	public void setBlockedStates(List<Board> blockedStates) { this.blockedStates = blockedStates; }
 	
 	// TODO: Being able to pass different kinds of interpolations and total frame counts here
-	public void transitionTo(Board next) { transitionableModel.enqueueTransition(next); }
+	public void transitionTo(Board next) {
+		transitionableModel.enqueueTransition(next);
+		boardListeners.fire(next);
+	}
 	
 	public boolean hasNextTransitionFrame() { return transitionableModel.hasNextFrame(); }
 	
@@ -140,6 +146,8 @@ public class BoardViewModel implements ColorGrid {
 		return transitionableModel.gridPosForBrick(brick)
 			.orElseGet(() -> brick.getPos().toDouble());
 	}
+	
+	public ListenerList<Board> getBoardListeners() { return boardListeners; }
 	
 	// === Delegated methods ===
 	
