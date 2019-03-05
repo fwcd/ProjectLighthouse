@@ -10,7 +10,7 @@ import com.alee.extended.panel.WebAccordion;
 
 import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.view.LocalLighthouseView;
 import lighthouse.ui.util.SwapPanel;
 
@@ -19,7 +19,7 @@ import lighthouse.ui.util.SwapPanel;
  * with the local and remote presentation of
  * the Lighthouse grid.
  */
-public class SideBarViewController implements ViewController {
+public class SideBarViewController implements SwingViewController {
 	private final JPanel component;
 	
 	private final MenuBarViewController menuBar;

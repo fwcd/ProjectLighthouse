@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.puzzle.ui.board.input.BoardKeyInput;
 import lighthouse.ui.scene.view.discord.DiscordLighthouseView;
@@ -17,7 +17,7 @@ import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
-public class DiscordConnectorViewController implements ViewController {
+public class DiscordConnectorViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordConnectorViewController.class);
 	private final JPanel component;
 	private final BoardViewController board;

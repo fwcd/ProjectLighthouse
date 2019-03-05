@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.puzzle.ui.board.input.BoardLighthouseInput;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.view.RemoteLighthouseView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
@@ -22,7 +22,7 @@ import lighthouse.util.ResourceConfigFile;
  * Manages a view containing the Lighthouse
  * connection controls.
  */
-public class LighthouseConnectorViewController implements ViewController {
+public class LighthouseConnectorViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
 	private final BoardViewController board; // The aliased grid

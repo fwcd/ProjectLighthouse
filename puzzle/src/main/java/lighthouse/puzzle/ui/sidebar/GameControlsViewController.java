@@ -9,11 +9,11 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.window.WebPopup;
 
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.GameViewController;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.modes.EditingMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.ui.AppContext;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.StatusBar;
 
@@ -21,11 +21,11 @@ import lighthouse.ui.util.StatusBar;
  * Manages a view containing game and file controls and is responsible for
  * presenting a path chooser to the user.
  */
-public class GameControlsViewController implements ViewController {
+public class GameControlsViewController implements SwingViewController {
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	public GameControlsViewController(GameViewController game, PuzzleGameState gameState) {
+	public GameControlsViewController(PuzzleGameViewController game, PuzzleGameState gameState) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 

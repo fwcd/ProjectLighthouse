@@ -3,11 +3,11 @@ package lighthouse.puzzle.ui.sidebar;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.util.LayoutUtils;
 
-public class BoardStatisticsViewController implements ViewController {
+public class BoardStatisticsViewController implements SwingViewController {
 	private final JComponent component;
 	
 	public BoardStatisticsViewController(BoardStatistics model) {

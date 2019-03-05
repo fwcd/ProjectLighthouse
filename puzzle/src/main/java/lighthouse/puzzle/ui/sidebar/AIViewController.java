@@ -11,10 +11,10 @@ import com.alee.laf.spinner.WebSpinner;
 
 import lighthouse.puzzle.ai.PuzzleAI;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 
-public class AIViewController implements ViewController {
+public class AIViewController implements SwingViewController {
 	private static int threadIndex = 0;
 	private final PuzzleGameState gameState;
 	private final JPanel component;

@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.Listener;
 import lighthouse.util.ListenerList;
@@ -26,7 +26,7 @@ import lighthouse.util.ListenerList;
 /**
  * Manages a visual representation of the listener graph.
  */
-public class ListenerGraphViewController implements ViewController {
+public class ListenerGraphViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(ListenerGraphViewController.class);
 	private final AppModel appModel;
 	private final GameViewController gameVC;

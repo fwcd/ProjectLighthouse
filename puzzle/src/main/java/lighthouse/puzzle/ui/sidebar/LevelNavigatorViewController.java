@@ -8,24 +8,24 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.puzzle.ui.GameViewController;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.perspectives.CommonPerspective;
 import lighthouse.puzzle.ui.perspectives.InGamePerspective;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 
 /**
  * Manages the level navigation that allows the
  * user to step through different stages of a level.
  */
-public class LevelNavigatorViewController implements ViewController {
+public class LevelNavigatorViewController implements SwingViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(GameViewController game) {
+	public LevelNavigatorViewController(PuzzleGameViewController game) {
 		component = new WebStepProgress();
 		component.addSteps(CommonPerspective.PERSPECTIVES.stream()
 			.sorted()
 			.map(perspective -> new PerspectiveIconViewController(perspective, game))
-			.map(ViewController::getComponent)
+			.map(SwingViewController::getComponent)
 			.toArray(Component[]::new));
 		
 		MouseAdapter mouseAdapter = new MouseAdapter() {

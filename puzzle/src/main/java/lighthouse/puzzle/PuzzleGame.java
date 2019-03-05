@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import lighthouse.gameapi.Game;
 import lighthouse.model.GameState;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.GameViewController;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.sidebar.BoardStatisticsViewController;
 import lighthouse.puzzle.ui.sidebar.GameControlsViewController;
 import lighthouse.puzzle.ui.sidebar.SolverViewController;
 import lighthouse.ui.AppContext;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 
 /**
  * The original puzzle game.
@@ -22,15 +22,15 @@ import lighthouse.ui.ViewController;
 public class PuzzleGame implements Game {
 	private static final Logger LOG = LoggerFactory.getLogger(PuzzleGame.class);
 	private final PuzzleGameState model = new PuzzleGameState();
-	private GameViewController game;
-	private ViewController controls;
-	private ViewController solver;
-	private ViewController statistics;
+	private PuzzleGameViewController game;
+	private SwingViewController controls;
+	private SwingViewController solver;
+	private SwingViewController statistics;
 	
 	@Override
 	public void initialize(AppContext context) {
 		loadDefaultLevel();
-		game = new GameViewController(model, context);
+		game = new PuzzleGameViewController(model, context);
 		controls = new GameControlsViewController(game, model);
 		solver = new SolverViewController(model, game.getBoard());
 		statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
@@ -52,14 +52,17 @@ public class PuzzleGame implements Game {
 	public GameState getModel() { return model; }
 	
 	@Override
-	public ViewController getGameViewController() { return game; }
+	public boolean hasCustomGameViewController() { return true; }
 	
 	@Override
-	public ViewController getControlsViewController() { return controls; }
+	public SwingViewController getGameViewController() { return game; }
 	
 	@Override
-	public ViewController getSolverViewController() { return solver; }
+	public SwingViewController getControlsViewController() { return controls; }
 	
 	@Override
-	public ViewController getStatisticsViewController() { return statistics; }
+	public SwingViewController getSolverViewController() { return solver; }
+	
+	@Override
+	public SwingViewController getStatisticsViewController() { return statistics; }
 }

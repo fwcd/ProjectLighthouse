@@ -17,7 +17,7 @@ import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
 import lighthouse.ui.AppContext;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
@@ -29,7 +29,7 @@ import lighthouse.util.transform.Scaling;
  * Manages the game board view, the current
  * perspective and the active game mode.
  */
-public class GameViewController implements ViewController {
+public class PuzzleGameViewController implements SwingViewController {
 	private final JComponent component;
 	
 	private final AppContext context;
@@ -47,7 +47,7 @@ public class GameViewController implements ViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public GameViewController(PuzzleGameState model, AppContext context) {
+	public PuzzleGameViewController(PuzzleGameState model, AppContext context) {
 		this.model = model;
 		this.context = context;
 		

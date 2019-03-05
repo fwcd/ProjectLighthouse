@@ -14,14 +14,17 @@ import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
+import lighthouse.ui.scene.SceneViewController;
+import lighthouse.ui.scene.view.LocalSceneView;
 import lighthouse.ui.sidebar.SideBarViewController;
 
 /**
  * The application's base view controller.
  */
-public class AppViewController implements ViewController {
+public class AppViewController implements SwingViewController {
 	private final JComponent component;
 	private final JTabbedPane tabPane;
+	private final SceneViewController scene;
 	private final SideBarViewController sideBar;
 	
 	private final AppContext context = new AppContext();
@@ -35,6 +38,8 @@ public class AppViewController implements ViewController {
 		
 		tabPane = new WebTabbedPane();
 		component.add(tabPane, BorderLayout.CENTER);
+		
+		scene = new SceneViewController();
 		
 		sideBar = new SideBarViewController(model);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
@@ -60,7 +65,17 @@ public class AppViewController implements ViewController {
 	public void registerGame(Game game) {
 		game.initialize(context);
 		
-		tabPane.addTab(game.getName(), game.getGameViewController().getComponent());
+		JComponent gameComponent;
+		
+		if (game.hasCustomGameViewController()) {
+			gameComponent = game.getGameViewController().getComponent();
+		} else {
+			LocalSceneView sceneView = new LocalSceneView();
+			scene.addView(sceneView);
+			gameComponent = sceneView.getComponent();
+		}
+		
+		tabPane.addTab(game.getName(), gameComponent);
 		tabPane.addChangeListener(l -> open(game));
 		
 		if (gameRegistry.isEmpty()) {

@@ -5,11 +5,11 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.puzzle.ui.board.debug.AnimationTracker;
 import lighthouse.ui.util.LayoutUtils;
 
-public class ActiveAnimationsViewController implements ViewController, AutoCloseable {
+public class ActiveAnimationsViewController implements SwingViewController, AutoCloseable {
 	private final JPanel component;
 	private final AnimationTracker tracker;
 	private final ActiveAnimationsView view;

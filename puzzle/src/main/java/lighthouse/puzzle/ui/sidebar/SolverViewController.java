@@ -18,12 +18,12 @@ import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.solver.BacktrackingSolver;
 import lighthouse.puzzle.solver.Solver;
 import lighthouse.puzzle.ui.board.BoardViewController;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 
-public class SolverViewController implements ViewController {
+public class SolverViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
 	private final BoardViewController board;

@@ -14,12 +14,12 @@ import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
 
-public class BlockedStatesEditorViewController implements ViewController {
+public class BlockedStatesEditorViewController implements SwingViewController {
 	private final int padding = 15;
 	private final JPanel component;
 	private final JLabel countLabel;

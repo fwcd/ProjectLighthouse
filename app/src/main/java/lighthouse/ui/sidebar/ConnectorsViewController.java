@@ -4,10 +4,10 @@ import javax.swing.JComponent;
 
 import com.alee.laf.tabbedpane.WebTabbedPane;
 
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.puzzle.ui.board.BoardViewController;
 
-public class ConnectorsViewController implements ViewController {
+public class ConnectorsViewController implements SwingViewController {
 	private final WebTabbedPane component;
 	
 	public ConnectorsViewController(BoardViewController board) {

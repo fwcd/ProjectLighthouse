@@ -21,7 +21,7 @@ import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.view.BoardView;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.view.LighthouseView;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
@@ -32,7 +32,7 @@ import lighthouse.util.transform.DoubleVecBijection;
  * Manages the different board views. It assembles the necessary inputs and
  * views, while still allowing the user of this class to hook custom views.
  */
-public class BoardViewController implements ViewController {
+public class BoardViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardViewController.class);
 	private final JComponent component;
 

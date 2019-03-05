@@ -24,7 +24,7 @@ import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameMenuEntry;
 import lighthouse.model.AppModel;
 import lighthouse.ui.AppContext;
-import lighthouse.ui.ViewController;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedImageAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedResourceGIFAnimation;
@@ -37,7 +37,7 @@ import lighthouse.ui.util.ResourceImageLoader;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
-public class MenuBarViewController implements ViewController {
+public class MenuBarViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
 	private final WebMenuBar component;
 	private final PathChooser pathChooser;
