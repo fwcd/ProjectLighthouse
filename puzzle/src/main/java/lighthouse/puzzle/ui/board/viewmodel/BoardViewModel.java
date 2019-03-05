@@ -158,20 +158,30 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 		GameBlock brickInProgress = editState.getBrickInProgress();
 		
 		if (brickInProgress != null) {
-			shapesOf(brickInProgress).forEach(shapes::add);
+			shapesOfBlock(brickInProgress).forEach(shapes::add);
 		}
 		
 		getModel().streamBricks()
-			.flatMap(this::shapesOf)
+			.flatMap(this::shapesOfBrick)
 			.forEach(shapes::add);
 		
 		return shapes;
 	}
 	
-	private Stream<SceneShape> shapesOf(GameBlock block) {
+	private Stream<SceneShape> shapesOfBlock(GameBlock block) {
 		return block.streamAllPositions()
 			.map(IntVec::toDouble)
-			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, block.getColor(), Shading.FILLED));
+			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, block.getColor(), Shading.FILLED)); // TODO: Selection highlighting
+	}
+	
+	private Stream<SceneShape> shapesOfBrick(Brick brick) {
+		return shapesOfBlock(brick);
+		// TODO: Fix transitions by integrating timers into the scene mechanism
+		// DoubleVec brickOffset = transitionedGridPosForBrick(brick).sub(brick.getPos().toDouble());
+		// return brick.streamAllPositions()
+		// 	.map(IntVec::toDouble)
+		// 	.map(brickOffset::add)
+		// 	.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, brick.getColor(), Shading.FILLED)); // TODO: Selection highlighting
 	}
 	
 	// === Delegated methods ===
