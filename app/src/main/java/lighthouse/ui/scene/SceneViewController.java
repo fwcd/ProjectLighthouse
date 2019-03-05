@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import com.alee.extended.panel.CenterPanel;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +49,7 @@ public class SceneViewController implements SwingViewController {
 		
 		localView = new LocalSceneView(DoubleVecBijection.IDENTITY.floor(), DoubleVecBijection.IDENTITY.floor());
 		sceneViews.add(localView);
-		component.add(localView.getComponent(), BorderLayout.CENTER);
+		component.add(new CenterPanel(localView.getComponent()), BorderLayout.CENTER);
 		
 		SceneKeyInput keyInput = new SceneKeyInput();
 		keyInput.addResponder(responder);

@@ -1,5 +1,6 @@
 package lighthouse.ui.scene.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,6 +47,7 @@ public class LocalSceneView implements SceneView {
 				render((Graphics2D) g, getSize());
 			}
 		};
+		component.setBackground(Color.WHITE);
 	}
 	
 	public void addKeyInput(SceneKeyInput keyInput) {

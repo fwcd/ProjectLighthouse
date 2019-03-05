@@ -48,7 +48,7 @@ public class PuzzleGame implements Game {
 		try (InputStream stream = PuzzleGame.class.getResourceAsStream("/levels/default.json")) {
 			// Load default level
 			model.loadLevelFrom(stream);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.warn("Exception while loading default level:", e);
 		}
 	}
