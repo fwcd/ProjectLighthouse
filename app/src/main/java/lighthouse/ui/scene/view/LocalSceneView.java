@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
@@ -24,6 +27,7 @@ import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 public class LocalSceneView implements SceneView {
+	private static final Logger LOG = LoggerFactory.getLogger(LocalSceneView.class);
 	private final JComponent component;
 	private SceneViewModel scene;
 	
@@ -51,6 +55,8 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	public void addKeyInput(SceneKeyInput keyInput) {
+		LOG.info("Added key input");
+		
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = component.getActionMap();
 		
@@ -69,11 +75,13 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	public void addMouseInput(SceneMouseInput mouseInput) {
+		LOG.info("Added mouse input");
 		component.addMouseListener(mouseInput);
 		component.addMouseMotionListener(mouseInput);
 	}
 	
 	public void removeMouseInput(SceneMouseInput mouseInput) {
+		LOG.info("Removed mouse input");
 		component.removeMouseListener(mouseInput);
 		component.removeMouseMotionListener(mouseInput);
 	}
