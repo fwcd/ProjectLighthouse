@@ -25,9 +25,6 @@ dependencies {
     implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121'
     implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121'
     implementation 'org.msgpack:msgpack-core:0.8.14'
-    implementation('de.sciss:weblaf:2.1.4') {
-        exclude group: 'org.slf4j'
-    }
     implementation('net.dv8tion:JDA:4.ALPHA.0_56') {
         exclude module: 'opus-java'
     }

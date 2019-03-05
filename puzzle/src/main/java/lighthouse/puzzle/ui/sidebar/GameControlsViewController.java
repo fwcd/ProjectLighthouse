@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import java.awt.BorderLayout;
 
@@ -8,14 +8,14 @@ import javax.swing.JPanel;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.window.WebPopup;
 
-import lighthouse.model.AppModel;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.ui.AppContext;
-import lighthouse.ui.GameViewController;
-import lighthouse.ui.ViewController;
+import lighthouse.puzzle.ui.GameViewController;
 import lighthouse.puzzle.ui.modes.EditingMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
+import lighthouse.ui.AppContext;
+import lighthouse.ui.ViewController;
 import lighthouse.ui.util.LayoutUtils;
+import lighthouse.ui.util.StatusBar;
 
 /**
  * Manages a view containing game and file controls and is responsible for
@@ -25,12 +25,11 @@ public class GameControlsViewController implements ViewController {
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	public GameControlsViewController(GameViewController game, AppModel model) {
+	public GameControlsViewController(GameViewController game, PuzzleGameState gameState) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 
 		AppContext context = game.getContext();
-		PuzzleGameState gameState = model.getGameState();
 		
 		// Setup status bar
 		statusBar = new StatusBar();
@@ -48,7 +47,7 @@ public class GameControlsViewController implements ViewController {
 				popup.setFollowInvoker(true);
 				popup.setSize(200, 200);
 				popup.setLayout(new BorderLayout());
-				popup.add(new BlockedStatesEditorViewController(model.getGameState().getLevel()).getComponent(), BorderLayout.CENTER);
+				popup.add(new BlockedStatesEditorViewController(gameState.getLevel()).getComponent(), BorderLayout.CENTER);
 				popup.showPopup(editButton, 10, 10);
 			})
 		));

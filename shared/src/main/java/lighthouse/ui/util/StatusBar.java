@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.ui.util;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;

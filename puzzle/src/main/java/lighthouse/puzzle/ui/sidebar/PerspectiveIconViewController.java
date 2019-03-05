@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import java.awt.BorderLayout;
 
@@ -7,11 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lighthouse.puzzle.model.Board;
+import lighthouse.puzzle.ui.GameViewController;
+import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
-import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
-import lighthouse.ui.scene.view.LocalBoardView;
 import lighthouse.ui.util.CenterPanel;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;

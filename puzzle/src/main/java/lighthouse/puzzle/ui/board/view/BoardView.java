@@ -1,4 +1,4 @@
-package lighthouse.ui.scene.view;
+package lighthouse.puzzle.ui.board.view;
 
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 

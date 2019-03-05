@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -8,10 +8,10 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.ui.GameViewController;
-import lighthouse.ui.ViewController;
+import lighthouse.puzzle.ui.GameViewController;
 import lighthouse.puzzle.ui.perspectives.CommonPerspective;
 import lighthouse.puzzle.ui.perspectives.InGamePerspective;
+import lighthouse.ui.ViewController;
 
 /**
  * Manages the level navigation that allows the

@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -9,20 +9,20 @@ import javax.swing.SwingUtilities;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.spinner.WebSpinner;
 
-import lighthouse.ai.AIMain;
-import lighthouse.model.AppModel;
+import lighthouse.puzzle.ai.PuzzleAI;
+import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.util.LayoutUtils;
 
 public class AIViewController implements ViewController {
 	private static int threadIndex = 0;
-	private final AppModel appModel;
+	private final PuzzleGameState gameState;
 	private final JPanel component;
 	private final WebProgressBar progressBar;
 	private Thread thread;
 	
-	public AIViewController(AppModel appModel) {
-		this.appModel = appModel;
+	public AIViewController(PuzzleGameState gameState) {
+		this.gameState = gameState;
 		
 		WebSpinner populationSize = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
 		WebSpinner iterations = new WebSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
@@ -54,13 +54,12 @@ public class AIViewController implements ViewController {
 	private void train(int populationSize, int iterations) {
 		stopTraining();
 		thread = new Thread(() -> {
-			AIMain ai = new AIMain(populationSize);
-			appModel.setAI(ai);
+			PuzzleAI ai = new PuzzleAI(populationSize);
 			progressBar.setMinimum(0);
 			progressBar.setMaximum(iterations);
 			
 			for (int i = 0; i < iterations && !Thread.interrupted(); i++) {
-				ai.train(appModel.getGameState().getLevel());
+				ai.train(gameState.getLevel());
 				int index = i;
 				SwingUtilities.invokeLater(() -> progressBar.setValue(index));
 			}

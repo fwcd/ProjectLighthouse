@@ -13,7 +13,6 @@ import com.alee.laf.tabbedpane.WebTabbedPane;
 import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
-import lighthouse.puzzle.ui.GameViewController;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
 import lighthouse.ui.sidebar.SideBarViewController;
 
@@ -37,8 +36,7 @@ public class AppViewController implements ViewController {
 		tabPane = new WebTabbedPane();
 		component.add(tabPane, BorderLayout.CENTER);
 		
-		GameViewController game = new GameViewController(model.getGameState());
-		sideBar = new SideBarViewController();
+		sideBar = new SideBarViewController(model);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 		
 		// Register known games

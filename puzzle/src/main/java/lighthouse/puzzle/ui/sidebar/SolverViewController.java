@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
+import lighthouse.puzzle.solver.BacktrackingSolver;
+import lighthouse.puzzle.solver.Solver;
 import lighthouse.puzzle.ui.board.BoardViewController;
-import lighthouse.solver.BacktrackingSolver;
-import lighthouse.solver.Solver;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;

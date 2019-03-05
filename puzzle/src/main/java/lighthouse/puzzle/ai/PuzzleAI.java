@@ -1,4 +1,4 @@
-package lighthouse.ai;
+package lighthouse.puzzle.ai;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,19 +8,20 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ai.Model;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
-import lighthouse.util.Direction;
 import lighthouse.puzzle.model.Level;
+import lighthouse.util.Direction;
 
-public class AIMain {
-    private static final Logger LOG = LoggerFactory.getLogger(AIMain.class);
+public class PuzzleAI {
+    private static final Logger LOG = LoggerFactory.getLogger(PuzzleAI.class);
     
     private List<Model> population;
     private int size;
     private List<Board> forbidden = new ArrayList<>();
 
-    public AIMain(int pop){
+    public PuzzleAI(int pop){
         size = pop;
         this.population = new ArrayList<>(pop);
         for (int i = 0; i < pop; i++){

@@ -1,4 +1,4 @@
-package lighthouse.ui.scene.view;
+package lighthouse.puzzle.ui.board.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -26,9 +26,6 @@ import lighthouse.puzzle.ui.board.input.BoardKeyInput;
 import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.viewmodel.BoardEditState;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
-import lighthouse.ui.scene.viewmodel.graphics.Scene;
-import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -145,14 +142,6 @@ public class LocalBoardView implements BoardView {
 			
 			if (brickInProgress != null) {
 				renderBlock(g2d, brickInProgress, activeBrickScale);
-			}
-			
-			// Draw the overlays
-			g2d.setStroke(new BasicStroke(3.0F));
-			SceneShapeVisitor overlayRenderer = new Graphics2DSceneRenderer(g2d, gridToPixels.floor());
-			
-			for (Scene overlay : viewModel.getOverlays()) {
-				overlay.acceptForAllShapes(overlayRenderer);
 			}
 		}
 	}
