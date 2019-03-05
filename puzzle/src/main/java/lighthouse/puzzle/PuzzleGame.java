@@ -11,8 +11,13 @@ public class PuzzleGame implements Game {
 	private final ViewController controlsViewController;
 	
 	public PuzzleGame() {
-		throw new RuntimeException("TODO");
+		// TODO
+		centralViewController = null;
+		controlsViewController = null;
 	}
+	
+	@Override
+	public String getName() { return "Puzzle"; }
 	
 	@Override
 	public GameState getModel() { return model; }

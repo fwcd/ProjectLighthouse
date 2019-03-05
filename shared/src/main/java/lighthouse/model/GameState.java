@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public interface GameState {
-	String getName();
-	
 	/** Saves a level as JSON to a file. */
 	void saveLevelTo(Path path) throws IOException;
 	

@@ -43,11 +43,6 @@ public class PuzzleGameState implements GameState {
         this.level = level;
     }
     
-    @Override
-    public String getName() {
-        return "Puzzle";
-    }
-    
     public boolean isWon() {
         return board.equals(level.getGoal());
     }
