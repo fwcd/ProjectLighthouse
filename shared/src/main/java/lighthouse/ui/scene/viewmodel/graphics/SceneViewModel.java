@@ -15,6 +15,12 @@ public class SceneViewModel implements Iterable<SceneLayer> {
 		layers.remove(layer);
 	}
 	
+	public void acceptForAllLayers(SceneShapeVisitor visitor) {
+		for (SceneLayer layer : layers) {
+			layer.acceptForAllShapes(visitor);
+		}
+	}
+	
 	@Override
 	public Iterator<SceneLayer> iterator() {
 		return layers.iterator();

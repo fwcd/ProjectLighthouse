@@ -9,14 +9,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
-import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
+import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
 public class LocalSceneView implements SceneView {
 	private final JComponent component;
-	private SceneLayer scene;
+	private SceneViewModel scene;
 	
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;
@@ -41,14 +41,14 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	@Override
-	public void draw(SceneLayer scene) {
+	public void draw(SceneViewModel scene) {
 		this.scene = scene;
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (scene != null) {
 			SceneShapeVisitor renderer = new Graphics2DSceneRenderer(g2d, gridPosToPixels, gridSizeToPixels);
-			scene.acceptForAllShapes(renderer);
+			scene.acceptForAllLayers(renderer);
 		}
 	}
 	

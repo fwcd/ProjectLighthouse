@@ -1,7 +1,7 @@
 package lighthouse.ui.scene.view;
 
-import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
+import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 
 public interface SceneView {
-	void draw(SceneLayer scene);
+	void draw(SceneViewModel scene);
 }
