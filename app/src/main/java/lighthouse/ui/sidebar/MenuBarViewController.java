@@ -6,8 +6,10 @@ import java.nio.file.Path;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.style.Skin;
@@ -18,16 +20,18 @@ import com.alee.skin.web.WebSkin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.Game;
+import lighthouse.gameapi.GameMenuEntry;
 import lighthouse.model.AppModel;
-import lighthouse.ui.GameViewController;
+import lighthouse.ui.AppContext;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.debug.DebugToolsViewController;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedImageAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedResourceGIFAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
-import lighthouse.ui.scene.viewmodel.graphics.MovingImageAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.DemoAnimation;
+import lighthouse.ui.scene.viewmodel.graphics.MovingImageAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.ResourceImageLoader;
 import lighthouse.util.DoubleVec;
@@ -36,18 +40,17 @@ import lighthouse.util.IntVec;
 public class MenuBarViewController implements ViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(MenuBarViewController.class);
 	private final WebMenuBar component;
-
 	private final PathChooser pathChooser;
+	private final WebMenu gameMenu;
+
 	private final AppModel model;
-	private final GameViewController game;
 	
-	public MenuBarViewController(AppModel model, GameViewController game) {
+	public MenuBarViewController(AppModel model) {
 		this.model = model;
-		this.game = game;
 		
 		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
-		IntVec boardSize = getBoardSize();
 		
+		gameMenu = LayoutUtils.menuOf("Game"); // TODO: Icon
 		component = LayoutUtils.menuBarOf(
 			LayoutUtils.menuOf("File", resourceLoader.getAsIcon("/icons/file.png"),
 				LayoutUtils.itemOf("Save", this::save),
@@ -63,12 +66,20 @@ public class MenuBarViewController implements ViewController {
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
 				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
 				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation())),
-				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-boardSize.getX(), 0), new IntVec(boardSize.getX(), 0), getBoardSize().toDouble())))));
+				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-boardSize.getX(), 0), new IntVec(boardSize.getX(), 0), getBoardSize().toDouble())))
+			),
+			gameMenu
+		);
 		pathChooser = new PathChooser(component, ".json");
 	}
-
-	private IntVec getBoardSize() {
-		return model.getGameState().getBoard().getSize();
+	
+	public void onOpen(Game game) {
+		JPopupMenu gamePopupMenu = gameMenu.getPopupMenu();
+		gamePopupMenu.removeAll();
+		
+		for (GameMenuEntry entry : game.getGameMenuEntries()) {
+			gamePopupMenu.add(LayoutUtils.itemOf(entry.getLabel(), entry.getAction()));
+		}
 	}
 	
 	private void save() {

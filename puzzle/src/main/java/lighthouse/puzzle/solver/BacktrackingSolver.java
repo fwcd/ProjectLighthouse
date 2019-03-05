@@ -1,4 +1,4 @@
-package lighthouse.solver;
+package lighthouse.puzzle.solver;
 
 import java.util.ArrayList;
 import java.util.Collections;

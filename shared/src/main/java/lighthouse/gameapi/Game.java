@@ -1,5 +1,8 @@
 package lighthouse.gameapi;
 
+import java.util.Collections;
+import java.util.List;
+
 import lighthouse.model.GameState;
 import lighthouse.ui.AppContext;
 import lighthouse.ui.EmptyViewController;
@@ -14,6 +17,8 @@ public interface Game {
 	GameState getModel();
 	
 	default void initialize(AppContext context) {}
+	
+	default List<GameMenuEntry> getGameMenuEntries() { return Collections.emptyList(); }
 	
 	default ViewController getGameViewController() { return new EmptyViewController(); }
 	

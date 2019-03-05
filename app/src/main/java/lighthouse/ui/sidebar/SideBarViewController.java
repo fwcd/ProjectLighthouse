@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 import com.alee.extended.panel.WebAccordion;
 
+import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
-import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.scene.view.LocalLighthouseView;
 import lighthouse.ui.util.SwapPanel;
@@ -21,15 +21,17 @@ import lighthouse.ui.util.SwapPanel;
  */
 public class SideBarViewController implements ViewController {
 	private final JPanel component;
+	
+	private final MenuBarViewController menuBar;
 	private final SwapPanel gameControlPanel;
 	private final SwapPanel gameStatisticsPanel;
 	private final SwapPanel solverPanel;
 	
-	public SideBarViewController(AppModel model, GameViewController game) {
+	public SideBarViewController(AppModel model) {
 		component = new JPanel(new BorderLayout());
 		
 		// Adds a menu bar on top
-		MenuBarViewController menuBar = new MenuBarViewController(model, game);
+		menuBar = new MenuBarViewController(model);
 		component.add(menuBar.getComponent(), BorderLayout.NORTH);
 		
 		WebAccordion accordion = new WebAccordion();
@@ -63,6 +65,10 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
 		component.add(accordion, BorderLayout.CENTER);
+	}
+	
+	public void onOpen(Game game) {
+		menuBar.onOpen(game);
 	}
 	
 	public void setGameControls(JComponent newComponent) {

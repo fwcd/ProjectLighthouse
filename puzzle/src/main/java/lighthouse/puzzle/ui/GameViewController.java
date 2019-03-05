@@ -34,6 +34,7 @@ public class GameViewController implements ViewController {
 
 	private final PuzzleGameState model;
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
+	private final BoardViewController board;
 
 	private GameMode mode;
 	private GamePerspective perspective;
@@ -45,7 +46,9 @@ public class GameViewController implements ViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public GameViewController() {
+	public GameViewController(PuzzleGameState model) {
+		this.model = model;
+
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
@@ -83,6 +86,16 @@ public class GameViewController implements ViewController {
 		
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
+
+		// Setup RPC
+		discordRPC.setState(context.getStatus().getMessage());
+		discordRPC.updatePresenceSoon();
+		discordRPC.start();
+		
+		context.getStatusListeners().add(newStatus -> {
+			discordRPC.setState(newStatus.getMessage());
+			discordRPC.updatePresenceSoon();
+		});
 	}
 	
 	private void update() {
