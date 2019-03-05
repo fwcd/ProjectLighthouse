@@ -38,7 +38,7 @@ public class SceneViewController implements SwingViewController {
 	
 	public void setResponder(SceneResponder responder) { this.responder.setDelegate(responder); }
 	
-	public SceneResponder getResponder() { return responder; }
+	public DelegateResponder getResponder() { return responder; }
 	
 	public AnimationRunner getAnimationRunner() { return animationRunner; }
 	

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import lighthouse.gameapi.Game;
+import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
@@ -68,7 +69,7 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	public void registerGame(Game game) {
-		game.initialize(context);
+		game.initialize(new GameInitializationContext(context.getObservableStatus(), scene.getAnimationRunner(), scene.getResponder()));
 		
 		// TODO: Toggle buttons to indicate the active tab
 		JButton tab = new JButton(game.getName());

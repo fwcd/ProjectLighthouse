@@ -7,6 +7,8 @@ import lighthouse.model.GameState;
 import lighthouse.ui.AppContext;
 import lighthouse.ui.EmptyViewController;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.AnimationRunner;
+import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.util.transform.DoubleVecBijection;
 
 /**
@@ -25,7 +27,7 @@ public interface Game {
 	
 	default DoubleVecBijection getLighthouseSizeToGridSize() { return getLighthousePosToGridPos(); }
 	
-	default void initialize(AppContext context) {}
+	default void initialize(GameInitializationContext context) {}
 	
 	default List<GameMenuEntry> getGameMenuEntries() { return Collections.emptyList(); }
 	
