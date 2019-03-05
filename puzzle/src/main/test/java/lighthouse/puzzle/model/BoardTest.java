@@ -1,4 +1,4 @@
-package lighthouse.model;
+package lighthouse.puzzle.model;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
