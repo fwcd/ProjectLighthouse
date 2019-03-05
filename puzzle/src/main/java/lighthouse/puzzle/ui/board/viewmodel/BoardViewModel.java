@@ -171,7 +171,7 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 	private Stream<SceneShape> shapesOf(GameBlock block) {
 		return block.streamAllPositions()
 			.map(IntVec::toDouble)
-			.map(it -> new SceneRect(it, it.add(1, 1), block.getColor(), Shading.FILLED));
+			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, block.getColor(), Shading.FILLED));
 	}
 	
 	// === Delegated methods ===

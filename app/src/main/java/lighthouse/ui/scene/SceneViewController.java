@@ -1,5 +1,6 @@
 package lighthouse.ui.scene;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,13 @@ import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.scene.controller.NoResponder;
 import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.ui.scene.input.SceneKeyInput;
+import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.view.LighthouseView;
 import lighthouse.ui.scene.view.LocalSceneView;
 import lighthouse.ui.scene.view.SceneView;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
+import lighthouse.util.IntVec;
 import lighthouse.util.transform.DoubleVecBijection;
 
 /**
@@ -31,6 +34,7 @@ public class SceneViewController implements SwingViewController {
 	
 	private final SceneViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
+	private SceneMouseInput mouseInput;
 	
 	private final LocalSceneView localView;
 	private final List<SceneView> sceneViews = new ArrayList<>();
@@ -39,10 +43,11 @@ public class SceneViewController implements SwingViewController {
 	
 	public SceneViewController() {
 		viewModel = new SceneViewModel();
-		component = new JPanel();
+		component = new JPanel(new BorderLayout());
 		
 		localView = new LocalSceneView(DoubleVecBijection.IDENTITY.floor(), DoubleVecBijection.IDENTITY.floor());
 		sceneViews.add(localView);
+		component.add(localView.getComponent(), BorderLayout.CENTER);
 		
 		SceneKeyInput keyInput = new SceneKeyInput();
 		keyInput.addResponder(responder);
@@ -62,8 +67,20 @@ public class SceneViewController implements SwingViewController {
 		}
 	}
 	
-	public void setLighthouseTransforms(DoubleVecBijection lighthouseSizeToGridSize, DoubleVecBijection lighthousePosToGridPos) {
-		lighthouseViewModel = new LighthouseViewModel(viewModel, lighthouseSizeToGridSize, lighthousePosToGridPos);
+	public void relayout(IntVec gridSize) {
+		localView.relayout(gridSize);
+	}
+	
+	public void setGridTransforms(DoubleVecBijection gridPosToPixels, DoubleVecBijection gridSizeToPixels) {
+		if (mouseInput != null) {
+			localView.removeMouseInput(mouseInput);
+		}
+		mouseInput = new SceneMouseInput(gridPosToPixels);
+		localView.addMouseInput(mouseInput);
+	}
+	
+	public void setLighthouseTransforms(DoubleVecBijection lighthouseToGridSize, DoubleVecBijection lighthouseToGridPos) {
+		lighthouseViewModel = new LighthouseViewModel(viewModel, lighthouseToGridSize, lighthouseToGridPos);
 	}
 	
 	public void addSceneView(SceneView view) {

@@ -12,12 +12,13 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
-import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
+import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
@@ -70,6 +71,11 @@ public class LocalSceneView implements SceneView {
 		component.addMouseMotionListener(mouseInput);
 	}
 	
+	public void removeMouseInput(SceneMouseInput mouseInput) {
+		component.removeMouseListener(mouseInput);
+		component.removeMouseMotionListener(mouseInput);
+	}
+	
 	public void setGridPosToPixels(Function<DoubleVec, IntVec> gridPosToPixels) {
 		this.gridPosToPixels = gridPosToPixels;
 	}
@@ -81,6 +87,12 @@ public class LocalSceneView implements SceneView {
 	@Override
 	public void draw(SceneViewModel scene) {
 		this.scene = scene;
+		SwingUtilities.invokeLater(component::repaint);
+	}
+	
+	public void relayout(IntVec gridSize) {
+		IntVec mapped = gridSizeToPixels.apply(gridSize.toDouble());
+		component.setPreferredSize(new Dimension(mapped.getX(), mapped.getY()));
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {

@@ -20,8 +20,6 @@ import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
-import lighthouse.util.transform.DoubleVecBijection;
-import lighthouse.util.transform.Scaling;
 
 /**
  * Manages the game board view, the current
@@ -31,8 +29,7 @@ public class PuzzleGameManager {
 	private final ObservableStatus status;
 	
 	private final PuzzleGameState model;
-	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
-	private final BoardViewModel boardViewModel;
+	private final BoardViewModel board;
 	private final DelegateResponder sceneResponder;
 	private final AnimationRunner animationRunner;
 
@@ -54,17 +51,17 @@ public class PuzzleGameManager {
 		animationRunner = context.getAnimationRunner();
 		
 		// Initialize board
-		boardViewModel = new BoardViewModel(model.getBoard());
+		board = new BoardViewModel(model.getBoard());
 
 		// Setup tickers
-		winChecker = new GameWinChecker(null, context.getAnimationRunner(), model, context.getStatus(), boardViewModel.getStatistics());
+		winChecker = new GameWinChecker(null, context.getAnimationRunner(), model, context.getStatus(), board.getStatistics());
 
 		// Add hooks
 		externalUpdaters.add(context.getUpdater());
 		
 		Flag updatingBoard = new Flag(false);
 		
-		boardViewModel.getBoardListeners().add(boardModel -> {
+		board.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
 				model.setBoard(boardModel);
@@ -74,8 +71,8 @@ public class PuzzleGameManager {
 		model.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
-				boardViewModel.transitionTo(boardModel);
-				boardViewModel.getStatistics().reset();
+				board.transitionTo(boardModel);
+				board.getStatistics().reset();
 				updatingBoard.set(false);
 			}
 		});
@@ -98,7 +95,7 @@ public class PuzzleGameManager {
 			updater.update();
 		}
 		
-		BoardStatistics stats = boardViewModel.getStatistics();
+		BoardStatistics stats = board.getStatistics();
 		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}
 	
@@ -144,9 +141,9 @@ public class PuzzleGameManager {
 	
 	private void updateBoard() {
 		Board activeBoard = perspective.getActiveBoard(model);
-		boardViewModel.transitionTo(activeBoard);
-		boardViewModel.setBlockedStates(model.getLevel().getBlockedStates());
-		sceneResponder.setDelegate(mode.createController(perspective, boardViewModel, this::update, animationRunner));
+		board.transitionTo(activeBoard);
+		board.setBlockedStates(model.getLevel().getBlockedStates());
+		sceneResponder.setDelegate(mode.createController(perspective, board, this::update, animationRunner));
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
@@ -165,5 +162,5 @@ public class PuzzleGameManager {
 	
 	public ObservableStatus getStatus() { return status; }
 	
-	public BoardViewModel getBoardViewModel() { return boardViewModel; }
+	public BoardViewModel getBoardViewModel() { return board; }
 }
