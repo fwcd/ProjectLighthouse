@@ -25,7 +25,7 @@ import lighthouse.ui.board.view.LocalBoardView;
 import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
-import lighthouse.ui.board.viewmodel.overlay.Animation;
+import lighthouse.ui.viewmodel.Animation;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.DoubleVecBijection;
 

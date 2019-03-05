@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
-import lighthouse.model.Direction;
+import lighthouse.util.Direction;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.DoubleVec;

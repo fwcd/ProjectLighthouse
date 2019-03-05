@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.Color;
 
@@ -10,7 +10,7 @@ import lighthouse.util.DoubleVec;
  * means, the radius might not be accurately reflected
  * under every scaling).
  */
-public class OverlayFixedCircle implements OverlayShape {
+public class OverlayFixedCircle implements SceneShape {
 	private final DoubleVec center;
 	private final double radius;
 	private final Color color;
@@ -24,7 +24,7 @@ public class OverlayFixedCircle implements OverlayShape {
 	}
 	
 	@Override
-	public void accept(OverlayShapeVisitor visitor) {
+	public void accept(SceneShapeVisitor visitor) {
 		visitor.visitFixedCircle(this);
 	}
 	

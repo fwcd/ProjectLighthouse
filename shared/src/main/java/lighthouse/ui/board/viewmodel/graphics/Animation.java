@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ public interface Animation {
 	
 	int getTotalFrames();
 	
-	List<OverlayShape> getShape(int frame);
+	List<SceneShape> getShape(int frame);
 	
 	default int getLoopCount() { return 1; }
 	

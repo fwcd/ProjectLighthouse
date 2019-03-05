@@ -1,6 +1,6 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
-public interface OverlayShapeVisitor {
+public interface SceneShapeVisitor {
 	void visitRect(OverlayRect rect);
 	
 	void visitOval(OverlayOval oval);

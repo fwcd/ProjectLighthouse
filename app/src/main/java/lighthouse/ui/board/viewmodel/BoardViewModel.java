@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
-import lighthouse.model.Direction;
+import lighthouse.util.Direction;
 import lighthouse.model.GameBlock;
 import lighthouse.model.Move;
 import lighthouse.model.grid.ColorGrid;
-import lighthouse.ui.board.viewmodel.overlay.Overlay;
+import lighthouse.ui.viewmodel.Overlay;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;

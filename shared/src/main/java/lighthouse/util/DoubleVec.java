@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
-import lighthouse.model.Direction;
-
 /**
  * A two-dimensional, immutable double-vector.
  */

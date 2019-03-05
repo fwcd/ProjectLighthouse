@@ -12,7 +12,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.model.Direction;
+import lighthouse.util.Direction;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
 

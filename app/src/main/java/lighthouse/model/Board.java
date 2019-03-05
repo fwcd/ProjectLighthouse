@@ -20,6 +20,7 @@ import lighthouse.model.grid.ColorGrid;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
+import lighthouse.util.Direction;
 
 /**
  * The game board model representing

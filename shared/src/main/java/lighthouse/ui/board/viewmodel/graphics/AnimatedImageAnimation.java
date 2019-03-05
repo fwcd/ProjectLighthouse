@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AnimatedImageAnimation extends LoopableAnimation {
 	public int getTotalFrames() { return (int) (image.getFrameCount() / speed); }
 	
 	@Override
-	public List<OverlayShape> getShape(int frame) {
+	public List<SceneShape> getShape(int frame) {
 		return Collections.singletonList(new OverlayImage(topLeft, image.getFrame((int) (frame * speed)), size));
 	}
 	

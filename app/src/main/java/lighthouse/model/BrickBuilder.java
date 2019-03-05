@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import lighthouse.util.ColorUtils;
+import lighthouse.util.Direction;
 import lighthouse.util.IDGenerator;
 import lighthouse.util.IntVec;
 

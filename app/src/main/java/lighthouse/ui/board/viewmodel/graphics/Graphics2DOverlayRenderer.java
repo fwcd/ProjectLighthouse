@@ -1,17 +1,12 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.Graphics2D;
 import java.util.function.Function;
 
-import lighthouse.ui.board.viewmodel.overlay.OverlayFixedCircle;
-import lighthouse.ui.board.viewmodel.overlay.OverlayOval;
-import lighthouse.ui.board.viewmodel.overlay.OverlayRect;
-import lighthouse.ui.board.viewmodel.overlay.OverlayShading;
-import lighthouse.ui.board.viewmodel.overlay.OverlayShapeVisitor;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
-public class Graphics2DOverlayRenderer implements OverlayShapeVisitor {
+public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 	private final Graphics2D g2d;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;

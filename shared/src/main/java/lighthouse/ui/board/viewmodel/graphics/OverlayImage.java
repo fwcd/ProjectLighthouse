@@ -1,10 +1,10 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.image.BufferedImage;
 
 import lighthouse.util.DoubleVec;
 
-public class OverlayImage implements OverlayShape {
+public class OverlayImage implements SceneShape {
 	private final DoubleVec topLeft;
 	private final BufferedImage image;
 	private final DoubleVec imageSize;
@@ -26,7 +26,7 @@ public class OverlayImage implements OverlayShape {
 	public DoubleVec getImageSize() { return imageSize; }
 	
 	@Override
-	public void accept(OverlayShapeVisitor visitor) {
+	public void accept(SceneShapeVisitor visitor) {
 		visitor.visitImage(this);
 	}
 }

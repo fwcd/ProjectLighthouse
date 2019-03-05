@@ -8,9 +8,9 @@ import java.awt.image.DataBufferInt;
 
 import lighthouse.model.GameBlock;
 import lighthouse.model.grid.ColorGrid;
-import lighthouse.ui.board.viewmodel.overlay.Graphics2DOverlayRenderer;
-import lighthouse.ui.board.viewmodel.overlay.Overlay;
-import lighthouse.ui.board.viewmodel.overlay.OverlayShapeVisitor;
+import lighthouse.ui.viewmodel.Graphics2DOverlayRenderer;
+import lighthouse.ui.viewmodel.Overlay;
+import lighthouse.ui.viewmodel.SceneShapeVisitor;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -73,7 +73,7 @@ public class LighthouseViewModel implements ColorGrid {
 		Graphics2D g2d = image.createGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasingEnabled ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
 		
-		OverlayShapeVisitor renderer = new Graphics2DOverlayRenderer(g2d,
+		SceneShapeVisitor renderer = new Graphics2DOverlayRenderer(g2d,
 			lighthousePosToGrid.inverse().floor(),
 			lighthouseSizeToGrid.inverse().ceil()
 		);

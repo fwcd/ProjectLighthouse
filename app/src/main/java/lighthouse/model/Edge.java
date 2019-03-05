@@ -2,6 +2,7 @@ package lighthouse.model;
 
 import java.io.Serializable;
 
+import lighthouse.util.Direction;
 import lighthouse.util.IntVec;
 
 /**

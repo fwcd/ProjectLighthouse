@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class AnimationPlayer implements Overlay {
 	}
 	
 	@Override
-	public List<OverlayShape> getShapes() {
+	public List<SceneShape> getShapes() {
 		return animation.getShape(frame % animation.getTotalFrames());
 	}
 	

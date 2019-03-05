@@ -19,7 +19,7 @@ import lighthouse.solver.BacktrackingSolver;
 import lighthouse.solver.Solver;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.board.BoardViewController;
-import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
+import lighthouse.ui.viewmodel.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 

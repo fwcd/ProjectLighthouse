@@ -26,9 +26,9 @@ import lighthouse.ui.board.input.BoardKeyInput;
 import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.viewmodel.BoardEditState;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.board.viewmodel.overlay.Graphics2DOverlayRenderer;
-import lighthouse.ui.board.viewmodel.overlay.Overlay;
-import lighthouse.ui.board.viewmodel.overlay.OverlayShapeVisitor;
+import lighthouse.ui.viewmodel.Graphics2DOverlayRenderer;
+import lighthouse.ui.viewmodel.Overlay;
+import lighthouse.ui.viewmodel.SceneShapeVisitor;
 import lighthouse.util.ArrayUtils;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -149,7 +149,7 @@ public class LocalBoardView implements BoardView {
 			
 			// Draw the overlays
 			g2d.setStroke(new BasicStroke(3.0F));
-			OverlayShapeVisitor overlayRenderer = new Graphics2DOverlayRenderer(g2d, gridToPixels.floor());
+			SceneShapeVisitor overlayRenderer = new Graphics2DOverlayRenderer(g2d, gridToPixels.floor());
 			
 			for (Overlay overlay : viewModel.getOverlays()) {
 				overlay.acceptForAllShapes(overlayRenderer);

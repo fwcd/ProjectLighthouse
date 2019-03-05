@@ -1,4 +1,4 @@
-package lighthouse.model;
+package lighthouse.util;
 
 public enum Direction {
 	UP(0, 0, -1, '^'),

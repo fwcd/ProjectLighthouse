@@ -12,6 +12,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
+import lighthouse.util.Direction;
 import lighthouse.util.IntVec;
 
 public class BoardTest {

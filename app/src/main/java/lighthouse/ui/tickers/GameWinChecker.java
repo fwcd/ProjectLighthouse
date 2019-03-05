@@ -6,7 +6,7 @@ import lighthouse.model.GameState;
 import lighthouse.ui.GameContext;
 import lighthouse.ui.board.BoardViewController;
 import lighthouse.ui.board.viewmodel.BoardStatistics;
-import lighthouse.ui.board.viewmodel.overlay.ConfettiAnimation;
+import lighthouse.ui.viewmodel.ConfettiAnimation;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 

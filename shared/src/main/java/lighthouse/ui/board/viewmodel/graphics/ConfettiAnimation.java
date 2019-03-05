@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ public class ConfettiAnimation implements Animation {
 	public int getTotalFrames() { return 360; }
 	
 	@Override
-	public List<OverlayShape> getShape(int frame) {
+	public List<SceneShape> getShape(int frame) {
 		// int depth = frame/30;
-		List<OverlayShape> shapes = new ArrayList<>();
+		List<SceneShape> shapes = new ArrayList<>();
 
 		if (frame % 30 == 0) {
 			rows.add(0, new ArrayList<>());

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 
-import lighthouse.model.Direction;
-
 /**
  * A two-dimensional, immutable int-vector.
  */

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
+import lighthouse.util.Direction;
 
 /**
  * Common interface for colored game elements that

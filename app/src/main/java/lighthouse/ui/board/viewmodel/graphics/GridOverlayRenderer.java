@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.Color;
 import java.util.function.Function;
@@ -12,10 +12,10 @@ import lighthouse.util.IntVec;
 import lighthouse.util.MathUtils;
 
 /**
- * A reference implementation of an {@link OverlayShapeVisitor}
+ * A reference implementation of an {@link SceneShapeVisitor}
  * that renders the shape to a {@link WritableColorGrid}.
  */
-public class GridOverlayRenderer implements OverlayShapeVisitor {
+public class GridOverlayRenderer implements SceneShapeVisitor {
 	private static final Logger LOG = LoggerFactory.getLogger(GridOverlayRenderer.class);
 	private static final double EPSILON = 0.0001;
 	private final WritableColorGrid grid;

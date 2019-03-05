@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import lighthouse.ui.util.BufferedAnimatedImage;
 import lighthouse.ui.util.ResourceImageLoader;

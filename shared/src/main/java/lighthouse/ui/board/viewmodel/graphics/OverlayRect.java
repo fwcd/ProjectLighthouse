@@ -1,10 +1,10 @@
-package lighthouse.ui.board.viewmodel.overlay;
+package lighthouse.ui.board.viewmodel.graphics;
 
 import java.awt.Color;
 
 import lighthouse.util.DoubleVec;
 
-public class OverlayRect implements OverlayShape {
+public class OverlayRect implements SceneShape {
 	private final DoubleVec topLeft;
 	private final DoubleVec size;
 	private final Color color;
@@ -26,7 +26,7 @@ public class OverlayRect implements OverlayShape {
 	}
 	
 	@Override
-	public void accept(OverlayShapeVisitor visitor) {
+	public void accept(SceneShapeVisitor visitor) {
 		visitor.visitRect(this);
 	}
 	

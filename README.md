@@ -3,6 +3,20 @@ A game running on the University of Kiel's high-rise building.
 
 ![Photo](photo.jpg) ![Screenshot](screenshot.png)
 
+## Project Structure
+Core framework:
+
+| Module | MVC Components | Contents |
+| ------ | -------------- | -------- |
+| app | View, ViewController | The main Lighthouse application. |
+| shared | ViewModel | The graphics and animation API. |
+
+Game modules:
+
+| Module | MVC Components | Contents |
+| ------ | -------------- | -------- |
+| puzzle | Model, ViewController | The puzzle game |
+
 ## Lighthouse API
 To use the Lighthouse API, create a new file named `authentication.txt` inside `src/main/resources` with the following contents:
 

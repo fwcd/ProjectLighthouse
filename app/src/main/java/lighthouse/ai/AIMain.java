@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.model.Board;
 import lighthouse.model.Brick;
-import lighthouse.model.Direction;
+import lighthouse.util.Direction;
 import lighthouse.model.Level;
 
 public class AIMain {
