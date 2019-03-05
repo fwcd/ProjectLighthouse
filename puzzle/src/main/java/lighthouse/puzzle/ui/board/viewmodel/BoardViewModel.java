@@ -13,7 +13,7 @@ import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.GameBlock;
 import lighthouse.puzzle.model.Move;
-import lighthouse.ui.scene.viewmodel.graphics.Scene;
+import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.Direction;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
@@ -29,7 +29,7 @@ public class BoardViewModel implements ColorGrid {
 	private final TransitionableBoard transitionableModel;
 	private final BoardEditState editState = new BoardEditState();
 	private final BoardStatistics statistics;
-	private final List<Scene> overlays = new ArrayList<>();
+	private final List<SceneLayer> overlays = new ArrayList<>();
 	private List<Board> blockedStates;
 	private Integer selectedID = null;
 	
@@ -120,11 +120,11 @@ public class BoardViewModel implements ColorGrid {
 	
 	public void deselect() { selectedID = null; }
 	
-	public List<? extends Scene> getOverlays() { return overlays; }
+	public List<? extends SceneLayer> getOverlays() { return overlays; }
 	
-	public void addOverlay(Scene overlay) { overlays.add(overlay); } 
+	public void addOverlay(SceneLayer overlay) { overlays.add(overlay); } 
 	
-	public void removeOverlay(Scene overlay) { overlays.remove(overlay); }
+	public void removeOverlay(SceneLayer overlay) { overlays.remove(overlay); }
 	
 	public Board getModel() { return transitionableModel.getCurrentBoard(); }
 	

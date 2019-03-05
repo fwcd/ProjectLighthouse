@@ -1,25 +1,22 @@
-package lighthouse.puzzle.ui.board.input;
+package lighthouse.ui.scene.input;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.puzzle.ui.board.controller.BoardResponder;
-import lighthouse.ui.scene.input.JSGamepadToSwingKeyCode;
-import lighthouse.ui.scene.input.JSKeyToSwingKeyCode;
-import lighthouse.ui.scene.input.KeyCodeConverter;
+import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.ui.scene.input.lighthouseapi.ILighthouseInputListener;
 
 /**
  * A remote lighthouse input listener.
  */
-public class BoardLighthouseInput implements ILighthouseInputListener, BoardInput {
-	private static final Logger LOG = LoggerFactory.getLogger(BoardLighthouseInput.class);
-	private final BoardKeyInput keyDelegate = new BoardKeyInput();
+public class SceneLighthouseInput implements ILighthouseInputListener, SceneInput {
+	private static final Logger LOG = LoggerFactory.getLogger(SceneLighthouseInput.class);
+	private final SceneKeyInput keyDelegate = new SceneKeyInput();
 	private final KeyCodeConverter keyboardConverter = new JSKeyToSwingKeyCode();
 	private final KeyCodeConverter controllerConverter = new JSGamepadToSwingKeyCode();
 	
 	@Override
-	public void addResponder(BoardResponder responder) {
+	public void addResponder(SceneResponder responder) {
 		keyDelegate.addResponder(responder);
 	}
 	

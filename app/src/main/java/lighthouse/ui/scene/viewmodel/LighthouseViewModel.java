@@ -7,16 +7,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import lighthouse.model.grid.ColorGrid;
-import lighthouse.puzzle.model.GameBlock;
-import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
-import lighthouse.ui.scene.viewmodel.graphics.Scene;
+import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
+import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 import lighthouse.util.transform.DoubleVecBijection;
-import lighthouse.util.transform.Scaling;
-import lighthouse.util.transform.Translation;
 
 /**
  * A class that wraps the grid preparing it for the big screen (the Lighthouse)
@@ -25,18 +22,23 @@ import lighthouse.util.transform.Translation;
 public class LighthouseViewModel implements ColorGrid {
 	private final int columns;
 	private final int rows;
-	private final BoardViewModel board;
+	private final SceneViewModel scene;
 	private final BufferedImage image;
-	private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
-	private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
+	// TODO: Move these to the puzzle module:
+	// private final DoubleVecBijection lighthouseSizeToGrid = new Scaling(0.2, 0.5);
+	// private final DoubleVecBijection lighthousePosToGrid = new Translation(-4, -1).andThen(lighthouseSizeToGrid);
+	private final DoubleVecBijection lighthouseSizeToGrid;
+	private final DoubleVecBijection lighthousePosToGrid;
 	private boolean antialiasingEnabled = true;
 	
-	public LighthouseViewModel(BoardViewModel board) {
-		this(board, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS);
+	public LighthouseViewModel(SceneViewModel scene, DoubleVecBijection lighthouseSizeToGrid, DoubleVecBijection lighthousePosToGrid) {
+		this(scene, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS, lighthouseSizeToGrid, lighthousePosToGrid);
 	}
 
-	public LighthouseViewModel(BoardViewModel board, int columns, int rows) {
-		this.board = board;
+	public LighthouseViewModel(SceneViewModel scene, int columns, int rows, DoubleVecBijection lighthouseSizeToGrid, DoubleVecBijection lighthousePosToGrid) {
+		this.lighthousePosToGrid = lighthousePosToGrid;
+		this.lighthouseSizeToGrid = lighthouseSizeToGrid;
+		this.scene = scene;
 		this.columns = columns;
 		this.rows = rows;
 		image = new BufferedImage(columns, rows, BufferedImage.TYPE_INT_RGB);
@@ -57,17 +59,17 @@ public class LighthouseViewModel implements ColorGrid {
 		
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)));
-				Color color = Color.BLACK;
+				// GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)));
+				// Color color = Color.BLACK;
 				
-				if (block != null) {
-					color = block.getColor();
-					if (board.isSelected(block)) {
-						color = color.brighter().brighter();
-					}
-				}
+				// if (block != null) {
+				// 	color = block.getColor();
+				// 	if (board.isSelected(block)) {
+				// 		color = color.brighter().brighter();
+				// 	}
+				// }
 				
-				imgBuffer[(y * columns) + x] = color.getRGB();
+				imgBuffer[(y * columns) + x] = 0;
 			}
 		}
 		
@@ -79,8 +81,8 @@ public class LighthouseViewModel implements ColorGrid {
 			lighthouseSizeToGrid.inverse().ceil()
 		);
 		
-		for (Scene rendered : board.getOverlays()) {
-			rendered.acceptForAllShapes(renderer);
+		for (SceneLayer layer : scene) {
+			layer.acceptForAllShapes(renderer);
 		}
 		
 		g2d.dispose();
@@ -98,9 +100,5 @@ public class LighthouseViewModel implements ColorGrid {
 	
 	public BufferedImage getImage() {
 		return image;
-	}
-	
-	public BoardViewModel getBoard() {
-		return board;
 	}
 }

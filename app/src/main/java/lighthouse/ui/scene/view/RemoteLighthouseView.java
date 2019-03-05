@@ -6,9 +6,9 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.puzzle.ui.board.input.BoardLighthouseInput;
-import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
+import lighthouse.ui.scene.input.SceneLighthouseInput;
 import lighthouse.ui.scene.view.lighthouseapi.LighthouseDisplay;
+import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.util.LhConstants;
 import lighthouse.util.Listener;
 
@@ -40,11 +40,11 @@ public class RemoteLighthouseView implements LighthouseView {
 		return api.isConnected();
 	}
 
-	public void addButtonInput(BoardLighthouseInput input) {
+	public void addButtonInput(SceneLighthouseInput input) {
 		api.addButtonListener(input);
 	}
 	
-	public void removeButtonInput(BoardLighthouseInput input) {
+	public void removeButtonInput(SceneLighthouseInput input) {
 		api.removeButtonListener(input);
 	}
 	

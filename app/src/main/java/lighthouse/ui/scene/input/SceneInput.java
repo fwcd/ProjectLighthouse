@@ -1,6 +1,6 @@
-package lighthouse.puzzle.ui.board.input;
+package lighthouse.ui.scene.input;
 
-import lighthouse.puzzle.ui.board.controller.BoardResponder;
+import lighthouse.ui.scene.controller.SceneResponder;
 
 /**
  * A general input-facility that can
@@ -11,6 +11,6 @@ import lighthouse.puzzle.ui.board.controller.BoardResponder;
  * events into the higher-level representation
  * that is required by a responder.</p>
  */
-public interface BoardInput {
-	void addResponder(BoardResponder responder);
+public interface SceneInput {
+	void addResponder(SceneResponder responder);
 }

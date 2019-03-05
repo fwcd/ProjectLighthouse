@@ -5,7 +5,7 @@ import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.controller.BoardDrawController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
-import lighthouse.puzzle.ui.board.controller.NoResponder;
+import lighthouse.puzzle.ui.board.controller.NoBoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.Updatable;
 
@@ -33,6 +33,6 @@ public class StartPerspective implements GamePerspective {
 	
 	@Override
 	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner) {
-		return NoResponder.INSTANCE;
+		return NoBoardResponder.INSTANCE;
 	}
 }

@@ -2,7 +2,7 @@ package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.util.List;
 
-public class AnimationPlayer implements Scene {
+public class AnimationPlayer implements SceneLayer {
 	private final Animation animation;
 	private int frame = 0;
 	

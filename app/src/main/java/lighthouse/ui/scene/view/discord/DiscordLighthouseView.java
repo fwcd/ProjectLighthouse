@@ -56,7 +56,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final Pattern commandPattern;
 	private JDA jda;
 	
-	public DiscordLighthouseView(ConfigFile config, BoardKeyInput input) {
+	public DiscordLighthouseView(ConfigFile config, SceneKeyInput input) {
 		streamAllStates = config.getBoolean("streamAllStates");
 		commandPattern = Pattern.compile(Pattern.quote(config.get("prefix")) + "(\\w+)(?:\\s+(.+))?");
 		boardImage = new BufferedImage(config.getInt("imageWidth"), config.getInt("imageHeight"), BufferedImage.TYPE_INT_RGB);
@@ -64,7 +64,7 @@ public class DiscordLighthouseView implements LighthouseView {
 		registerCommands(input);
 	}
 	
-	private void registerCommands(BoardKeyInput input) {
+	private void registerCommands(SceneKeyInput input) {
 		commands.put("help", this::showHelp);
 		commands.put("ping", new PingCommand());
 		commands.put("summon", new SummonCommand(activeChannels));

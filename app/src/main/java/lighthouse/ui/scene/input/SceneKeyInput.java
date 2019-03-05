@@ -1,4 +1,4 @@
-package lighthouse.puzzle.ui.board.input;
+package lighthouse.ui.scene.input;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,21 +12,21 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.util.Direction;
-import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.util.IntVec;
 
 /**
  * A keyboard grid input implementation.
  */
-public class BoardKeyInput extends KeyAdapter implements BoardInput {
-	private static final Logger LOG = LoggerFactory.getLogger(BoardKeyInput.class);
+public class SceneKeyInput extends KeyAdapter implements SceneInput {
+	private static final Logger LOG = LoggerFactory.getLogger(SceneKeyInput.class);
 	private final Map<Integer, Runnable> bindings = new HashMap<>();
-	private final List<BoardResponder> responders = new ArrayList<>();
+	private final List<SceneResponder> responders = new ArrayList<>();
 	private IntVec gridPos = null;
 	private boolean dragging = false;
 	
-	public BoardKeyInput() {
+	public SceneKeyInput() {
 		bindings.put(KeyEvent.VK_UP, this::arrowUpPressed);
 		bindings.put(KeyEvent.VK_DOWN, this::arrowDownPressed);
 		bindings.put(KeyEvent.VK_LEFT, this::arrowLeftPressed);
@@ -35,7 +35,7 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 	}
 	
 	@Override
-	public void addResponder(BoardResponder responder) {
+	public void addResponder(SceneResponder responder) {
 		responders.add(responder);
 	}
 	
@@ -93,7 +93,7 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		IntVec nextPos = gridPos.add(dir);
 		boolean success = false;
 		
-		for (BoardResponder responder : responders) {
+		for (SceneResponder responder : responders) {
 			success |= responder.dragTo(nextPos);
 		}
 		
@@ -102,7 +102,7 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		}
 	}
 	
-	private void arrowSelect(Function<BoardResponder, IntVec> directionedSelectAction) {
+	private void arrowSelect(Function<SceneResponder, IntVec> directionedSelectAction) {
 		if (hasSelection()) {
 			updateSelection(directionedSelectAction);
 		} else {
@@ -110,9 +110,9 @@ public class BoardKeyInput extends KeyAdapter implements BoardInput {
 		}
 	}
 	
-	private void updateSelection(Function<BoardResponder, IntVec> action) {
+	private void updateSelection(Function<SceneResponder, IntVec> action) {
 		boolean updatedSelection = false;
-		for (BoardResponder responder : responders) {
+		for (SceneResponder responder : responders) {
 			IntVec result = action.apply(responder);
 			
 			if (!updatedSelection) {

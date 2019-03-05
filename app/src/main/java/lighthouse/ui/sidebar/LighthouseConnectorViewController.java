@@ -11,9 +11,9 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lighthouse.puzzle.ui.board.BoardViewController;
-import lighthouse.puzzle.ui.board.input.BoardLighthouseInput;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.SceneViewController;
+import lighthouse.ui.scene.input.SceneLighthouseInput;
 import lighthouse.ui.scene.view.RemoteLighthouseView;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
@@ -25,11 +25,11 @@ import lighthouse.util.ResourceConfigFile;
 public class LighthouseConnectorViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
-	private final BoardViewController board; // The aliased grid
+	private final SceneViewController scene;
 	private boolean connected = false;
 	
-	public LighthouseConnectorViewController(BoardViewController board) {
-		this.board = board;
+	public LighthouseConnectorViewController(SceneViewController scene) {
+		this.scene = scene;
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
@@ -60,7 +60,7 @@ public class LighthouseConnectorViewController implements SwingViewController {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
 			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
-			BoardLighthouseInput lhInput = new BoardLighthouseInput();
+			SceneLighthouseInput lhInput = new SceneLighthouseInput();
 			
 			lhInput.addResponder(board.getResponder());
 			board.addLighthouseView(remoteView);

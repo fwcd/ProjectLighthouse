@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.ui.board.controller.BoardPlayController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
-import lighthouse.puzzle.ui.board.controller.DelegateResponder;
-import lighthouse.puzzle.ui.board.debug.AnimationTracker;
+import lighthouse.puzzle.ui.board.controller.DelegateBoardResponder;
 import lighthouse.puzzle.ui.board.input.BoardKeyInput;
 import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.view.BoardView;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.debug.AnimationTracker;
 import lighthouse.ui.scene.view.LighthouseView;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
@@ -44,7 +44,7 @@ public class BoardViewController implements SwingViewController {
 	private final List<LighthouseView> lhViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	private final LocalBoardView localView;
-	private final DelegateResponder responder;
+	private final DelegateBoardResponder responder;
 	
 	private final int animationFPS = 60;
 	private final BoardAnimationRunner animationRunner;
@@ -56,7 +56,7 @@ public class BoardViewController implements SwingViewController {
 		viewModel = new BoardViewModel(model, blockedStates);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		animationRunner = new BoardAnimationRunner(viewModel, animationFPS, gameUpdater);
-		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater, animationRunner));
+		responder = new DelegateBoardResponder(new BoardPlayController(viewModel, gameUpdater, animationRunner));
 
 		// Creates a local view and hooks up the Swing component
 		localView = new LocalBoardView(gridToPixels);

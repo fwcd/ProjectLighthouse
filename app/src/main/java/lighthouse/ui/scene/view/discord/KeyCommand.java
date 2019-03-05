@@ -10,9 +10,9 @@ import net.dv8tion.jda.api.entities.User;
 public class KeyCommand implements DiscordCommand {
 	private static final Logger LOG = LoggerFactory.getLogger(KeyCommand.class);
 	private final int keyCode;
-	private final BoardKeyInput input;
+	private final SceneKeyInput input;
 	
-	public KeyCommand(int keyCode, BoardKeyInput input) {
+	public KeyCommand(int keyCode, SceneKeyInput input) {
 		this.keyCode = keyCode;
 		this.input = input;
 	}

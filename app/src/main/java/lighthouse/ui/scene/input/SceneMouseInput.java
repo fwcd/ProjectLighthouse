@@ -1,4 +1,4 @@
-package lighthouse.puzzle.ui.board.input;
+package lighthouse.ui.scene.input;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,23 +7,23 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import lighthouse.puzzle.ui.board.controller.BoardResponder;
+import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.util.IntVec;
 import lighthouse.util.transform.DoubleVecBijection;
 
 /**
  * A mouse-based grid input.
  */
-public class BoardMouseInput extends MouseAdapter implements BoardInput {
-	private final List<BoardResponder> responders = new ArrayList<>();
+public class SceneMouseInput extends MouseAdapter implements SceneInput {
+	private final List<SceneResponder> responders = new ArrayList<>();
 	private final DoubleVecBijection gridToPixels;
 	
-	public BoardMouseInput(DoubleVecBijection gridToPixels) {
+	public SceneMouseInput(DoubleVecBijection gridToPixels) {
 		this.gridToPixels = gridToPixels;
 	}
 	
 	@Override
-	public void addResponder(BoardResponder responder) {
+	public void addResponder(SceneResponder responder) {
 		responders.add(responder);
 	}
 	

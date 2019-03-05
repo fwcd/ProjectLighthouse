@@ -89,8 +89,8 @@ public class AppViewController implements SwingViewController {
 		if (game.hasCustomGameViewController()) {
 			gameComponent = game.getGameViewController().getComponent();
 		} else {
-			LocalSceneView sceneView = new LocalSceneView();
-			scene.addView(sceneView);
+			LocalSceneView sceneView = new LocalSceneView(game.getGridPosToPixels().floor(), game.getGridSizeToSize().floor());
+			scene.addSceneView(sceneView);
 			gameComponent = sceneView.getComponent();
 		}
 		

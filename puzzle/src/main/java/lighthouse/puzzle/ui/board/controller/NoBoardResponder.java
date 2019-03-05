@@ -2,10 +2,10 @@ package lighthouse.puzzle.ui.board.controller;
 
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 
-public class NoResponder implements BoardResponder {
-	public static final NoResponder INSTANCE = new NoResponder();
+public class NoBoardResponder implements BoardResponder {
+	public static final NoBoardResponder INSTANCE = new NoBoardResponder();
 	
-	private NoResponder() {}
+	private NoBoardResponder() {}
 	
 	@Override
 	public void updateViewModel(BoardViewModel viewModel) {}

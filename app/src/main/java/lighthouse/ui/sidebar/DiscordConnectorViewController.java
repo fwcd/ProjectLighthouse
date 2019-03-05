@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.ui.SwingViewController;
 import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.puzzle.ui.board.input.BoardKeyInput;
+import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.view.discord.DiscordLighthouseView;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.ConfigFile;
@@ -20,11 +21,11 @@ import lighthouse.util.ResourceConfigFile;
 public class DiscordConnectorViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(DiscordConnectorViewController.class);
 	private final JPanel component;
-	private final BoardViewController board;
+	private final SceneViewController scene;
 	private boolean connected = false;
 	
-	public DiscordConnectorViewController(BoardViewController board) {
-		this.board = board;
+	public DiscordConnectorViewController(SceneViewController scene) {
+		this.scene = scene;
 		
 		JTextField tokenField = new JTextField();
 		tokenField.setColumns(15);
@@ -52,10 +53,10 @@ public class DiscordConnectorViewController implements SwingViewController {
 			JOptionPane.showMessageDialog(component, "Already connected!");
 		} else {
 			ConfigFile config = new ResourceConfigFile("/discordConfig.txt");
-			BoardKeyInput input = new BoardKeyInput();
+			SceneKeyInput input = new SceneKeyInput();
 			DiscordLighthouseView discordView = new DiscordLighthouseView(config, input);
 			
-			board.addLighthouseView(discordView);
+			scene.addLighthouseView(discordView);
 			input.addResponder(board.getResponder());
 			
 			discordView.connect(token);
