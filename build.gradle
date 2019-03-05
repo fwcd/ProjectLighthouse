@@ -1,39 +1,9 @@
-plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-    // Apply the application plugin to add support for building an application
-    id 'application'
-}
-
-// Define the main class for the application
-mainClassName = 'lighthouse.LighthouseMain'
-
-repositories {
-    mavenCentral()
-    maven { url 'https://dl.bintray.com/dv8fromtheworld/maven' }
-    jcenter()
-}
-
-dependencies {
-    implementation 'org.eclipse.jetty:jetty-client:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-http:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-io:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-util:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-api:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121'
-    implementation 'org.msgpack:msgpack-core:0.8.14'
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation('de.sciss:weblaf:2.1.4') {
-        exclude group: 'org.slf4j'
+allprojects {
+    repositories {
+        jcenter()
     }
-    implementation('net.dv8tion:JDA:4.ALPHA.0_56') {
-        exclude module: 'opus-java'
+    
+    dependencies {
+        implementation 'org.slf4j:slf4j-api:1.7.25'
     }
-    implementation 'club.minnced:java-discord-rpc:2.0.2'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.hamcrest:hamcrest-all:1.3'
 }

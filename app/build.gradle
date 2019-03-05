@@ -1,0 +1,37 @@
+plugins {
+	id 'java'
+	id 'application'
+}
+
+mainClassName = 'lighthouse.LighthouseMain'
+
+repositories {
+	jcenter()
+    mavenCentral()
+    maven { url 'https://dl.bintray.com/dv8fromtheworld/maven' }
+}
+
+dependencies {
+	implementation project(':shared')
+	implementation project(':puzzle')
+	implementation 'ch.qos.logback:logback-classic:1.2.3'
+	implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
+    implementation 'club.minnced:java-discord-rpc:2.0.2'
+	implementation 'org.eclipse.jetty:jetty-client:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty:jetty-http:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty:jetty-io:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty:jetty-util:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty.websocket:websocket-api:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121'
+    implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121'
+    implementation 'org.msgpack:msgpack-core:0.8.14'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation('de.sciss:weblaf:2.1.4') {
+        exclude group: 'org.slf4j'
+    }
+    implementation('net.dv8tion:JDA:4.ALPHA.0_56') {
+        exclude module: 'opus-java'
+    }
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-all:1.3'
+}
