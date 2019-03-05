@@ -4,9 +4,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
-import lighthouse.ui.AppContext;
+import lighthouse.ui.ObservableStatus;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.tickers.Ticker;
 import lighthouse.ui.util.Status;
@@ -15,21 +15,21 @@ import lighthouse.util.ColorUtils;
 public class GameWinChecker implements Ticker {
 	private final JComponent parent;
 	private final PuzzleGameState game;
-	private final AppContext context;
+	private final ObservableStatus status;
 	private final BoardStatistics statistics;
-	private final BoardAnimationRunner animationRunner;
+	private final AnimationRunner animationRunner;
 	private boolean alreadyWon = false;
 	
 	public GameWinChecker(
 		JComponent parent,
-		BoardAnimationRunner animationRunner,
+		AnimationRunner animationRunner,
 		PuzzleGameState game,
-		AppContext context,
+		ObservableStatus status,
 		BoardStatistics statistics
 	) {
 		this.parent = parent;
 		this.animationRunner = animationRunner;
-		this.context = context;
+		this.status = status;
 		this.game = game;
 		this.statistics = statistics;
 	}
@@ -46,7 +46,7 @@ public class GameWinChecker implements Ticker {
 				message += " Hooray!";
 			}
 			animationRunner.play(new ConfettiAnimation());
-			context.setStatus(new Status("Won", ColorUtils.LIGHT_VIOLET));
+			status.set(new Status("Won", ColorUtils.LIGHT_VIOLET));
 			JOptionPane.showMessageDialog(parent, message);
 		}
 	}

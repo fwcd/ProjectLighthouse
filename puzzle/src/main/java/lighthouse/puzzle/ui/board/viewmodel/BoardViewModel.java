@@ -14,6 +14,9 @@ import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.GameBlock;
 import lighthouse.puzzle.model.Move;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
+import lighthouse.ui.scene.viewmodel.graphics.SceneRect;
+import lighthouse.ui.scene.viewmodel.graphics.SceneShape;
+import lighthouse.ui.scene.viewmodel.graphics.Shading;
 import lighthouse.util.Direction;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
@@ -24,7 +27,7 @@ import lighthouse.util.ListenerList;
  * board together with its presentation
  * artifacts (such as overlays and animations).
  */
-public class BoardViewModel implements ColorGrid {
+public class BoardViewModel implements ColorGrid, SceneLayer {
 	private static final int FRAMES_PER_BOARD_TRANSITION = 10;
 	private final TransitionableBoard transitionableModel;
 	private final BoardEditState editState = new BoardEditState();
@@ -148,6 +151,28 @@ public class BoardViewModel implements ColorGrid {
 	}
 	
 	public ListenerList<Board> getBoardListeners() { return boardListeners; }
+	
+	@Override
+	public List<SceneShape> getShapes() {
+		List<SceneShape> shapes = new ArrayList<>();
+		GameBlock brickInProgress = editState.getBrickInProgress();
+		
+		if (brickInProgress != null) {
+			shapesOf(brickInProgress).forEach(shapes::add);
+		}
+		
+		getModel().streamBricks()
+			.flatMap(this::shapesOf)
+			.forEach(shapes::add);
+		
+		return shapes;
+	}
+	
+	private Stream<SceneShape> shapesOf(GameBlock block) {
+		return block.streamAllPositions()
+			.map(IntVec::toDouble)
+			.map(it -> new SceneRect(it, it.add(1, 1), block.getColor(), Shading.FILLED));
+	}
 	
 	// === Delegated methods ===
 	

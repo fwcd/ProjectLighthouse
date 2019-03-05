@@ -1,23 +1,21 @@
 package lighthouse.puzzle.ui;
 
-import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
+import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.board.BoardViewController;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
+import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.puzzle.ui.modes.GameMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
-import lighthouse.ui.AppContext;
-import lighthouse.ui.SwingViewController;
+import lighthouse.ui.ObservableStatus;
+import lighthouse.ui.scene.AnimationRunner;
+import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
@@ -29,13 +27,14 @@ import lighthouse.util.transform.Scaling;
  * Manages the game board view, the current
  * perspective and the active game mode.
  */
-public class PuzzleGameViewController implements SwingViewController {
-	private final JComponent component;
+public class PuzzleGameManager {
+	private final ObservableStatus status;
 	
-	private final AppContext context;
 	private final PuzzleGameState model;
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
-	private final BoardViewController board;
+	private final BoardViewModel boardViewModel;
+	private final DelegateResponder sceneResponder;
+	private final AnimationRunner animationRunner;
 
 	private GameMode mode;
 	private GamePerspective perspective;
@@ -47,23 +46,23 @@ public class PuzzleGameViewController implements SwingViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public PuzzleGameViewController(PuzzleGameState model, AppContext context) {
+	public PuzzleGameManager(PuzzleGameState model, GameInitializationContext context) {
 		this.model = model;
-		this.context = context;
 		
-		component = new JPanel(new BorderLayout());
-
+		status = context.getStatus();
+		sceneResponder = context.getSceneResponder();
+		animationRunner = context.getAnimationRunner();
+		
 		// Initialize board
-		board = new BoardViewController(model.getBoard(), model.getLevel().getBlockedStates(), gridToPixels, this::update);
-		component.add(board.getComponent(), BorderLayout.CENTER);
+		boardViewModel = new BoardViewModel(model.getBoard());
 
 		// Setup tickers
-		winChecker = new GameWinChecker(component, board.getAnimationRunner(), model, context, board.getViewModel().getStatistics());
+		winChecker = new GameWinChecker(null, context.getAnimationRunner(), model, context.getStatus(), boardViewModel.getStatistics());
 
 		// Add hooks
 		Flag updatingBoard = new Flag(false);
 		
-		board.getViewModel().getBoardListeners().add(boardModel -> {
+		boardViewModel.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
 				model.setBoard(boardModel);
@@ -73,8 +72,8 @@ public class PuzzleGameViewController implements SwingViewController {
 		model.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
-				board.transitionTo(boardModel);
-				board.getViewModel().getStatistics().reset();
+				boardViewModel.transitionTo(boardModel);
+				boardViewModel.getStatistics().reset();
 				updatingBoard.set(false);
 			}
 		});
@@ -91,14 +90,13 @@ public class PuzzleGameViewController implements SwingViewController {
 	}
 	
 	private void update() {
-		board.render();
 		tickers.tick();
 		
 		for (Updatable updater : externalUpdaters) {
 			updater.update();
 		}
 		
-		BoardStatistics stats = board.getViewModel().getStatistics();
+		BoardStatistics stats = boardViewModel.getStatistics();
 		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}
 	
@@ -109,10 +107,10 @@ public class PuzzleGameViewController implements SwingViewController {
 			model.startLevel();
 			winChecker.reset();
 		} else {
-			// Otherwise delegate 'reset()'-call to board
-			board.reset();
+			// Otherwise delegate 'reset()'-call to controller
+			sceneResponder.reset();
 		}
-		context.setStatus(mode.getBaseStatus());
+		status.set(mode.getBaseStatus());
 		update();
 	}
 	
@@ -127,7 +125,7 @@ public class PuzzleGameViewController implements SwingViewController {
 		}
 		
 		this.mode = mode;
-		context.setStatus(mode.getBaseStatus());
+		status.set(mode.getBaseStatus());
 
 		show(mode.getInitialPerspective());
 		update();
@@ -144,9 +142,9 @@ public class PuzzleGameViewController implements SwingViewController {
 	
 	private void updateBoard() {
 		Board activeBoard = perspective.getActiveBoard(model);
-		board.transitionTo(activeBoard);
-		board.getViewModel().setBlockedStates(model.getLevel().getBlockedStates());
-		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update, board.getAnimationRunner()));
+		boardViewModel.transitionTo(activeBoard);
+		boardViewModel.setBlockedStates(model.getLevel().getBlockedStates());
+		sceneResponder.setDelegate(mode.createController(perspective, boardViewModel, this::update, animationRunner));
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
@@ -157,16 +155,13 @@ public class PuzzleGameViewController implements SwingViewController {
 	
 	public ListenerList<GamePerspective> getPerspectiveListeners() { return perspectiveListeners; }
 	
-	public BoardViewController getBoard() { return board; }
-	
 	public PuzzleGameState getModel() { return model; }
-	
-	public AppContext getContext() { return context; }
 	
 	public TickerList getTickers() { return tickers; }
 	
 	public List<Updatable> getExternalUpdaters() { return externalUpdaters; }
 	
-	@Override
-	public JComponent getComponent() { return component; }
+	public ObservableStatus getStatus() { return status; }
+	
+	public BoardViewModel getBoardViewModel() { return boardViewModel; }
 }

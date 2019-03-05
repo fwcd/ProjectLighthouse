@@ -9,10 +9,10 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.window.WebPopup;
 
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.PuzzleGameViewController;
+import lighthouse.puzzle.ui.PuzzleGameManager;
 import lighthouse.puzzle.ui.modes.EditingMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
-import lighthouse.ui.AppContext;
+import lighthouse.ui.ObservableStatus;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.ui.util.StatusBar;
@@ -25,19 +25,19 @@ public class GameControlsViewController implements SwingViewController {
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	public GameControlsViewController(PuzzleGameViewController game, PuzzleGameState gameState) {
+	public GameControlsViewController(PuzzleGameManager game, PuzzleGameState gameState) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 
-		AppContext context = game.getContext();
+		ObservableStatus status = game.getStatus();
 		
 		// Setup status bar
 		statusBar = new StatusBar();
-		statusBar.display(context.getStatus());
+		statusBar.display(status.get());
 		
-		context.getStatusListeners().add(statusBar::display);
+		status.getListeners().add(statusBar::display);
 		gameState.getBoardListeners().add(newBoard -> {
-			context.getStatusListeners().add(statusBar::display);
+			status.getListeners().add(statusBar::display);
 		});
 		
 		WebSplitButton editButton = LayoutUtils.splitButtonOf("Edit", () -> game.enter(EditingMode.INSTANCE));

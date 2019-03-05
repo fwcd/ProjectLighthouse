@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.Edge;
-import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.util.Direction;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
@@ -22,7 +22,7 @@ import lighthouse.util.Updatable;
  */
 public class BoardPlayController extends BoardBaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
-	private final BoardAnimationRunner animationRunner;
+	private final AnimationRunner animationRunner;
 	
 	private Map<Direction, Integer> limits;
 	private boolean dragEvent;
@@ -31,7 +31,7 @@ public class BoardPlayController extends BoardBaseController {
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(BoardViewModel viewModel, Updatable updater, BoardAnimationRunner animationRunner) {
+	public BoardPlayController(BoardViewModel viewModel, Updatable updater, AnimationRunner animationRunner) {
 		super(viewModel, updater);
 		this.animationRunner = animationRunner;
 		

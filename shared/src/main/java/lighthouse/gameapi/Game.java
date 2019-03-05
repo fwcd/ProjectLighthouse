@@ -34,8 +34,6 @@ public interface Game {
 	
 	default List<GameMenuEntry> getGameMenuEntries() { return Collections.emptyList(); }
 	
-	default SwingViewController getGameViewController() { return new EmptyViewController(); }
-	
 	default boolean hasCustomGameViewController() { return false; }
 	
 	default SwingViewController getSolverViewController() { return new EmptyViewController(); }

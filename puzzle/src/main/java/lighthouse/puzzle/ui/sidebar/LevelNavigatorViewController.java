@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 
 import com.alee.extended.progress.WebStepProgress;
 
-import lighthouse.puzzle.ui.PuzzleGameViewController;
+import lighthouse.puzzle.ui.PuzzleGameManager;
 import lighthouse.puzzle.ui.perspectives.CommonPerspective;
 import lighthouse.puzzle.ui.perspectives.InGamePerspective;
 import lighthouse.ui.SwingViewController;
@@ -20,7 +20,7 @@ import lighthouse.ui.SwingViewController;
 public class LevelNavigatorViewController implements SwingViewController {
 	private final WebStepProgress component;
 	
-	public LevelNavigatorViewController(PuzzleGameViewController game) {
+	public LevelNavigatorViewController(PuzzleGameManager game) {
 		component = new WebStepProgress();
 		component.addSteps(CommonPerspective.PERSPECTIVES.stream()
 			.sorted()

@@ -2,11 +2,11 @@ package lighthouse.puzzle.ui.perspectives;
 
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.controller.BoardArrangeController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.NoBoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.util.Updatable;
 
 /**
@@ -27,12 +27,12 @@ public class GoalPerspective implements GamePerspective {
 	public Board getActiveBoard(PuzzleGameState model) { return model.getLevel().getGoal(); }
 	
 	@Override
-	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner) {
+	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
 		return new BoardArrangeController(board, gameUpdater);
 	}
 	
 	@Override
-	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner) {
+	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
 		return NoBoardResponder.INSTANCE;
 	}
 }

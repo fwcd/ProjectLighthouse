@@ -15,15 +15,11 @@ import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.ui.board.controller.BoardPlayController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.DelegateBoardResponder;
-import lighthouse.puzzle.ui.board.input.BoardKeyInput;
-import lighthouse.puzzle.ui.board.input.BoardMouseInput;
 import lighthouse.puzzle.ui.board.view.BoardView;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.debug.AnimationTracker;
-import lighthouse.ui.scene.view.LighthouseView;
-import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -32,6 +28,7 @@ import lighthouse.util.transform.DoubleVecBijection;
  * Manages the different board views. It assembles the necessary inputs and
  * views, while still allowing the user of this class to hook custom views.
  */
+@Deprecated
 public class BoardViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardViewController.class);
 	private final JComponent component;
@@ -39,9 +36,7 @@ public class BoardViewController implements SwingViewController {
 	private final Updatable gameUpdater;
 	
 	private BoardViewModel viewModel;
-	private LighthouseViewModel lighthouseViewModel;
 	
-	private final List<LighthouseView> lhViews = new ArrayList<>();
 	private final List<BoardView> boardViews = new ArrayList<>();
 	private final LocalBoardView localView;
 	private final DelegateBoardResponder responder;
@@ -54,25 +49,14 @@ public class BoardViewController implements SwingViewController {
 		this.gameUpdater = gameUpdater;
 
 		viewModel = new BoardViewModel(model, blockedStates);
-		lighthouseViewModel = new LighthouseViewModel(viewModel);
 		animationRunner = new BoardAnimationRunner(viewModel, animationFPS, gameUpdater);
-		responder = new DelegateBoardResponder(new BoardPlayController(viewModel, gameUpdater, animationRunner));
+		responder = new DelegateBoardResponder(new BoardPlayController(viewModel, gameUpdater, null));
 
 		// Creates a local view and hooks up the Swing component
 		localView = new LocalBoardView(gridToPixels);
 		localView.relayout(model.getColumns(), model.getRows());
 		component = localView.getComponent();
 		addBoardView(localView);
-
-		// Adds mouse input
-		BoardMouseInput mouseInput = new BoardMouseInput(gridToPixels);
-		mouseInput.addResponder(responder);
-		localView.addMouseInput(mouseInput);
-
-		// Adds keyboard input
-		BoardKeyInput keyInput = new BoardKeyInput();
-		keyInput.addResponder(responder);
-		localView.addKeyInput(keyInput);
 	}
 
 	/** Plays an animation in high and low resolution on the board views. */
@@ -109,9 +93,6 @@ public class BoardViewController implements SwingViewController {
 		for (BoardView view : boardViews) {
 			view.draw(viewModel);
 		}
-		for (LighthouseView lhView : lhViews) {
-			lhView.draw(lighthouseViewModel);
-		}
 	}
 	
 	private void updateTransitionTimer() {
@@ -138,8 +119,6 @@ public class BoardViewController implements SwingViewController {
 	public BoardResponder getResponder() { return responder; }
 	
 	public void reset() { responder.reset(); }
-	
-	public void addLighthouseView(LighthouseView view) { lhViews.add(view); }
 	
 	public void addBoardView(BoardView view) { boardViews.add(view); }
 	

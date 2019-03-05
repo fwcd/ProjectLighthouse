@@ -2,12 +2,13 @@ package lighthouse.puzzle.ui.board;
 
 import javax.swing.Timer;
 
-import lighthouse.puzzle.ui.board.debug.AnimationTracker;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.debug.AnimationTracker;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
 import lighthouse.ui.scene.viewmodel.graphics.AnimationPlayer;
 import lighthouse.util.Updatable;
 
+@Deprecated
 public class BoardAnimationRunner {
 	private final BoardViewModel viewModel;
 	private final AnimationTracker tracker = new AnimationTracker();

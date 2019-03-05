@@ -7,9 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.gameapi.Game;
+import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.model.GameState;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.PuzzleGameViewController;
+import lighthouse.puzzle.ui.PuzzleGameManager;
 import lighthouse.puzzle.ui.sidebar.BoardStatisticsViewController;
 import lighthouse.puzzle.ui.sidebar.GameControlsViewController;
 import lighthouse.puzzle.ui.sidebar.SolverViewController;
@@ -22,15 +23,15 @@ import lighthouse.ui.SwingViewController;
 public class PuzzleGame implements Game {
 	private static final Logger LOG = LoggerFactory.getLogger(PuzzleGame.class);
 	private final PuzzleGameState model = new PuzzleGameState();
-	private PuzzleGameViewController game;
+	private PuzzleGameManager game;
 	private SwingViewController controls;
 	private SwingViewController solver;
 	private SwingViewController statistics;
 	
 	@Override
-	public void initialize(AppContext context) {
+	public void initialize(GameInitializationContext context) {
 		loadDefaultLevel();
-		game = new PuzzleGameViewController(model, context);
+		game = new PuzzleGameManager(model, context);
 		controls = new GameControlsViewController(game, model);
 		solver = new SolverViewController(model, game.getBoard());
 		statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
@@ -53,9 +54,6 @@ public class PuzzleGame implements Game {
 	
 	@Override
 	public boolean hasCustomGameViewController() { return true; }
-	
-	@Override
-	public SwingViewController getGameViewController() { return game; }
 	
 	@Override
 	public SwingViewController getControlsViewController() { return controls; }

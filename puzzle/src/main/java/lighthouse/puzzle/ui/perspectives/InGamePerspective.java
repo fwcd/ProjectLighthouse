@@ -7,6 +7,7 @@ import lighthouse.puzzle.ui.board.controller.BoardPlayController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.NoBoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.util.Updatable;
 
 /**
@@ -30,12 +31,12 @@ public class InGamePerspective implements GamePerspective {
 	public boolean isInGame() { return true; }
 	
 	@Override
-	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner) {
+	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
 		return NoBoardResponder.INSTANCE;
 	}
 	
 	@Override
-	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner) {
+	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
 		return new BoardPlayController(board, gameUpdater, animationRunner);
 	}
 }

@@ -4,6 +4,7 @@ import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.util.Status;
 import lighthouse.util.Updatable;
 
@@ -15,7 +16,7 @@ public interface GameMode {
 	
 	GamePerspective getInitialPerspective();
 	
-	BoardResponder createController(GamePerspective perspective, BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner);
+	BoardResponder createController(GamePerspective perspective, BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner);
 	
 	default boolean isPlaying() { return false; }
 }
