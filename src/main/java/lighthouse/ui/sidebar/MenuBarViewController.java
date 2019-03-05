@@ -112,8 +112,7 @@ public class MenuBarViewController implements ViewController {
 	
 	private void explode() {
 		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, getBoardSize().toDouble());
-		animation.setSpeed(0.2);
-		animation.setLoopCount(2);
+		animation.setSpeed(0.5);
 		playAnimation(animation);
 	}
 	
