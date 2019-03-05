@@ -11,6 +11,7 @@ import com.alee.extended.panel.WebAccordion;
 import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.view.LocalLighthouseView;
 import lighthouse.ui.util.SwapPanel;
 
@@ -27,11 +28,11 @@ public class SideBarViewController implements SwingViewController {
 	private final SwapPanel gameStatisticsPanel;
 	private final SwapPanel solverPanel;
 	
-	public SideBarViewController(AppModel model) {
+	public SideBarViewController(AppModel model, SceneViewController scene) {
 		component = new JPanel(new BorderLayout());
 		
 		// Adds a menu bar on top
-		menuBar = new MenuBarViewController(model);
+		menuBar = new MenuBarViewController(model, scene.getAnimationRunner());
 		component.add(menuBar.getComponent(), BorderLayout.NORTH);
 		
 		WebAccordion accordion = new WebAccordion();
@@ -51,7 +52,7 @@ public class SideBarViewController implements SwingViewController {
 		
 		// Add the connector panel which allows the user
 		// to connect a remote Lighthouse view.
-		ConnectorsViewController connector = new ConnectorsViewController(game.getBoard());
+		ConnectorsViewController connector = new ConnectorsViewController(scene);
 		accordion.addPane("Connectors", connector.getComponent());
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.

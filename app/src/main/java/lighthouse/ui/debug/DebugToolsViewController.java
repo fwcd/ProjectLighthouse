@@ -5,7 +5,6 @@ import javax.swing.JComponent;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 
 import lighthouse.model.AppModel;
-import lighthouse.ui.GameViewController;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.debug.animations.ActiveAnimationsViewController;
 import lighthouse.ui.debug.listeners.ListenerGraphViewController;
@@ -18,19 +17,25 @@ public class DebugToolsViewController implements SwingViewController, AutoClosea
 	private final ListenerGraphViewController listenerGraph;
 	private final ActiveAnimationsViewController activeAnimations;
 	
-	public DebugToolsViewController(AppModel appModel, GameViewController gameVC) {
+	public DebugToolsViewController(AppModel appModel, AnimationTracker animationTracker) {
 		component = new WebTabbedPane();
 		
-		listenerGraph = new ListenerGraphViewController(appModel, gameVC);
+		listenerGraph = new ListenerGraphViewController(appModel);
 		component.addTab("Listeners", listenerGraph.getComponent());
 		
-		activeAnimations = new ActiveAnimationsViewController(gameVC.getBoard().getAnimationTracker());
-		component.addTab("Active Animations", activeAnimations.getComponent());
+		if (animationTracker != null) {
+			activeAnimations = new ActiveAnimationsViewController(animationTracker);
+			component.addTab("Active Animations", activeAnimations.getComponent());
+		} else {
+			activeAnimations = null;
+		}
 	}
 	
 	@Override
 	public void close() {
-		activeAnimations.close();
+		if (activeAnimations != null) {
+			activeAnimations.close();
+		}
 		listenerGraph.removeUpdateHooks();
 	}
 	

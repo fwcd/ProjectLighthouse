@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.GameState;
+import lighthouse.util.IntVec;
 import lighthouse.util.ListenerList;
 
 /**
@@ -82,6 +83,11 @@ public class PuzzleGameState implements GameState {
             LOG.info("Loading level from stream...");
             setLevel(GSON.fromJson(reader, Level.class));
 		}
+    }
+    
+    @Override
+    public IntVec getGridSize() {
+        return board.getSize();
     }
     
     public void setLevel(Level level) {

@@ -23,9 +23,10 @@ import org.slf4j.LoggerFactory;
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameMenuEntry;
 import lighthouse.model.AppModel;
-import lighthouse.ui.AppContext;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.debug.AnimationTracker;
 import lighthouse.ui.debug.DebugToolsViewController;
+import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedImageAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedResourceGIFAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.Animation;
@@ -44,9 +45,12 @@ public class MenuBarViewController implements SwingViewController {
 	private final WebMenu gameMenu;
 
 	private final AppModel model;
+	private final AnimationRunner animationRunner;
+	private AnimationTracker animationTracker = null;
 	
-	public MenuBarViewController(AppModel model) {
+	public MenuBarViewController(AppModel model, AnimationRunner animationRunner) {
 		this.model = model;
+		this.animationRunner = animationRunner;
 		
 		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
 		
@@ -66,7 +70,10 @@ public class MenuBarViewController implements SwingViewController {
 				LayoutUtils.itemOf("Play demo animation", () -> playAnimation(new DemoAnimation())),
 				LayoutUtils.itemOf("Make it 'splode", () -> explode()),
 				LayoutUtils.itemOf("Play confetti", () -> playAnimation(new ConfettiAnimation())),
-				LayoutUtils.itemOf("Play sailing-boat", () -> playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-boardSize.getX(), 0), new IntVec(boardSize.getX(), 0), getBoardSize().toDouble())))
+				LayoutUtils.itemOf("Play sailing-boat", () -> {
+					IntVec gameGridSize = getGameGridSize();
+					playAnimation(new MovingImageAnimation(ResourceImageLoader.getInstance().get("/images/boat.png"), new IntVec(-gameGridSize.getX(), 0), new IntVec(gameGridSize.getX(), 0), gameGridSize.toDouble()));
+				})
 			),
 			gameMenu
 		);
@@ -118,11 +125,15 @@ public class MenuBarViewController implements SwingViewController {
 	}
 	
 	private void playAnimation(Animation animation) {
-		game.getBoard().play(animation);
+		animationRunner.play(animation);
+	}
+	
+	private IntVec getGameGridSize() {
+		return model.getActiveGameState().getGridSize();
 	}
 	
 	private void explode() {
-		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, getBoardSize().toDouble());
+		AnimatedImageAnimation animation = new AnimatedResourceGIFAnimation("/gifs/explosion.gif", DoubleVec.ZERO, getGameGridSize().toDouble());
 		animation.setSpeed(0.5);
 		playAnimation(animation);
 	}
@@ -143,7 +154,7 @@ public class MenuBarViewController implements SwingViewController {
 	}
 	
 	private void openDebugTools() {
-		DebugToolsViewController debugTools = new DebugToolsViewController(model, game);
+		DebugToolsViewController debugTools = new DebugToolsViewController(model, animationTracker);
 		WebFrame popup = new WebFrame("Debug tools");
 		popup.setDefaultCloseOperation(WebFrame.DO_NOTHING_ON_CLOSE);
 		popup.addWindowListener(new WindowAdapter() {

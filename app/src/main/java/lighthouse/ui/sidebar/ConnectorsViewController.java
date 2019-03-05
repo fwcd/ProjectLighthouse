@@ -5,16 +5,16 @@ import javax.swing.JComponent;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 
 import lighthouse.ui.SwingViewController;
-import lighthouse.puzzle.ui.board.BoardViewController;
+import lighthouse.ui.scene.SceneViewController;
 
 public class ConnectorsViewController implements SwingViewController {
 	private final WebTabbedPane component;
 	
-	public ConnectorsViewController(BoardViewController board) {
+	public ConnectorsViewController(SceneViewController scene) {
 		component = new WebTabbedPane();
 		
-		component.addTab("Lighthouse", new LighthouseConnectorViewController(board).getComponent());
-		component.addTab("Discord", new DiscordConnectorViewController(board).getComponent());
+		component.addTab("Lighthouse", new LighthouseConnectorViewController(scene).getComponent());
+		component.addTab("Discord", new DiscordConnectorViewController(scene).getComponent());
 	}
 	
 	@Override

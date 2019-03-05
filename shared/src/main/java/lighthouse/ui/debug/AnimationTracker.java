@@ -1,4 +1,4 @@
-package lighthouse.puzzle.ui.board.debug;
+package lighthouse.ui.debug;
 
 import java.util.Collections;
 import java.util.Map;

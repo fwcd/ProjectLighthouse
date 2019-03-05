@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.model.AppModel;
-import lighthouse.ui.GameViewController;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.Listener;
@@ -29,16 +28,14 @@ import lighthouse.util.ListenerList;
 public class ListenerGraphViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(ListenerGraphViewController.class);
 	private final AppModel appModel;
-	private final GameViewController gameVC;
 	
 	private final JComponent component;
 	private final ListenerGraphView view;
 	private List<ListenerGraph> models = Collections.emptyList();
 	private Listener<Object> updateHook;
 	
-	public ListenerGraphViewController(AppModel appModel, GameViewController gameVC) {
+	public ListenerGraphViewController(AppModel appModel) {
 		this.appModel = appModel;
-		this.gameVC = gameVC;
 		
 		component = new JPanel(new BorderLayout());
 		component.add(LayoutUtils.buttonOf("Update", this::update), BorderLayout.NORTH);
@@ -78,8 +75,7 @@ public class ListenerGraphViewController implements SwingViewController {
 	public List<ListenerGraph> buildGraphs() {
 		Set<ListenerList<?>> roots = new HashSet<>();
 		Set<Field> visited = new HashSet<>();
-		findListenerListsIn(appModel.getGameState(), visited, roots);
-		findListenerListsIn(gameVC, visited, roots);
+		findListenerListsIn(appModel.getActiveGameState(), visited, roots);
 		return Collections.singletonList(new ListenerGraph(roots.stream().toArray(ListenerList[]::new)));
 	}
 	

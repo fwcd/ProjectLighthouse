@@ -4,11 +4,10 @@ import java.awt.BorderLayout;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
-import com.alee.laf.tabbedpane.WebTabbedPane;
+import javax.swing.JToolBar;
 
 import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
@@ -23,7 +22,7 @@ import lighthouse.ui.sidebar.SideBarViewController;
  */
 public class AppViewController implements SwingViewController {
 	private final JComponent component;
-	private final JTabbedPane tabPane;
+	private final JToolBar tabBar;
 	private final SceneViewController scene;
 	private final SideBarViewController sideBar;
 	
@@ -36,12 +35,18 @@ public class AppViewController implements SwingViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		tabPane = new WebTabbedPane();
-		component.add(tabPane, BorderLayout.CENTER);
+		JPanel centerPane = new JPanel();
+		centerPane.setLayout(new BorderLayout());
+		
+		tabBar = new JToolBar();
+		centerPane.add(tabBar, BorderLayout.NORTH);
 		
 		scene = new SceneViewController();
+		centerPane.add(scene.getComponent(), BorderLayout.CENTER);
 		
-		sideBar = new SideBarViewController(model);
+		component.add(centerPane, BorderLayout.CENTER);
+		
+		sideBar = new SideBarViewController(model, scene);
 		component.add(sideBar.getComponent(), BorderLayout.EAST);
 		
 		// Register known games
@@ -65,18 +70,10 @@ public class AppViewController implements SwingViewController {
 	public void registerGame(Game game) {
 		game.initialize(context);
 		
-		JComponent gameComponent;
-		
-		if (game.hasCustomGameViewController()) {
-			gameComponent = game.getGameViewController().getComponent();
-		} else {
-			LocalSceneView sceneView = new LocalSceneView();
-			scene.addView(sceneView);
-			gameComponent = sceneView.getComponent();
-		}
-		
-		tabPane.addTab(game.getName(), gameComponent);
-		tabPane.addChangeListener(l -> open(game));
+		// TODO: Toggle buttons to indicate the active tab
+		JButton tab = new JButton(game.getName());
+		tab.addActionListener(e -> open(game));
+		tabBar.add(tab);
 		
 		if (gameRegistry.isEmpty()) {
 			open(game);
@@ -86,6 +83,17 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	private void open(Game game) {
+		JComponent gameComponent;
+		
+		// FIXME: Register game view
+		if (game.hasCustomGameViewController()) {
+			gameComponent = game.getGameViewController().getComponent();
+		} else {
+			LocalSceneView sceneView = new LocalSceneView();
+			scene.addView(sceneView);
+			gameComponent = sceneView.getComponent();
+		}
+		
 		sideBar.setGameControls(game.getControlsViewController().getComponent());
 		sideBar.setGameStatistics(game.getStatisticsViewController().getComponent());
 		sideBar.setSolver(game.getSolverViewController().getComponent());

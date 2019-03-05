@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 import com.alee.laf.progressbar.WebProgressBar;
 
-import lighthouse.puzzle.ui.board.debug.AnimationTracker;
+import lighthouse.ui.debug.AnimationTracker;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.Listener;
 
