@@ -1,4 +1,4 @@
-package lighthouse.ui.sidebar;
+package lighthouse.puzzle.ui.sidebar;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;

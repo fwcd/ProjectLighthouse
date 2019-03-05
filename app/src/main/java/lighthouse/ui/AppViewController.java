@@ -74,6 +74,9 @@ public class AppViewController implements ViewController {
 		sideBar.setGameControls(game.getControlsViewController().getComponent());
 		sideBar.setGameStatistics(game.getStatisticsViewController().getComponent());
 		sideBar.setSolver(game.getSolverViewController().getComponent());
+		
+		discordRPC.setDetails("Playing " + game.getName());
+		discordRPC.updatePresenceSoon();
 	}
 	
 	@Override

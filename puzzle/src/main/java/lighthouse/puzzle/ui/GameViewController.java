@@ -1,4 +1,4 @@
-package lighthouse.ui;
+package lighthouse.puzzle.ui;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -31,7 +31,8 @@ import lighthouse.util.transform.Scaling;
  */
 public class GameViewController implements ViewController {
 	private final JComponent component;
-
+	
+	private final AppContext context;
 	private final PuzzleGameState model;
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
 	private final BoardViewController board;
@@ -46,9 +47,10 @@ public class GameViewController implements ViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public GameViewController(PuzzleGameState model) {
+	public GameViewController(PuzzleGameState model, AppContext context) {
 		this.model = model;
-
+		this.context = context;
+		
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
@@ -86,16 +88,6 @@ public class GameViewController implements ViewController {
 		
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
-
-		// Setup RPC
-		discordRPC.setState(context.getStatus().getMessage());
-		discordRPC.updatePresenceSoon();
-		discordRPC.start();
-		
-		context.getStatusListeners().add(newStatus -> {
-			discordRPC.setState(newStatus.getMessage());
-			discordRPC.updatePresenceSoon();
-		});
 	}
 	
 	private void update() {
@@ -145,9 +137,6 @@ public class GameViewController implements ViewController {
 	public void show(GamePerspective perspective) {
 		this.perspective = perspective;
 		updateBoard();
-		
-		discordRPC.setDetails(perspective.getName());
-		discordRPC.updatePresenceSoon();
 		
 		perspectiveListeners.fire(perspective);
 		update();

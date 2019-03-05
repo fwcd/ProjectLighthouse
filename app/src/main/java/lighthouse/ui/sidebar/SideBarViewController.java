@@ -42,10 +42,6 @@ public class SideBarViewController implements ViewController {
 		gameControlPanel = new SwapPanel();
 		accordion.addPane("Game Controls", gameControlPanel);
 		
-		// TODO: Integrate AI controls into solvers
-		// AIViewController aiControls = new AIViewController(model);
-		// accordion.addPane("AI Controls", aiControls.getComponent()).collapse();
-		
 		solverPanel = new SwapPanel();
 		accordion.addPane("Solver", solverPanel);
 		

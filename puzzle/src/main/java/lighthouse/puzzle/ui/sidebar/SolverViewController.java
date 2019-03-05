@@ -36,6 +36,10 @@ public class SolverViewController implements ViewController {
 		
 		WebSpinner playbackSpeed = new WebSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 		
+		// TODO: Integrate AI controls into solvers
+		// AIViewController aiControls = new AIViewController(model);
+		// accordion.addPane("AI Controls", aiControls.getComponent()).collapse();
+		
 		component = LayoutUtils.vboxOf(
 			LayoutUtils.compoundOf(
 				new JLabel("Playback speed (boards/sec): "),
