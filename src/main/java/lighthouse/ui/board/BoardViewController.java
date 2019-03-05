@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 import javax.swing.JComponent;
 import javax.swing.Timer;
@@ -27,7 +26,6 @@ import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
 import lighthouse.ui.board.viewmodel.overlay.Animation;
-import lighthouse.ui.board.viewmodel.overlay.AnimationPlayer;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.DoubleVecBijection;
 
@@ -49,8 +47,8 @@ public class BoardViewController implements ViewController {
 	private final LocalBoardView localView;
 	private final DelegateResponder responder;
 	
-	private final AnimationTracker animationTracker = new AnimationTracker();
-	private int animationFPS = 60;
+	private final int animationFPS = 60;
+	private final BoardAnimationRunner animationRunner;
 	private boolean hasRunningTransitionTimer = false;
 
 	public BoardViewController(Board model, List<Board> blockedStates, DoubleVecBijection gridToPixels, Updatable gameUpdater) {
@@ -58,7 +56,8 @@ public class BoardViewController implements ViewController {
 
 		viewModel = new BoardViewModel(model, blockedStates);
 		lighthouseViewModel = new LighthouseViewModel(viewModel);
-		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater));
+		animationRunner = new BoardAnimationRunner(viewModel, animationFPS, gameUpdater);
+		responder = new DelegateResponder(new BoardPlayController(viewModel, gameUpdater, animationRunner));
 
 		// Creates a local view and hooks up the Swing component
 		localView = new LocalBoardView(gridToPixels);
@@ -79,32 +78,7 @@ public class BoardViewController implements ViewController {
 
 	/** Plays an animation in high and low resolution on the board views. */
 	public void play(Animation animation) {
-		String name = animation.getName() + " #" + Integer.toHexString(animation.hashCode());
-		int totalFrames = animation.getTotalFrames();
-		AnimationPlayer player = new AnimationPlayer(animation);
-		
-		viewModel.addOverlay(player);
-		animationTracker.setRunningAnimationProgress(name, 0.0);
-		
-		Timer timer = new Timer(1000 / animationFPS, e -> {
-			if (player.hasNextFrame()) {
-				player.nextFrame();
-				gameUpdater.update();
-				
-				if (animationTracker.isEnabled()) {
-					animationTracker.setRunningAnimationProgress(name, player.getCurrentFrame() / (double) totalFrames);
-				}
-			} else {
-				animationTracker.removeRunningAnimation(name);
-				viewModel.removeOverlay(player);
-				gameUpdater.update();
-				
-				((Timer) e.getSource()).stop();
-			}
-		});
-		
-		timer.setRepeats(true);
-		timer.start();
+		animationRunner.play(animation);
 	}
 	
 	public CompletableFuture<Void> play(List<? extends Board> boards, int delayMs) {
@@ -175,7 +149,7 @@ public class BoardViewController implements ViewController {
 	
 	public BoardViewModel getViewModel() { return viewModel; }
 	
-	public AnimationTracker getAnimationTracker() { return animationTracker; }
+	public AnimationTracker getAnimationTracker() { return animationRunner.getTracker(); }
 	
 	@Override
 	public JComponent getComponent() { return component; }

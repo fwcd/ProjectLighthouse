@@ -1,5 +1,6 @@
 package lighthouse.ui.modes;
 
+import lighthouse.ui.board.BoardAnimationRunner;
 import lighthouse.ui.board.controller.BoardResponder;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.perspectives.GamePerspective;
@@ -14,7 +15,7 @@ public interface GameMode {
 	
 	GamePerspective getInitialPerspective();
 	
-	BoardResponder createController(GamePerspective perspective, BoardViewModel board, Updatable gameUpdater);
+	BoardResponder createController(GamePerspective perspective, BoardViewModel board, Updatable gameUpdater, BoardAnimationRunner animationRunner);
 	
 	default boolean isPlaying() { return false; }
 }

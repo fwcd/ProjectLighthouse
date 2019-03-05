@@ -12,6 +12,7 @@ import lighthouse.model.Board;
 import lighthouse.model.Brick;
 import lighthouse.model.Direction;
 import lighthouse.model.Edge;
+import lighthouse.ui.board.BoardAnimationRunner;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
 import lighthouse.util.Updatable;
@@ -21,6 +22,8 @@ import lighthouse.util.Updatable;
  */
 public class BoardPlayController extends BoardBaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
+	private final BoardAnimationRunner animationRunner;
+	
 	private Map<Direction, Integer> limits;
 	private boolean dragEvent;
 	private Direction lastDir;
@@ -28,8 +31,10 @@ public class BoardPlayController extends BoardBaseController {
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(BoardViewModel viewModel, Updatable updater) {
+	public BoardPlayController(BoardViewModel viewModel, Updatable updater, BoardAnimationRunner animationRunner) {
 		super(viewModel, updater);
+		this.animationRunner = animationRunner;
+		
 		resetLimits();
 		setResetEnabled(true);
 	}
