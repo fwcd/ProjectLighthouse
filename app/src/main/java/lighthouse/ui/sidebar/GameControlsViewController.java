@@ -10,7 +10,7 @@ import com.alee.extended.window.WebPopup;
 
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.ui.GameContext;
+import lighthouse.ui.AppContext;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.puzzle.ui.modes.EditingMode;
@@ -29,7 +29,7 @@ public class GameControlsViewController implements ViewController {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 
-		GameContext context = game.getContext();
+		AppContext context = game.getContext();
 		PuzzleGameState gameState = model.getGameState();
 		
 		// Setup status bar

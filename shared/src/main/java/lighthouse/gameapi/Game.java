@@ -1,6 +1,7 @@
 package lighthouse.gameapi;
 
 import lighthouse.model.GameState;
+import lighthouse.ui.AppContext;
 import lighthouse.ui.EmptyViewController;
 import lighthouse.ui.ViewController;
 
@@ -11,6 +12,8 @@ public interface Game {
 	String getName();
 	
 	GameState getModel();
+	
+	default void initialize(AppContext context) {}
 	
 	default ViewController getGameViewController() { return new EmptyViewController(); }
 	

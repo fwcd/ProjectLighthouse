@@ -5,9 +5,9 @@ import lighthouse.util.ListenerList;
 
 /**
  * Holds additional information about the
- * UI state of the game.
+ * UI state of the application/game.
  */
-public class GameContext {
+public class AppContext {
 	private Status status;
 	private final ListenerList<Status> statusListeners = new ListenerList<>("GameContext.statusListeners");
 	

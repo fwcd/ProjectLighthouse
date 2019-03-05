@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.BoardAnimationRunner;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
-import lighthouse.ui.GameContext;
+import lighthouse.ui.AppContext;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.tickers.Ticker;
 import lighthouse.ui.util.Status;
@@ -15,7 +15,7 @@ import lighthouse.util.ColorUtils;
 public class GameWinChecker implements Ticker {
 	private final JComponent parent;
 	private final PuzzleGameState game;
-	private final GameContext context;
+	private final AppContext context;
 	private final BoardStatistics statistics;
 	private final BoardAnimationRunner animationRunner;
 	private boolean alreadyWon = false;
@@ -24,7 +24,7 @@ public class GameWinChecker implements Ticker {
 		JComponent parent,
 		BoardAnimationRunner animationRunner,
 		PuzzleGameState game,
-		GameContext context,
+		AppContext context,
 		BoardStatistics statistics
 	) {
 		this.parent = parent;

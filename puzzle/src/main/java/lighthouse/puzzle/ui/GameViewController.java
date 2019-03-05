@@ -16,7 +16,8 @@ import lighthouse.puzzle.ui.modes.GameMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
-import lighthouse.ui.discordrpc.DiscordRPCRunner;
+import lighthouse.ui.AppContext;
+import lighthouse.ui.ViewController;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
@@ -32,10 +33,7 @@ public class GameViewController implements ViewController {
 	private final JComponent component;
 
 	private final PuzzleGameState model;
-	private final GameContext context = new GameContext();
-	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
-	private final BoardViewController board;
 
 	private GameMode mode;
 	private GamePerspective perspective;
@@ -47,9 +45,7 @@ public class GameViewController implements ViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public GameViewController(PuzzleGameState model) {
-		this.model = model;
-
+	public GameViewController() {
 		component = new JPanel(new BorderLayout());
 
 		// Initialize board
@@ -87,16 +83,6 @@ public class GameViewController implements ViewController {
 		
 		// Enter playing mode
 		enter(PlayingMode.INSTANCE);
-
-		// Setup RPC
-		discordRPC.setState(context.getStatus().getMessage());
-		discordRPC.updatePresenceSoon();
-		discordRPC.start();
-		
-		context.getStatusListeners().add(newStatus -> {
-			discordRPC.setState(newStatus.getMessage());
-			discordRPC.updatePresenceSoon();
-		});
 	}
 	
 	private void update() {
@@ -173,7 +159,7 @@ public class GameViewController implements ViewController {
 	
 	public PuzzleGameState getModel() { return model; }
 	
-	public GameContext getContext() { return context; }
+	public AppContext getContext() { return context; }
 	
 	public TickerList getTickers() { return tickers; }
 	
