@@ -77,7 +77,7 @@ public class MenuBarViewController implements ViewController {
 			saveAs();
 		} else {
 			try {
-				model.getGameState().saveLevelTo(destination);
+				model.getActiveGameState().saveLevelTo(destination);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -88,7 +88,7 @@ public class MenuBarViewController implements ViewController {
 		pathChooser.showSaveDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGameState().saveLevelTo(path);
+				model.getActiveGameState().saveLevelTo(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}
@@ -99,7 +99,7 @@ public class MenuBarViewController implements ViewController {
 		pathChooser.showOpenDialog().ifPresent(path -> {
 			model.getSaveState().setSaveDestination(path);
 			try {
-				model.getGameState().loadLevelFrom(path);
+				model.getActiveGameState().loadLevelFrom(path);
 			} catch (Exception e) {
 				showWarning(e);
 			}

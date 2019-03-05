@@ -1,5 +1,7 @@
 package lighthouse.puzzle;
 
+import javax.swing.JLabel;
+
 import lighthouse.gameapi.Game;
 import lighthouse.model.GameState;
 import lighthouse.puzzle.model.PuzzleGameState;
@@ -12,8 +14,8 @@ public class PuzzleGame implements Game {
 	
 	public PuzzleGame() {
 		// TODO
-		centralViewController = null;
-		controlsViewController = null;
+		centralViewController = () -> new JLabel("Central view");
+		controlsViewController = () -> new JLabel("Controls view");
 	}
 	
 	@Override
@@ -23,7 +25,7 @@ public class PuzzleGame implements Game {
 	public GameState getModel() { return model; }
 	
 	@Override
-	public ViewController getCentralViewController() { return centralViewController; }
+	public ViewController getGameViewController() { return centralViewController; }
 	
 	@Override
 	public ViewController getControlsViewController() { return controlsViewController; }

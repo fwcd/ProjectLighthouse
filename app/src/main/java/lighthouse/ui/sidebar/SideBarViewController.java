@@ -12,6 +12,7 @@ import lighthouse.model.AppModel;
 import lighthouse.ui.GameViewController;
 import lighthouse.ui.ViewController;
 import lighthouse.ui.scene.view.LocalLighthouseView;
+import lighthouse.ui.util.SwapPanel;
 
 /**
  * Manages the sidebar view which in turn deals
@@ -20,6 +21,9 @@ import lighthouse.ui.scene.view.LocalLighthouseView;
  */
 public class SideBarViewController implements ViewController {
 	private final JPanel component;
+	private final SwapPanel gameControlPanel;
+	private final SwapPanel gameStatisticsPanel;
+	private final SwapPanel solverPanel;
 	
 	public SideBarViewController(AppModel model, GameViewController game) {
 		component = new JPanel(new BorderLayout());
@@ -32,19 +36,20 @@ public class SideBarViewController implements ViewController {
 		accordion.setMultiplySelectionAllowed(true);
 		accordion.setFillSpace(false);
 		
-		// Adds a panel containing game and file controls
-		GameControlsViewController gameControls = new GameControlsViewController(game, model);
-		accordion.addPane("Game Controls", gameControls.getComponent());
+		// Adds a panel containing game-specific controls
+		gameControlPanel = new SwapPanel();
+		accordion.addPane("Game Controls", gameControlPanel);
 		
-		// Adds a panel containing AI controls
-		AIViewController aiControls = new AIViewController(model);
-		accordion.addPane("AI Controls", aiControls.getComponent()).collapse();
+		// TODO: Integrate AI controls into solvers
+		// AIViewController aiControls = new AIViewController(model);
+		// accordion.addPane("AI Controls", aiControls.getComponent()).collapse();
 		
-		SolverViewController solverControls = new SolverViewController(model.getGameState(), game.getBoard());
-		accordion.addPane("Solver", solverControls.getComponent());
+		solverPanel = new SwapPanel();
+		accordion.addPane("Solver", solverPanel);
 		
-		BoardStatisticsViewController statistics = new BoardStatisticsViewController(game.getBoard().getViewModel().getStatistics());
-		accordion.addPane("Game Statistics", statistics.getComponent()).collapse();
+		// Adds a panel containing game-specific statistics
+		gameStatisticsPanel = new SwapPanel();
+		accordion.addPane("Game Statistics", gameStatisticsPanel).collapse();
 		
 		// Add the connector panel which allows the user
 		// to connect a remote Lighthouse view.
@@ -58,6 +63,18 @@ public class SideBarViewController implements ViewController {
 		accordion.addPane("Lighthouse Preview", preview.getComponent());
 		
 		component.add(accordion, BorderLayout.CENTER);
+	}
+	
+	public void setGameControls(JComponent newComponent) {
+		gameControlPanel.swapTo(newComponent);
+	}
+	
+	public void setGameStatistics(JComponent newComponent) {
+		gameStatisticsPanel.swapTo(newComponent);
+	}
+	
+	public void setSolver(JComponent newComponent) {
+		solverPanel.swapTo(newComponent);
 	}
 
 	@Override
