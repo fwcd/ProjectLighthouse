@@ -144,7 +144,7 @@ public class GameViewController implements ViewController {
 		Board activeBoard = perspective.getActiveBoard(model);
 		board.updateModel(activeBoard);
 		board.getViewModel().setBlockedStates(model.getLevel().getBlockedStates());
-		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update));
+		board.setResponder(mode.createController(perspective, board.getViewModel(), this::update, board.getAnimationRunner()));
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */

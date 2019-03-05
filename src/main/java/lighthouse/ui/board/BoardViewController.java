@@ -149,6 +149,8 @@ public class BoardViewController implements ViewController {
 	
 	public BoardViewModel getViewModel() { return viewModel; }
 	
+	public BoardAnimationRunner getAnimationRunner() { return animationRunner; }
+	
 	public AnimationTracker getAnimationTracker() { return animationRunner.getTracker(); }
 	
 	@Override
