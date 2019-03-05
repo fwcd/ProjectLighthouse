@@ -6,10 +6,8 @@ import java.nio.file.Path;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.style.Skin;
@@ -21,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.gameapi.Game;
-import lighthouse.gameapi.GameMenuEntry;
 import lighthouse.model.AppModel;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.debug.AnimationTracker;

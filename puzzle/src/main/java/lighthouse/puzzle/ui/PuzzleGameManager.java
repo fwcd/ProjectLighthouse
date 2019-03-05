@@ -22,7 +22,7 @@ import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
 
 /**
- * Manages the game board view, the current
+ * Manages the puzzle game board, the current
  * perspective and the active game mode.
  */
 public class PuzzleGameManager {
