@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.Color;
 import java.util.function.Function;
@@ -15,15 +15,15 @@ import lighthouse.util.MathUtils;
  * A reference implementation of an {@link SceneShapeVisitor}
  * that renders the shape to a {@link WritableColorGrid}.
  */
-public class GridOverlayRenderer implements SceneShapeVisitor {
-	private static final Logger LOG = LoggerFactory.getLogger(GridOverlayRenderer.class);
+public class GridSceneRenderer implements SceneShapeVisitor {
+	private static final Logger LOG = LoggerFactory.getLogger(GridSceneRenderer.class);
 	private static final double EPSILON = 0.0001;
 	private final WritableColorGrid grid;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;
 	private boolean alphaEnabled = false;
 	
-	public GridOverlayRenderer(
+	public GridSceneRenderer(
 		WritableColorGrid grid,
 		Function<DoubleVec, IntVec> gridPosToPixels,
 		Function<DoubleVec, IntVec> gridSizeToPixels
@@ -34,8 +34,8 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 	}
 	
 	@Override
-	public void visitFixedCircle(OverlayFixedCircle circle) {
-		OverlayShading shading = circle.getShading();
+	public void visitFixedCircle(SceneFixedCircle circle) {
+		Shading shading = circle.getShading();
 		Color color = circle.getColor();
 		IntVec center = gridPosToPixels.apply(circle.getCenter());
 		IntVec radius = gridSizeToPixels.apply(new DoubleVec(circle.getRadius(), 0)).onlyXs()
@@ -45,8 +45,8 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 	}
 	
 	@Override
-	public void visitOval(OverlayOval oval) {
-		OverlayShading shading = oval.getShading();
+	public void visitOval(SceneOval oval) {
+		Shading shading = oval.getShading();
 		Color color = oval.getColor();
 		IntVec topLeft = gridPosToPixels.apply(oval.getTopLeft());
 		IntVec radius = gridSizeToPixels.apply(oval.getRadius());
@@ -55,7 +55,7 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 		drawOval(topLeft, radius, shading, color);
 	}
 
-	private void drawOval(IntVec topLeft, IntVec radius, OverlayShading shading, Color color) {
+	private void drawOval(IntVec topLeft, IntVec radius, Shading shading, Color color) {
 		IntVec size = radius.scale(2);
 		IntVec squaredRadius = radius.square();
 		
@@ -84,8 +84,8 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 	}
 	
 	@Override
-	public void visitRect(OverlayRect rect) {
-		OverlayShading shading = rect.getShading();
+	public void visitRect(SceneRect rect) {
+		Shading shading = rect.getShading();
 		Color color = rect.getColor();
 		IntVec topLeft = gridPosToPixels.apply(rect.getTopLeft());
 		IntVec size = gridSizeToPixels.apply(rect.getSize());
@@ -118,7 +118,7 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 	}
 	
 	@Override
-	public void visitImage(OverlayImage image) {
+	public void visitImage(SceneImage image) {
 		throw new UnsupportedOperationException("TODO"); // TODO
 	}
 	
@@ -130,7 +130,7 @@ public class GridOverlayRenderer implements SceneShapeVisitor {
 		}
 	}
 	
-	private RuntimeException invalidShading(OverlayShading shading) {
+	private RuntimeException invalidShading(Shading shading) {
 		return new IllegalArgumentException("Invalid shading: " + shading);
 	}
 }

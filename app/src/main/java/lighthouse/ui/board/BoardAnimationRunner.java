@@ -4,8 +4,8 @@ import javax.swing.Timer;
 
 import lighthouse.ui.board.debug.AnimationTracker;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.viewmodel.Animation;
-import lighthouse.ui.viewmodel.AnimationPlayer;
+import lighthouse.ui.scene.viewmodel.graphics.Animation;
+import lighthouse.ui.scene.viewmodel.graphics.AnimationPlayer;
 import lighthouse.util.Updatable;
 
 public class BoardAnimationRunner {

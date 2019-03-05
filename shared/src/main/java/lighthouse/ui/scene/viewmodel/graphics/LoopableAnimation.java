@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 public abstract class LoopableAnimation implements Animation {
 	private int loopCount = 1;

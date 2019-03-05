@@ -1,22 +1,22 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.Color;
 
 import lighthouse.util.DoubleVec;
 
 /**
- * Similar to an {@link OverlayOval}, but preserves
+ * Similar to an {@link SceneOval}, but preserves
  * its circle property under any transformation (this
  * means, the radius might not be accurately reflected
  * under every scaling).
  */
-public class OverlayFixedCircle implements SceneShape {
+public class SceneFixedCircle implements SceneShape {
 	private final DoubleVec center;
 	private final double radius;
 	private final Color color;
-	private final OverlayShading shading;
+	private final Shading shading;
 	
-	public OverlayFixedCircle(DoubleVec center, double radius, Color color, OverlayShading shading) {
+	public SceneFixedCircle(DoubleVec center, double radius, Color color, Shading shading) {
 		this.center = center;
 		this.radius = radius;
 		this.color = color;
@@ -28,7 +28,7 @@ public class OverlayFixedCircle implements SceneShape {
 		visitor.visitFixedCircle(this);
 	}
 	
-	public OverlayShading getShading() { return shading; }
+	public Shading getShading() { return shading; }
 	
 	public Color getColor() { return color; }
 	
@@ -42,6 +42,6 @@ public class OverlayFixedCircle implements SceneShape {
 	
 	@Override
 	public String toString() {
-		return "OverlayOval [center=" + center + ", radius=" + radius + ", color=" + color + ", shading=" + shading + "]";
+		return "SceneOval [center=" + center + ", radius=" + radius + ", color=" + color + ", shading=" + shading + "]";
 	}
 }

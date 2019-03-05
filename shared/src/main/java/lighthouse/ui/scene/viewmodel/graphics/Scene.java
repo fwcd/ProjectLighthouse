@@ -1,8 +1,8 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.util.List;
 
-public interface Overlay {
+public interface Scene {
 	List<SceneShape> getShapes();
 	
 	default void acceptForAllShapes(SceneShapeVisitor visitor) {

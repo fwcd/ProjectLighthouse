@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.Graphics2D;
 import java.util.function.Function;
@@ -6,16 +6,16 @@ import java.util.function.Function;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
-public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
+public class Graphics2DSceneRenderer implements SceneShapeVisitor {
 	private final Graphics2D g2d;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;
 	private final Function<DoubleVec, IntVec> gridSizeToPixels;
 
-	public Graphics2DOverlayRenderer(Graphics2D g2d, Function<DoubleVec, IntVec> gridToPixels) {
+	public Graphics2DSceneRenderer(Graphics2D g2d, Function<DoubleVec, IntVec> gridToPixels) {
 		this(g2d, gridToPixels, gridToPixels);
 	}
 	
-	public Graphics2DOverlayRenderer(
+	public Graphics2DSceneRenderer(
 		Graphics2D g2d,
 		Function<DoubleVec, IntVec> gridPosToPixels,
 		Function<DoubleVec, IntVec> gridSizeToPixels
@@ -26,10 +26,10 @@ public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 	}
 
 	@Override
-	public void visitRect(OverlayRect rect) {
+	public void visitRect(SceneRect rect) {
 		g2d.setColor(rect.getColor());
 
-		OverlayShading shading = rect.getShading();
+		Shading shading = rect.getShading();
 		IntVec topLeft = gridPosToPixels.apply(rect.getTopLeft());
 		IntVec size = gridSizeToPixels.apply(rect.getSize());
 
@@ -46,10 +46,10 @@ public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 	}
 	
 	@Override
-	public void visitFixedCircle(OverlayFixedCircle circle) {
+	public void visitFixedCircle(SceneFixedCircle circle) {
 		g2d.setColor(circle.getColor());
 
-		OverlayShading shading = circle.getShading();
+		Shading shading = circle.getShading();
 		IntVec topLeft = gridPosToPixels.apply(circle.getTopLeft());
 		IntVec radius = gridSizeToPixels.apply(new DoubleVec(circle.getRadius(), 0)).onlyXs()
 			.min(gridSizeToPixels.apply(new DoubleVec(0, circle.getRadius())).onlyYs());
@@ -58,10 +58,10 @@ public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 	}
 
 	@Override
-	public void visitOval(OverlayOval oval) {
+	public void visitOval(SceneOval oval) {
 		g2d.setColor(oval.getColor());
 
-		OverlayShading shading = oval.getShading();
+		Shading shading = oval.getShading();
 		IntVec topLeft = gridPosToPixels.apply(oval.getTopLeft());
 		IntVec size = gridSizeToPixels.apply(oval.getSize());
 
@@ -69,14 +69,14 @@ public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 	}
 
 	@Override
-	public void visitImage(OverlayImage image) {
+	public void visitImage(SceneImage image) {
 		IntVec topLeft = gridPosToPixels.apply(image.getTopLeft());
 		IntVec size = gridSizeToPixels.apply(image.getImageSize());
 		
 		g2d.drawImage(image.getImage(), topLeft.getX(), topLeft.getY(), size.getX(), size.getY(), null);
 	}
 	
-	private void drawOval(IntVec topLeft, IntVec size, OverlayShading shading) {
+	private void drawOval(IntVec topLeft, IntVec size, Shading shading) {
 		switch (shading) {
 		case FILLED:
 			g2d.fillOval(topLeft.getX(), topLeft.getY(), size.getX(), size.getY());
@@ -89,7 +89,7 @@ public class Graphics2DOverlayRenderer implements SceneShapeVisitor {
 		}
 	}
 
-	private RuntimeException invalidShading(OverlayShading shading) {
+	private RuntimeException invalidShading(Shading shading) {
 		return new IllegalArgumentException("Invalid shading: " + shading);
 	}
 }

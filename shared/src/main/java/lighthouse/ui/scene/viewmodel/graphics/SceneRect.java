@@ -1,24 +1,24 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.Color;
 
 import lighthouse.util.DoubleVec;
 
-public class OverlayRect implements SceneShape {
+public class SceneRect implements SceneShape {
 	private final DoubleVec topLeft;
 	private final DoubleVec size;
 	private final Color color;
-	private final OverlayShading shading;
+	private final Shading shading;
 	
-	public OverlayRect(double x, double y, double width, double height, Color color, OverlayShading shading) {
+	public SceneRect(double x, double y, double width, double height, Color color, Shading shading) {
 		this(new DoubleVec(x, y), width, height, color, shading);
 	}
 	
-	public OverlayRect(DoubleVec topLeft, double width, double height, Color color, OverlayShading shading) {
+	public SceneRect(DoubleVec topLeft, double width, double height, Color color, Shading shading) {
 		this(topLeft, new DoubleVec(width, height), color, shading);
 	}
 	
-	public OverlayRect(DoubleVec topLeft, DoubleVec size, Color color, OverlayShading shading) {
+	public SceneRect(DoubleVec topLeft, DoubleVec size, Color color, Shading shading) {
 		this.topLeft = topLeft;
 		this.size = size;
 		this.color = color;
@@ -32,7 +32,7 @@ public class OverlayRect implements SceneShape {
 	
 	public DoubleVec getTopLeft() { return topLeft; }
 	
-	public OverlayShading getShading() { return shading; }
+	public Shading getShading() { return shading; }
 	
 	public Color getColor() { return color; }
 	
@@ -44,6 +44,6 @@ public class OverlayRect implements SceneShape {
 	
 	@Override
 	public String toString() {
-		return "OverlayRect [topLeft=" + topLeft + ", size=" + size + ", color=" + color + ", shading=" + shading + "]";
+		return "SceneRect [topLeft=" + topLeft + ", size=" + size + ", color=" + color + ", shading=" + shading + "]";
 	}
 }

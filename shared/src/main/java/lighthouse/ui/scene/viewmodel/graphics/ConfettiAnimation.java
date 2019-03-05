@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -39,11 +39,11 @@ public class ConfettiAnimation implements Animation {
 		
 		double dFrame = (double) frame;
 		for (int i = 0; i < rows.size(); i++) {
-			shapes.add(new OverlayRect(rowsX.get(i).get(0) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(0), OverlayShading.FILLED));
-			shapes.add(new OverlayRect(rowsX.get(i).get(1) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(1), OverlayShading.FILLED));
-			shapes.add(new OverlayRect(rowsX.get(i).get(2) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(2), OverlayShading.FILLED));
-			shapes.add(new OverlayRect(rowsX.get(i).get(3), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(3), OverlayShading.FILLED));
-			shapes.add(new OverlayRect(rowsX.get(i).get(4), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(4), OverlayShading.FILLED));
+			shapes.add(new SceneRect(rowsX.get(i).get(0) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(0), Shading.FILLED));
+			shapes.add(new SceneRect(rowsX.get(i).get(1) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(1), Shading.FILLED));
+			shapes.add(new SceneRect(rowsX.get(i).get(2) + 0.5, i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(2), Shading.FILLED));
+			shapes.add(new SceneRect(rowsX.get(i).get(3), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(3), Shading.FILLED));
+			shapes.add(new SceneRect(rowsX.get(i).get(4), i + (dFrame%30)/30, 0.5, 0.5, rows.get(i).get(4), Shading.FILLED));
 		}
 		
 		return shapes;

@@ -1,4 +1,4 @@
-package lighthouse.ui.board.viewmodel.graphics;
+package lighthouse.ui.scene.viewmodel.graphics;
 
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class MovingImageAnimation implements Animation {
 	public List<SceneShape> getShape(int frame) {
 		double percent = frame / (double) totalFrames;
 		return Collections.singletonList(
-			new OverlayImage(interpolation.interpolateBetween(start, end, percent), image, size)
+			new SceneImage(interpolation.interpolateBetween(start, end, percent), image, size)
 		);
 	}
 }

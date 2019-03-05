@@ -22,10 +22,9 @@ import lighthouse.ui.board.input.BoardMouseInput;
 import lighthouse.ui.board.view.BoardView;
 import lighthouse.ui.board.view.LighthouseView;
 import lighthouse.ui.board.view.LocalBoardView;
-import lighthouse.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.board.viewmodel.LighthouseViewModel;
-import lighthouse.ui.viewmodel.Animation;
+import lighthouse.ui.scene.viewmodel.graphics.Animation;
 import lighthouse.util.Updatable;
 import lighthouse.util.transform.DoubleVecBijection;
 
