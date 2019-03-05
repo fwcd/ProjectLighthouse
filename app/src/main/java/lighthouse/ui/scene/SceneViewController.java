@@ -78,6 +78,7 @@ public class SceneViewController implements SwingViewController {
 			localView.removeMouseInput(mouseInput);
 		}
 		mouseInput = new SceneMouseInput(gridPosToPixels);
+		mouseInput.addResponder(responder);
 		localView.addMouseInput(mouseInput);
 	}
 	
