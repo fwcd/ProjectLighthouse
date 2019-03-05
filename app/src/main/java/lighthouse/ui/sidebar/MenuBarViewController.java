@@ -50,7 +50,7 @@ public class MenuBarViewController implements ViewController {
 		
 		ResourceImageLoader resourceLoader = ResourceImageLoader.getInstance();
 		
-		gameMenu = LayoutUtils.menuOf("Game"); // TODO: Icon
+		gameMenu = LayoutUtils.menuOf("Game", resourceLoader.getAsIcon("/icons/game.png"));
 		component = LayoutUtils.menuBarOf(
 			LayoutUtils.menuOf("File", resourceLoader.getAsIcon("/icons/file.png"),
 				LayoutUtils.itemOf("Save", this::save),
