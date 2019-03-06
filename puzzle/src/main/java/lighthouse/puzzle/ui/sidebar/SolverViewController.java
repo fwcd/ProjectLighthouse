@@ -1,11 +1,12 @@
 package lighthouse.puzzle.ui.sidebar;
 
-import java.util.List;
+import java.util.Iterator;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
 
 import com.alee.laf.spinner.WebSpinner;
 
@@ -18,20 +19,24 @@ import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.solver.BacktrackingSolver;
 import lighthouse.puzzle.solver.Solver;
+import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 
 public class SolverViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
-	private final SceneInteractionFacade sceneFacade;
+	private final SceneInteractionFacade interactionFacade;
+	private final BoardViewModel board;
 	private final PuzzleGameState gameState;
 	private Thread solverThread = null;
 	
-	public SolverViewController(PuzzleGameState gameState, SceneInteractionFacade sceneFacade) {
+	public SolverViewController(PuzzleGameState gameState, BoardViewModel board, SceneInteractionFacade interactionFacade) {
 		this.gameState = gameState;
-		this.sceneFacade = sceneFacade;
+		this.board = board;
+		this.interactionFacade = interactionFacade;
 		
 		WebSpinner playbackSpeed = new WebSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 		
@@ -63,11 +68,20 @@ public class SolverViewController implements SwingViewController {
 			Solver solver = new BacktrackingSolver();
 			Level level = gameState.getLevel();
 			try {
-				List<Board> solution = solver.solve(level);
-				// FIXME: Fix player
-				// animationRunner
-				// 	.play(solution, 1000 / boardsPerSecond)
-				// 	.thenRun(() -> board.play(new ConfettiAnimation()));
+				Iterator<Board> solution = solver.solve(level).iterator();
+				Timer timer = new Timer(1000 / boardsPerSecond, e -> {
+					if (solution.hasNext()) {
+						board.transitionTo(solution.next());
+						board.getStatistics().incrementMoveCount();
+						interactionFacade.update();
+					} else {
+						((Timer) e.getSource()).stop();
+						interactionFacade.play(new ConfettiAnimation());
+					}
+				});
+				
+				timer.setRepeats(true);
+				timer.start();
 			} catch (Exception e) {
 				LOG.error("An error occurred while solving:", e);
 			}

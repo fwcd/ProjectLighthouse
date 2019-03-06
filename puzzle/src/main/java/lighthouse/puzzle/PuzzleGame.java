@@ -41,7 +41,7 @@ public class PuzzleGame implements Game {
 		loadDefaultLevel();
 		game = new PuzzleGameViewController(model, context, gridToPixels);
 		controls = new GameControlsViewController(game, model);
-		solver = new SolverViewController(model, context.getInteractionFacade());
+		solver = new SolverViewController(model, game.getBoardViewModel(), context.getInteractionFacade());
 		statistics = new BoardStatisticsViewController(game.getBoardViewModel().getStatistics());
 	}
 	
