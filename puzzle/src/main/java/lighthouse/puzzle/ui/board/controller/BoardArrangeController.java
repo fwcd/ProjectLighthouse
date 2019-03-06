@@ -3,11 +3,11 @@ package lighthouse.puzzle.ui.board.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.IntVec;
-import lighthouse.util.Updatable;
 
 /**
  * A responder implementation that allows
@@ -18,8 +18,8 @@ public class BoardArrangeController extends BoardBaseController {
 	private IntVec last;
 	private boolean dragging = false;
 	
-	public BoardArrangeController(BoardViewModel viewModel, Updatable updater) {
-		super(viewModel, updater);
+	public BoardArrangeController(BoardViewModel viewModel, SceneInteractionFacade sceneFacade) {
+		super(viewModel, sceneFacade);
 	}
 	
 	@Override

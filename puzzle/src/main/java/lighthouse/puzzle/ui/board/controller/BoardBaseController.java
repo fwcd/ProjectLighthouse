@@ -7,14 +7,14 @@ import java.util.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
-import lighthouse.util.Direction;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.util.ColorUtils;
+import lighthouse.util.Direction;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
-import lighthouse.util.Updatable;
 
 /**
  * A base implementation of {@link BoardResponder}
@@ -22,13 +22,13 @@ import lighthouse.util.Updatable;
  */
 public abstract class BoardBaseController implements BoardResponder {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardBaseController.class);
-	private final Updatable updater;
+	private final SceneInteractionFacade sceneFacade;
 	private BoardViewModel viewModel;
 	private boolean resetEnabled = false;
 	
-	public BoardBaseController(BoardViewModel viewModel, Updatable updater) {
+	public BoardBaseController(BoardViewModel viewModel, SceneInteractionFacade sceneFacade) {
 		this.viewModel = viewModel;
-		this.updater = updater;
+		this.sceneFacade = sceneFacade;
 	}
 	
 	protected boolean isResetEnabled() { return resetEnabled; }
@@ -38,7 +38,7 @@ public abstract class BoardBaseController implements BoardResponder {
 	protected BoardViewModel getViewModel() { return viewModel; }
 	
 	protected void update() {
-		updater.update();
+		sceneFacade.update();
 	}
 	
 	protected boolean isAllowed(Board board) {
@@ -48,6 +48,10 @@ public abstract class BoardBaseController implements BoardResponder {
 			}
 		}
 		return true;
+	}
+	
+	protected SceneInteractionFacade getSceneFacade() {
+		return sceneFacade;
 	}
 	
 	@Override

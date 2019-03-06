@@ -55,7 +55,7 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	public void addKeyInput(SceneKeyInput keyInput) {
-		LOG.info("Added key input");
+		LOG.debug("Added key input");
 		
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = component.getActionMap();
@@ -75,13 +75,13 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	public void addMouseInput(SceneMouseInput mouseInput) {
-		LOG.info("Added mouse input");
+		LOG.debug("Added mouse input");
 		component.addMouseListener(mouseInput);
 		component.addMouseMotionListener(mouseInput);
 	}
 	
 	public void removeMouseInput(SceneMouseInput mouseInput) {
-		LOG.info("Removed mouse input");
+		LOG.debug("Removed mouse input");
 		component.removeMouseListener(mouseInput);
 		component.removeMouseMotionListener(mouseInput);
 	}

@@ -1,13 +1,12 @@
 package lighthouse.puzzle.ui.perspectives;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.controller.BoardPlayController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.NoBoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.scene.AnimationRunner;
-import lighthouse.util.Updatable;
 
 /**
  * Shows the in-game board of the level.
@@ -30,12 +29,12 @@ public class InGamePerspective implements GamePerspective {
 	public boolean isInGame() { return true; }
 	
 	@Override
-	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
+	public BoardResponder createEditController(BoardViewModel board, SceneInteractionFacade sceneFacade) {
 		return NoBoardResponder.INSTANCE;
 	}
 	
 	@Override
-	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
-		return new BoardPlayController(board, gameUpdater, animationRunner);
+	public BoardResponder createPlayController(BoardViewModel board, SceneInteractionFacade sceneFacade) {
+		return new BoardPlayController(board, sceneFacade);
 	}
 }

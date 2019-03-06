@@ -1,13 +1,12 @@
 package lighthouse.puzzle.ui.perspectives;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.controller.BoardDrawController;
 import lighthouse.puzzle.ui.board.controller.BoardResponder;
 import lighthouse.puzzle.ui.board.controller.NoBoardResponder;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.scene.AnimationRunner;
-import lighthouse.util.Updatable;
 
 /**
  * Shows the starting board of the level.
@@ -27,12 +26,12 @@ public class StartPerspective implements GamePerspective {
 	public Board getActiveBoard(PuzzleGameState model) { return model.getLevel().getStart(); }
 	
 	@Override
-	public BoardResponder createEditController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
-		return new BoardDrawController(board, gameUpdater);
+	public BoardResponder createEditController(BoardViewModel board, SceneInteractionFacade sceneFacade) {
+		return new BoardDrawController(board, sceneFacade);
 	}
 	
 	@Override
-	public BoardResponder createPlayController(BoardViewModel board, Updatable gameUpdater, AnimationRunner animationRunner) {
+	public BoardResponder createPlayController(BoardViewModel board, SceneInteractionFacade sceneFacade) {
 		return NoBoardResponder.INSTANCE;
 	}
 }

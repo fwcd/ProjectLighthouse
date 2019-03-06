@@ -9,11 +9,16 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
+import lighthouse.ui.scene.SceneInteractionBackend;
 import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.view.LocalSceneView;
 import lighthouse.ui.sidebar.SideBarViewController;
@@ -22,12 +27,14 @@ import lighthouse.ui.sidebar.SideBarViewController;
  * The application's base view controller.
  */
 public class AppViewController implements SwingViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(AppViewController.class);
 	private final JComponent component;
 	private final JToolBar tabBar;
 	private final SceneViewController scene;
 	private final SideBarViewController sideBar;
 	
 	private final AppContext context = new AppContext();
+	private final SceneInteractionFacade interactionFacade;
 	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	
 	private final Set<Game> gameRegistry = new HashSet<>();
@@ -43,6 +50,7 @@ public class AppViewController implements SwingViewController {
 		centerPane.add(tabBar, BorderLayout.NORTH);
 		
 		scene = new SceneViewController();
+		interactionFacade = new SceneInteractionBackend(scene.getAnimationRunner(), scene.getResponder(), this::update);
 		centerPane.add(scene.getComponent(), BorderLayout.CENTER);
 		
 		component.add(centerPane, BorderLayout.CENTER);
@@ -73,7 +81,7 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	public void registerGame(Game game) {
-		game.initialize(new GameInitializationContext(context.getObservableStatus(), scene.getAnimationRunner(), scene.getResponder(), this::update));
+		game.initialize(new GameInitializationContext(context.getObservableStatus(), interactionFacade));
 		
 		// TODO: Toggle buttons to indicate the active tab
 		JButton tab = new JButton(game.getName());
@@ -88,6 +96,8 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	private void open(Game game) {
+		LOG.info("Opening game {}...", game.getName());
+		
 		scene.getViewModel().setLayers(game.getGameLayer());
 		
 		LocalSceneView localView = scene.getLocalView();

@@ -1,6 +1,5 @@
 package lighthouse.puzzle;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -40,7 +39,7 @@ public class PuzzleGame implements Game {
 		loadDefaultLevel();
 		game = new PuzzleGameManager(model, context);
 		controls = new GameControlsViewController(game, model);
-		solver = new SolverViewController(model, context.getAnimationRunner());
+		solver = new SolverViewController(model, context.getInteractionFacade());
 		statistics = new BoardStatisticsViewController(game.getBoardViewModel().getStatistics());
 	}
 	

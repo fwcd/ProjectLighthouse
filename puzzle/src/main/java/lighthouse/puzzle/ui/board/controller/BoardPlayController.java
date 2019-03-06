@@ -8,21 +8,19 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.Edge;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
-import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.util.Direction;
 import lighthouse.util.IntVec;
-import lighthouse.util.Updatable;
 
 /**
  * The primary responder implementation for playing.
  */
 public class BoardPlayController extends BoardBaseController {
 	private static final Logger LOG = LoggerFactory.getLogger(BoardPlayController.class);
-	private final AnimationRunner animationRunner;
 	
 	private Map<Direction, Integer> limits;
 	private boolean dragEvent;
@@ -31,9 +29,8 @@ public class BoardPlayController extends BoardBaseController {
 	private IntVec startGridPos;
 	private Brick brick;
 
-	public BoardPlayController(BoardViewModel viewModel, Updatable updater, AnimationRunner animationRunner) {
-		super(viewModel, updater);
-		this.animationRunner = animationRunner;
+	public BoardPlayController(BoardViewModel viewModel, SceneInteractionFacade sceneFacade) {
+		super(viewModel, sceneFacade);
 		
 		resetLimits();
 		setResetEnabled(true);

@@ -12,26 +12,26 @@ import com.alee.laf.spinner.WebSpinner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.solver.BacktrackingSolver;
 import lighthouse.puzzle.solver.Solver;
 import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.util.LayoutUtils;
 import lighthouse.util.IDGenerator;
 
 public class SolverViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(SolverViewController.class);
 	private final JPanel component;
-	private final AnimationRunner animationRunner;
+	private final SceneInteractionFacade sceneFacade;
 	private final PuzzleGameState gameState;
 	private Thread solverThread = null;
 	
-	public SolverViewController(PuzzleGameState gameState, AnimationRunner animationRunner) {
+	public SolverViewController(PuzzleGameState gameState, SceneInteractionFacade sceneFacade) {
 		this.gameState = gameState;
-		this.animationRunner = animationRunner;
+		this.sceneFacade = sceneFacade;
 		
 		WebSpinner playbackSpeed = new WebSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
 		

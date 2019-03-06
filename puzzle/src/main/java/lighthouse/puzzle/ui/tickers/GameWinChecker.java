@@ -3,10 +3,10 @@ package lighthouse.puzzle.ui.tickers;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
 import lighthouse.ui.ObservableStatus;
-import lighthouse.ui.scene.AnimationRunner;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
 import lighthouse.ui.tickers.Ticker;
 import lighthouse.ui.util.Status;
@@ -17,18 +17,18 @@ public class GameWinChecker implements Ticker {
 	private final PuzzleGameState game;
 	private final ObservableStatus status;
 	private final BoardStatistics statistics;
-	private final AnimationRunner animationRunner;
+	private final SceneInteractionFacade sceneFacade;
 	private boolean alreadyWon = false;
 	
 	public GameWinChecker(
 		JComponent parent,
-		AnimationRunner animationRunner,
+		SceneInteractionFacade sceneFacade,
 		PuzzleGameState game,
 		ObservableStatus status,
 		BoardStatistics statistics
 	) {
 		this.parent = parent;
-		this.animationRunner = animationRunner;
+		this.sceneFacade = sceneFacade;
 		this.status = status;
 		this.game = game;
 		this.statistics = statistics;
@@ -45,7 +45,7 @@ public class GameWinChecker implements Ticker {
 			} else {
 				message += " Hooray!";
 			}
-			animationRunner.play(new ConfettiAnimation());
+			sceneFacade.play(new ConfettiAnimation());
 			status.set(new Status("Won", ColorUtils.LIGHT_VIOLET));
 			JOptionPane.showMessageDialog(parent, message);
 		}

@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import lighthouse.gameapi.SceneInteractionAdapter;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.ui.board.controller.BoardDrawController;
@@ -41,7 +42,10 @@ public class BlockedStatesEditorViewController implements SwingViewController {
 		DoubleVecBijection gridToPixels = new Scaling(30, 30);
 		boardViewModel = new BoardViewModel(board);
 		view = new LocalBoardView(gridToPixels);
-		controller = new BoardDrawController(boardViewModel, () -> view.draw(boardViewModel));
+		controller = new BoardDrawController(boardViewModel, new SceneInteractionAdapter() {
+			@Override
+			public void update() { view.draw(boardViewModel); }
+		});
 		SceneMouseInput input = new SceneMouseInput(gridToPixels);
 		
 		view.relayout(board.getColumns(), board.getRows());
