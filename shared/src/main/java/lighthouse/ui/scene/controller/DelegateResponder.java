@@ -35,16 +35,16 @@ public class DelegateResponder implements SceneResponder {
 	public IntVec select(IntVec gridPos) { return delegate.select(gridPos); }
 	
 	@Override
-	public IntVec selectUp(IntVec gridPos) { return delegate.selectUp(gridPos); }
+	public IntVec up(IntVec gridPos) { return delegate.up(gridPos); }
 	
 	@Override
-	public IntVec selectLeft(IntVec gridPos) { return delegate.selectLeft(gridPos); }
+	public IntVec left(IntVec gridPos) { return delegate.left(gridPos); }
 	
 	@Override
-	public IntVec selectDown(IntVec gridPos) { return delegate.selectDown(gridPos); }
+	public IntVec down(IntVec gridPos) { return delegate.down(gridPos); }
 	
 	@Override
-	public IntVec selectRight(IntVec gridPos) { return delegate.selectRight(gridPos); }
+	public IntVec right(IntVec gridPos) { return delegate.right(gridPos); }
 	
 	@Override
 	public boolean deselect() { return delegate.deselect(); }

@@ -24,6 +24,8 @@ public interface Game {
 	
 	DoubleVecBijection getLighthouseToGridPos();
 	
+	default void onOpen() {}
+	
 	default DoubleVecBijection getGridSizeToPixels() { return getGridPosToPixels(); }
 	
 	default DoubleVecBijection getLighthouseToGridSize() { return getLighthouseToGridPos(); }

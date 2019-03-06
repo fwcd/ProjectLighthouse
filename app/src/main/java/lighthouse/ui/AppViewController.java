@@ -148,6 +148,8 @@ public class AppViewController implements SwingViewController {
 		sideBar.setGameStatistics(game.getStatisticsViewController().getComponent());
 		sideBar.setSolver(game.getSolverViewController().getComponent());
 		
+		activeGame.onOpen();
+		
 		discordRPC.setDetails("Playing " + game.getName());
 		discordRPC.updatePresenceSoon();
 		update();

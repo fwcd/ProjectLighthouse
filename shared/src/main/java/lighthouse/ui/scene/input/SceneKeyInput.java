@@ -51,7 +51,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.UP);
 		} else {
-			arrowSelect(r -> r.selectUp(gridPos));
+			arrowSelect(r -> r.up(gridPos));
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.DOWN);
 		} else {
-			arrowSelect(r -> r.selectDown(gridPos));
+			arrowSelect(r -> r.down(gridPos));
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.LEFT);
 		} else {
-			arrowSelect(r -> r.selectLeft(gridPos));
+			arrowSelect(r -> r.left(gridPos));
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.RIGHT);
 		} else {
-			arrowSelect(r -> r.selectRight(gridPos));
+			arrowSelect(r -> r.right(gridPos));
 		}
 	}
 	

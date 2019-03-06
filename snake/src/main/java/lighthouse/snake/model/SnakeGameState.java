@@ -18,9 +18,11 @@ public class SnakeGameState implements GameState {
 	private final Set<IntVec> foods = new HashSet<>();
 	private final int boardWidth = LhConstants.LIGHTHOUSE_COLS;
 	private final int boardHeight = LhConstants.LIGHTHOUSE_ROWS;
+	private int score = 0;
 	
 	public SnakeGameState() {
 		snake = new Snake(boardWidth, boardHeight);
+		spawnFood();
 	}
 	
 	public void spawnFood() {
@@ -29,6 +31,20 @@ public class SnakeGameState implements GameState {
 			pos = randomPos();
 		}
 		foods.add(pos);
+	}
+	
+	public void move() {
+		boolean ate = foods.contains(snake.nextHead());
+		if (ate) {
+			foods.remove(snake.nextHead());
+			spawnFood();
+			score++;
+		}
+		snake.move(!ate);
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 	private IntVec randomPos() {

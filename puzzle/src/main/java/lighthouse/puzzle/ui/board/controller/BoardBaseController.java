@@ -97,22 +97,22 @@ public abstract class BoardBaseController implements BoardResponder {
 	}
 	
 	@Override
-	public IntVec selectUp(IntVec gridPos) {
+	public IntVec up(IntVec gridPos) {
 		return selectInto(Direction.UP, gridPos);
 	}
 	
 	@Override
-	public IntVec selectLeft(IntVec gridPos) {
+	public IntVec left(IntVec gridPos) {
 		return selectInto(Direction.LEFT, gridPos);
 	}
 	
 	@Override
-	public IntVec selectDown(IntVec gridPos) {
+	public IntVec down(IntVec gridPos) {
 		return selectInto(Direction.DOWN, gridPos);
 	}
 	
 	@Override
-	public IntVec selectRight(IntVec gridPos) {
+	public IntVec right(IntVec gridPos) {
 		return selectInto(Direction.RIGHT, gridPos);
 	}
 	

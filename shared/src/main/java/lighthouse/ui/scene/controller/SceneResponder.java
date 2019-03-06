@@ -31,16 +31,16 @@ public interface SceneResponder {
 	default IntVec select(IntVec gridPos) { return null; }
 	
 	/** Moves the selection up. Returns the next position if successful, otherwise null. */
-	default IntVec selectUp(IntVec gridPos) { return null; }
+	default IntVec up(IntVec gridPos) { return null; }
 	
 	/** Moves the selection to the left. Returns the next position if successful, otherwise null. */
-	default IntVec selectLeft(IntVec gridPos) { return null; }
+	default IntVec left(IntVec gridPos) { return null; }
 	
 	/** Moves the selection down. Returns the next position if successful, otherwise null. */
-	default IntVec selectDown(IntVec gridPos) { return null; }
+	default IntVec down(IntVec gridPos) { return null; }
 	
 	/** Moves the selection to the right. Returns the next position if successful, otherwise null. */
-	default IntVec selectRight(IntVec gridPos) { return null; }
+	default IntVec right(IntVec gridPos) { return null; }
 	
 	/** Removes the selection. Returns whether this was successful. */
 	default boolean deselect() { return false; }

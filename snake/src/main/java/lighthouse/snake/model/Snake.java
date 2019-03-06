@@ -30,6 +30,10 @@ public class Snake {
 		}
 	}
 	
+	public IntVec getHead() {
+		return body.peekFirst();
+	}
+	
 	public IntVec nextHead() {
 		IntVec proposed = body.peekFirst().add(orientation);
 		return new IntVec(
@@ -43,6 +47,10 @@ public class Snake {
 	}
 	
 	public Deque<IntVec> getBody() { return body; }
+	
+	public void setOrientation(Direction orientation) {
+		this.orientation = orientation;
+	}
 	
 	public Direction getOrientation() { return orientation; }
 }
