@@ -2,6 +2,7 @@ package lighthouse.gameapi;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import lighthouse.model.GameState;
 import lighthouse.ui.EmptyViewController;
@@ -33,7 +34,7 @@ public interface Game {
 	
 	default boolean hasCustomGameViewController() { return false; }
 	
-	default SwingViewController getCustomGameViewController() { return new EmptyViewController(); }
+	default CustomGameViewController getCustomGameViewController() { throw new NoSuchElementException("No custom game view controller present"); }
 	
 	default SwingViewController getSolverViewController() { return new EmptyViewController(); }
 	

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.model.GameState;
@@ -75,7 +76,7 @@ public class PuzzleGame implements Game {
 	public boolean hasCustomGameViewController() { return true; }
 	
 	@Override
-	public SwingViewController getCustomGameViewController() { return game; }
+	public CustomGameViewController getCustomGameViewController() { return game; }
 	
 	@Override
 	public SwingViewController getControlsViewController() { return controls; }

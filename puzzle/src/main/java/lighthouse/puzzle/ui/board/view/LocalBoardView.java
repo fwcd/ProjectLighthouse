@@ -285,6 +285,19 @@ public class LocalBoardView implements BoardView {
 		component.addMouseMotionListener(listener);
 	}
 	
+	public void removeMouseInput(SceneMouseInput listener) {
+		component.removeMouseListener(listener);
+		component.removeMouseMotionListener(listener);
+	}
+	
+	public void removeKeyInput(SceneKeyInput listener) {
+		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		
+		for (int keyCode : listener.getBoundKeys()) {
+			inputMap.remove(KeyStroke.getKeyStroke(keyCode, 0));
+		}
+	}
+	
 	public void addKeyInput(SceneKeyInput listener) {
 		// component.addKeyListener(listener);
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

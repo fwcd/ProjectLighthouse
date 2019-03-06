@@ -22,26 +22,15 @@ import lighthouse.util.transform.DoubleVecBijection;
 public class LocalBoardViewController implements SwingViewController {
 	private final JPanel component;
 	private final BoardViewModel viewModel;
-	private final DelegateResponder responder;
 	private final LocalBoardView view;
 	
 	public LocalBoardViewController(Board model, DoubleVecBijection gridToPixels) {
-		responder = new DelegateResponder(NoResponder.INSTANCE);
-		
 		viewModel = new BoardViewModel(model);
 		component = new JPanel(new BorderLayout());
 		
 		view = new LocalBoardView(gridToPixels);
 		view.relayout(model.getColumns(), model.getRows());
 		component.add(new CenterPanel(view.getComponent()), BorderLayout.CENTER);
-		
-		SceneMouseInput mouseInput = new SceneMouseInput(gridToPixels);
-		mouseInput.addResponder(responder);
-		view.addMouseInput(mouseInput);
-		
-		SceneKeyInput keyInput = new SceneKeyInput();
-		keyInput.addResponder(responder);
-		view.addKeyInput(keyInput);
 	}
 	
 	public void render() {
@@ -49,7 +38,21 @@ public class LocalBoardViewController implements SwingViewController {
 		SwingUtilities.invokeLater(component::repaint);
 	}
 	
-	public void setResponder(SceneResponder responder) { this.responder.setDelegate(responder); }
+	public void addKeyInput(SceneKeyInput keyInput) {
+		view.addKeyInput(keyInput);
+	}
+	
+	public void addMouseInput(SceneMouseInput mouseInput) {
+		view.addMouseInput(mouseInput);
+	}
+	
+	public void removeKeyInput(SceneKeyInput keyInput) {
+		view.removeKeyInput(keyInput);
+	}
+	
+	public void removeMouseInput(SceneMouseInput mouseInput) {
+		view.removeMouseInput(mouseInput);
+	}
 	
 	public BoardViewModel getViewModel() { return viewModel; }
 	

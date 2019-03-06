@@ -20,6 +20,7 @@ import com.alee.extended.panel.CenterPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.RenderListener;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.scene.controller.NoResponder;
@@ -48,12 +49,14 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	private final SceneViewModel viewModel;
 	private LighthouseViewModel lighthouseViewModel;
 	private SceneMouseInput mouseInput;
+	private SceneKeyInput keyInput;
 	
 	private final LocalSceneView localView;
 	private final List<SceneView> sceneViews = new ArrayList<>();
 	private final List<LighthouseView> lighthouseViews = new ArrayList<>();
 	private final DelegateResponder responder = new DelegateResponder(NoResponder.INSTANCE);
 	private final Set<AnimationPlayer> runningAnimations = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final List<RenderListener> renderListeners = new ArrayList<>();
 	
 	private boolean hasRunningRenderTimer = false;
 	
@@ -65,7 +68,7 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 		sceneViews.add(localView);
 		component.add(new CenterPanel(localView.getComponent()), BorderLayout.CENTER);
 		
-		SceneKeyInput keyInput = new SceneKeyInput();
+		keyInput = new SceneKeyInput();
 		keyInput.addResponder(responder);
 		localView.addKeyInput(keyInput);
 	}
@@ -84,6 +87,10 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 			for (LighthouseView view : lighthouseViews) {
 				view.draw(lighthouseViewModel);
 			}
+		}
+		
+		for (RenderListener listener : renderListeners) {
+			listener.onRender();
 		}
 		
 		SwingUtilities.invokeLater(component::repaint);
@@ -165,6 +172,18 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	public void setLighthouseTransforms(DoubleVecBijection lighthouseToGridSize, DoubleVecBijection lighthouseToGridPos) {
 		lighthouseViewModel = new LighthouseViewModel(viewModel, lighthouseToGridSize, lighthouseToGridPos);
 	}
+	
+	public void addRenderListener(RenderListener listener) {
+		renderListeners.add(listener);
+	}
+	
+	public void removeRenderListener(RenderListener listener) {
+		renderListeners.remove(listener);
+	}
+	
+	public SceneMouseInput getMouseInput() { return mouseInput; }
+	
+	public SceneKeyInput getKeyInput() { return keyInput; }
 	
 	public void addSceneView(SceneView view) {
 		sceneViews.add(view);

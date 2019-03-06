@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
@@ -23,6 +24,8 @@ import lighthouse.puzzle.ui.tickers.TickerList;
 import lighthouse.ui.ObservableStatus;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.controller.SceneResponder;
+import lighthouse.ui.scene.input.SceneKeyInput;
+import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
@@ -32,7 +35,7 @@ import lighthouse.util.transform.DoubleVecBijection;
  * Manages the puzzle game board, the current
  * perspective and the active game mode.
  */
-public class PuzzleGameViewController implements SwingViewController {
+public class PuzzleGameViewController implements CustomGameViewController {
 	private final JComponent component;
 	private final ObservableStatus status;
 	
@@ -154,10 +157,7 @@ public class PuzzleGameViewController implements SwingViewController {
 		
 		viewModel.transitionTo(activeBoard);
 		viewModel.setBlockedStates(model.getLevel().getBlockedStates());
-		
-		SceneResponder controller = mode.createController(perspective, viewModel, sceneFacade);
-		board.setResponder(controller);
-		sceneFacade.setResponder(controller);
+		sceneFacade.setResponder(mode.createController(perspective, viewModel, sceneFacade));
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
@@ -177,6 +177,21 @@ public class PuzzleGameViewController implements SwingViewController {
 	public ObservableStatus getStatus() { return status; }
 	
 	public BoardViewModel getBoardViewModel() { return board.getViewModel(); }
+	
+	@Override
+	public void addKeyInput(SceneKeyInput keyInput) { board.addKeyInput(keyInput); }
+	
+	@Override
+	public void addMouseInput(SceneMouseInput mouseInput) { board.addMouseInput(mouseInput); }
+	
+	@Override
+	public void removeKeyInput(SceneKeyInput keyInput) { board.removeKeyInput(keyInput); }
+	
+	@Override
+	public void removeMouseInput(SceneMouseInput mouseInput) { board.removeMouseInput(mouseInput); }
+	
+	@Override
+	public void onRender() { board.render(); }
 	
 	@Override
 	public JComponent getComponent() { return component; }

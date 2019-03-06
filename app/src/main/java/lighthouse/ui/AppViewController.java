@@ -12,6 +12,7 @@ import javax.swing.JToolBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
@@ -42,6 +43,7 @@ public class AppViewController implements SwingViewController {
 	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	
 	private final Set<Game> gameRegistry = new HashSet<>();
+	private Game activeGame;
 	
 	public AppViewController(AppModel model) {
 		this.model = model;
@@ -103,7 +105,15 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	private void open(Game game) {
+		if (activeGame != null && activeGame.hasCustomGameViewController()) {
+			CustomGameViewController oldVC = game.getCustomGameViewController();
+			scene.removeRenderListener(oldVC);
+			oldVC.removeMouseInput(scene.getMouseInput());
+			oldVC.removeKeyInput(scene.getKeyInput());
+		}
+		
 		LOG.info("Opening game {}...", game.getName());
+		activeGame = game;
 		
 		model.setActiveGameState(game.getModel());
 		scene.getViewModel().setLayers(game.getGameLayer());
@@ -112,15 +122,19 @@ public class AppViewController implements SwingViewController {
 		localView.setGridPosToPixels(game.getGridPosToPixels().floor());
 		localView.setGridSizeToPixels(game.getGridSizeToPixels().floor());
 		
-		if (game.hasCustomGameViewController()) {
-			contentPane.swapTo(game.getCustomGameViewController().getComponent());
-		} else {
-			contentPane.swapTo(scene.getComponent());
-		}
-		
 		scene.relayout(game.getModel().getGridSize());
 		scene.setGridTransforms(game.getGridPosToPixels(), game.getGridSizeToPixels());
 		scene.setLighthouseTransforms(game.getLighthouseToGridSize(), game.getLighthouseToGridPos());
+		
+		if (game.hasCustomGameViewController()) {
+			CustomGameViewController gameVC = game.getCustomGameViewController();
+			scene.addRenderListener(gameVC);
+			gameVC.addMouseInput(scene.getMouseInput());
+			gameVC.addKeyInput(scene.getKeyInput());
+			contentPane.swapTo(gameVC.getComponent());
+		} else {
+			contentPane.swapTo(scene.getComponent());
+		}
 		
 		sideBar.setGameControls(game.getControlsViewController().getComponent());
 		sideBar.setGameStatistics(game.getStatisticsViewController().getComponent());
