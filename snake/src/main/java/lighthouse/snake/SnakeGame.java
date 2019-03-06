@@ -3,6 +3,7 @@ package lighthouse.snake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.Timer;
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
@@ -22,7 +23,17 @@ public class SnakeGame implements Game {
 	private final SnakeGameState gameState = new SnakeGameState();
 	private final SnakeSceneLayer sceneLayer = new SnakeSceneLayer(gameState);
 	private final DoubleVecBijection gridPosToPixels = new Scaling(10, 20);
+	private final Timer timer;
+	private final int maxFPS = 2;
 	private SceneInteractionFacade sceneFacade;
+	
+	public SnakeGame() {
+		timer = new Timer(1000 / maxFPS, e -> {
+			gameState.move();
+			sceneFacade.update();
+		});
+		timer.setRepeats(true);
+	}
 	
 	@Override
 	public String getName() { return "Snake"; }
@@ -35,7 +46,16 @@ public class SnakeGame implements Game {
 	@Override
 	public void onOpen() {
 		sceneFacade.setResponder(new SnakeController(gameState, sceneFacade));
+		timer.start();
 	}
+	
+	@Override
+	public void onClose() {
+		timer.stop();
+	}
+	
+	@Override
+	public boolean hasSimpleArrowKeys() { return true; }
 	
 	@Override
 	public GameState getModel() { return gameState; }

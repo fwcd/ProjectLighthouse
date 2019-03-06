@@ -25,6 +25,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	private final List<SceneResponder> responders = new ArrayList<>();
 	private IntVec gridPos = null;
 	private boolean dragging = false;
+	private boolean hasSimpleArrowKeys = false;
 	
 	public SceneKeyInput() {
 		bindings.put(KeyEvent.VK_UP, this::arrowUpPressed);
@@ -42,7 +43,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	public void keyPressed(int keyCode) {
 		Runnable action = bindings.get(keyCode);
 		if (action != null) {
-			LOG.info("Pressed {} at {} - dragging: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging);
+			LOG.info("Pressed {} at {} - dragging: {} - responders: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging, responders);
 			action.run();
 		}
 	}
@@ -51,7 +52,11 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.UP);
 		} else {
-			arrowSelect(r -> r.up(gridPos));
+			arrowSelect(r -> {
+				IntVec tmp = r.up(gridPos);
+				LOG.info("Moving up");
+				return tmp;
+			});
 		}
 	}
 	
@@ -59,7 +64,11 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.DOWN);
 		} else {
-			arrowSelect(r -> r.down(gridPos));
+			arrowSelect(r -> {
+				IntVec tmp = r.down(gridPos);
+				LOG.info("Moving down");
+				return tmp;
+			});
 		}
 	}
 	
@@ -67,7 +76,11 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.LEFT);
 		} else {
-			arrowSelect(r -> r.left(gridPos));
+			arrowSelect(r -> {
+				IntVec tmp = r.left(gridPos);
+				LOG.info("Moving left");
+				return tmp;
+			});
 		}
 	}
 	
@@ -75,7 +88,11 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		if (dragging) {
 			drag(Direction.RIGHT);
 		} else {
-			arrowSelect(r -> r.right(gridPos));
+			arrowSelect(r -> {
+				IntVec tmp = r.right(gridPos);
+				LOG.info("Moving right");
+				return tmp;
+			});
 		}
 	}
 	
@@ -90,20 +107,22 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	}
 	
 	private void drag(Direction dir) {
-		IntVec nextPos = gridPos.add(dir);
-		boolean success = false;
-		
-		for (SceneResponder responder : responders) {
-			success |= responder.dragTo(nextPos);
-		}
-		
-		if (success) {
-			gridPos = nextPos;
+		if (gridPos != null) {
+			IntVec nextPos = gridPos.add(dir);
+			boolean success = false;
+			
+			for (SceneResponder responder : responders) {
+				success |= responder.dragTo(nextPos);
+			}
+			
+			if (success) {
+				gridPos = nextPos;
+			}
 		}
 	}
 	
 	private void arrowSelect(Function<SceneResponder, IntVec> directionedSelectAction) {
-		if (hasSelection()) {
+		if (hasSimpleArrowKeys || hasSelection()) {
 			updateSelection(directionedSelectAction);
 		} else {
 			updateSelection(r -> r.selectAny());
@@ -146,5 +165,9 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		keyReleased(e.getKeyCode());
+	}
+	
+	public void setUseSimpleArrowKeys(boolean hasSimpleArrowKeys) {
+		this.hasSimpleArrowKeys = hasSimpleArrowKeys;
 	}
 }

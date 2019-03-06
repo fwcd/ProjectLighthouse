@@ -26,6 +26,10 @@ public interface Game {
 	
 	default void onOpen() {}
 	
+	default void onClose() {}
+	
+	default boolean hasSimpleArrowKeys() { return false; }
+	
 	default DoubleVecBijection getGridSizeToPixels() { return getGridPosToPixels(); }
 	
 	default DoubleVecBijection getLighthouseToGridSize() { return getLighthouseToGridPos(); }

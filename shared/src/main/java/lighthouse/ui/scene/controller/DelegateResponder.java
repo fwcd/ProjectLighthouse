@@ -1,11 +1,15 @@
 package lighthouse.ui.scene.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.util.IntVec;
 
 /**
  * A responder that delegates to another responder. Can easily be swapped out.
  */
 public class DelegateResponder implements SceneResponder {
+	private static final Logger LOG = LoggerFactory.getLogger(DelegateResponder.class);
 	private SceneResponder delegate;
 	
 	public DelegateResponder(SceneResponder delegate) {
@@ -14,7 +18,10 @@ public class DelegateResponder implements SceneResponder {
 	
 	public SceneResponder getDelegate() { return delegate; }
 	
-	public void setDelegate(SceneResponder delegate) { this.delegate = delegate; }
+	public void setDelegate(SceneResponder delegate) {
+		this.delegate = delegate;
+		LOG.info("Setting responder delegate to {}", delegate);
+	}
 	
 	@Override
 	public boolean press(IntVec gridPos) { return delegate.press(gridPos); }

@@ -67,7 +67,7 @@ public class LocalSceneView implements SceneView {
 	}
 	
 	public void addKeyInput(SceneKeyInput keyInput) {
-		LOG.debug("Added key input");
+		LOG.info("Added key input");
 		
 		InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = component.getActionMap();
@@ -79,6 +79,7 @@ public class LocalSceneView implements SceneView {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					LOG.debug("Got key event: {}", e);
 					component.requestFocus();
 					keyInput.keyPressed(keyCode);
 				}

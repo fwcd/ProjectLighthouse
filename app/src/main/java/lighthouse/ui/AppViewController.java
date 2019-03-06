@@ -112,6 +112,8 @@ public class AppViewController implements SwingViewController {
 	
 	private void open(Game game) {
 		if (activeGame != null && activeGame.hasCustomGameViewController()) {
+			activeGame.onClose();
+			
 			CustomGameViewController oldVC = activeGame.getCustomGameViewController();
 			scene.removeRenderListener(oldVC);
 			scene.removeLocalBackgroundLayer(oldVC.getRenderableView());
@@ -129,6 +131,7 @@ public class AppViewController implements SwingViewController {
 		localView.setGridPosToPixels(game.getGridPosToPixels().floor());
 		localView.setGridSizeToPixels(game.getGridSizeToPixels().floor());
 		
+		scene.getKeyInput().setUseSimpleArrowKeys(game.hasSimpleArrowKeys());
 		scene.relayout(game.getModel().getGridSize());
 		scene.setGridTransforms(game.getGridPosToPixels(), game.getGridSizeToPixels());
 		scene.setLighthouseTransforms(game.getLighthouseToGridSize(), game.getLighthouseToGridPos());

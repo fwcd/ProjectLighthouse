@@ -2,14 +2,13 @@ package lighthouse.snake.model;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Set;
 import java.util.HashSet;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
-import lighthouse.model.GameState;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
+import lighthouse.model.GameState;
 import lighthouse.util.IntVec;
 import lighthouse.util.LhConstants;
 
