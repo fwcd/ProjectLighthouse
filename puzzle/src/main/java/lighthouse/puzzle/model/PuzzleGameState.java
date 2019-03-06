@@ -100,7 +100,7 @@ public class PuzzleGameState implements GameState {
         level.getStart().getChangeListeners().add(changeListeners);
         level.getGoal().getChangeListeners().add(changeListeners);
     }
-	
+    
 	public Board getBoard() { return board; }
 	
 	public Level getLevel() { return level; }

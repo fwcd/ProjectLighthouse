@@ -1,8 +1,11 @@
-package lighthouse.ui.tickers;
+package lighthouse.puzzle.ui.tickers;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import lighthouse.puzzle.ui.modes.GameMode;
+import lighthouse.puzzle.ui.perspectives.GamePerspective;
 
 /**
  * A combined ticker.
@@ -19,9 +22,9 @@ public class TickerList implements Ticker {
 	}
 	
 	@Override
-	public void tick() {
+	public void tick(GameMode mode, GamePerspective perspective) {
 		for (Ticker ticker : tickers) {
-			ticker.tick();
+			ticker.tick(mode, perspective);
 		}
 	}
 	

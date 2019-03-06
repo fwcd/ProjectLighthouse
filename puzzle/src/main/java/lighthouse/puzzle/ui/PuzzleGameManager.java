@@ -14,8 +14,8 @@ import lighthouse.puzzle.ui.modes.GameMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
+import lighthouse.puzzle.ui.tickers.TickerList;
 import lighthouse.ui.ObservableStatus;
-import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
@@ -59,7 +59,9 @@ public class PuzzleGameManager {
 		board.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
-				model.setBoard(boardModel);
+				if (perspective.isInGame()) {
+					model.setBoard(boardModel);
+				}
 				updatingBoard.set(false);
 			}
 		});
@@ -84,11 +86,13 @@ public class PuzzleGameManager {
 	}
 	
 	private void update() {
-		tickers.tick();
+		tickers.tick(mode, perspective);
 		
 		for (Updatable updater : externalUpdaters) {
 			updater.update();
 		}
+		
+		sceneFacade.update();
 		
 		BoardStatistics stats = board.getStatistics();
 		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
@@ -111,11 +115,8 @@ public class PuzzleGameManager {
 	/** Enters a game mode such as "editing" or "playing". */
 	public void enter(GameMode mode) {
 		if (mode.isPlaying()) {
-			tickers.add(winChecker);
 			winChecker.reset();
 			model.startLevel();
-		} else {
-			tickers.remove(winChecker);
 		}
 		
 		this.mode = mode;

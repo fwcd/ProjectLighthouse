@@ -6,9 +6,10 @@ import javax.swing.JOptionPane;
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
+import lighthouse.puzzle.ui.modes.GameMode;
+import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.ui.ObservableStatus;
 import lighthouse.ui.scene.viewmodel.graphics.ConfettiAnimation;
-import lighthouse.ui.tickers.Ticker;
 import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 
@@ -35,8 +36,8 @@ public class GameWinChecker implements Ticker {
 	}
 	
 	@Override
-	public void tick() {
-		if (!alreadyWon && game.isWon() && !game.getBoard().isEmpty()) {
+	public void tick(GameMode mode, GamePerspective perspective) {
+		if (!alreadyWon && mode.isPlaying() && perspective.isInGame() && game.isWon() && !game.getBoard().isEmpty()) {
 			alreadyWon = true;
 			
 			String message = "FINISHED GAME in " + statistics.getMoveCount() + " moves!";
