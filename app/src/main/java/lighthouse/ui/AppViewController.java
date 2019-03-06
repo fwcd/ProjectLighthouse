@@ -50,7 +50,7 @@ public class AppViewController implements SwingViewController {
 		centerPane.add(tabBar, BorderLayout.NORTH);
 		
 		scene = new SceneViewController();
-		interactionFacade = new SceneInteractionBackend(scene.getAnimationRunner(), scene.getResponder(), this::update);
+		interactionFacade = new SceneInteractionBackend(scene, scene.getResponder(), this::update);
 		centerPane.add(scene.getComponent(), BorderLayout.CENTER);
 		
 		component.add(centerPane, BorderLayout.CENTER);

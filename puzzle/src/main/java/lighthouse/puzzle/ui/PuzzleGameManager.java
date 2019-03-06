@@ -15,8 +15,6 @@ import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
 import lighthouse.ui.ObservableStatus;
-import lighthouse.ui.scene.AnimationRunner;
-import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.tickers.TickerList;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;

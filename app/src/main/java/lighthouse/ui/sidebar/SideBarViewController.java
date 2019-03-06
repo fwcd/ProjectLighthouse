@@ -32,7 +32,7 @@ public class SideBarViewController implements SwingViewController {
 		component = new JPanel(new BorderLayout());
 		
 		// Adds a menu bar on top
-		menuBar = new MenuBarViewController(model, scene.getAnimationRunner());
+		menuBar = new MenuBarViewController(model, scene);
 		component.add(menuBar.getComponent(), BorderLayout.NORTH);
 		
 		WebAccordion accordion = new WebAccordion();

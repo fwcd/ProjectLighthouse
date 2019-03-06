@@ -6,6 +6,9 @@ import java.util.function.Function;
 import lighthouse.util.DoubleVec;
 import lighthouse.util.IntVec;
 
+/**
+ * A {@link Graphics2D}-based shape renderer.
+ */
 public class Graphics2DSceneRenderer implements SceneShapeVisitor {
 	private final Graphics2D g2d;
 	private final Function<DoubleVec, IntVec> gridPosToPixels;

@@ -14,7 +14,10 @@ import lighthouse.util.MathUtils;
 /**
  * A reference implementation of an {@link SceneShapeVisitor}
  * that renders the shape to a {@link WritableColorGrid}.
+ * 
+ * @deprecated {@link Graphics2DSceneRenderer} provides a more complete implementation.
  */
+@Deprecated
 public class GridSceneRenderer implements SceneShapeVisitor {
 	private static final Logger LOG = LoggerFactory.getLogger(GridSceneRenderer.class);
 	private static final double EPSILON = 0.0001;

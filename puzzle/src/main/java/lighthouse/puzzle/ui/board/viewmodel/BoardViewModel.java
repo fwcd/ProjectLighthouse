@@ -141,8 +141,10 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 		boardListeners.fire(next);
 	}
 	
+	@Override
 	public boolean hasNextTransitionFrame() { return transitionableModel.hasNextFrame(); }
 	
+	@Override
 	public void nextTransitionFrame() { transitionableModel.nextFrame(); }
 	
 	public DoubleVec transitionedGridPosForBrick(Brick brick) { 
@@ -175,13 +177,12 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 	}
 	
 	private Stream<SceneShape> shapesOfBrick(Brick brick) {
-		return shapesOfBlock(brick);
-		// TODO: Fix transitions by integrating timers into the scene mechanism
-		// DoubleVec brickOffset = transitionedGridPosForBrick(brick).sub(brick.getPos().toDouble());
-		// return brick.streamAllPositions()
-		// 	.map(IntVec::toDouble)
-		// 	.map(brickOffset::add)
-		// 	.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, brick.getColor(), Shading.FILLED)); // TODO: Selection highlighting
+		// return shapesOfBlock(brick);
+		DoubleVec brickOffset = transitionedGridPosForBrick(brick).sub(brick.getPos().toDouble());
+		return brick.streamAllPositions()
+			.map(IntVec::toDouble)
+			.map(brickOffset::add)
+			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, brick.getColor(), Shading.FILLED)); // TODO: Selection highlighting
 	}
 	
 	// === Delegated methods ===
