@@ -9,7 +9,7 @@ import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.model.GameState;
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.PuzzleGameManager;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.sidebar.BoardStatisticsViewController;
 import lighthouse.puzzle.ui.sidebar.GameControlsViewController;
 import lighthouse.puzzle.ui.sidebar.SolverViewController;
@@ -25,7 +25,7 @@ import lighthouse.util.transform.Translation;
 public class PuzzleGame implements Game {
 	private static final Logger LOG = LoggerFactory.getLogger(PuzzleGame.class);
 	private final PuzzleGameState model = new PuzzleGameState();
-	private PuzzleGameManager game;
+	private PuzzleGameViewController game;
 	private SwingViewController controls;
 	private SwingViewController solver;
 	private SwingViewController statistics;
@@ -37,7 +37,7 @@ public class PuzzleGame implements Game {
 	@Override
 	public void initialize(GameInitializationContext context) {
 		loadDefaultLevel();
-		game = new PuzzleGameManager(model, context);
+		game = new PuzzleGameViewController(model, context);
 		controls = new GameControlsViewController(game, model);
 		solver = new SolverViewController(model, context.getInteractionFacade());
 		statistics = new BoardStatisticsViewController(game.getBoardViewModel().getStatistics());
@@ -72,6 +72,9 @@ public class PuzzleGame implements Game {
 	
 	@Override
 	public boolean hasCustomGameViewController() { return true; }
+	
+	@Override
+	public SwingViewController getCustomGameViewController() { return game; }
 	
 	@Override
 	public SwingViewController getControlsViewController() { return controls; }

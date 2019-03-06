@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lighthouse.puzzle.model.Board;
-import lighthouse.puzzle.ui.PuzzleGameManager;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.puzzle.ui.perspectives.GamePerspective;
@@ -19,7 +19,7 @@ import lighthouse.util.transform.Scaling;
 public class PerspectiveIconViewController implements SwingViewController {
 	private final JComponent component;
 	
-	public PerspectiveIconViewController(GamePerspective perspective, PuzzleGameManager game) {
+	public PerspectiveIconViewController(GamePerspective perspective, PuzzleGameViewController game) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		

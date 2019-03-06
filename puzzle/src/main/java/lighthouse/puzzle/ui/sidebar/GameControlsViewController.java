@@ -9,7 +9,7 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.window.WebPopup;
 
 import lighthouse.puzzle.model.PuzzleGameState;
-import lighthouse.puzzle.ui.PuzzleGameManager;
+import lighthouse.puzzle.ui.PuzzleGameViewController;
 import lighthouse.puzzle.ui.modes.EditingMode;
 import lighthouse.puzzle.ui.modes.PlayingMode;
 import lighthouse.ui.ObservableStatus;
@@ -25,7 +25,7 @@ public class GameControlsViewController implements SwingViewController {
 	private final JComponent component;
 	private final StatusBar statusBar;
 
-	public GameControlsViewController(PuzzleGameManager game, PuzzleGameState gameState) {
+	public GameControlsViewController(PuzzleGameViewController game, PuzzleGameState gameState) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 

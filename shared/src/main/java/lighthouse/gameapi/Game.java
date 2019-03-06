@@ -33,6 +33,8 @@ public interface Game {
 	
 	default boolean hasCustomGameViewController() { return false; }
 	
+	default SwingViewController getCustomGameViewController() { return new EmptyViewController(); }
+	
 	default SwingViewController getSolverViewController() { return new EmptyViewController(); }
 	
 	default SwingViewController getControlsViewController() { return new EmptyViewController(); }
