@@ -18,6 +18,7 @@ import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.solver.BacktrackingSolver;
+import lighthouse.puzzle.solver.RecursiveSolver;
 import lighthouse.puzzle.solver.Solver;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
@@ -50,7 +51,8 @@ public class SolverViewController implements SwingViewController {
 				playbackSpeed
 			),
 			LayoutUtils.panelOf(
-				LayoutUtils.buttonOf("Solve with Backtracking", () -> solveWithBacktracking((int) playbackSpeed.getValue())),
+				LayoutUtils.buttonOf("Backtrack", () -> solveWith(new BacktrackingSolver(), (int) playbackSpeed.getValue())),
+				LayoutUtils.buttonOf("Recursive solve", () -> solveWith(new RecursiveSolver(), (int) playbackSpeed.getValue())),
 				LayoutUtils.buttonOf("Stop", this::stop)
 			)
 		);
@@ -62,10 +64,9 @@ public class SolverViewController implements SwingViewController {
 		}
 	}
 	
-	private void solveWithBacktracking(int boardsPerSecond) {
+	private void solveWith(Solver solver, int boardsPerSecond) {
 		stop();
 		solverThread = new Thread(() -> {
-			Solver solver = new BacktrackingSolver();
 			Level level = gameState.getLevel();
 			try {
 				Iterator<Board> solution = solver.solve(level).iterator();
