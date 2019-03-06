@@ -3,7 +3,12 @@ package lighthouse.ui.scene;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -48,8 +53,9 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	private final List<SceneView> sceneViews = new ArrayList<>();
 	private final List<LighthouseView> lighthouseViews = new ArrayList<>();
 	private final DelegateResponder responder = new DelegateResponder(NoResponder.INSTANCE);
+	private final Set<AnimationPlayer> runningAnimations = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	
-	private boolean hasRunningTransitionTimer = false;
+	private boolean hasRunningRenderTimer = false;
 	
 	public SceneViewController() {
 		viewModel = new SceneViewModel();
@@ -66,7 +72,7 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	
 	/** Renders the scene to the output views. */
 	public void render() {
-		updateTransitionTimer();
+		updateRenderTimer();
 		
 		for (SceneView view : sceneViews) {
 			view.draw(viewModel);
@@ -83,25 +89,46 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 		SwingUtilities.invokeLater(component::repaint);
 	}
 	
-	/** Ensure that there is a timer handling running layer transitions. */
-	private void updateTransitionTimer() {
+	/** Ensure that there is a timer handling running animations and layer transitions. */
+	private void updateRenderTimer() {
 		LOG.debug("Updating the scene's transition timer...");
 		
-		if (!hasRunningTransitionTimer) {
-			hasRunningTransitionTimer = true;
+		if (!hasRunningRenderTimer) {
+			hasRunningRenderTimer = true;
+			Set<SceneLayer> removedLayers = new HashSet<>();
+			
+			LOG.debug("Starting new render timer...");
 			startRepeatingTimer(e -> {
+				removedLayers.clear();
 				boolean updated = false;
 				
 				for (SceneLayer layer : viewModel) {
 					if (layer.hasNextTransitionFrame()) {
 						layer.nextTransitionFrame();
 						updated = true;
-						render();
 					}
 				}
 				
-				if (!updated) {
-					hasRunningTransitionTimer = false;
+				if (!runningAnimations.isEmpty()) {
+					// Advance all animations
+					for (Iterator<AnimationPlayer> iterator = runningAnimations.iterator(); iterator.hasNext();) {
+						AnimationPlayer player = iterator.next();
+						if (player.hasNextFrame()) {
+							player.nextFrame();
+						} else {
+							viewModel.removeLayer(player);
+							iterator.remove();
+						}
+					}
+					
+					updated = true;
+				}
+				
+				if (updated) {
+					render();
+				} else {
+					LOG.debug("Stopping render timer");
+					hasRunningRenderTimer = false;
 					((Timer) e.getSource()).stop();
 				}
 			});
@@ -112,16 +139,8 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	public void play(Animation animation) {
 		AnimationPlayer player = new AnimationPlayer(animation);
 		viewModel.addLayer(player);
-		
-		startRepeatingTimer(e -> {
-			if (player.hasNextFrame()) {
-				player.nextFrame();
-				render();
-			} else {
-				viewModel.removeLayer(player);
-				((Timer) e.getSource()).stop();
-			}
-		});
+		runningAnimations.add(player);
+		updateRenderTimer();
 	}
 	
 	private void startRepeatingTimer(ActionListener action) {
