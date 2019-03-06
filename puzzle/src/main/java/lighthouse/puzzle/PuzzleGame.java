@@ -30,14 +30,15 @@ public class PuzzleGame implements Game {
 	private SwingViewController solver;
 	private SwingViewController statistics;
 	
-	private final DoubleVecBijection gridPosToPixels = new Scaling(70, 70);
+	// Since this is a linear transform, no separation between size and pos is needed
+	private final DoubleVecBijection gridToPixels = new Scaling(70, 70);
 	private final DoubleVecBijection lighthouseToGridSize = new Scaling(0.2, 0.5);
 	private final DoubleVecBijection lighthouseToGridPos = new Translation(-4, -1).andThen(lighthouseToGridSize);
 	
 	@Override
 	public void initialize(GameInitializationContext context) {
 		loadDefaultLevel();
-		game = new PuzzleGameViewController(model, context);
+		game = new PuzzleGameViewController(model, context, gridToPixels);
 		controls = new GameControlsViewController(game, model);
 		solver = new SolverViewController(model, context.getInteractionFacade());
 		statistics = new BoardStatisticsViewController(game.getBoardViewModel().getStatistics());
@@ -53,7 +54,7 @@ public class PuzzleGame implements Game {
 	}
 	
 	@Override
-	public DoubleVecBijection getGridPosToPixels() { return gridPosToPixels; }
+	public DoubleVecBijection getGridPosToPixels() { return gridToPixels; }
 	
 	@Override
 	public DoubleVecBijection getLighthouseToGridPos() { return lighthouseToGridPos; }

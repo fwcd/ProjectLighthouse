@@ -22,9 +22,11 @@ import lighthouse.puzzle.ui.tickers.GameWinChecker;
 import lighthouse.puzzle.ui.tickers.TickerList;
 import lighthouse.ui.ObservableStatus;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.util.Flag;
 import lighthouse.util.ListenerList;
 import lighthouse.util.Updatable;
+import lighthouse.util.transform.DoubleVecBijection;
 
 /**
  * Manages the puzzle game board, the current
@@ -48,7 +50,7 @@ public class PuzzleGameViewController implements SwingViewController {
 	private final ListenerList<GamePerspective> perspectiveListeners = new ListenerList<>("GameViewController.perspectiveListeners");
 	
 	/** Creates a new game view controller using a given model. */
-	public PuzzleGameViewController(PuzzleGameState model, GameInitializationContext context) {
+	public PuzzleGameViewController(PuzzleGameState model, GameInitializationContext context, DoubleVecBijection gridToPixels) {
 		this.model = model;
 		
 		status = context.getStatus();
@@ -56,7 +58,7 @@ public class PuzzleGameViewController implements SwingViewController {
 		
 		// Initialize board
 		component = new JPanel(new BorderLayout());
-		board = new LocalBoardViewController(model.getBoard());
+		board = new LocalBoardViewController(model.getBoard(), gridToPixels);
 		component.add(board.getComponent(), BorderLayout.CENTER);
 
 		// Setup tickers
@@ -151,7 +153,10 @@ public class PuzzleGameViewController implements SwingViewController {
 		
 		viewModel.transitionTo(activeBoard);
 		viewModel.setBlockedStates(model.getLevel().getBlockedStates());
-		sceneFacade.setResponder(mode.createController(perspective, viewModel, sceneFacade));
+		
+		SceneResponder controller = mode.createController(perspective, viewModel, sceneFacade);
+		board.setResponder(controller);
+		sceneFacade.setResponder(controller);
 	}
 	
 	/** Fetche sthe currently active mode such as "editing" or "playing". */
