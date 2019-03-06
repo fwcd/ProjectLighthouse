@@ -18,6 +18,7 @@ import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
+import lighthouse.snake.SnakeGame;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
 import lighthouse.ui.scene.SceneInteractionBackend;
 import lighthouse.ui.scene.SceneViewController;
@@ -83,6 +84,7 @@ public class AppViewController implements SwingViewController {
 	
 	private void registerGames() {
 		registerGame(new PuzzleGame());
+		registerGame(new SnakeGame());
 	}
 	
 	private void update() {
@@ -110,7 +112,7 @@ public class AppViewController implements SwingViewController {
 	
 	private void open(Game game) {
 		if (activeGame != null && activeGame.hasCustomGameViewController()) {
-			CustomGameViewController oldVC = game.getCustomGameViewController();
+			CustomGameViewController oldVC = activeGame.getCustomGameViewController();
 			scene.removeRenderListener(oldVC);
 			scene.removeLocalBackgroundLayer(oldVC.getRenderableView());
 			oldVC.removeMouseInput(scene.getMouseInput());
