@@ -114,6 +114,7 @@ public class AppViewController implements SwingViewController {
 		
 		discordRPC.setDetails("Playing " + game.getName());
 		discordRPC.updatePresenceSoon();
+		update();
 	}
 	
 	@Override

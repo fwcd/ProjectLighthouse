@@ -185,6 +185,9 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, brick.getColor(), Shading.FILLED)); // TODO: Selection highlighting
 	}
 	
+	@Override
+	public boolean requiresGridBackground() { return true; }
+	
 	// === Delegated methods ===
 	
 	public boolean hasBrickAt(IntVec gridPos) { return getModel().hasBrickAt(gridPos); }

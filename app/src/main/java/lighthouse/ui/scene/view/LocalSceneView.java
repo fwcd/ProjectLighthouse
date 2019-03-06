@@ -1,5 +1,6 @@
 package lighthouse.ui.scene.view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
+import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
 import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.util.DoubleVec;
@@ -31,6 +33,10 @@ public class LocalSceneView implements SceneView {
 	private final JComponent component;
 	private SceneViewModel scene;
 	
+	private final Color background = Color.WHITE;
+	private final Color gridLineColor = Color.LIGHT_GRAY;
+	private final int gridDashLength = 3;
+	private final int gridLineThickness = 1;
 	private Function<DoubleVec, IntVec> gridPosToPixels;
 	private Function<DoubleVec, IntVec> gridSizeToPixels;
 	
@@ -51,7 +57,7 @@ public class LocalSceneView implements SceneView {
 				render((Graphics2D) g, getSize());
 			}
 		};
-		component.setBackground(Color.WHITE);
+		component.setBackground(background);
 	}
 	
 	public void addKeyInput(SceneKeyInput keyInput) {
@@ -105,8 +111,38 @@ public class LocalSceneView implements SceneView {
 		component.setPreferredSize(new Dimension(mapped.getX(), mapped.getY()));
 	}
 	
+	private boolean shouldDrawGrid() {
+		for (SceneLayer layer : scene) {
+			if (layer.requiresGridBackground()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		if (scene != null) {
+		if (scene == null) {
+			g2d.setFont(g2d.getFont().deriveFont(18F));
+			g2d.drawString("No scene model drawn", 30, 30);
+		} else {
+			int canvasWidth = (int) canvasSize.getWidth();
+			int canvasHeight = (int) canvasSize.getHeight();
+			IntVec cellSize = gridSizeToPixels.apply(DoubleVec.ONE_ONE);
+			
+			if (shouldDrawGrid()) {
+				float[] dash = {gridDashLength};
+				g2d.setColor(gridLineColor);
+				g2d.setStroke(new BasicStroke(gridLineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, dash, 0));
+				
+				for (int y = 0; y < canvasHeight; y += cellSize.getY()) {
+					g2d.drawLine(0, y, canvasWidth, y);
+				}
+				
+				for (int x = 0; x < canvasWidth; x += cellSize.getX()) {
+					g2d.drawLine(x, 0, x, canvasHeight);
+				}
+			}
+			
 			SceneShapeVisitor renderer = new Graphics2DSceneRenderer(g2d, gridPosToPixels, gridSizeToPixels);
 			scene.acceptForAllLayers(renderer);
 		}

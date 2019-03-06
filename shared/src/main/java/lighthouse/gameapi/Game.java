@@ -4,11 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import lighthouse.model.GameState;
-import lighthouse.ui.AppContext;
 import lighthouse.ui.EmptyViewController;
 import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.AnimationRunner;
-import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.transform.DoubleVecBijection;
 

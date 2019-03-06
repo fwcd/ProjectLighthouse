@@ -5,6 +5,8 @@ import java.util.List;
 public interface SceneLayer {
 	List<SceneShape> getShapes();
 	
+	default boolean requiresGridBackground() { return false; }
+	
 	default boolean hasNextTransitionFrame() { return false; }
 	
 	default void nextTransitionFrame() {}
