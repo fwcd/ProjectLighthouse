@@ -3,6 +3,9 @@ package lighthouse.puzzle.ui.tickers;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.PuzzleGameState;
 import lighthouse.puzzle.ui.board.viewmodel.BoardStatistics;
@@ -14,6 +17,7 @@ import lighthouse.ui.util.Status;
 import lighthouse.util.ColorUtils;
 
 public class GameWinChecker implements Ticker {
+	private static final Logger LOG = LoggerFactory.getLogger(GameWinChecker.class);
 	private final JComponent parent;
 	private final PuzzleGameState game;
 	private final ObservableStatus status;
@@ -37,6 +41,12 @@ public class GameWinChecker implements Ticker {
 	
 	@Override
 	public void tick(GameMode mode, GamePerspective perspective) {
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Not already won: {}, playing mode: {}, in-game perspective: {}, game won: {}, board not empty: {}",
+				!alreadyWon, mode.isPlaying(), perspective.isInGame(), game.isWon(), !game.getBoard().isEmpty()
+			);
+		}
+		
 		if (!alreadyWon && mode.isPlaying() && perspective.isInGame() && game.isWon() && !game.getBoard().isEmpty()) {
 			alreadyWon = true;
 			

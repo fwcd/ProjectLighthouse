@@ -7,6 +7,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
@@ -22,8 +25,6 @@ import lighthouse.puzzle.ui.perspectives.GamePerspective;
 import lighthouse.puzzle.ui.tickers.GameWinChecker;
 import lighthouse.puzzle.ui.tickers.TickerList;
 import lighthouse.ui.ObservableStatus;
-import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.util.Flag;
@@ -36,6 +37,7 @@ import lighthouse.util.transform.DoubleVecBijection;
  * perspective and the active game mode.
  */
 public class PuzzleGameViewController implements CustomGameViewController {
+	private static final Logger LOG = LoggerFactory.getLogger(PuzzleGameViewController.class);
 	private final JComponent component;
 	private final ObservableStatus status;
 	
@@ -66,7 +68,8 @@ public class PuzzleGameViewController implements CustomGameViewController {
 
 		// Setup tickers
 		winChecker = new GameWinChecker(null, sceneFacade, model, context.getStatus(), board.getViewModel().getStatistics());
-
+		tickers.add(winChecker);
+		
 		// Add hooks
 		Flag updatingBoard = new Flag(false);
 		
@@ -74,8 +77,11 @@ public class PuzzleGameViewController implements CustomGameViewController {
 		boardViewModel.getBoardListeners().add(boardModel -> {
 			if (updatingBoard.isFalse()) {
 				updatingBoard.set(true);
+				LOG.debug("Updating board, in-game: {}", perspective.isInGame());
+				
 				if (perspective.isInGame()) {
 					model.setBoard(boardModel);
+					fireExternalUpdaters(); // Fire external updaters which contain the perspective icons
 				}
 				updatingBoard.set(false);
 			}
@@ -100,18 +106,23 @@ public class PuzzleGameViewController implements CustomGameViewController {
 		enter(PlayingMode.INSTANCE);
 	}
 	
-	private void update() {
+	private void updateLocally() {
 		tickers.tick(mode, perspective);
 		board.render();
-		
+		fireExternalUpdaters();
+		BoardStatistics stats = board.getViewModel().getStatistics();
+		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
+	}
+	
+	private void update() {
+		updateLocally();
+		sceneFacade.update();
+	}
+	
+	private void fireExternalUpdaters() {
 		for (Updatable updater : externalUpdaters) {
 			updater.update();
 		}
-		
-		sceneFacade.update();
-		
-		BoardStatistics stats = board.getViewModel().getStatistics();
-		stats.setAvgDistanceToGoal(model.getLevel().avgDistanceToGoal(model.getBoard()));
 	}
 	
 	/** "Resets" the game in some way. */
@@ -191,7 +202,7 @@ public class PuzzleGameViewController implements CustomGameViewController {
 	public void removeMouseInput(SceneMouseInput mouseInput) { board.removeMouseInput(mouseInput); }
 	
 	@Override
-	public void onRender() { board.render(); }
+	public void onRender() { updateLocally(); }
 	
 	@Override
 	public JComponent getComponent() { return component; }
