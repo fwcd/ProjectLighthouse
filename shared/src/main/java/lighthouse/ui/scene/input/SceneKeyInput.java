@@ -43,7 +43,8 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	public void keyPressed(int keyCode) {
 		Runnable action = bindings.get(keyCode);
 		if (action != null) {
-			LOG.info("Pressed {} at {} - dragging: {} - responders: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging, responders);
+			LOG.info("Pressed {} at {} - dragging: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging);
+			LOG.debug("Responders: {}", responders);
 			action.run();
 		}
 	}
@@ -53,9 +54,9 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 			drag(Direction.UP);
 		} else {
 			arrowSelect(r -> {
-				IntVec tmp = r.up(gridPos);
-				LOG.info("Moving up");
-				return tmp;
+				IntVec newGridPos = r.up(gridPos);
+				LOG.debug("Moving up");
+				return newGridPos;
 			});
 		}
 	}
@@ -65,9 +66,9 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 			drag(Direction.DOWN);
 		} else {
 			arrowSelect(r -> {
-				IntVec tmp = r.down(gridPos);
-				LOG.info("Moving down");
-				return tmp;
+				IntVec newGridPos = r.down(gridPos);
+				LOG.debug("Moving down");
+				return newGridPos;
 			});
 		}
 	}
@@ -77,9 +78,9 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 			drag(Direction.LEFT);
 		} else {
 			arrowSelect(r -> {
-				IntVec tmp = r.left(gridPos);
-				LOG.info("Moving left");
-				return tmp;
+				IntVec newGridPos = r.left(gridPos);
+				LOG.debug("Moving left");
+				return newGridPos;
 			});
 		}
 	}
@@ -89,9 +90,9 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 			drag(Direction.RIGHT);
 		} else {
 			arrowSelect(r -> {
-				IntVec tmp = r.right(gridPos);
-				LOG.info("Moving right");
-				return tmp;
+				IntVec newGridPos = r.right(gridPos);
+				LOG.debug("Moving right");
+				return newGridPos;
 			});
 		}
 	}

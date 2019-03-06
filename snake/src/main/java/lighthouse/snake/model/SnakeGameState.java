@@ -18,6 +18,7 @@ public class SnakeGameState implements GameState {
 	private final int boardWidth = LhConstants.LIGHTHOUSE_COLS;
 	private final int boardHeight = LhConstants.LIGHTHOUSE_ROWS;
 	private int score = 0;
+	private boolean lost = false;
 	
 	public SnakeGameState() {
 		snake = new Snake(boardWidth, boardHeight);
@@ -30,6 +31,10 @@ public class SnakeGameState implements GameState {
 			pos = randomPos();
 		}
 		foods.add(pos);
+	}
+	
+	public boolean hasLost() {
+		return false;
 	}
 	
 	public void move() {

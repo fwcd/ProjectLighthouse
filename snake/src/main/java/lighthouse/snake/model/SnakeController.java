@@ -20,36 +20,32 @@ public class SnakeController implements SceneResponder {
 	
 	@Override
 	public IntVec up(IntVec gridPos) {
-		LOG.debug("Moving up");
+		LOG.debug("Moving snake up");
 		gameState.getSnake().setOrientation(Direction.UP);
-		gameState.move();
 		sceneFacade.update();
 		return gridPos;
 	}
 	
 	@Override
 	public IntVec left(IntVec gridPos) {
-		LOG.debug("Moving left");
+		LOG.debug("Moving snake left");
 		gameState.getSnake().setOrientation(Direction.LEFT);
-		gameState.move();
 		sceneFacade.update();
 		return gridPos;
 	}
 	
 	@Override
 	public IntVec right(IntVec gridPos) {
-		LOG.debug("Moving right");
+		LOG.debug("Moving snake right");
 		gameState.getSnake().setOrientation(Direction.RIGHT);
-		gameState.move();
 		sceneFacade.update();
 		return gridPos;
 	}
 	
 	@Override
 	public IntVec down(IntVec gridPos) {
-		LOG.debug("Moving down");
+		LOG.debug("Moving snake down");
 		gameState.getSnake().setOrientation(Direction.DOWN);
-		gameState.move();
 		sceneFacade.update();
 		return gridPos;
 	}
