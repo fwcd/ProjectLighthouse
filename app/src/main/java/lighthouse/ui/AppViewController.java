@@ -87,6 +87,10 @@ public class AppViewController implements SwingViewController {
 	
 	private void update() {
 		scene.render();
+		
+		if (activeGame != null && activeGame.hasCustomGameViewController()) {
+			activeGame.getCustomGameViewController().onRender();
+		}
 	}
 	
 	public void registerGame(Game game) {
@@ -108,6 +112,7 @@ public class AppViewController implements SwingViewController {
 		if (activeGame != null && activeGame.hasCustomGameViewController()) {
 			CustomGameViewController oldVC = game.getCustomGameViewController();
 			scene.removeRenderListener(oldVC);
+			scene.removeLocalBackgroundLayer(oldVC.getRenderableView());
 			oldVC.removeMouseInput(scene.getMouseInput());
 			oldVC.removeKeyInput(scene.getKeyInput());
 		}
@@ -129,11 +134,12 @@ public class AppViewController implements SwingViewController {
 		if (game.hasCustomGameViewController()) {
 			CustomGameViewController gameVC = game.getCustomGameViewController();
 			scene.addRenderListener(gameVC);
+			scene.addLocalBackgroundLayer(gameVC.getRenderableView());
+			scene.setRenderBaseLayer(false);
 			gameVC.addMouseInput(scene.getMouseInput());
 			gameVC.addKeyInput(scene.getKeyInput());
-			contentPane.swapTo(gameVC.getComponent());
 		} else {
-			contentPane.swapTo(scene.getComponent());
+			scene.setRenderBaseLayer(true);
 		}
 		
 		sideBar.setGameControls(game.getControlsViewController().getComponent());

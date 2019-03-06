@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.Renderable;
 import lighthouse.puzzle.model.Brick;
 import lighthouse.puzzle.model.Edge;
 import lighthouse.puzzle.model.GameBlock;
@@ -33,7 +34,7 @@ import lighthouse.util.transform.DoubleVecBijection;
 /**
  * A local high-resolution (Swing-based) view of the GameBoard.
  */
-public class LocalBoardView implements BoardView {
+public class LocalBoardView implements BoardView, Renderable {
 	private static final Logger LOG = LoggerFactory.getLogger(LocalBoardView.class);
 	
 	private final Color background = Color.WHITE;
@@ -90,7 +91,8 @@ public class LocalBoardView implements BoardView {
 	}
 	
 	/** Renders the model grid to the Swing Graphics canvas. */
-	private void render(Graphics2D g2d, Dimension canvasSize) {
+	@Override
+	public void render(Graphics2D g2d, Dimension canvasSize) {
 		int canvasWidth = (int) canvasSize.getWidth();
 		int canvasHeight = (int) canvasSize.getHeight();
 		

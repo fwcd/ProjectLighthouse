@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.GameInitializationContext;
+import lighthouse.gameapi.Renderable;
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
@@ -203,6 +204,9 @@ public class PuzzleGameViewController implements CustomGameViewController {
 	
 	@Override
 	public void onRender() { updateLocally(); }
+	
+	@Override
+	public Renderable getRenderableView() { return board.getView(); }
 	
 	@Override
 	public JComponent getComponent() { return component; }

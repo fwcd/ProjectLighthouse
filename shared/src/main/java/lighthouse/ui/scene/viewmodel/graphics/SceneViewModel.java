@@ -28,6 +28,10 @@ public class SceneViewModel implements Iterable<SceneLayer> {
 		}
 	}
 	
+	public int getLayerCount() {
+		return layers.size();
+	}
+	
 	@Override
 	public Iterator<SceneLayer> iterator() {
 		return layers.iterator();

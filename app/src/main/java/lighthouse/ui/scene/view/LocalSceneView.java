@@ -5,8 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.swing.AbstractAction;
@@ -20,6 +21,7 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.gameapi.Renderable;
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.ui.scene.viewmodel.graphics.Graphics2DSceneRenderer;
@@ -38,6 +40,9 @@ public class LocalSceneView implements SceneView {
 	private final Color gridLineColor = Color.LIGHT_GRAY;
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
+	private final List<Renderable> backgroundLayers = new ArrayList<>();
+	private boolean renderBaseLayer = true;
+	
 	private Function<DoubleVec, IntVec> gridPosToPixels;
 	private Function<DoubleVec, IntVec> gridSizeToPixels;
 	
@@ -121,6 +126,18 @@ public class LocalSceneView implements SceneView {
 		return false;
 	}
 	
+	public void addBackgroundLayer(Renderable renderable) {
+		backgroundLayers.add(renderable);
+	}
+	
+	public void removeBackgroundLayer(Renderable renderable) {
+		backgroundLayers.remove(renderable);
+	}
+	
+	public void setRenderBaseLayer(boolean renderBaseLayer) {
+		this.renderBaseLayer = renderBaseLayer;
+	}
+	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		if (scene == null) {
 			g2d.setFont(g2d.getFont().deriveFont(18F));
@@ -130,7 +147,11 @@ public class LocalSceneView implements SceneView {
 			int canvasHeight = (int) canvasSize.getHeight();
 			IntVec cellSize = gridSizeToPixels.apply(DoubleVec.ONE_ONE);
 			
-			if (shouldDrawGrid()) {
+			for (Renderable backgroundLayer : backgroundLayers) {
+				backgroundLayer.render(g2d, canvasSize);
+			}
+			
+			if (renderBaseLayer && shouldDrawGrid()) {
 				float[] dash = {gridDashLength};
 				g2d.setColor(gridLineColor);
 				g2d.setStroke(new BasicStroke(gridLineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, dash, 0));
@@ -144,8 +165,19 @@ public class LocalSceneView implements SceneView {
 				}
 			}
 			
+			boolean isBaseLayer = true;
 			SceneShapeVisitor renderer = new Graphics2DSceneRenderer(g2d, gridPosToPixels, gridSizeToPixels);
-			scene.acceptForAllLayers(renderer);
+			
+			for (SceneLayer layer : scene) {
+				if (isBaseLayer) {
+					LOG.trace("Now at base layer, should render: {} - total count: {}", renderBaseLayer, scene.getLayerCount());
+				}
+				if (!isBaseLayer || renderBaseLayer) {
+					LOG.trace("Rendering layer");
+					layer.acceptForAllShapes(renderer);
+				}
+				isBaseLayer = false;
+			}
 		}
 	}
 	

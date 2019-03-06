@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.gameapi.RenderListener;
+import lighthouse.gameapi.Renderable;
 import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.controller.DelegateResponder;
 import lighthouse.ui.scene.controller.NoResponder;
@@ -63,6 +64,7 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	public SceneViewController() {
 		viewModel = new SceneViewModel();
 		component = new JPanel(new BorderLayout());
+		component.setOpaque(false);
 		
 		localView = new LocalSceneView(DoubleVecBijection.IDENTITY.floor(), DoubleVecBijection.IDENTITY.floor());
 		sceneViews.add(localView);
@@ -140,6 +142,18 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 				}
 			});
 		}
+	}
+	
+	public void addLocalBackgroundLayer(Renderable renderable) {
+		localView.addBackgroundLayer(renderable);
+	}
+	
+	public void removeLocalBackgroundLayer(Renderable renderable) {
+		localView.removeBackgroundLayer(renderable);
+	}
+	
+	public void setRenderBaseLayer(boolean renderBaseLayer) {
+		localView.setRenderBaseLayer(renderBaseLayer);
 	}
 	
 	@Override

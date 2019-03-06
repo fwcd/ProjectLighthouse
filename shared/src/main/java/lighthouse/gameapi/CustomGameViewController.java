@@ -17,4 +17,6 @@ public interface CustomGameViewController extends SwingViewController, RenderLis
 	void removeMouseInput(SceneMouseInput mouseInput);
 	
 	void removeKeyInput(SceneKeyInput keyInput);
+	
+	Renderable getRenderableView();
 }

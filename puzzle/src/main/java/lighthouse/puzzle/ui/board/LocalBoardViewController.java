@@ -8,13 +8,11 @@ import javax.swing.SwingUtilities;
 
 import com.alee.extended.panel.CenterPanel;
 
+import lighthouse.gameapi.Renderable;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.ui.board.view.LocalBoardView;
 import lighthouse.puzzle.ui.board.viewmodel.BoardViewModel;
 import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.controller.DelegateResponder;
-import lighthouse.ui.scene.controller.NoResponder;
-import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.ui.scene.input.SceneKeyInput;
 import lighthouse.ui.scene.input.SceneMouseInput;
 import lighthouse.util.transform.DoubleVecBijection;
@@ -55,6 +53,8 @@ public class LocalBoardViewController implements SwingViewController {
 	}
 	
 	public BoardViewModel getViewModel() { return viewModel; }
+	
+	public Renderable getView() { return view; }
 	
 	@Override
 	public JComponent getComponent() { return component; }
