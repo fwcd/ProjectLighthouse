@@ -22,6 +22,7 @@ import lighthouse.ui.scene.SceneInteractionBackend;
 import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.view.LocalSceneView;
 import lighthouse.ui.sidebar.SideBarViewController;
+import lighthouse.ui.util.SwapPanel;
 
 /**
  * The application's base view controller.
@@ -34,6 +35,7 @@ public class AppViewController implements SwingViewController {
 	private final JToolBar tabBar;
 	private final SceneViewController scene;
 	private final SideBarViewController sideBar;
+	private final SwapPanel contentPane;
 	
 	private final AppContext context = new AppContext();
 	private final SceneInteractionFacade interactionFacade;
@@ -55,7 +57,8 @@ public class AppViewController implements SwingViewController {
 		
 		scene = new SceneViewController();
 		interactionFacade = new SceneInteractionBackend(scene, scene.getResponder(), this::update);
-		centerPane.add(scene.getComponent(), BorderLayout.CENTER);
+		contentPane = new SwapPanel(scene.getComponent());
+		centerPane.add(contentPane, BorderLayout.CENTER);
 		
 		component.add(centerPane, BorderLayout.CENTER);
 		
@@ -108,6 +111,12 @@ public class AppViewController implements SwingViewController {
 		LocalSceneView localView = scene.getLocalView();
 		localView.setGridPosToPixels(game.getGridPosToPixels().floor());
 		localView.setGridSizeToPixels(game.getGridSizeToPixels().floor());
+		
+		if (game.hasCustomGameViewController()) {
+			contentPane.swapTo(game.getCustomGameViewController().getComponent());
+		} else {
+			contentPane.swapTo(scene.getComponent());
+		}
 		
 		scene.relayout(game.getModel().getGridSize());
 		scene.setGridTransforms(game.getGridPosToPixels(), game.getGridSizeToPixels());

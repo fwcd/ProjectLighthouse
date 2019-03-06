@@ -12,6 +12,11 @@ public class SwapPanel extends JPanel {
 		setLayout(new BorderLayout());
 	}
 	
+	public SwapPanel(Component newComponent) {
+		this();
+		swapTo(newComponent);
+	}
+	
 	public void swapTo(Component newComponent) {
 		removeAll();
 		add(newComponent, BorderLayout.CENTER);

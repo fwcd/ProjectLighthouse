@@ -99,6 +99,7 @@ public class PuzzleGameViewController implements SwingViewController {
 	
 	private void update() {
 		tickers.tick(mode, perspective);
+		board.render();
 		
 		for (Updatable updater : externalUpdaters) {
 			updater.update();
