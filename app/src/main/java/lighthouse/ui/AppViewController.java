@@ -28,6 +28,8 @@ import lighthouse.ui.sidebar.SideBarViewController;
  */
 public class AppViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(AppViewController.class);
+	private final AppModel model;
+	
 	private final JComponent component;
 	private final JToolBar tabBar;
 	private final SceneViewController scene;
@@ -40,6 +42,8 @@ public class AppViewController implements SwingViewController {
 	private final Set<Game> gameRegistry = new HashSet<>();
 	
 	public AppViewController(AppModel model) {
+		this.model = model;
+		
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
@@ -98,6 +102,7 @@ public class AppViewController implements SwingViewController {
 	private void open(Game game) {
 		LOG.info("Opening game {}...", game.getName());
 		
+		model.setActiveGameState(game.getModel());
 		scene.getViewModel().setLayers(game.getGameLayer());
 		
 		LocalSceneView localView = scene.getLocalView();

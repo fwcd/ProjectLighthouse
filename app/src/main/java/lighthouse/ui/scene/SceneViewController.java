@@ -116,6 +116,7 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 		startRepeatingTimer(e -> {
 			if (player.hasNextFrame()) {
 				player.nextFrame();
+				render();
 			} else {
 				viewModel.removeLayer(player);
 				((Timer) e.getSource()).stop();

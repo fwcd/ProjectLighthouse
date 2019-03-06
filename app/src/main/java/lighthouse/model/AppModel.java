@@ -5,7 +5,9 @@ package lighthouse.model;
  */
 public class AppModel {
 	private final FileSaveState saveState = new FileSaveState();
-	private final GameState activeGameState = null;
+	private GameState activeGameState = null;
+	
+	public void setActiveGameState(GameState activeGameState) { this.activeGameState = activeGameState; }
 	
 	public GameState getActiveGameState() { return activeGameState; }
 	
