@@ -1,13 +1,13 @@
 package lighthouse.breakout.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import lighthouse.util.Copyable;
 
 public class Board implements Iterable<Brick>, Copyable<Board> {
-	private final List<Brick> bricks = new ArrayList<>();
+	private final Set<Brick> bricks = new HashSet<>();
 	
 	public void addBrick(Brick brick) {
 		bricks.add(brick);

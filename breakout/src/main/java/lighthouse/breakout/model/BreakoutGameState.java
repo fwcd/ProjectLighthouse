@@ -1,5 +1,7 @@
 package lighthouse.breakout.model;
 
+import java.util.Iterator;
+
 import lighthouse.model.BaseGameState;
 import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
@@ -8,7 +10,7 @@ public class BreakoutGameState extends BaseGameState {
 	private static final double DEFAULT_BRICK_WIDTH = 2;
 	private static final double PADDLE_WIDTH = 3;
 	private static final double BALL_SPEED = 0.2;
-	private static final double BALL_RADIUS = 1;
+	private static final double BALL_RADIUS = 0.5;
 	private final IntVec boardSize = new IntVec(LighthouseConstants.COLS, LighthouseConstants.ROWS);
 	
 	private final Board board = new Board();
@@ -24,9 +26,11 @@ public class BreakoutGameState extends BaseGameState {
 			ball.bounceOffHorizontalObstacle();
 		}
 		
-		for (Brick brick : board) {
+		for (Iterator<Brick> iterator = board.iterator(); iterator.hasNext();) {
+			Brick brick = iterator.next();
 			if (ball.collidesWith(brick)) {
 				ball.bounceOffHorizontalObstacle();
+				iterator.remove();
 			}
 		}
 		
