@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -63,6 +65,12 @@ public class LocalSceneView implements SceneView {
 				render((Graphics2D) g, getSize());
 			}
 		};
+		component.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				component.requestFocus(); // Request focus when clicked
+			}
+		});
 		component.setBackground(background);
 	}
 	

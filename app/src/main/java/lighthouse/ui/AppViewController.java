@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,8 @@ public class AppViewController implements SwingViewController {
 		if (activeGame != null && activeGame.hasCustomGameViewController()) {
 			activeGame.getCustomGameViewController().onRender();
 		}
+		
+		SwingUtilities.invokeLater(component::repaint);
 	}
 	
 	public void registerGame(Game game) {
@@ -154,6 +157,7 @@ public class AppViewController implements SwingViewController {
 		sideBar.setSolver(game.getSolverViewController().getComponent());
 		
 		activeGame.onOpen();
+		scene.getComponent().requestFocus();
 		
 		discordRPC.setDetails("Playing " + game.getName());
 		discordRPC.updatePresenceSoon();
