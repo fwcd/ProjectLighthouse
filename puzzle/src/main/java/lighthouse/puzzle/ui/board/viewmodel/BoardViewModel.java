@@ -173,7 +173,7 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 	private Stream<SceneShape> shapesOfBlock(GameBlock block) {
 		return block.streamAllPositions()
 			.map(IntVec::toDouble)
-			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, block.getColor(), Shading.FILLED)); // TODO: Selection highlighting
+			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, block.getColor(), Shading.FILLED));
 	}
 	
 	private Stream<SceneShape> shapesOfBrick(Brick brick) {
@@ -182,7 +182,15 @@ public class BoardViewModel implements ColorGrid, SceneLayer {
 		return brick.streamAllPositions()
 			.map(IntVec::toDouble)
 			.map(brickOffset::add)
-			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, brick.getColor(), Shading.FILLED)); // TODO: Selection highlighting
+			.map(it -> new SceneRect(it, DoubleVec.ONE_ONE, colorOfBrick(brick), Shading.FILLED));
+	}
+	
+	private Color colorOfBrick(Brick brick) {
+		if (selectedID != null && brick.getID() == selectedID) {
+			return brick.getColor().brighter().brighter();
+		} else {
+			return brick.getColor();
+		}
 	}
 	
 	@Override
