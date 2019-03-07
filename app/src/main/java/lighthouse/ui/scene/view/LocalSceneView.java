@@ -170,6 +170,11 @@ public class LocalSceneView implements SceneView {
 			SceneShapeVisitor renderer = new Graphics2DSceneRenderer(g2d, gridPosToPixels, gridSizeToPixels);
 			
 			for (SceneLayer layer : scene) {
+				if (layer.hasBackground()) {
+					g2d.setColor(layer.getBackground());
+					g2d.fillRect(0, 0, canvasWidth, canvasHeight);
+				}
+				
 				if (isBaseLayer) {
 					LOG.trace("Now at base layer, should render: {} - total count: {}", renderBaseLayer, scene.getLayerCount());
 				}

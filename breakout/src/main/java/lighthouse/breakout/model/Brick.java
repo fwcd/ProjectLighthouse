@@ -1,11 +1,15 @@
 package lighthouse.breakout.model;
 
+import java.awt.Color;
+
+import lighthouse.util.ColorUtils;
 import lighthouse.util.Copyable;
 import lighthouse.util.DoubleRect;
 
 /** An immutable Breakout brick. */
 public class Brick implements Copyable<Brick>, BoundingBoxable {
 	private final DoubleRect boundingBox;
+	private final Color color = ColorUtils.randomColor();
 	
 	public Brick(DoubleRect boundingBox) {
 		this.boundingBox = boundingBox;
@@ -18,6 +22,10 @@ public class Brick implements Copyable<Brick>, BoundingBoxable {
 	@Override
 	public DoubleRect getBoundingBox() {
 		return boundingBox;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 	
 	/**

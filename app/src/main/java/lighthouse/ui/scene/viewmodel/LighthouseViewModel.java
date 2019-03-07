@@ -57,16 +57,6 @@ public class LighthouseViewModel implements ColorGrid {
 		
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				// GameBlock block = board.locateBlock(lighthousePosToGrid.apply(new IntVec(x, y)));
-				// Color color = Color.BLACK;
-				
-				// if (block != null) {
-				// 	color = block.getColor();
-				// 	if (board.isSelected(block)) {
-				// 		color = color.brighter().brighter();
-				// 	}
-				// }
-				
 				imgBuffer[(y * columns) + x] = 0;
 			}
 		}
@@ -80,6 +70,11 @@ public class LighthouseViewModel implements ColorGrid {
 		);
 		
 		for (SceneLayer layer : scene) {
+			if (layer.hasBackground()) {
+				g2d.setColor(layer.getBackground());
+				g2d.fillRect(0, 0, columns, rows);
+			}
+			
 			layer.acceptForAllShapes(renderer);
 		}
 		

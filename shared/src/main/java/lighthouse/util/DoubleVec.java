@@ -67,6 +67,10 @@ public class DoubleVec implements Serializable {
 	
 	public DoubleVec invert() { return new DoubleVec(-x, -y); }
 	
+	public DoubleVec invertX() { return new DoubleVec(-x, y); }
+	
+	public DoubleVec invertY() { return new DoubleVec(x, -y); }
+	
 	public DoubleVec abs() { return new DoubleVec(Math.abs(x), Math.abs(y)); }
 	
 	public IntVec round() { return new IntVec((int) Math.round(x), (int) Math.round(y)); }

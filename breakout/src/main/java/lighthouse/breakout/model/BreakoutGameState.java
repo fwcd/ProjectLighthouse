@@ -5,12 +5,14 @@ import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
 public class BreakoutGameState extends BaseGameState {
-	private static final int DEFAULT_BRICK_WIDTH = 2;
-	private static final int PADDLE_WIDTH = 3;
+	private static final double DEFAULT_BRICK_WIDTH = 2;
+	private static final double PADDLE_WIDTH = 3;
+	private static final double BALL_SPEED = 0.2;
+	private static final double BALL_RADIUS = 1;
 	private final IntVec boardSize = new IntVec(LighthouseConstants.COLS, LighthouseConstants.ROWS);
 	
 	private final Board board = new Board();
-	private final Ball ball = new Ball(boardSize.getX() / 2, boardSize.getY() / 2, 1, 1);
+	private final Ball ball = new Ball(boardSize.getX() / 2, boardSize.getY() / 2, BALL_SPEED, BALL_RADIUS);
 	private final Paddle paddle = new Paddle((boardSize.getX() / 2) - (PADDLE_WIDTH / 2), boardSize.getY() - 2, PADDLE_WIDTH);
 	
 	public BreakoutGameState() {
@@ -18,6 +20,22 @@ public class BreakoutGameState extends BaseGameState {
 	}
 	
 	public void advance() {
+		if (ball.collidesWith(paddle)) {
+			ball.bounceOffHorizontalObstacle();
+		}
+		
+		for (Brick brick : board) {
+			if (ball.collidesWith(brick)) {
+				ball.bounceOffHorizontalObstacle();
+			}
+		}
+		
+		if (ball.isOutOfHorizontalBounds(boardSize.getX())) {
+			ball.bounceOffHorizontalObstacle();
+		} else if (ball.isOutOfVerticalBounds(boardSize.getY())) {
+			ball.bounceOffVerticalObstacle();
+		}
+		
 		ball.move();
 	}
 	

@@ -62,6 +62,10 @@ public class IntVec implements Serializable {
 	
 	public IntVec invert() { return new IntVec(-x, -y); }
 	
+	public IntVec invertX() { return new IntVec(-x, y); }
+	
+	public IntVec invertY() { return new IntVec(x, -y); }
+	
 	public IntVec abs() { return new IntVec(Math.abs(x), Math.abs(y)); }
 	
 	public IntVec signum() { return new IntVec(MathUtils.signum(x), MathUtils.signum(y)); }

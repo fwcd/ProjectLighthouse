@@ -16,7 +16,6 @@ import lighthouse.ui.scene.viewmodel.graphics.Shading;
 
 public class BreakoutSceneLayer implements SceneLayer {
 	private final BreakoutGameState gameState;
-	private final Color brickColor = Color.CYAN;
 	private final Color ballColor = Color.YELLOW;
 	private final Color paddleColor = Color.ORANGE;
 
@@ -29,7 +28,7 @@ public class BreakoutSceneLayer implements SceneLayer {
 		List<SceneShape> shapes = new ArrayList<>();
 		
 		for (Brick brick : gameState.getBoard()) {
-			shapes.add(new SceneRect(brick.getBoundingBox(), brickColor, Shading.FILLED));
+			shapes.add(new SceneRect(brick.getBoundingBox(), brick.getColor(), Shading.FILLED));
 		}
 		
 		Ball ball = gameState.getBall();
@@ -40,4 +39,10 @@ public class BreakoutSceneLayer implements SceneLayer {
 		
 		return shapes;
 	}
+	
+	@Override
+	public boolean hasBackground() { return true; }
+	
+	@Override
+	public Color getBackground() { return Color.BLACK; }
 }

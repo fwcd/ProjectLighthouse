@@ -6,7 +6,7 @@ import lighthouse.util.IntVec;
 
 public class BreakoutController implements SceneResponder {
 	private final BreakoutGameState gameState;
-	private int paddleSpeed = 2;
+	private double paddleSpeed = 2;
 	
 	public BreakoutController(BreakoutGameState gameState) {
 		this.gameState = gameState;
