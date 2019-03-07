@@ -7,8 +7,8 @@ import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
 public class BreakoutGameState extends BaseGameState {
-	private static final double DEFAULT_BRICK_WIDTH = 2;
-	private static final double PADDLE_WIDTH = 3;
+	private static final int DEFAULT_BRICK_WIDTH = 2;
+	private static final int PADDLE_WIDTH = 3;
 	private static final double BALL_SPEED = 0.2;
 	private static final double BALL_RADIUS = 0.5;
 	private final IntVec boardSize = new IntVec(LighthouseConstants.COLS, LighthouseConstants.ROWS);
@@ -45,7 +45,7 @@ public class BreakoutGameState extends BaseGameState {
 	
 	private void setupDefaultLevel() {
 		for (int y = 2; y < 5; y++) {
-			for (int x = 0; x < boardSize.getX(); x++) {
+			for (int x = 0; x < boardSize.getX(); x += DEFAULT_BRICK_WIDTH) {
 				board.addBrick(new Brick(x, y, DEFAULT_BRICK_WIDTH));
 			}
 		}
