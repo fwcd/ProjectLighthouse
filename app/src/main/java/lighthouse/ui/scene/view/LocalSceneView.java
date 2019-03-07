@@ -124,6 +124,10 @@ public class LocalSceneView implements SceneView {
 	public void relayout(IntVec gridSize) {
 		IntVec mapped = gridSizeToPixels.apply(gridSize.toDouble());
 		component.setPreferredSize(new Dimension(mapped.getX(), mapped.getY()));
+		SwingUtilities.invokeLater(() -> {
+			component.revalidate();
+			component.repaint();
+		});
 	}
 	
 	private boolean shouldDrawGrid() {
