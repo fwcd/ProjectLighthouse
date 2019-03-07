@@ -15,6 +15,7 @@ import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.input.SceneLighthouseInput;
 import lighthouse.ui.scene.view.RemoteLighthouseView;
+import lighthouse.ui.scene.view.lighthouseapi.LighthouseDisplay;
 import lighthouse.util.ConfigFile;
 import lighthouse.util.ResourceConfigFile;
 
@@ -26,6 +27,7 @@ public class LighthouseConnectorViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(LighthouseConnectorViewController.class);
 	private final JComponent component;
 	private final SceneViewController scene;
+	private LighthouseDisplay api;
 	private boolean connected = false;
 	
 	public LighthouseConnectorViewController(SceneViewController scene) {
@@ -33,6 +35,14 @@ public class LighthouseConnectorViewController implements SwingViewController {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
+		// Close the API connection on shutdown if present
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (api != null) {
+				api.close();
+			}
+		}));
+		
+		// Assemble connector GUI
 		JTextField usernameField = new JTextField();
 		usernameField.setColumns(15);
 		component.add(labelled("Username", usernameField));
@@ -57,20 +67,23 @@ public class LighthouseConnectorViewController implements SwingViewController {
 	
 	private void connect(String username, String token) {
 		if (connected) {
-			JOptionPane.showMessageDialog(component, "Already connected!");
-		} else {
-			RemoteLighthouseView remoteView = new RemoteLighthouseView(username, token);
-			SceneLighthouseInput lhInput = new SceneLighthouseInput();
-			
-			lhInput.addResponder(scene.getResponder());
-			scene.addLighthouseView(remoteView);
-			
-			remoteView.addButtonInput(lhInput);
-			remoteView.addConnectListener(v -> scene.render());
-			remoteView.connect();
-			
-			connected = true;
+			api.close();
+			LOG.info("Reconnecting to Lighthouse...");
 		}
+		
+		api = new LighthouseDisplay(username, token);
+		
+		RemoteLighthouseView remoteView = new RemoteLighthouseView(api);
+		SceneLighthouseInput lhInput = new SceneLighthouseInput();
+		
+		lhInput.addResponder(scene.getResponder());
+		scene.addLighthouseView(remoteView);
+		
+		remoteView.addButtonInput(lhInput);
+		remoteView.addConnectListener(v -> scene.render());
+		remoteView.connect();
+		
+		connected = true;
 	}
 	
 	private JPanel labelled(String label, JComponent component) {
