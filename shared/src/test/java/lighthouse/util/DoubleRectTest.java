@@ -17,11 +17,11 @@ public class DoubleRectTest {
 	}
 	
 	@Test
-	public void testDoubleersects() {
+	public void testIntersects() {
 		DoubleRect a = new DoubleRect(1, 2, 2, 1);
 		DoubleRect b = new DoubleRect(2, 2, 2, 1);
-		DoubleRect c = new DoubleRect(1, 0, 1, -4);
-		DoubleRect d = new DoubleRect(0, 1, -1, 1);
+		DoubleRect c = new DoubleRect(1, 0, 1, 4);
+		DoubleRect d = new DoubleRect(0, 1, 1, 1);
 		assertThat(a, rectIntersects(b));
 		assertThat(a, rectIntersects(c));
 		assertThat(c, rectIntersects(a)); // symmetry

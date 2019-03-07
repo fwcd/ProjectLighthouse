@@ -20,8 +20,8 @@ public class IntRectTest {
 	public void testIntersects() {
 		IntRect a = new IntRect(1, 2, 2, 1);
 		IntRect b = new IntRect(2, 2, 2, 1);
-		IntRect c = new IntRect(1, 0, 1, -4);
-		IntRect d = new IntRect(0, 1, -1, 1);
+		IntRect c = new IntRect(1, 0, 1, 4);
+		IntRect d = new IntRect(0, 1, 1, 1);
 		assertThat(a, rectIntersects(b));
 		assertThat(a, rectIntersects(c));
 		assertThat(c, rectIntersects(a)); // symmetry
