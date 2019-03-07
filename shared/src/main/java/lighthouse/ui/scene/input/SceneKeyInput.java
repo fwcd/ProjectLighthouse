@@ -43,8 +43,8 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 	public void keyPressed(int keyCode) {
 		Runnable action = bindings.get(keyCode);
 		if (action != null) {
-			LOG.info("Pressed {} at {} - dragging: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging);
-			LOG.debug("Responders: {}", responders);
+			LOG.debug("Pressed {} at {} - dragging: {}", KeyEvent.getKeyText(keyCode), gridPos, dragging);
+			LOG.trace("Responders: {}", responders);
 			action.run();
 		}
 	}
