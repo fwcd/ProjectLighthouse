@@ -17,6 +17,10 @@ public class BreakoutGameState extends BaseGameState {
 		setupDefaultLevel();
 	}
 	
+	public void advance() {
+		ball.move();
+	}
+	
 	private void setupDefaultLevel() {
 		for (int y = 2; y < 5; y++) {
 			for (int x = 0; x < boardSize.getX(); x++) {

@@ -35,7 +35,7 @@ public class SnakeGameState extends BaseGameState {
 		return false;
 	}
 	
-	public void move() {
+	public void advance() {
 		boolean ate = foods.contains(snake.nextHead());
 		if (ate) {
 			foods.remove(snake.nextHead());

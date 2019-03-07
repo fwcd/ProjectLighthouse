@@ -22,12 +22,12 @@ public class SnakeGame implements Game {
 	private final SnakeSceneLayer sceneLayer = new SnakeSceneLayer(gameState);
 	private final DoubleVecBijection gridPosToPixels = new Scaling(10, 20);
 	private final Timer timer;
-	private final int maxFPS = 2;
+	private final int maxFPS = 4;
 	private SceneInteractionFacade sceneFacade;
 	
 	public SnakeGame() {
 		timer = new Timer(1000 / maxFPS, e -> {
-			gameState.move();
+			gameState.advance();
 			sceneFacade.update();
 		});
 		timer.setRepeats(true);
