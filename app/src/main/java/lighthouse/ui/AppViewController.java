@@ -113,14 +113,16 @@ public class AppViewController implements SwingViewController {
 	}
 	
 	private void open(Game game) {
-		if (activeGame != null && activeGame.hasCustomGameViewController()) {
+		if (activeGame != null) {
 			activeGame.onClose();
 			
-			CustomGameViewController oldVC = activeGame.getCustomGameViewController();
-			scene.removeRenderListener(oldVC);
-			scene.removeLocalBackgroundLayer(oldVC.getRenderableView());
-			oldVC.removeMouseInput(scene.getMouseInput());
-			oldVC.removeKeyInput(scene.getKeyInput());
+			if (activeGame.hasCustomGameViewController()) {
+				CustomGameViewController oldVC = activeGame.getCustomGameViewController();
+				scene.removeRenderListener(oldVC);
+				scene.removeLocalBackgroundLayer(oldVC.getRenderableView());
+				oldVC.removeMouseInput(scene.getMouseInput());
+				oldVC.removeKeyInput(scene.getKeyInput());
+			}
 		}
 		
 		LOG.info("Opening game {}...", game.getName());
