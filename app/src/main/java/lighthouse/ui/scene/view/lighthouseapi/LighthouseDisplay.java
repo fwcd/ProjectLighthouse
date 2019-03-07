@@ -52,6 +52,7 @@ public class LighthouseDisplay implements AutoCloseable {
 	
 	private final Set<ILighthouseInputListener> observers = new HashSet<>();
 	private final ListenerList<Void> connectListeners = new ListenerList<>("LighthouseDisplay.connectListeners");
+	private final ListenerList<Void> disconnectListeners = new ListenerList<>("LighthouseDisplay.disconnectListeners");
 	
 	/**
 	 * Creates a new LighthouseDisplay with given user-name and access token
@@ -191,6 +192,14 @@ public class LighthouseDisplay implements AutoCloseable {
 	public void removeConnectListener(Listener<Void> listener) {
 		connectListeners.remove(listener);
 	}
+	
+	public void addDisconnectListener(Listener<Void> listener) {
+		disconnectListeners.add(listener);
+	}
+	
+	public void removeDisconnectListener(Listener<Void> listener) {
+		disconnectListeners.remove(listener);
+	}
 
 	/**
 	 * private class for handling the web-socket
@@ -277,6 +286,7 @@ public class LighthouseDisplay implements AutoCloseable {
 		 */
 		public void close() {
 			connected = false;
+			parent.disconnectListeners.fire();
 			if (session != null) {
 				session.close(StatusCode.NORMAL, "end of data");
 			}
@@ -297,6 +307,7 @@ public class LighthouseDisplay implements AutoCloseable {
 		@OnWebSocketClose
 		public void onClose(int statusCode, String reason) {
 			connected = false;
+			parent.disconnectListeners.fire();
 			LOG.info("Connection closed [{}]: {}", statusCode, reason);
 		}
 
