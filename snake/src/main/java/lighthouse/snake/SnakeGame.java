@@ -20,7 +20,7 @@ public class SnakeGame implements Game {
 	// private static final Logger LOG = LoggerFactory.getLogger(SnakeGame.class);
 	private final SnakeGameState gameState = new SnakeGameState();
 	private final SnakeSceneLayer sceneLayer = new SnakeSceneLayer(gameState);
-	private final DoubleVecBijection gridPosToPixels = new Scaling(10, 20);
+	private final DoubleVecBijection gridPosToPixels = new Scaling(15, 15);
 	private final Timer timer;
 	private final int maxTPS = 4;
 	private SceneInteractionFacade sceneFacade;
