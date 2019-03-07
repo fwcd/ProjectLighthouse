@@ -2,7 +2,7 @@ package lighthouse.breakout.model;
 
 import lighthouse.util.DoubleRect;
 
-public class Paddle {
+public class Paddle implements BoundingBoxable {
 	private DoubleRect boundingBox;
 	
 	public Paddle(double x, double y, double width) {
@@ -13,6 +13,7 @@ public class Paddle {
 		boundingBox = boundingBox.movedBy(dx, 0);
 	}
 	
+	@Override
 	public DoubleRect getBoundingBox() {
 		return boundingBox;
 	}

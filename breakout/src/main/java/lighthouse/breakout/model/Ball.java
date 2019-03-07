@@ -3,7 +3,7 @@ package lighthouse.breakout.model;
 import lighthouse.util.DoubleRect;
 import lighthouse.util.DoubleVec;
 
-public class Ball {
+public class Ball implements BoundingBoxable {
 	private final double radius;
 	private DoubleVec position;
 	private DoubleVec direction;
@@ -18,6 +18,7 @@ public class Ball {
 		position = position.add(direction);
 	}
 	
+	@Override
 	public DoubleRect getBoundingBox() {
 		return new DoubleRect(position.sub(radius, radius), radius, radius);
 	}

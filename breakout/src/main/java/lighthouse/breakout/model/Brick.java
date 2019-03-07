@@ -4,7 +4,7 @@ import lighthouse.util.Copyable;
 import lighthouse.util.DoubleRect;
 
 /** An immutable Breakout brick. */
-public class Brick implements Copyable<Brick> {
+public class Brick implements Copyable<Brick>, BoundingBoxable {
 	private final DoubleRect boundingBox;
 	
 	public Brick(DoubleRect boundingBox) {
@@ -15,6 +15,7 @@ public class Brick implements Copyable<Brick> {
 		boundingBox = new DoubleRect(x, y, width, 1);
 	}
 	
+	@Override
 	public DoubleRect getBoundingBox() {
 		return boundingBox;
 	}
