@@ -1,4 +1,4 @@
-package lighthouse.snake.model;
+package lighthouse.snake.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;

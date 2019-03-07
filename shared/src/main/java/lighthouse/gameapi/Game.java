@@ -28,7 +28,7 @@ public interface Game {
 	
 	default void onClose() {}
 	
-	default boolean hasSimpleArrowKeys() { return false; }
+	default boolean usesSimpleArrowKeys() { return true; }
 	
 	default DoubleVecBijection getGridSizeToPixels() { return getGridPosToPixels(); }
 	

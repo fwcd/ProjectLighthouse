@@ -131,7 +131,7 @@ public class AppViewController implements SwingViewController {
 		localView.setGridPosToPixels(game.getGridPosToPixels().floor());
 		localView.setGridSizeToPixels(game.getGridSizeToPixels().floor());
 		
-		scene.getKeyInput().setUseSimpleArrowKeys(game.hasSimpleArrowKeys());
+		scene.getKeyInput().setUseSimpleArrowKeys(game.usesSimpleArrowKeys());
 		scene.relayout(game.getModel().getGridSize());
 		scene.setGridTransforms(game.getGridPosToPixels(), game.getGridSizeToPixels());
 		scene.setLighthouseTransforms(game.getLighthouseToGridSize(), game.getLighthouseToGridPos());

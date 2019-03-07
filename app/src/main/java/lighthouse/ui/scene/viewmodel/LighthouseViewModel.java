@@ -12,7 +12,7 @@ import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShapeVisitor;
 import lighthouse.ui.scene.viewmodel.graphics.SceneViewModel;
 import lighthouse.util.IntVec;
-import lighthouse.util.LhConstants;
+import lighthouse.util.LighthouseConstants;
 import lighthouse.util.transform.DoubleVecBijection;
 
 /**
@@ -30,7 +30,7 @@ public class LighthouseViewModel implements ColorGrid {
 	private boolean antialiasingEnabled = true;
 	
 	public LighthouseViewModel(SceneViewModel scene, DoubleVecBijection lighthouseSizeToGrid, DoubleVecBijection lighthousePosToGrid) {
-		this(scene, LhConstants.LIGHTHOUSE_COLS, LhConstants.LIGHTHOUSE_ROWS, lighthouseSizeToGrid, lighthousePosToGrid);
+		this(scene, LighthouseConstants.COLS, LighthouseConstants.ROWS, lighthouseSizeToGrid, lighthousePosToGrid);
 	}
 
 	public LighthouseViewModel(SceneViewModel scene, int columns, int rows, DoubleVecBijection lighthouseSizeToGrid, DoubleVecBijection lighthousePosToGrid) {

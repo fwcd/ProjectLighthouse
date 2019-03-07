@@ -1,22 +1,20 @@
-package lighthouse.snake.model;
+package lighthouse.snake.ui;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import lighthouse.model.GameState;
+import lighthouse.model.BaseGameState;
+import lighthouse.snake.model.Snake;
 import lighthouse.util.IntVec;
-import lighthouse.util.LhConstants;
+import lighthouse.util.LighthouseConstants;
 
-public class SnakeGameState implements GameState {
+public class SnakeGameState extends BaseGameState {
 	private final Snake snake;
 	private final Set<IntVec> foods = new HashSet<>();
-	private final int boardWidth = LhConstants.LIGHTHOUSE_COLS;
-	private final int boardHeight = LhConstants.LIGHTHOUSE_ROWS;
+	private final int boardWidth = LighthouseConstants.COLS;
+	private final int boardHeight = LighthouseConstants.ROWS;
 	private int score = 0;
 	private boolean lost = false;
 	
@@ -62,18 +60,6 @@ public class SnakeGameState implements GameState {
 	
 	public Snake getSnake() {
 		return snake;
-	}
-	
-	/** Saves a level as JSON to a file. */
-	@Override
-	public void saveLevelTo(Path path) throws IOException {
-		// TODO
-	}
-	
-	/** Loads a level from a JSON file. */
-	@Override 
-	public void loadLevelFrom(InputStream stream) throws IOException {
-		// TODO
 	}
 	
 	/** Returns the grid size in the game's own coordinate system. */

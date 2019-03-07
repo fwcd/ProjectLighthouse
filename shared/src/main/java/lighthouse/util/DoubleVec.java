@@ -1,6 +1,7 @@
 package lighthouse.util;
 
 import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
@@ -22,6 +23,18 @@ public class DoubleVec implements Serializable {
 	public DoubleVec(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public static DoubleVec randomUnitVector() {
+		return randomPolarVector(1.0);
+	}
+	
+	public static DoubleVec randomPolarVector(double length) {
+		double angle = ThreadLocalRandom.current().nextDouble(MathUtils.TWO_PI);
+		return new DoubleVec(
+			Math.cos(angle) * length,
+			Math.sin(angle) * length
+		);
 	}
 	
 	public double getX() { return x; }

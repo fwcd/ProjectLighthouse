@@ -64,6 +64,9 @@ public class PuzzleGame implements Game {
 	public DoubleVecBijection getLighthouseToGridSize() { return lighthouseToGridSize; }
 	
 	@Override
+	public boolean usesSimpleArrowKeys() { return false; }
+	
+	@Override
 	public SceneLayer getGameLayer() { return game.getBoardViewModel(); }
 	
 	@Override

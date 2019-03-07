@@ -1,6 +1,7 @@
 package lighthouse.util;
 
 public class MathUtils {
+	public static final double TWO_PI = 2 * Math.PI;
 	private static final SinTable SIN_TABLE = new SinTable();
 	
 	private MathUtils() {}

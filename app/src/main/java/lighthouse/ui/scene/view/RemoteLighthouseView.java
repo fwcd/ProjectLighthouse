@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import lighthouse.ui.scene.input.SceneLighthouseInput;
 import lighthouse.ui.scene.view.lighthouseapi.LighthouseDisplay;
 import lighthouse.ui.scene.viewmodel.LighthouseViewModel;
-import lighthouse.util.LhConstants;
+import lighthouse.util.LighthouseConstants;
 import lighthouse.util.Listener;
 
 /**
@@ -18,7 +18,7 @@ import lighthouse.util.Listener;
  */
 public class RemoteLighthouseView implements LighthouseView {
 	private static final Logger LOG = LoggerFactory.getLogger(RemoteLighthouseView.class);
-	private static final int LIGHTHOUSE_BYTES = LhConstants.LIGHTHOUSE_ROWS * LhConstants.LIGHTHOUSE_COLS * 3; // RGB colors
+	private static final int LIGHTHOUSE_BYTES = LighthouseConstants.ROWS * LighthouseConstants.COLS * 3; // RGB colors
 	private final LighthouseDisplay api;
 
 	public RemoteLighthouseView(String username, String token) {
@@ -67,10 +67,10 @@ public class RemoteLighthouseView implements LighthouseView {
 	
 	/** Encodes the colored grid in a byte array. */
 	private byte[] encode(LighthouseViewModel viewModel) {
-		if (viewModel.getRows() != LhConstants.LIGHTHOUSE_ROWS) {
-			throw new IllegalArgumentException("Colored grid has " + viewModel.getRows() + " rows, but should have " + LhConstants.LIGHTHOUSE_ROWS);
-		} else if (viewModel.getColumns() != LhConstants.LIGHTHOUSE_COLS) {
-			throw new IllegalArgumentException("Colored grid has " + viewModel.getColumns() + " columns, but should have " + LhConstants.LIGHTHOUSE_COLS);
+		if (viewModel.getRows() != LighthouseConstants.ROWS) {
+			throw new IllegalArgumentException("Colored grid has " + viewModel.getRows() + " rows, but should have " + LighthouseConstants.ROWS);
+		} else if (viewModel.getColumns() != LighthouseConstants.COLS) {
+			throw new IllegalArgumentException("Colored grid has " + viewModel.getColumns() + " columns, but should have " + LighthouseConstants.COLS);
 		}
 		
 		byte[] data = new byte[LIGHTHOUSE_BYTES];
@@ -78,8 +78,8 @@ public class RemoteLighthouseView implements LighthouseView {
 		
 		viewModel.render();
 		
-		for (int y = 0; y < LhConstants.LIGHTHOUSE_ROWS; y++) {
-			for (int x = 0; x < LhConstants.LIGHTHOUSE_COLS; x++) {
+		for (int y = 0; y < LighthouseConstants.ROWS; y++) {
+			for (int x = 0; x < LighthouseConstants.COLS; x++) {
 				Color cell = viewModel.getColorAt(x, y);
 				data[i] = (byte) cell.getRed();
 				data[i + 1] = (byte) cell.getGreen();

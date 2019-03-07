@@ -1,19 +1,17 @@
 package lighthouse.snake;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.swing.Timer;
+
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
 import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.GameState;
-import lighthouse.snake.model.SnakeSceneLayer;
+import lighthouse.snake.ui.SnakeController;
+import lighthouse.snake.ui.SnakeGameState;
+import lighthouse.snake.ui.SnakeSceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
-import lighthouse.snake.model.SnakeController;
-import lighthouse.snake.model.SnakeGameState;
 
 /**
  * A snake game.
@@ -55,7 +53,7 @@ public class SnakeGame implements Game {
 	}
 	
 	@Override
-	public boolean hasSimpleArrowKeys() { return true; }
+	public boolean usesSimpleArrowKeys() { return true; }
 	
 	@Override
 	public GameState getModel() { return gameState; }
