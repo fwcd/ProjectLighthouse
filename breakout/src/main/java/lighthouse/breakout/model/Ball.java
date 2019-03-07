@@ -20,12 +20,12 @@ public class Ball implements BoundingBoxable {
 	
 	/** Bounces off a vertical wall. */
 	public void bounceOffVerticalObstacle() {
-		direction = direction.invertY();
+		direction = direction.invertX();
 	}
 	
 	/** Bounces off a horizontal wall. */
 	public void bounceOffHorizontalObstacle() {
-		direction = direction.invertX();
+		direction = direction.invertY();
 	}
 	
 	public boolean isOutOfBounds(double width, double height) {
@@ -42,7 +42,7 @@ public class Ball implements BoundingBoxable {
 	
 	@Override
 	public DoubleRect getBoundingBox() {
-		return new DoubleRect(position.sub(radius, radius), radius, radius);
+		return new DoubleRect(position.sub(radius, radius), radius * 2, radius * 2);
 	}
 	
 	public DoubleVec getPosition() {

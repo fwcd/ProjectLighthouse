@@ -35,9 +35,9 @@ public class BreakoutGameState extends BaseGameState {
 		}
 		
 		if (ball.isOutOfHorizontalBounds(boardSize.getX())) {
-			ball.bounceOffHorizontalObstacle();
-		} else if (ball.isOutOfVerticalBounds(boardSize.getY())) {
 			ball.bounceOffVerticalObstacle();
+		} else if (ball.isOutOfVerticalBounds(boardSize.getY())) {
+			ball.bounceOffHorizontalObstacle();
 		}
 		
 		ball.move();

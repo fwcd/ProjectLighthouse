@@ -16,7 +16,7 @@ import lighthouse.util.transform.Scaling;
 public class BreakoutGame implements Game {
 	private final BreakoutGameState gameState = new BreakoutGameState();
 	private final BreakoutSceneLayer sceneLayer = new BreakoutSceneLayer(gameState);
-	private final DoubleVecBijection gridToPixels = new Scaling(18, 18);
+	private final DoubleVecBijection gridToPixels = new Scaling(15, 15);
 	private final DoubleVecBijection lighthouseToGridPos = DoubleVecBijection.IDENTITY;
 	private final Timer timer;
 	private final int maxFPS = 60;
