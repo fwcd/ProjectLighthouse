@@ -12,6 +12,7 @@ import javax.swing.JToolBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lighthouse.breakout.BreakoutGame;
 import lighthouse.gameapi.CustomGameViewController;
 import lighthouse.gameapi.Game;
 import lighthouse.gameapi.GameInitializationContext;
@@ -85,6 +86,7 @@ public class AppViewController implements SwingViewController {
 	private void registerGames() {
 		registerGame(new PuzzleGame());
 		registerGame(new SnakeGame());
+		registerGame(new BreakoutGame());
 	}
 	
 	private void update() {

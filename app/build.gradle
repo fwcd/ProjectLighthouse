@@ -15,6 +15,7 @@ dependencies {
 	implementation project(':shared')
 	implementation project(':puzzle')
 	implementation project(':snake')
+	implementation project(':breakout')
 	implementation 'ch.qos.logback:logback-classic:1.2.3'
 	implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
     implementation 'club.minnced:java-discord-rpc:2.0.2'

@@ -19,6 +19,8 @@ A game running on the University of Kiel's high-rise building.
 | puzzle | Model, ViewModel, ViewController, Controller | The original puzzle game. |
 | snake | Model, ViewModel, Controller | The classic snake game. |
 
+New game modules are currently registered in [`AppViewController`](app/src/main/java/lighthouse/ui/AppViewController.java).
+
 ## Lighthouse API
 To use the Lighthouse API, create a new file named `authentication.txt` inside `src/main/resources` with the following contents:
 
