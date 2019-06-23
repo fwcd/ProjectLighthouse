@@ -1,7 +1,7 @@
 # ProjectLighthouse
 A game running on the University of Kiel's high-rise building.
 
-![Photo](photo.jpg) ![Screenshot](screenshot.png)
+![Photo](photo.png) ![Screenshot](screenshot.png)
 
 ## Project Structure
 
