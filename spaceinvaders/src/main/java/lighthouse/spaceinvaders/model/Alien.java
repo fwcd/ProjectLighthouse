@@ -1,19 +1,19 @@
 package lighthouse.spaceinvaders.model;
 
-import lighthouse.util.IntVec;
+import lighthouse.util.DoubleVec;
 
 public class Alien {
-    private final IntVec position;
+    private final DoubleVec position;
     
-    public Alien(IntVec position) {
+    public Alien(DoubleVec position) {
         this.position = position;
     }
     
-    public IntVec getPosition() { return position; }
+    public DoubleVec getPosition() { return position; }
     
-    public Alien movedBy(IntVec delta) { return new Alien(position.add(delta)); }
+    public Alien movedBy(DoubleVec delta) { return new Alien(position.add(delta)); }
     
     public boolean hitBy(Projectile projectile) { return projectile.doesHitAliens() && projectile.getPosition().equals(position); }
     
-    public Projectile shoot() { return new Projectile(position, new IntVec(0, 1), false /* hitsAliens */); }
+    public Projectile shoot() { return new Projectile(position, new DoubleVec(0, 1), false /* hitsAliens */); }
 }

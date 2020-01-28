@@ -12,7 +12,7 @@ import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneRect;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShape;
 import lighthouse.ui.scene.viewmodel.graphics.Shading;
-import lighthouse.util.IntRect;
+import lighthouse.util.DoubleRect;
 
 public class SpaceInvadersSceneLayer implements SceneLayer {
     private final SpaceInvadersGameState gameState;
@@ -26,7 +26,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
         List<SceneShape> shapes = new ArrayList<>();
         
         for (Alien alien : gameState.getSwarm()) {
-            shapes.add(new SceneRect(new IntRect(alien.getPosition(), 1, 1), Color.GREEN, Shading.FILLED));
+            shapes.add(new SceneRect(new DoubleRect(alien.getPosition(), 1, 1), Color.GREEN, Shading.FILLED));
         }
         
         for (Shield shield : gameState.getShields()) {
@@ -34,7 +34,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
         }
         
         for (Projectile projectile : gameState.getFlyingProjectiles()) {
-            shapes.add(new SceneRect(new IntRect(projectile.getPosition(), 1, 1), Color.WHITE, Shading.FILLED));
+            shapes.add(new SceneRect(new DoubleRect(projectile.getPosition(), 1, 1), Color.WHITE, Shading.FILLED));
         }
         
         shapes.add(new SceneRect(gameState.getCannon().getBoundingBox(), Color.GREEN, Shading.FILLED));

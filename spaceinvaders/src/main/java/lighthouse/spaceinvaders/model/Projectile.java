@@ -1,21 +1,21 @@
 package lighthouse.spaceinvaders.model;
 
-import lighthouse.util.IntVec;
+import lighthouse.util.DoubleVec;
 
 public class Projectile {
-    private final IntVec position;
-    private final IntVec velocity;
+    private final DoubleVec position;
+    private final DoubleVec velocity;
     private boolean hitsAliens;
     
-    public Projectile(IntVec position, IntVec velocity, boolean hitsAliens) {
+    public Projectile(DoubleVec position, DoubleVec velocity, boolean hitsAliens) {
         this.position = position;
         this.velocity = velocity;
         this.hitsAliens = hitsAliens;
     }
     
-    public IntVec getPosition() { return position; }
+    public DoubleVec getPosition() { return position; }
     
-    public IntVec getVelocity() { return velocity; }
+    public DoubleVec getVelocity() { return velocity; }
     
     public boolean doesHitAliens() { return hitsAliens; }
     

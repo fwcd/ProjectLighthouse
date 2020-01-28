@@ -1,17 +1,17 @@
 package lighthouse.spaceinvaders.model;
 
-import lighthouse.util.IntRect;
+import lighthouse.util.DoubleRect;
 
 public class Shield {
-    private final IntRect boundingBox;
+    private final DoubleRect boundingBox;
     private final int hp;
     
-    public Shield(IntRect boundingBox, int hp) {
+    public Shield(DoubleRect boundingBox, int hp) {
         this.boundingBox = boundingBox;
         this.hp = hp;
     }
     
-    public IntRect getBoundingBox() { return boundingBox; }
+    public DoubleRect getBoundingBox() { return boundingBox; }
 
     public int getHp() { return hp; }
     

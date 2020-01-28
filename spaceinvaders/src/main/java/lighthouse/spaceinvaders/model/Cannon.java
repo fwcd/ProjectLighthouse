@@ -1,12 +1,12 @@
 package lighthouse.spaceinvaders.model;
 
-import lighthouse.util.IntRect;
-import lighthouse.util.IntVec;
+import lighthouse.util.DoubleRect;
+import lighthouse.util.DoubleVec;
 
 public class Cannon {
-    private final IntRect boundingBox;
+    private final DoubleRect boundingBox;
     
-    public Cannon(IntRect boundingBox) {
+    public Cannon(DoubleRect boundingBox) {
         this.boundingBox = boundingBox;
     }
     
@@ -14,7 +14,7 @@ public class Cannon {
     
     public boolean hitBy(Projectile projectile) { return !projectile.doesHitAliens() && boundingBox.contains(projectile.getPosition()); }
     
-    public Projectile shoot() { return new Projectile(boundingBox.getCenter(), new IntVec(0, -1), true /* hitsAliens */); }
+    public Projectile shoot() { return new Projectile(boundingBox.getCenter(), new DoubleVec(0, -1), true /* hitsAliens */); }
     
-    public IntRect getBoundingBox() { return boundingBox; }
+    public DoubleRect getBoundingBox() { return boundingBox; }
 }

@@ -40,6 +40,10 @@ public class DoubleRect {
 		return topLeft.add(size);
 	}
 	
+	public DoubleVec getCenter() {
+		return topLeft.add(size.getX() / 2, size.getY() / 2);
+	}
+	
 	public boolean contains(DoubleVec pos) {
 		return contains(pos.getX(), pos.getY());
 	}

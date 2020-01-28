@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import lighthouse.util.IntVec;
+import lighthouse.util.DoubleVec;
 
 public class AlienSwarm implements Iterable<Alien> {
     private final List<Alien> aliens;
@@ -17,7 +17,7 @@ public class AlienSwarm implements Iterable<Alien> {
     private final int steps;
     private final int maxSteps;
     
-    public AlienSwarm(IntVec topLeft, int rows, int cols, int spacing, int maxSteps) {
+    public AlienSwarm(DoubleVec topLeft, int rows, int cols, int spacing, int maxSteps) {
         aliens = IntStream.range(0, rows)
             .boxed()
             .flatMap(y -> IntStream.range(0, cols)
@@ -45,15 +45,15 @@ public class AlienSwarm implements Iterable<Alien> {
     public AlienSwarm step() {
         int nextSteps = steps + 1;
         int nextDirection = direction;
-        IntVec delta = new IntVec(direction, 0);
+        DoubleVec delta = new DoubleVec(direction, 0);
 
         if (nextSteps > maxSteps) {
             nextDirection = -direction;
             nextSteps = 0;
-            delta = new IntVec(0, 1);
+            delta = new DoubleVec(0, 1);
         }
         
-        IntVec alienDelta = delta;
+        DoubleVec alienDelta = delta;
         List<Alien> nextAliens = aliens.stream()
             .map(a -> a.movedBy(alienDelta))
             .collect(Collectors.toList());

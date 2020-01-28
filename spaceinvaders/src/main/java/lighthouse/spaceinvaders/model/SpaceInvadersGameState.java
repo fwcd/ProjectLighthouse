@@ -10,8 +10,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lighthouse.model.BaseGameState;
+import lighthouse.util.DoubleRect;
+import lighthouse.util.DoubleVec;
 import lighthouse.util.Flag;
-import lighthouse.util.IntRect;
 import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
@@ -34,11 +35,11 @@ public class SpaceInvadersGameState extends BaseGameState {
         
         int maxSteps = 4;
         int spacing = 2;
-        swarm = new AlienSwarm(new IntVec(1, 1), 2, (boardWidth - maxSteps) / spacing, spacing, maxSteps);
+        swarm = new AlienSwarm(new DoubleVec(1, 1), 2, (boardWidth - maxSteps) / spacing, spacing, maxSteps);
         
         int cannonWidth = 4;
         int cannonHeight = 2;
-        cannon = new Cannon(new IntRect(boardWidth / 2 - cannonWidth / 2, boardHeight - 2 * cannonHeight, cannonWidth, cannonHeight));
+        cannon = new Cannon(new DoubleRect(boardWidth / 2 - cannonWidth / 2, boardHeight - 2 * cannonHeight, cannonWidth, cannonHeight));
     }
     
     public void advance() {
