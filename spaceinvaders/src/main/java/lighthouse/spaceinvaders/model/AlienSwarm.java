@@ -37,8 +37,8 @@ public class AlienSwarm implements Iterable<Alien> {
     
     public List<Alien> getAliens() { return aliens; }
     
-    public AlienSwarm removingAll(Collection<Alien> aliens) {
-        List<Alien> nextAliens = aliens.stream().filter(a -> !aliens.contains(a)).collect(Collectors.toList());
+    public AlienSwarm removingAll(Collection<Alien> removed) {
+        List<Alien> nextAliens = aliens.stream().filter(a -> !removed.contains(a)).collect(Collectors.toList());
         return new AlienSwarm(nextAliens, direction, steps, maxSteps);
     }
     

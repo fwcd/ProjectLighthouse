@@ -36,6 +36,10 @@ public class IntRect {
 		return size;
 	}
 	
+	public IntVec getCenter() {
+		return topLeft.add(size.getX() / 2, size.getY() / 2);
+	}
+	
 	public IntVec getBottomRight() {
 		return topLeft.add(size);
 	}

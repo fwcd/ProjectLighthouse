@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import lighthouse.model.BaseGameState;
 import lighthouse.util.Flag;
+import lighthouse.util.IntRect;
 import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
@@ -21,6 +22,7 @@ public class SpaceInvadersGameState extends BaseGameState {
     private List<Projectile> flyingProjectiles = new ArrayList<>();
     private List<Shield> shields = new ArrayList<>();
     private AlienSwarm swarm;
+    private Cannon cannon;
     
     public SpaceInvadersGameState() {
         this(LighthouseConstants.COLS, LighthouseConstants.ROWS);
@@ -32,7 +34,11 @@ public class SpaceInvadersGameState extends BaseGameState {
         
         int maxSteps = 4;
         int spacing = 2;
-        swarm = new AlienSwarm(new IntVec(1, 1), (boardWidth - maxSteps) / spacing, (boardHeight - maxSteps) / spacing, spacing, maxSteps);
+        swarm = new AlienSwarm(new IntVec(1, 1), 2, (boardWidth - maxSteps) / spacing, spacing, maxSteps);
+        
+        int cannonWidth = 4;
+        int cannonHeight = 2;
+        cannon = new Cannon(new IntRect(boardWidth / 2 - cannonWidth / 2, boardHeight - 2 * cannonHeight, cannonWidth, cannonHeight));
     }
     
     public void advance() {
@@ -59,6 +65,11 @@ public class SpaceInvadersGameState extends BaseGameState {
     }
     
     private boolean handleCollisionsFor(Projectile projectile) {
+        if (cannon.hitBy(projectile)) {
+            // TODO: Handle player hits
+            return true;
+        }
+
         Set<Alien> removed = new HashSet<>();
         Flag collided = new Flag(false);
 
@@ -68,6 +79,7 @@ public class SpaceInvadersGameState extends BaseGameState {
                 collided.set(true);
             }
         }
+
         swarm = swarm.removingAll(removed);
         shields = shields.stream().map(s -> {
             collided.set(true);
@@ -77,9 +89,17 @@ public class SpaceInvadersGameState extends BaseGameState {
         return collided.isTrue();
     }
     
+    public void moveCannon(int dx) {
+        cannon = cannon.movedBy(dx);
+    }
+    
     public AlienSwarm getSwarm() { return swarm; }
     
     public List<Projectile> getFlyingProjectiles() { return Collections.unmodifiableList(flyingProjectiles); }
+    
+    public List<Shield> getShields() { return Collections.unmodifiableList(shields); }
+    
+    public Cannon getCannon() { return cannon; }
 
     @Override
     public IntVec getGridSize() { return new IntVec(boardWidth, boardHeight); }

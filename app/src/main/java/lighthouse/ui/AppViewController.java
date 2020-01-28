@@ -33,6 +33,7 @@ import lighthouse.ui.util.SwapPanel;
  */
 public class AppViewController implements SwingViewController {
 	private static final Logger LOG = LoggerFactory.getLogger(AppViewController.class);
+	private static final boolean DISCORD_RPC_ENABLED = false;
 	private final AppModel model;
 	
 	private final JComponent component;
@@ -74,9 +75,11 @@ public class AppViewController implements SwingViewController {
 		registerGames();
 
 		// Setup RPC
-		discordRPC.setState(context.getStatus().getMessage());
-		discordRPC.updatePresenceSoon();
-		discordRPC.start();
+		if (DISCORD_RPC_ENABLED) {
+			discordRPC.setState(context.getStatus().getMessage());
+			discordRPC.updatePresenceSoon();
+			discordRPC.start();
+		}
 		
 		context.getStatusListeners().add(newStatus -> {
 			discordRPC.setState(newStatus.getMessage());

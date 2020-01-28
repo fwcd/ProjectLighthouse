@@ -38,7 +38,7 @@ public class LocalSceneView implements SceneView {
 	private final JComponent component;
 	private SceneViewModel scene;
 	
-	private final Color background = Color.WHITE;
+	private final Color background = Color.BLACK;
 	private final Color gridLineColor = Color.LIGHT_GRAY;
 	private final int gridDashLength = 3;
 	private final int gridLineThickness = 1;
