@@ -19,6 +19,7 @@ A collection of games running on the University of Kiel's high-rise building.
 | puzzle | Model, ViewModel, ViewController, Controller | The original puzzle game. |
 | snake | Model, ViewModel, Controller | The classic snake game. |
 | breakout | Model, ViewModel, Controller | The game "Breakout". |
+| spaceinvaders | Model, ViewModel, Controller | The game "Space Invaders". |
 
 New game modules are currently registered in [`AppViewController`](app/src/main/java/lighthouse/ui/AppViewController.java).
 

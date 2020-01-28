@@ -1,4 +1,4 @@
-package lighthouse.snake.ui;
+package lighthouse.snake.model;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import lighthouse.model.BaseGameState;
-import lighthouse.snake.model.Snake;
 import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
@@ -16,7 +15,6 @@ public class SnakeGameState extends BaseGameState {
 	private final int boardWidth = LighthouseConstants.COLS;
 	private final int boardHeight = LighthouseConstants.ROWS;
 	private int score = 0;
-	private boolean lost = false;
 	
 	public SnakeGameState() {
 		snake = new Snake(boardWidth, boardHeight);

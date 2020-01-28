@@ -20,6 +20,7 @@ import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
 import lighthouse.snake.SnakeGame;
+import lighthouse.spaceinvaders.SpaceInvadersGame;
 import lighthouse.ui.discordrpc.DiscordRPCRunner;
 import lighthouse.ui.scene.SceneInteractionBackend;
 import lighthouse.ui.scene.SceneViewController;
@@ -87,6 +88,7 @@ public class AppViewController implements SwingViewController {
 		registerGame(new PuzzleGame());
 		registerGame(new SnakeGame());
 		registerGame(new BreakoutGame());
+		registerGame(new SpaceInvadersGame());
 	}
 	
 	private void update() {

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import lighthouse.snake.model.SnakeGameState;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneRect;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShape;

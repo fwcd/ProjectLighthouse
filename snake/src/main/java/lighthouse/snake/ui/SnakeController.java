@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lighthouse.gameapi.SceneInteractionFacade;
+import lighthouse.snake.model.SnakeGameState;
 import lighthouse.ui.scene.controller.SceneResponder;
 import lighthouse.util.Direction;
 import lighthouse.util.IntVec;
