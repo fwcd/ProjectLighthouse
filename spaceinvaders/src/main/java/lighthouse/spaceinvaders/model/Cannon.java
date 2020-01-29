@@ -14,7 +14,7 @@ public class Cannon {
     
     public boolean hitBy(Projectile projectile) { return !projectile.doesHitAliens() && boundingBox.contains(projectile.getPosition()); }
     
-    public Projectile shoot() { return new Projectile(boundingBox.getCenter(), new DoubleVec(0, -1), true /* hitsAliens */); }
+    public Projectile shoot() { return new Projectile(boundingBox.getCenter(), new DoubleVec(0, -SpaceInvadersConstants.PROJECTILE_SPEED), true /* hitsAliens */); }
     
     public DoubleRect getBoundingBox() { return boundingBox; }
 }

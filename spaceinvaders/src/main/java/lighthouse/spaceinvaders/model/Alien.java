@@ -15,5 +15,5 @@ public class Alien {
     
     public boolean hitBy(Projectile projectile) { return projectile.doesHitAliens() && projectile.getPosition().equals(position); }
     
-    public Projectile shoot() { return new Projectile(position, new DoubleVec(0, 1), false /* hitsAliens */); }
+    public Projectile shoot() { return new Projectile(position, new DoubleVec(0, SpaceInvadersConstants.PROJECTILE_SPEED), false /* hitsAliens */); }
 }

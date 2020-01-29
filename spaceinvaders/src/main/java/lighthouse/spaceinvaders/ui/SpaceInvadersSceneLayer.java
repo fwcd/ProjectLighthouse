@@ -37,7 +37,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
             shapes.add(new SceneRect(new DoubleRect(projectile.getPosition(), 1, 1), Color.WHITE, Shading.FILLED));
         }
         
-        shapes.add(new SceneRect(gameState.getCannon().getBoundingBox(), Color.GREEN, Shading.FILLED));
+        shapes.add(new SceneRect(gameState.getCannon().getBoundingBox(), Color.WHITE, Shading.FILLED));
         return shapes;
     }
 }

@@ -18,7 +18,7 @@ public class SpaceInvadersGame implements Game {
     private final SpaceInvadersSceneLayer sceneLayer = new SpaceInvadersSceneLayer(gameState);
     private final DoubleVecBijection gridPosToPixels = new Scaling(15, 15);
     private final Timer timer;
-    private final int maxTPS = 4;
+    private final int maxTPS = 60;
     
     private SceneInteractionFacade sceneFacade;
     

@@ -7,7 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lighthouse.model.BaseGameState;
 import lighthouse.util.DoubleRect;
@@ -17,6 +21,8 @@ import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
 public class SpaceInvadersGameState extends BaseGameState {
+    private static final Logger LOG = LoggerFactory.getLogger(SpaceInvadersGameState.class);
+
     private final int boardWidth;
     private final int boardHeight;
 
@@ -33,18 +39,30 @@ public class SpaceInvadersGameState extends BaseGameState {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         
-        int maxSteps = 4;
         int spacing = 2;
-        swarm = new AlienSwarm(new DoubleVec(1, 1), 2, (boardWidth - maxSteps) / spacing, spacing, maxSteps);
+        int border = 2;
+        swarm = new AlienSwarm(new DoubleVec(1, 1), border, (boardWidth - 4) / spacing, spacing, boardWidth - border);
         
-        int cannonWidth = 4;
-        int cannonHeight = 2;
-        cannon = new Cannon(new DoubleRect(boardWidth / 2 - cannonWidth / 2, boardHeight - 2 * cannonHeight, cannonWidth, cannonHeight));
+        double cannonWidth = 4;
+        double cannonHeight = 1;
+        double cannonX = boardWidth / 2 - cannonWidth / 2;
+        double cannonY = boardHeight - 2 * cannonHeight;
+        cannon = new Cannon(new DoubleRect(cannonX, cannonY, cannonWidth, cannonHeight));
+        
+        int shieldCount = 4;
+        double shieldWidth = 3;
+        double shieldHeight = 2;
+        double shieldOffset = 2;
+        double shieldSpacing = boardWidth / shieldCount;
+        double shieldY = cannonY - shieldHeight - 1;
+        shields = IntStream.range(0, shieldCount)
+            .mapToObj(i -> new Shield(new DoubleRect(shieldOffset + i * shieldSpacing, shieldY, shieldWidth, shieldHeight), 10))
+            .collect(Collectors.toList());
     }
     
     public void advance() {
         swarm = swarm.step();
-
+        
         flyingProjectiles = Stream.concat(swarm.launchProjectiles().stream(), flyingProjectiles.stream())
             .map(p -> p.fly())
             .filter(p -> !p.isOutOfBounds(boardWidth, boardHeight))
@@ -60,6 +78,7 @@ public class SpaceInvadersGameState extends BaseGameState {
             Projectile projectile = it.next();
             boolean shouldRemove = handleCollisionsFor(projectile);
             if (shouldRemove) {
+                System.out.println(projectile.doesHitAliens());
                 it.remove();
             }
         }
@@ -68,6 +87,7 @@ public class SpaceInvadersGameState extends BaseGameState {
     private boolean handleCollisionsFor(Projectile projectile) {
         if (cannon.hitBy(projectile)) {
             // TODO: Handle player hits
+            LOG.info("Hit cannon");
             return true;
         }
 
@@ -77,14 +97,20 @@ public class SpaceInvadersGameState extends BaseGameState {
         for (Alien alien : swarm) {
             if (alien.hitBy(projectile)) {
                 removed.add(alien);
+                LOG.info("Hit alien at {}", alien.getPosition());
                 collided.set(true);
             }
         }
 
         swarm = swarm.removingAll(removed);
         shields = shields.stream().map(s -> {
-            collided.set(true);
-            return s.hitBy(projectile) ? s.damage() : s;
+            if (s.hitBy(projectile)) {
+                LOG.info("Hit shield at {}", s.getBoundingBox());
+                collided.set(true);
+                return s.damage();
+            } else {
+                return s;
+            }
         }).collect(Collectors.toList());
         
         return collided.isTrue();

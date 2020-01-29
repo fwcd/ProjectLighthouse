@@ -14,43 +14,49 @@ import lighthouse.util.DoubleVec;
 public class AlienSwarm implements Iterable<Alien> {
     private final List<Alien> aliens;
     private final int direction; // 1 or -1
-    private final int steps;
-    private final int maxSteps;
+    private final double minX;
+    private final double maxX;
     
-    public AlienSwarm(DoubleVec topLeft, int rows, int cols, int spacing, int maxSteps) {
+    public AlienSwarm(DoubleVec topLeft, int rows, int cols, int spacing, double maxX) {
         aliens = IntStream.range(0, rows)
             .boxed()
             .flatMap(y -> IntStream.range(0, cols)
                 .mapToObj(x -> new Alien(topLeft.add(x * spacing, y * spacing))))
             .collect(Collectors.toList());
         direction = 1;
-        steps = 0;
-        this.maxSteps = maxSteps;
+        minX = topLeft.getX() - 0.01;
+        this.maxX = maxX;
     }
     
-    private AlienSwarm(List<Alien> aliens, int direction, int steps, int maxSteps) {
+    private AlienSwarm(List<Alien> aliens, int direction, double minX, double maxX) {
         this.aliens = aliens;
         this.direction = direction;
-        this.steps = steps;
-        this.maxSteps = maxSteps;
+        this.minX = minX;
+        this.maxX = maxX;
     }
     
     public List<Alien> getAliens() { return aliens; }
     
     public AlienSwarm removingAll(Collection<Alien> removed) {
         List<Alien> nextAliens = aliens.stream().filter(a -> !removed.contains(a)).collect(Collectors.toList());
-        return new AlienSwarm(nextAliens, direction, steps, maxSteps);
+        return new AlienSwarm(nextAliens, direction, minX, maxX);
+    }
+    
+    private double getRightmostX() {
+        return aliens.stream().map(Alien::getPosition).mapToDouble(DoubleVec::getX).max().orElse(Double.NEGATIVE_INFINITY);
+    }
+    
+    private double getLeftmostX() {
+        return aliens.stream().map(Alien::getPosition).mapToDouble(DoubleVec::getX).min().orElse(Double.POSITIVE_INFINITY);
     }
     
     public AlienSwarm step() {
-        int nextSteps = steps + 1;
         int nextDirection = direction;
-        DoubleVec delta = new DoubleVec(direction, 0);
+        DoubleVec delta = new DoubleVec(direction * SpaceInvadersConstants.SWARM_SPEED, 0);
 
-        if (nextSteps > maxSteps) {
+        if (getLeftmostX() < minX || getRightmostX() > maxX) {
             nextDirection = -direction;
-            nextSteps = 0;
-            delta = new DoubleVec(0, 1);
+            delta = new DoubleVec(SpaceInvadersConstants.SWARM_SPEED * nextDirection, 1.0);
         }
         
         DoubleVec alienDelta = delta;
@@ -58,16 +64,15 @@ public class AlienSwarm implements Iterable<Alien> {
             .map(a -> a.movedBy(alienDelta))
             .collect(Collectors.toList());
 
-        return new AlienSwarm(nextAliens, nextDirection, nextSteps, maxSteps);
+        return new AlienSwarm(nextAliens, nextDirection, minX, maxX);
     }
     
     public List<Projectile> launchProjectiles() {
         List<Projectile> projectiles = new ArrayList<>();
         Random random = ThreadLocalRandom.current();
-        float projectileLaunchProbability = 0.3F;
 
         for (Alien alien : aliens) {
-            if (random.nextFloat() < projectileLaunchProbability) {
+            if (random.nextDouble() < SpaceInvadersConstants.PROJECTILE_PROBABILITY) {
                 projectiles.add(alien.shoot());
             }
         }
