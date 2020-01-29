@@ -12,7 +12,6 @@ import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneRect;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShape;
 import lighthouse.ui.scene.viewmodel.graphics.Shading;
-import lighthouse.util.DoubleRect;
 
 public class SpaceInvadersSceneLayer implements SceneLayer {
     private final SpaceInvadersGameState gameState;
