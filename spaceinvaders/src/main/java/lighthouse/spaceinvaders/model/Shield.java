@@ -2,7 +2,7 @@ package lighthouse.spaceinvaders.model;
 
 import lighthouse.util.DoubleRect;
 
-public class Shield {
+public class Shield implements BoxBounded {
     private final DoubleRect boundingBox;
     private final int hp;
     
@@ -11,11 +11,10 @@ public class Shield {
         this.hp = hp;
     }
     
+    @Override
     public DoubleRect getBoundingBox() { return boundingBox; }
 
     public int getHp() { return hp; }
-    
-    public boolean hitBy(Projectile projectile) { return boundingBox.contains(projectile.getPosition()); }
     
     public Shield damage() { return new Shield(boundingBox, Math.max(0, hp - 1)); }
 }

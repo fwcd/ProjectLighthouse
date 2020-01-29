@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import lighthouse.util.DoubleRect;
 import lighthouse.util.DoubleVec;
 
 public class AlienSwarm implements Iterable<Alien> {
@@ -43,11 +44,19 @@ public class AlienSwarm implements Iterable<Alien> {
     }
     
     private double getRightmostX() {
-        return aliens.stream().map(Alien::getPosition).mapToDouble(DoubleVec::getX).max().orElse(Double.NEGATIVE_INFINITY);
+        return aliens.stream()
+            .map(Alien::getBoundingBox)
+            .map(DoubleRect::getBottomRight)
+            .mapToDouble(DoubleVec::getX)
+            .max().orElse(Double.NEGATIVE_INFINITY);
     }
     
     private double getLeftmostX() {
-        return aliens.stream().map(Alien::getPosition).mapToDouble(DoubleVec::getX).min().orElse(Double.POSITIVE_INFINITY);
+        return aliens.stream()
+            .map(Alien::getBoundingBox)
+            .map(DoubleRect::getTopLeft)
+            .mapToDouble(DoubleVec::getX)
+            .min().orElse(Double.POSITIVE_INFINITY);
     }
     
     public AlienSwarm step() {

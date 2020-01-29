@@ -26,7 +26,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
         List<SceneShape> shapes = new ArrayList<>();
         
         for (Alien alien : gameState.getSwarm()) {
-            shapes.add(new SceneRect(new DoubleRect(alien.getPosition(), 1, 1), Color.GREEN, Shading.FILLED));
+            shapes.add(new SceneRect(alien.getBoundingBox(), Color.GREEN, Shading.FILLED));
         }
         
         for (Shield shield : gameState.getShields()) {
@@ -34,7 +34,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
         }
         
         for (Projectile projectile : gameState.getFlyingProjectiles()) {
-            shapes.add(new SceneRect(new DoubleRect(projectile.getPosition(), 1, 1), Color.WHITE, Shading.FILLED));
+            shapes.add(new SceneRect(projectile.getBoundingBox(), Color.WHITE, Shading.FILLED));
         }
         
         shapes.add(new SceneRect(gameState.getCannon().getBoundingBox(), Color.WHITE, Shading.FILLED));

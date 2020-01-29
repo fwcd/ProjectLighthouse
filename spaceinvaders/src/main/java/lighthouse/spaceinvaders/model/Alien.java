@@ -1,19 +1,23 @@
 package lighthouse.spaceinvaders.model;
 
+import lighthouse.util.DoubleRect;
 import lighthouse.util.DoubleVec;
 
-public class Alien {
-    private final DoubleVec position;
+public class Alien implements BoxBounded {
+    private final DoubleRect boundingBox;
     
     public Alien(DoubleVec position) {
-        this.position = position;
+        boundingBox = new DoubleRect(position, 1.0, 1.0);
     }
     
-    public DoubleVec getPosition() { return position; }
+    private Alien(DoubleRect boundingBox) {
+        this.boundingBox = boundingBox;
+    }
     
-    public Alien movedBy(DoubleVec delta) { return new Alien(position.add(delta)); }
+    @Override
+    public DoubleRect getBoundingBox() { return boundingBox; }
+
+    public Alien movedBy(DoubleVec delta) { return new Alien(boundingBox.movedBy(delta)); }
     
-    public boolean hitBy(Projectile projectile) { return projectile.doesHitAliens() && projectile.getPosition().equals(position); }
-    
-    public Projectile shoot() { return new Projectile(position, new DoubleVec(0, SpaceInvadersConstants.PROJECTILE_SPEED), false /* hitsAliens */); }
+    public Projectile shoot() { return new Projectile(boundingBox.getTopLeft(), new DoubleVec(0, SpaceInvadersConstants.PROJECTILE_SPEED), false /* hitsAliens */); }
 }

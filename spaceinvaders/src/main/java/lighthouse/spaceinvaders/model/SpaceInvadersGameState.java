@@ -78,16 +78,15 @@ public class SpaceInvadersGameState extends BaseGameState {
             Projectile projectile = it.next();
             boolean shouldRemove = handleCollisionsFor(projectile);
             if (shouldRemove) {
-                System.out.println(projectile.doesHitAliens());
                 it.remove();
             }
         }
     }
     
     private boolean handleCollisionsFor(Projectile projectile) {
-        if (cannon.hitBy(projectile)) {
+        if (!projectile.doesHitAliens() && projectile.collidesWith(cannon)) {
             // TODO: Handle player hits
-            LOG.info("Hit cannon");
+            LOG.info("Hit player");
             return true;
         }
 
@@ -95,21 +94,21 @@ public class SpaceInvadersGameState extends BaseGameState {
         Flag collided = new Flag(false);
 
         for (Alien alien : swarm) {
-            if (alien.hitBy(projectile)) {
+            if (projectile.doesHitAliens() && projectile.collidesWith(alien)) {
                 removed.add(alien);
-                LOG.info("Hit alien at {}", alien.getPosition());
+                LOG.info("Hit alien at {}", alien.getBoundingBox());
                 collided.set(true);
             }
         }
 
         swarm = swarm.removingAll(removed);
-        shields = shields.stream().map(s -> {
-            if (s.hitBy(projectile)) {
-                LOG.info("Hit shield at {}", s.getBoundingBox());
+        shields = shields.stream().map(shield -> {
+            if (projectile.collidesWith(shield)) {
+                LOG.info("Hit shield at {}", shield.getBoundingBox());
                 collided.set(true);
-                return s.damage();
+                return shield.damage();
             } else {
-                return s;
+                return shield;
             }
         }).collect(Collectors.toList());
         
