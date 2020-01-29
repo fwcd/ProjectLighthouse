@@ -2,12 +2,13 @@ package lighthouse.breakout.model;
 
 import java.awt.Color;
 
+import lighthouse.util.BoxBounded;
 import lighthouse.util.ColorUtils;
 import lighthouse.util.Copyable;
 import lighthouse.util.DoubleRect;
 
 /** An immutable Breakout brick. */
-public class Brick implements Copyable<Brick>, BoundingBoxable {
+public class Brick implements Copyable<Brick>, BoxBounded {
 	private final DoubleRect boundingBox;
 	private final Color color = ColorUtils.randomColor();
 	

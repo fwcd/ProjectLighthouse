@@ -1,9 +1,10 @@
 package lighthouse.breakout.model;
 
+import lighthouse.util.BoxBounded;
 import lighthouse.util.DoubleRect;
 import lighthouse.util.DoubleVec;
 
-public class Ball implements BoundingBoxable {
+public class Ball implements BoxBounded {
 	private final double radius;
 	private DoubleVec position;
 	private DoubleVec direction;

@@ -1,8 +1,9 @@
 package lighthouse.breakout.model;
 
+import lighthouse.util.BoxBounded;
 import lighthouse.util.DoubleRect;
 
-public class Paddle implements BoundingBoxable {
+public class Paddle implements BoxBounded {
 	private DoubleRect boundingBox;
 	
 	public Paddle(double x, double y, double width) {

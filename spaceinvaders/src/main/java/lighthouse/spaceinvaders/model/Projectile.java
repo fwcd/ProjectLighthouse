@@ -1,5 +1,6 @@
 package lighthouse.spaceinvaders.model;
 
+import lighthouse.util.BoxBounded;
 import lighthouse.util.DoubleRect;
 import lighthouse.util.DoubleVec;
 

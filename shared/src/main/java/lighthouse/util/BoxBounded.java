@@ -1,6 +1,4 @@
-package lighthouse.spaceinvaders.model;
-
-import lighthouse.util.DoubleRect;
+package lighthouse.util;
 
 public interface BoxBounded {
     DoubleRect getBoundingBox();
