@@ -62,10 +62,11 @@ public class AlienSwarm implements Iterable<Alien> {
     public AlienSwarm step() {
         int nextDirection = direction;
         DoubleVec delta = new DoubleVec(direction * SpaceInvadersConstants.SWARM_SPEED, 0);
+        boolean movesDown = ThreadLocalRandom.current().nextFloat() < 0.4;
 
         if (getLeftmostX() < minX || getRightmostX() > maxX) {
             nextDirection = -direction;
-            delta = new DoubleVec(SpaceInvadersConstants.SWARM_SPEED * nextDirection, 1.0);
+            delta = new DoubleVec(SpaceInvadersConstants.SWARM_SPEED * nextDirection, movesDown ? 1.0 : 0.0);
         }
         
         DoubleVec alienDelta = delta;
