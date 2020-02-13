@@ -33,6 +33,7 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 		bindings.put(KeyEvent.VK_LEFT, this::arrowLeftPressed);
 		bindings.put(KeyEvent.VK_RIGHT, this::arrowRightPressed);
 		bindings.put(KeyEvent.VK_ENTER, this::enterPressed);
+		bindings.put(KeyEvent.VK_SPACE, this::spacePressed);
 	}
 	
 	@Override
@@ -105,6 +106,10 @@ public class SceneKeyInput extends KeyAdapter implements SceneInput {
 			responders.forEach(r -> r.press(gridPos));
 			dragging = true;
 		}
+	}
+	
+	private void spacePressed() {
+		responders.forEach(r -> r.fire());
 	}
 	
 	private void drag(Direction dir) {

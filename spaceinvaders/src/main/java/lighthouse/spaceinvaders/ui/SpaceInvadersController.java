@@ -22,4 +22,10 @@ public class SpaceInvadersController implements SceneResponder {
         gameState.moveCannon(-1);
         return gridPos;
     }
+    
+    @Override
+    public boolean fire() {
+        gameState.fireCannon();
+        return true;
+    }
 }

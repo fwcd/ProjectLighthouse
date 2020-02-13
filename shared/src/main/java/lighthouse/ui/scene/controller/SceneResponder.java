@@ -47,4 +47,7 @@ public interface SceneResponder {
 	
 	/** "Resets" the scene in some sense. Returns whether this was successful. */
 	default boolean reset() { return false; }
+	
+	/** "Fires" a projectile etc. Returns whether this was successful. */
+	default boolean fire() { return false; }
 }

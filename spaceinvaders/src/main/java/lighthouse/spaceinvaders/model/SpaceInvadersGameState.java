@@ -119,6 +119,10 @@ public class SpaceInvadersGameState extends BaseGameState {
         cannon = cannon.movedBy(dx);
     }
     
+    public void fireCannon() {
+        flyingProjectiles.add(cannon.shoot());
+    }
+    
     public AlienSwarm getSwarm() { return swarm; }
     
     public List<Projectile> getFlyingProjectiles() { return Collections.unmodifiableList(flyingProjectiles); }

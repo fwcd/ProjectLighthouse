@@ -58,4 +58,7 @@ public class DelegateResponder implements SceneResponder {
 	
 	@Override
 	public boolean reset() { return delegate.reset(); }
+	
+	@Override
+	public boolean fire() { return delegate.fire(); }
 }
