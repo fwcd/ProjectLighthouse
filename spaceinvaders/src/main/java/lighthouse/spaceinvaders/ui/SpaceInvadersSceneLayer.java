@@ -26,7 +26,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
     public boolean hasBackground() { return gameState.isGameOver(); }
     
     @Override
-    public Color getBackground() { return Color.RED.darker(); }
+    public Color getBackground() { return new Color(0x700013); }
 
     @Override
     public List<SceneShape> getShapes() {
