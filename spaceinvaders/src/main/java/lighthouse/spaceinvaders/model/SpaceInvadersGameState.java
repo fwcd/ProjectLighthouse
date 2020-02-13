@@ -38,26 +38,7 @@ public class SpaceInvadersGameState extends BaseGameState {
     public SpaceInvadersGameState(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
-        
-        int spacing = 2;
-        int border = 2;
-        swarm = new AlienSwarm(new DoubleVec(1, 1), border, (boardWidth - 4) / spacing, spacing, boardWidth - border);
-        
-        double cannonWidth = 4;
-        double cannonHeight = 1;
-        double cannonX = boardWidth / 2 - cannonWidth / 2;
-        double cannonY = boardHeight - 2 * cannonHeight;
-        cannon = new Cannon(new DoubleRect(cannonX, cannonY, cannonWidth, cannonHeight));
-        
-        int shieldCount = 4;
-        double shieldWidth = 3;
-        double shieldHeight = 2;
-        double shieldOffset = 2;
-        double shieldSpacing = boardWidth / shieldCount;
-        double shieldY = cannonY - shieldHeight - 1;
-        shields = IntStream.range(0, shieldCount)
-            .mapToObj(i -> new Shield(new DoubleRect(shieldOffset + i * shieldSpacing, shieldY, shieldWidth, shieldHeight)))
-            .collect(Collectors.toList());
+        reset();
     }
     
     public void advance() {
@@ -133,4 +114,26 @@ public class SpaceInvadersGameState extends BaseGameState {
 
     @Override
     public IntVec getGridSize() { return new IntVec(boardWidth, boardHeight); }
+    
+    public void reset() {
+        int spacing = 2;
+        int border = 2;
+        swarm = new AlienSwarm(new DoubleVec(1, 1), border, (boardWidth - 4) / spacing, spacing, boardWidth - border);
+        
+        double cannonWidth = 4;
+        double cannonHeight = 1;
+        double cannonX = boardWidth / 2 - cannonWidth / 2;
+        double cannonY = boardHeight - 2 * cannonHeight;
+        cannon = new Cannon(new DoubleRect(cannonX, cannonY, cannonWidth, cannonHeight));
+        
+        int shieldCount = 4;
+        double shieldWidth = 3;
+        double shieldHeight = 2;
+        double shieldOffset = 2;
+        double shieldSpacing = boardWidth / shieldCount;
+        double shieldY = cannonY - shieldHeight - 1;
+        shields = IntStream.range(0, shieldCount)
+            .mapToObj(i -> new Shield(new DoubleRect(shieldOffset + i * shieldSpacing, shieldY, shieldWidth, shieldHeight)))
+            .collect(Collectors.toList());
+    }
 }

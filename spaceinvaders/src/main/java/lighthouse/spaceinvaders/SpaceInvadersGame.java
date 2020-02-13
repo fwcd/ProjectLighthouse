@@ -8,7 +8,9 @@ import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.GameState;
 import lighthouse.spaceinvaders.model.SpaceInvadersGameState;
 import lighthouse.spaceinvaders.ui.SpaceInvadersController;
+import lighthouse.spaceinvaders.ui.SpaceInvadersControlsViewController;
 import lighthouse.spaceinvaders.ui.SpaceInvadersSceneLayer;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
@@ -16,6 +18,7 @@ import lighthouse.util.transform.Scaling;
 public class SpaceInvadersGame implements Game {
     private final SpaceInvadersGameState gameState = new SpaceInvadersGameState();
     private final SpaceInvadersSceneLayer sceneLayer = new SpaceInvadersSceneLayer(gameState);
+    private final SwingViewController controls = new SpaceInvadersControlsViewController(gameState);
     private final DoubleVecBijection gridPosToPixels = new Scaling(15, 15);
     private final Timer timer;
     private final int maxTPS = 60;
@@ -60,4 +63,7 @@ public class SpaceInvadersGame implements Game {
 
     @Override
     public DoubleVecBijection getLighthouseToGridPos() { return DoubleVecBijection.IDENTITY; }
+    
+    @Override
+    public SwingViewController getControlsViewController() { return controls; }
 }
