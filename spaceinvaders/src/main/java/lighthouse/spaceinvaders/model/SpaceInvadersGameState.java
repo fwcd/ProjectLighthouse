@@ -56,7 +56,7 @@ public class SpaceInvadersGameState extends BaseGameState {
         double shieldSpacing = boardWidth / shieldCount;
         double shieldY = cannonY - shieldHeight - 1;
         shields = IntStream.range(0, shieldCount)
-            .mapToObj(i -> new Shield(new DoubleRect(shieldOffset + i * shieldSpacing, shieldY, shieldWidth, shieldHeight), 10))
+            .mapToObj(i -> new Shield(new DoubleRect(shieldOffset + i * shieldSpacing, shieldY, shieldWidth, shieldHeight)))
             .collect(Collectors.toList());
     }
     
@@ -102,7 +102,7 @@ public class SpaceInvadersGameState extends BaseGameState {
         }
 
         swarm = swarm.removingAll(removed);
-        shields = shields.stream().map(shield -> {
+        shields = shields.stream().filter(shield -> !shield.isDestroyed()).map(shield -> {
             if (projectile.collidesWith(shield)) {
                 LOG.info("Hit shield at {}", shield.getBoundingBox());
                 collided.set(true);

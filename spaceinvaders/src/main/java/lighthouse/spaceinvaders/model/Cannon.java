@@ -15,5 +15,6 @@ public class Cannon implements BoxBounded {
     
     public Projectile shoot() { return new Projectile(boundingBox.getCenter(), new DoubleVec(0, -SpaceInvadersConstants.PROJECTILE_SPEED), true /* hitsAliens */); }
     
+    @Override
     public DoubleRect getBoundingBox() { return boundingBox; }
 }

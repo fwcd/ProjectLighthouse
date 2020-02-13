@@ -12,6 +12,7 @@ import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.ui.scene.viewmodel.graphics.SceneRect;
 import lighthouse.ui.scene.viewmodel.graphics.SceneShape;
 import lighthouse.ui.scene.viewmodel.graphics.Shading;
+import lighthouse.util.ColorUtils;
 
 public class SpaceInvadersSceneLayer implements SceneLayer {
     private final SpaceInvadersGameState gameState;
@@ -29,7 +30,9 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
         }
         
         for (Shield shield : gameState.getShields()) {
-            shapes.add(new SceneRect(shield.getBoundingBox(), Color.GREEN, Shading.FILLED));
+            Color baseColor = Color.GREEN;
+            Color color = ColorUtils.withAlpha((255 * shield.getHp()) / Shield.MAX_HP, baseColor);
+            shapes.add(new SceneRect(shield.getBoundingBox(), color, Shading.FILLED));
         }
         
         for (Projectile projectile : gameState.getFlyingProjectiles()) {
