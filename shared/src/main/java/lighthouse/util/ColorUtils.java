@@ -66,6 +66,10 @@ public class ColorUtils {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), newAlpha);
 	}
 	
+	public static Color withAlphaPercent(double newAlpha, Color color) {
+		return withAlpha((int) (255 * newAlpha), color);
+	}
+	
 	public static int getBrightness(Color color) {
 		return (color.getRed() + color.getGreen() + color.getBlue()) / 3;
 	}

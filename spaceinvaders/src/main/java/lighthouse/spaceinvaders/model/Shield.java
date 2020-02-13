@@ -4,15 +4,15 @@ import lighthouse.util.BoxBounded;
 import lighthouse.util.DoubleRect;
 
 public class Shield implements BoxBounded {
-    public static final int MAX_HP = 4;
+    private static final int MAX_HP = 4;
     private final DoubleRect boundingBox;
-    private final int hp;
+    private final HealthPoints hp;
     
     public Shield(DoubleRect boundingBox) {
-        this(boundingBox, MAX_HP);
+        this(boundingBox, new HealthPoints(MAX_HP));
     }
     
-    public Shield(DoubleRect boundingBox, int hp) {
+    private Shield(DoubleRect boundingBox, HealthPoints hp) {
         this.boundingBox = boundingBox;
         this.hp = hp;
     }
@@ -20,9 +20,9 @@ public class Shield implements BoxBounded {
     @Override
     public DoubleRect getBoundingBox() { return boundingBox; }
 
-    public int getHp() { return hp; }
+    public HealthPoints getHp() { return hp; }
     
-    public Shield damage() { return new Shield(boundingBox, Math.max(0, hp - 1)); }
+    public Shield damage() { return new Shield(boundingBox, hp.decrease()); }
     
-    public boolean isDestroyed() { return hp <= 0; }
+    public boolean isDestroyed() { return hp.areEmpty(); }
 }

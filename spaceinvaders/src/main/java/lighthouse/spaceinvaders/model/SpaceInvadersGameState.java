@@ -42,6 +42,8 @@ public class SpaceInvadersGameState extends BaseGameState {
     }
     
     public void advance() {
+        if (isGameOver()) return;
+
         swarm = swarm.step();
         
         flyingProjectiles = Stream.concat(swarm.launchProjectiles().stream(), flyingProjectiles.stream())
@@ -66,8 +68,8 @@ public class SpaceInvadersGameState extends BaseGameState {
     
     private boolean handleCollisionsFor(Projectile projectile) {
         if (!projectile.doesHitAliens() && projectile.collidesWith(cannon)) {
-            // TODO: Handle player hits
             LOG.info("Hit player");
+            cannon = cannon.damage();
             return true;
         }
 
@@ -111,6 +113,8 @@ public class SpaceInvadersGameState extends BaseGameState {
     public List<Shield> getShields() { return Collections.unmodifiableList(shields); }
     
     public Cannon getCannon() { return cannon; }
+    
+    public boolean isGameOver() { return cannon.getHp().areEmpty(); }
 
     @Override
     public IntVec getGridSize() { return new IntVec(boardWidth, boardHeight); }
