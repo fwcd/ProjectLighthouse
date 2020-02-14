@@ -1,5 +1,10 @@
 # Project Lighthouse
-A collection of games running on the University of Kiel's high-rise building.
+A collection of 2D games for a light installation at the University of Kiel, currently including:
+
+* Snake
+* Breakout
+* Space Invaders
+* A brick puzzle game (featured below)
 
 ![Photo](photo.png) ![Screenshot](screenshot.png)
 
