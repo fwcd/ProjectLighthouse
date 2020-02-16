@@ -126,6 +126,14 @@ public class Board implements Serializable, ColorGrid {
 		return child;
 	}
 	
+	public boolean hasChildBoard(Board child) {
+		return streamChildBoards().anyMatch(child::equals);
+	}
+	
+	public Stream<Board> streamChildBoards() {
+		return streamPossibleMoves().map(this::childBoard);
+	}
+	
 	public boolean containsPattern(Board pattern) {
 		if (pattern.isEmpty()) {
 			return true;
