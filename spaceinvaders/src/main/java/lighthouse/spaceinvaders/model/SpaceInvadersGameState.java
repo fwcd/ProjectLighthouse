@@ -139,6 +139,8 @@ public class SpaceInvadersGameState extends BaseGameState {
     public IntVec getGridSize() { return new IntVec(boardWidth, boardHeight); }
     
     public void reset() {
+        flyingProjectiles.clear();
+
         int spacing = 2;
         int border = 2;
         swarm = new AlienSwarm(new DoubleVec(1, 1), border, (boardWidth - 4) / spacing, spacing, boardWidth - border);
