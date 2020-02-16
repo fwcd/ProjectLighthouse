@@ -1,5 +1,7 @@
 package lighthouse.spaceinvaders;
 
+import java.util.Collection;
+
 import javax.swing.Timer;
 
 import lighthouse.gameapi.Game;
@@ -11,7 +13,10 @@ import lighthouse.spaceinvaders.ui.SpaceInvadersController;
 import lighthouse.spaceinvaders.ui.SpaceInvadersControlsViewController;
 import lighthouse.spaceinvaders.ui.SpaceInvadersSceneLayer;
 import lighthouse.ui.SwingViewController;
+import lighthouse.ui.scene.viewmodel.graphics.AnimatedImageAnimation;
+import lighthouse.ui.scene.viewmodel.graphics.AnimatedResourceGIFAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
+import lighthouse.util.DoubleVec;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
 
@@ -27,8 +32,13 @@ public class SpaceInvadersGame implements Game {
     
     public SpaceInvadersGame() {
         timer = new Timer(1000 / maxTPS, e -> {
-            gameState.advance();
+            Collection<DoubleVec> collisionPoints = gameState.advance();
             sceneFacade.update();
+            
+            for (DoubleVec collisionPoint : collisionPoints) {
+                DoubleVec size = new DoubleVec(10, 5);
+                sceneFacade.play(new AnimatedResourceGIFAnimation("/gifs/explosion.gif", collisionPoint.sub(size.scale(0.5)), size));
+            }
         });
         timer.setRepeats(true);
     }

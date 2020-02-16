@@ -1,6 +1,7 @@
 package lighthouse.spaceinvaders.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,8 +42,13 @@ public class SpaceInvadersGameState extends BaseGameState {
         reset();
     }
     
-    public void advance() {
-        if (isGameOver()) return;
+    /**
+     * Advances to the next "frame".
+     * 
+     * @return The collision points
+     */
+    public Collection<DoubleVec> advance() {
+        if (isGameOver()) return Collections.emptySet();
 
         swarm = swarm.step();
         
@@ -51,19 +57,28 @@ public class SpaceInvadersGameState extends BaseGameState {
             .filter(p -> !p.isOutOfBounds(boardWidth, boardHeight))
             .collect(Collectors.toCollection(ArrayList::new));
         
-        handleCollisions();
+        return handleCollisions();
     }
     
-    private void handleCollisions() {
+    /**
+     * Handles all collisions.
+     * 
+     * @return The collision points.
+     */
+    private Collection<DoubleVec> handleCollisions() {
         Iterator<Projectile> it = flyingProjectiles.iterator();
+        Set<DoubleVec> collisionPoints = new HashSet<>();
         
         while (it.hasNext()) {
             Projectile projectile = it.next();
             boolean shouldRemove = handleCollisionsFor(projectile);
             if (shouldRemove) {
                 it.remove();
+                collisionPoints.add(projectile.getBoundingBox().getCenter());
             }
         }
+        
+        return collisionPoints;
     }
     
     private boolean handleCollisionsFor(Projectile projectile) {
