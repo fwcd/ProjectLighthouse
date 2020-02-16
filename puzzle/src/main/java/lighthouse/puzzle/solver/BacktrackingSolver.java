@@ -7,7 +7,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -16,6 +15,10 @@ import org.slf4j.LoggerFactory;
 import lighthouse.puzzle.model.Board;
 import lighthouse.puzzle.model.Level;
 
+/**
+ * A simple solver that backtracks once it encounters
+ * an already visited state.
+ */
 public class BacktrackingSolver implements Solver {
     private static final Logger LOG = LoggerFactory.getLogger(BacktrackingSolver.class);
     
@@ -39,7 +42,7 @@ public class BacktrackingSolver implements Solver {
             Board next = moves.peekLast()
                 .streamChildBoards()
                 .filter(c -> !visited.contains(c) && toSolve.isAllowed(c))
-                .findFirst()
+                .findAny()
                 .orElse(null);
             
             if (next == null) {
