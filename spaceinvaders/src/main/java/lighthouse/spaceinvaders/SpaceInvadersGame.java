@@ -13,7 +13,6 @@ import lighthouse.spaceinvaders.ui.SpaceInvadersController;
 import lighthouse.spaceinvaders.ui.SpaceInvadersControlsViewController;
 import lighthouse.spaceinvaders.ui.SpaceInvadersSceneLayer;
 import lighthouse.ui.SwingViewController;
-import lighthouse.ui.scene.viewmodel.graphics.AnimatedImageAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.AnimatedResourceGIFAnimation;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.DoubleVec;
@@ -23,7 +22,7 @@ import lighthouse.util.transform.Scaling;
 public class SpaceInvadersGame implements Game {
     private final SpaceInvadersGameState gameState = new SpaceInvadersGameState();
     private final SpaceInvadersSceneLayer sceneLayer = new SpaceInvadersSceneLayer(gameState);
-    private final SwingViewController controls = new SpaceInvadersControlsViewController(gameState);
+    private final SpaceInvadersControlsViewController controls = new SpaceInvadersControlsViewController(gameState);
     private final DoubleVecBijection gridPosToPixels = new Scaling(15, 15);
     private final Timer timer;
     private final int maxTPS = 60;
@@ -35,9 +34,11 @@ public class SpaceInvadersGame implements Game {
             Collection<DoubleVec> collisionPoints = gameState.advance();
             sceneFacade.update();
             
-            for (DoubleVec collisionPoint : collisionPoints) {
-                DoubleVec size = new DoubleVec(10, 5);
-                sceneFacade.play(new AnimatedResourceGIFAnimation("/gifs/explosion.gif", collisionPoint.sub(size.scale(0.5)), size));
+            if (controls.areParticlesEnabled()) {
+                for (DoubleVec collisionPoint : collisionPoints) {
+                    DoubleVec size = new DoubleVec(10, 5);
+                    sceneFacade.play(new AnimatedResourceGIFAnimation("/gifs/explosion.gif", collisionPoint.sub(size.scale(0.5)), size));
+                }
             }
         });
         timer.setRepeats(true);
