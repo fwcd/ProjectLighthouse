@@ -114,7 +114,11 @@ public class SpaceInvadersGameState extends BaseGameState {
     
     public Cannon getCannon() { return cannon; }
     
-    public boolean isGameOver() { return cannon.getHp().areEmpty(); }
+    public boolean isGameLost() { return cannon.getHp().areEmpty(); }
+    
+    public boolean isGameWon() { return swarm.getAliens().isEmpty(); }
+    
+    public boolean isGameOver() { return isGameLost() || isGameWon(); }
 
     @Override
     public IntVec getGridSize() { return new IntVec(boardWidth, boardHeight); }

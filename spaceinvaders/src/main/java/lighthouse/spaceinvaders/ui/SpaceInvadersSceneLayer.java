@@ -16,6 +16,8 @@ import lighthouse.ui.scene.viewmodel.graphics.Shading;
 import lighthouse.util.ColorUtils;
 
 public class SpaceInvadersSceneLayer implements SceneLayer {
+    private static final Color WIN_COLOR = new Color(0x0f8200); // dark green
+    private static final Color LOSE_COLOR = new Color(0x700013); // dark red
     private final SpaceInvadersGameState gameState;
     
     public SpaceInvadersSceneLayer(SpaceInvadersGameState gameState) {
@@ -26,7 +28,7 @@ public class SpaceInvadersSceneLayer implements SceneLayer {
     public boolean hasBackground() { return gameState.isGameOver(); }
     
     @Override
-    public Color getBackground() { return new Color(0x700013); }
+    public Color getBackground() { return gameState.isGameWon() ? WIN_COLOR : LOSE_COLOR; }
 
     @Override
     public List<SceneShape> getShapes() {
