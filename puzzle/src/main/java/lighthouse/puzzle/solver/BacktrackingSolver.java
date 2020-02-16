@@ -1,10 +1,14 @@
 package lighthouse.puzzle.solver;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +24,10 @@ public class BacktrackingSolver implements Solver {
     public List<Board> solve(Level toSolve) {
         LOG.info("Starting solver");
         
-        List<Board> moves = new ArrayList<>();
+        Deque<Board> moves = new ArrayDeque<>();
         Board current = toSolve.getStart().copy();
         Board goal = toSolve.getGoal();
-        List<Board> forbidden = new ArrayList<>();
+        Set<Board> forbidden = new HashSet<>();
 
         moves.add(current.copy());
         while (!current.equals(goal)) {
@@ -43,48 +47,45 @@ public class BacktrackingSolver implements Solver {
                     }).findFirst();
             
             if (!nextMove.isPresent()){
-                moves.remove(moves.size()-1);
-                current = moves.get(moves.size()-1);
+                moves.removeLast();
+                current = moves.peekLast();
                 continue;
             }
             current.perform(nextMove.orElse(null));
             moves.add(current.copy());
         }
+        
+        List<Board> finalMoves = new ArrayList<>();
         LOG.info("Starting optimization with: {} moves", moves.size());
-        while (true){
+        while (!moves.isEmpty()) {
             // Stop the solver if the thread was interrupted
             if (Thread.interrupted()) {
                 LOG.info("Stopped solver while optimizing");
                 return Collections.emptyList();
             }
             
+            Board board = moves.removeFirst();
+            Iterator<Board> iter = moves.iterator();
             int skips = 0;
-            int begin = 0;
-            for (int start = 0; start < moves.size(); start++){
-                Board startBoard = moves.get(start);
-                Iterator<Move> iter = startBoard.streamPossibleMoves().iterator();
-                while(iter.hasNext()){
-                    Move move = iter.next();
-                    int distance = moves.indexOf(startBoard.childBoard(move)) - start;
-                    if(distance > skips){
-                        begin = start + 1;
-                        skips = distance - 1;
+            while (iter.hasNext()) {
+                Board futureBoard = iter.next();
+                boolean isLastBoard = skips == moves.size() - 1;
+
+                if (!isLastBoard && board.equals(futureBoard)) {
+                    LOG.info("Skipping {} boards", skips);
+                    for (int i = 0; i < skips; i++) {
+                        moves.removeFirst();
                     }
                 }
+
+                skips++;
             }
             
-            LOG.info("skipping: {} from {}", skips, begin);
-            for(int i = 0; i < skips; i++){
-                moves.remove(begin);
-            }
-            if(skips <= 1 || begin >= moves.size()){
-                break;
-            }
-            
+            finalMoves.add(board);
         }
         
-        LOG.info("Finished optimization with {} moves", moves.size());
+        LOG.info("Finished optimization with {} moves", finalMoves.size());
         LOG.info("Done");
-        return moves;
+        return finalMoves;
     }
 }

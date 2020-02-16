@@ -290,6 +290,11 @@ public class Board implements Serializable, ColorGrid {
 		return board.bricks.equals(bricks);
 	}
 	
+	@Override
+	public int hashCode() {
+		return bricks.hashCode();
+	}
+	
 	/** Deeply copies this board. */
 	public Board copy() {
 		Board copied = new Board(columns, rows);
