@@ -8,7 +8,9 @@ import lighthouse.gameapi.SceneInteractionFacade;
 import lighthouse.model.GameState;
 import lighthouse.snake.model.SnakeGameState;
 import lighthouse.snake.ui.SnakeController;
+import lighthouse.snake.ui.SnakeControlsViewController;
 import lighthouse.snake.ui.SnakeSceneLayer;
+import lighthouse.ui.SwingViewController;
 import lighthouse.ui.scene.viewmodel.graphics.SceneLayer;
 import lighthouse.util.transform.DoubleVecBijection;
 import lighthouse.util.transform.Scaling;
@@ -20,6 +22,7 @@ public class SnakeGame implements Game {
 	// private static final Logger LOG = LoggerFactory.getLogger(SnakeGame.class);
 	private final SnakeGameState gameState = new SnakeGameState();
 	private final SnakeSceneLayer sceneLayer = new SnakeSceneLayer(gameState);
+	private final SnakeControlsViewController controls = new SnakeControlsViewController(gameState);
 	private final DoubleVecBijection gridPosToPixels = new Scaling(15, 15);
 	private final Timer timer;
 	private final int maxTPS = 4;
@@ -60,6 +63,9 @@ public class SnakeGame implements Game {
 	
 	@Override
 	public SceneLayer getGameLayer() { return sceneLayer; }
+
+	@Override
+	public SwingViewController getControlsViewController() { return controls; }
 	
 	@Override
 	public DoubleVecBijection getGridPosToPixels() { return gridPosToPixels; }

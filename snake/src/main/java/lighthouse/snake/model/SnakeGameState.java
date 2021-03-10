@@ -10,7 +10,7 @@ import lighthouse.util.IntVec;
 import lighthouse.util.LighthouseConstants;
 
 public class SnakeGameState extends BaseGameState {
-	private final Snake snake;
+	private Snake snake;
 	private final Set<IntVec> foods = new HashSet<>();
 	private final int boardWidth = LighthouseConstants.COLS;
 	private final int boardHeight = LighthouseConstants.ROWS;
@@ -44,6 +44,11 @@ public class SnakeGameState extends BaseGameState {
 		}
 		snake.move(!ate);
 	}
+
+	public void reset() {
+		snake = new Snake(boardWidth, boardHeight);
+		score = 0;
+	}
 	
 	public int getScore() {
 		return score;
@@ -61,7 +66,7 @@ public class SnakeGameState extends BaseGameState {
 	public Snake getSnake() {
 		return snake;
 	}
-	
+
 	/** Returns the grid size in the game's own coordinate system. */
 	@Override 
 	public IntVec getGridSize() {
