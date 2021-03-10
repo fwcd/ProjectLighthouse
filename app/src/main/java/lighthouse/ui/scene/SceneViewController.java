@@ -51,6 +51,9 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 	private LighthouseViewModel lighthouseViewModel;
 	private SceneMouseInput mouseInput;
 	private SceneKeyInput keyInput;
+
+	private int fps = 0;
+	private long lastSecond = 0;
 	
 	private final LocalSceneView localView;
 	private final List<SceneView> sceneViews = new ArrayList<>();
@@ -96,6 +99,15 @@ public class SceneViewController implements SwingViewController, AnimationRunner
 		}
 		
 		SwingUtilities.invokeLater(component::repaint);
+
+		fps++;
+
+		long now = System.currentTimeMillis();
+		if ((now - lastSecond) > 1000) {
+			LOG.info("{} fps (max: {})", fps, maxFPS);
+			fps = 1;
+			lastSecond = now;
+		}
 	}
 	
 	/** Ensure that there is a timer handling running animations and layer transitions. */
