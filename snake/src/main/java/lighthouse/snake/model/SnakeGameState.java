@@ -28,12 +28,14 @@ public class SnakeGameState extends BaseGameState {
 		}
 		foods.add(pos);
 	}
-	
+
 	public boolean hasLost() {
-		return false;
+		return snake.isDead();
 	}
 	
 	public void advance() {
+		if (hasLost()) return;
+
 		boolean ate = foods.contains(snake.nextHead());
 		if (ate) {
 			foods.remove(snake.nextHead());

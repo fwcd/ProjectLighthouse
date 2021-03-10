@@ -1,6 +1,8 @@
 package lighthouse.snake.model;
 
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.ArrayDeque;
 import lighthouse.util.IntVec;
 import lighthouse.util.Direction;
@@ -44,6 +46,11 @@ public class Snake {
 	
 	public boolean contains(IntVec pos) {
 		return body.contains(pos);
+	}
+
+	public boolean isDead() {
+		Set<IntVec> fields = new HashSet<>(body);
+		return fields.size() != body.size();
 	}
 	
 	public Deque<IntVec> getBody() { return body; }
