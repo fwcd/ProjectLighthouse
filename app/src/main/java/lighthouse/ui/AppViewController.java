@@ -21,7 +21,6 @@ import lighthouse.model.AppModel;
 import lighthouse.puzzle.PuzzleGame;
 import lighthouse.snake.SnakeGame;
 import lighthouse.spaceinvaders.SpaceInvadersGame;
-import lighthouse.ui.discordrpc.DiscordRPCRunner;
 import lighthouse.ui.scene.SceneInteractionBackend;
 import lighthouse.ui.scene.SceneViewController;
 import lighthouse.ui.scene.view.LocalSceneView;
@@ -44,7 +43,6 @@ public class AppViewController implements SwingViewController {
 	
 	private final AppContext context = new AppContext();
 	private final SceneInteractionFacade interactionFacade;
-	private final DiscordRPCRunner discordRPC = new DiscordRPCRunner();
 	
 	private final Set<Game> gameRegistry = new HashSet<>();
 	private Game activeGame;
@@ -73,18 +71,6 @@ public class AppViewController implements SwingViewController {
 		
 		// Register known games
 		registerGames();
-
-		// Setup RPC
-		if (DISCORD_RPC_ENABLED) {
-			discordRPC.setState(context.getStatus().getMessage());
-			discordRPC.updatePresenceSoon();
-			discordRPC.start();
-		}
-		
-		context.getStatusListeners().add(newStatus -> {
-			discordRPC.setState(newStatus.getMessage());
-			discordRPC.updatePresenceSoon();
-		});
 	}
 	
 	private void registerGames() {
@@ -163,8 +149,6 @@ public class AppViewController implements SwingViewController {
 		activeGame.onOpen();
 		scene.getComponent().requestFocus();
 		
-		discordRPC.setDetails("Playing " + game.getName());
-		discordRPC.updatePresenceSoon();
 		update();
 	}
 	
