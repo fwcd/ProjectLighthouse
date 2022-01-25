@@ -43,7 +43,7 @@ public class GameControlsViewController implements SwingViewController {
 		WebSplitButton editButton = LayoutUtils.splitButtonOf("Edit", () -> game.enter(EditingMode.INSTANCE));
 		editButton.setPopupMenu(LayoutUtils.popupMenuOf("",
 			LayoutUtils.itemOf("Edit blocked states", () -> {
-				WebPopup popup = new WebPopup();
+				WebPopup<?> popup = new WebPopup<>();
 				popup.setFollowInvoker(true);
 				popup.setSize(200, 200);
 				popup.setLayout(new BorderLayout());

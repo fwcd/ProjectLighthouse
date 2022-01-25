@@ -47,12 +47,10 @@ public class DiscordLighthouseView implements LighthouseView {
 	private final ListenerList<Void> readyListeners = new ListenerList<>("DiscordLighthouseView.readyListeners");
 	private final BufferedImage boardImage;
 	
-	private final boolean streamAllStates;
 	private final Pattern commandPattern;
 	private JDA jda;
 	
 	public DiscordLighthouseView(ConfigFile config, SceneKeyInput input) {
-		streamAllStates = config.getBoolean("streamAllStates");
 		commandPattern = Pattern.compile(Pattern.quote(config.get("prefix")) + "(\\w+)(?:\\s+(.+))?");
 		boardImage = new BufferedImage(config.getInt("imageWidth"), config.getInt("imageHeight"), BufferedImage.TYPE_INT_RGB);
 		

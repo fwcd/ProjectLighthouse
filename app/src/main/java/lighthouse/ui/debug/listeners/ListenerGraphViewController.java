@@ -88,7 +88,7 @@ public class ListenerGraphViewController implements SwingViewController {
 						if (!visited.contains(field)) {
 							visited.add(field);
 						
-							if (!field.isAccessible()) {
+							if (!field.canAccess(obj)) {
 								field.setAccessible(true);
 							}
 							try {
