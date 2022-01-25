@@ -43,10 +43,10 @@ public class SideBarViewController implements SwingViewController {
 		
 		// Adds a panel containing game-specific controls
 		gameControlPanel = new SwapPanel();
-		accordion.addPane("Game Controls", gameControlPanel);
+		accordion.addPane("Game Controls", gameControlPanel).expand();
 		
 		solverPanel = new SwapPanel();
-		accordion.addPane("Solver", solverPanel);
+		accordion.addPane("Solver", solverPanel).expand();
 		
 		// Adds a panel containing game-specific statistics
 		gameStatisticsPanel = new SwapPanel();
@@ -55,13 +55,13 @@ public class SideBarViewController implements SwingViewController {
 		// Add the connector panel which allows the user
 		// to connect a remote Lighthouse view.
 		ConnectorsViewController connector = new ConnectorsViewController(scene);
-		accordion.addPane("Connectors", connector.getComponent());
+		accordion.addPane("Connectors", connector.getComponent()).expand();
 		
 		// Add a small preview that accurately reflects the Lighthouse's grid.
 		LocalLighthouseView preview = new LocalLighthouseView();
 		scene.addLighthouseView(preview);
 		preview.getComponent().setPreferredSize(new Dimension(180, 200));
-		accordion.addPane("Lighthouse Preview", preview.getComponent());
+		accordion.addPane("Lighthouse Preview", preview.getComponent()).expand();
 		
 		component.add(accordion, BorderLayout.CENTER);
 	}
