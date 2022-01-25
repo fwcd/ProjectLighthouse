@@ -9,11 +9,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.alee.laf.menu.WebMenuBar;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
-import com.alee.skin.dark.DarkSkin;
-import com.alee.skin.web.WebSkin;
+import com.alee.skin.dark.WebDarkSkin;
+import com.alee.skin.light.WebLightSkin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,9 +132,9 @@ public class MenuBarViewController implements SwingViewController {
 		playAnimation(animation);
 	}
 	
-	private void switchToLightTheme() { applySkin(new WebSkin()); }
+	private void switchToLightTheme() { applySkin(new WebLightSkin()); }
 	
-	private void switchToDarkTheme() { applySkin(new DarkSkin()); }
+	private void switchToDarkTheme() { applySkin(new WebDarkSkin()); }
 	
 	private void applySkin(Skin skin) {
 		SwingUtilities.invokeLater(() -> {

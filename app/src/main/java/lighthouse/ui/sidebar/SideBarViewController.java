@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import com.alee.extended.panel.WebAccordion;
+import com.alee.extended.accordion.WebAccordion;
 
 import lighthouse.gameapi.Game;
 import lighthouse.model.AppModel;
@@ -36,8 +36,6 @@ public class SideBarViewController implements SwingViewController {
 		component.add(menuBar.getComponent(), BorderLayout.NORTH);
 		
 		WebAccordion accordion = new WebAccordion();
-		accordion.setMultiplySelectionAllowed(true);
-		accordion.setFillSpace(false);
 		
 		// Adds a panel containing game-specific controls
 		gameControlPanel = new SwapPanel();
