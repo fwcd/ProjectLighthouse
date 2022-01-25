@@ -42,15 +42,19 @@ dependencies {
 	implementation project(':spaceinvaders')
 	implementation 'ch.qos.logback:logback-classic:1.2.3'
 	implementation 'uk.org.lidalia:sysout-over-slf4j:1.0.2'
-	implementation 'org.eclipse.jetty:jetty-client:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-http:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-io:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty:jetty-util:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-api:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.8.v20171121'
-    implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.8.v20171121'
+	implementation 'org.eclipse.jetty:jetty-client:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty:jetty-http:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty:jetty-io:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty:jetty-util:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty.websocket:websocket-api:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.44.v20210927'
+    implementation 'org.eclipse.jetty.websocket:websocket-common:9.4.44.v20210927'
     implementation 'org.msgpack:msgpack-core:0.8.14'
     implementation('net.dv8tion:JDA:5.0.0-alpha.4') {
         exclude module: 'opus-java'
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.deprecation = true
 }

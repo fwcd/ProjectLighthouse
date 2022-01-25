@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 
+import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
@@ -111,8 +112,8 @@ public class LighthouseDisplay implements AutoCloseable {
 		if (selfSigned) {
 			// Since we use a self-signed certificate, we can't check the
 			// validity of the certificate (and we have to disable this check)
-			SslContextFactory sec = new SslContextFactory(true);
-			client = new WebSocketClient(sec);
+			SslContextFactory sec = new SslContextFactory.Client(true);
+			client = new WebSocketClient(new HttpClient(sec));
 		} else {
 			client = new WebSocketClient();
 		}
