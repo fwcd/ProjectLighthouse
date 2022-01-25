@@ -65,7 +65,7 @@ public class LighthouseDisplay implements AutoCloseable {
 
 	/**
 	 * Connects to the lighthouse server with the default web-socket address
-	 * "wss://lighthouse.uni-kiel.de/user/<username>/model" and Certificate checking
+	 * "wss://lighthouse.uni-kiel.de/websocket" and Certificate checking
 	 * disabled (root CA unknown)
 	 * 
 	 * @throws InvalidAttributeValueException if "username" is invalid for creating
@@ -77,7 +77,7 @@ public class LighthouseDisplay implements AutoCloseable {
 	 */
 	public void connect() throws Exception {
 		try {
-			connect("wss://lighthouse.uni-kiel.de/user/" + username + "/model", true);
+			connect("wss://lighthouse.uni-kiel.de/websocket", true);
 		} catch (URISyntaxException e) {
 			throw new InvalidAttributeValueException("Given username is invalid for a connection");
 		}
