@@ -16,6 +16,7 @@ application {
         '--add-opens', 'java.base/jdk.internal.loader=ALL-UNNAMED',
         '--add-opens', 'java.desktop/javax.swing=ALL-UNNAMED',
         '--add-opens', 'java.desktop/javax.swing.text=ALL-UNNAMED',
+        '--add-opens', 'java.desktop/java.awt.color=ALL-UNNAMED',
         '--add-opens', 'java.desktop/java.awt.font=ALL-UNNAMED',
         '--add-opens', 'java.desktop/java.awt.geom=ALL-UNNAMED',
         '--add-opens', 'java.desktop/java.awt=ALL-UNNAMED',
