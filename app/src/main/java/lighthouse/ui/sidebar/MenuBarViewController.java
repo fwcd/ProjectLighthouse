@@ -149,7 +149,7 @@ public class MenuBarViewController implements SwingViewController {
 	
 	private void openDebugTools() {
 		DebugToolsViewController debugTools = new DebugToolsViewController(model, animationTracker);
-		WebFrame popup = new WebFrame("Debug tools");
+		WebFrame<?> popup = new WebFrame<>("Debug tools");
 		popup.setDefaultCloseOperation(WebFrame.DO_NOTHING_ON_CLOSE);
 		popup.addWindowListener(new WindowAdapter() {
 			@Override
