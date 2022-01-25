@@ -79,7 +79,7 @@ public class DiscordLighthouseView implements LighthouseView {
 	
 	public void connect(String token) {
 		try {
-			jda = new JDABuilder(token)
+			jda = JDABuilder.createDefault(token)
 				.addEventListeners((EventListener) this::onEvent)
 				.build();
 		} catch (LoginException e) {

@@ -1,11 +1,7 @@
 plugins {
-	id 'java'
-}
-
-repositories {
-	jcenter()
+    id 'java'
 }
 
 dependencies {
-	implementation project(':shared')
+    implementation project(':shared')
 }
